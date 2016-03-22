@@ -4,6 +4,7 @@ import db from 'server/db';
 
 const createBoardsSql = fs.readFileSync('server/db/tables/boards.sql', 'utf8');
 const createListsSql = fs.readFileSync('server/db/tables/lists.sql', 'utf8');
+const createCardsSql = fs.readFileSync('server/db/tables/cards.sql', 'utf8');
 
 describe('tables', ()=> {
     describe('boards', ()=> {
@@ -39,6 +40,23 @@ describe('tables', ()=> {
                 });
         });
     });
+
+    describe('cards', ()=> {
+        beforeEach(()=> {
+            return db.none('DROP TABLE IF EXISTS cards');
+        });
+
+        it('should be created', ()=> {
+            return db.none(createCardsSql)
+                .then(()=> selectColumnsInfo('cards'))
+                .then(result => {
+                    const columns = prettyColumnsInfo(result);
+                    assert.equal(columns.id, 'integer');
+                    assert.equal(columns.text, 'text');
+                });
+        });
+    });
+
 });
 
 function prettyColumnsInfo(data) {
