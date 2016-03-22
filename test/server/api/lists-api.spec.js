@@ -57,5 +57,24 @@ describe('lists api', () => {
             });
         });
     });
+
+    describe('getFull', () => {
+        it('should get full list by given id', () => {
+            return listsApi.create({title: 'test list'})
+            .then(() => cardsApi.create({text: 'test card 1'}))
+            .then(() => listsApi.addCard(1, 1))
+            .then(() => listsApi.getFull(1))
+            .then(list => {
+                const expected = {
+                    id: 1,
+                    title: 'test list',
+                    cards: [
+                        {id: 1, text: 'test card 1'}
+                    ]
+                };
+                assert.deepEqual(list, expected);
+            });
+        });
+    });
 });
 

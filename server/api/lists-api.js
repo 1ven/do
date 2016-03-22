@@ -7,6 +7,13 @@ const cardsApi = require('../api/cards-api');
 
 const listsApi = _.assign({}, baseApi, {
     table: 'lists',
+    getFull(id) {
+        return this.getById(id)
+        .then(list => {
+            return db.query('SELECT * FROM cards WHERE id IN ($1)', list.cards)
+            .then(cards => _.assign({}, list, { cards }));
+        });
+    },
     addCard(listId, cardId) {
         return cardsApi.getById(listId)
         .catch(() => { throw new Error('card does not exist'); })
