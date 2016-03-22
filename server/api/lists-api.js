@@ -10,7 +10,7 @@ const listsApi = _.assign({}, baseApi, {
     getFull(id) {
         return this.getById(id)
         .then(list => {
-            return db.query('SELECT * FROM cards WHERE id IN ($1)', list.cards)
+            return cardsApi.getSome(list.cards)
             .then(cards => _.assign({}, list, { cards }));
         });
     },

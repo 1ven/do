@@ -8,6 +8,7 @@ const createListsSql = fs.readFileSync('server/db/tables/lists.sql', 'utf8');
 const createCardsSql = fs.readFileSync('server/db/tables/cards.sql', 'utf8');
 
 describe('lists api', () => {
+    // TODO: Move lists and cards creation in separate function.
     beforeEach(() => {
         return db.query('DROP TABLE IF EXISTS lists, cards')
         .then(() => db.query(createListsSql))
@@ -60,16 +61,24 @@ describe('lists api', () => {
 
     describe('getFull', () => {
         it('should get full list by given id', () => {
-            return listsApi.create({title: 'test list'})
+            return listsApi.create({title: 'test list 1'})
+            .then(() => listsApi.create({title: 'test list 2'}))
+            .then(() => listsApi.create({title: 'test list 3'}))
             .then(() => cardsApi.create({text: 'test card 1'}))
-            .then(() => listsApi.addCard(1, 1))
-            .then(() => listsApi.getFull(1))
+            .then(() => cardsApi.create({text: 'test card 2'}))
+            .then(() => cardsApi.create({text: 'test card 3'}))
+            .then(() => listsApi.addCard(2, 1))
+            .then(() => listsApi.addCard(2, 2))
+            .then(() => listsApi.addCard(2, 3))
+            .then(() => listsApi.getFull(2))
             .then(list => {
                 const expected = {
-                    id: 1,
-                    title: 'test list',
+                    id: 2,
+                    title: 'test list 2',
                     cards: [
-                        {id: 1, text: 'test card 1'}
+                        {id: 1, text: 'test card 1'},
+                        {id: 2, text: 'test card 2'},
+                        {id: 3, text: 'test card 3'}
                     ]
                 };
                 assert.deepEqual(list, expected);
