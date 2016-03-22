@@ -42,7 +42,7 @@ describe('lists api', () => {
             return listsApi.create({title: 'test list 1'})
             .then(() => listsApi.create({title: 'test list 2'}))
             .then(() => listsApi.create({title: 'test list 3'}))
-            .then(() => cardsApi.create({text: 'test card 2'}))
+            .then(() => cardsApi.create({text: 'test card 1'}))
             .then(() => cardsApi.create({text: 'test card 2'}))
             .then(() => cardsApi.create({text: 'test card 3'}))
             .then(() => listsApi.addCard(2, 1))
@@ -53,7 +53,7 @@ describe('lists api', () => {
             .then(list => {
                 assert.include(list.cards, 1);
                 assert.notInclude(list.cards, 2);
-                assert.include(list.cards, 1);
+                assert.include(list.cards, 3);
             });
         });
     });
