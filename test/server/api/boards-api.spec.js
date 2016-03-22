@@ -7,12 +7,14 @@ import db from 'server/db';
 
 chai.use(chaiAsPromised);
 
-const createboardsSql = fs.readFileSync('server/db/tables/boards.sql', 'utf8');
+const createBoardsSql = fs.readFileSync('server/db/tables/boards.sql', 'utf8');
+const createListsSql = fs.readFileSync('server/db/tables/lists.sql', 'utf8');
 
 describe('boards api', () => {
     beforeEach(() => {
-        return db.query('DROP TABLE IF EXISTS boards')
-            .then(() => db.query(createboardsSql));
+        return db.query('DROP TABLE IF EXISTS boards, lists')
+            .then(() => db.query(createListsSql))
+            .then(() => db.query(createBoardsSql));
     });
 
     describe('addList', ()=> {

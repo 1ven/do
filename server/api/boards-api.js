@@ -9,7 +9,7 @@ const boardsApi = _.assign({}, baseApi, {
     table: 'boards',
     addList(boardId, listId) {
         return listsApi.getById(listId)
-        .catch(() => {throw new Error('list does not exist on the board')})
+        .catch(() => {throw new Error('list does not exist')})
         .then(() => db.none('UPDATE boards SET lists = array_append(lists, $2) WHERE id = $1', [boardId, listId]));
     },
     removeList(boardId, listId) {
