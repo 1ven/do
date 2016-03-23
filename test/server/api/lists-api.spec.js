@@ -84,6 +84,19 @@ describe('lists api', () => {
                 assert.deepEqual(list, expected);
             });
         });
+
+        it('should return then same list, when list has no cards', () => {
+            return listsApi.create({title: 'test list'})
+            .then(() => listsApi.getFull(1))
+            .then(fullList => {
+                const expected = {
+                    id: 1,
+                    title: 'test list',
+                    cards: null
+                };
+                assert.deepEqual(fullList, expected);
+            });
+        });
     });
 });
 
