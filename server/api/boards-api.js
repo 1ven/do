@@ -7,6 +7,19 @@ const baseApi = require('../api/base-api');
 
 const boardsApi = _.assign({}, baseApi, {
     table: 'boards',
+    getFull(id) {
+        return this.getById(id)
+        .then(board => {
+            const promises = _.map(board.lists, listId => {
+                return listsApi.getFull(listId);
+            });
+
+            return Promise.all(promises)
+            .then(fullLists => {
+                return _.assign({}, board, { lists: fullLists });
+            });
+        });
+    },
     addList(boardId, listId) {
         return listsApi.getById(listId)
         .catch(() => {throw new Error('list does not exist')})

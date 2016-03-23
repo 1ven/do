@@ -2,6 +2,7 @@ import chai, { assert, expect } from 'chai';
 import chaiAsPromised from 'chai-as-promised';
 import boardsApi from 'server/api/boards-api';
 import listsApi from 'server/api/lists-api';
+import cardsApi from 'server/api/cards-api';
 import fs from 'fs';
 import db from 'server/db';
 
@@ -9,10 +10,12 @@ chai.use(chaiAsPromised);
 
 const createBoardsSql = fs.readFileSync('server/db/tables/boards.sql', 'utf8');
 const createListsSql = fs.readFileSync('server/db/tables/lists.sql', 'utf8');
+const createCardsSql = fs.readFileSync('server/db/tables/cards.sql', 'utf8');
 
 describe('boards api', () => {
     beforeEach(() => {
-        return db.query('DROP TABLE IF EXISTS boards, lists')
+        return db.query('DROP TABLE IF EXISTS boards, lists, cards')
+            .then(() => db.query(createCardsSql))
             .then(() => db.query(createListsSql))
             .then(() => db.query(createBoardsSql));
     });
@@ -54,6 +57,53 @@ describe('boards api', () => {
                 assert.include(board.lists, 1);
                 assert.notInclude(board.lists, 2);
                 assert.include(board.lists, 3);
+            });
+        });
+    });
+
+    describe('getFull', () => {
+        it('should get full board by given id', () => {
+            return boardsApi.create({title: 'test board'})
+            .then(() => boardsApi.create({title: 'test board 2'}))
+            .then(() => boardsApi.create({title: 'test board 3'}))
+            .then(() => listsApi.create({title: 'test list 1'}))
+            .then(() => listsApi.create({title: 'test list 2'}))
+            .then(() => listsApi.create({title: 'test list 3'}))
+            .then(() => cardsApi.create({text: 'test card 1'}))
+            .then(() => cardsApi.create({text: 'test card 2'}))
+            .then(() => cardsApi.create({text: 'test card 3'}))
+            .then(() => boardsApi.addList(2, 2))
+            .then(() => boardsApi.addList(2, 3))
+            .then(() => listsApi.addCard(2, 2))
+            .then(() => listsApi.addCard(2, 3))
+            .then(() => boardsApi.getFull(2))
+            .then(fullBoard => {
+                const expected = {
+                    id: 2,
+                    title: 'test board 2',
+                    lists: [
+                        {
+                            id: 2,
+                            title: 'test list 2',
+                            cards: [
+                                {
+                                    id: 2,
+                                    text: 'test card 2'
+                                },
+                                {
+                                    id: 3,
+                                    text: 'test card 3'
+                                }
+                            ]
+                        },
+                        {
+                            id: 3,
+                            title: 'test list 3',
+                            cards: null
+                        }
+                    ],
+                };
+                assert.deepEqual(fullBoard, expected);
             });
         });
     });
