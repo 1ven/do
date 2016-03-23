@@ -10,6 +10,7 @@ const listsApi = _.assign({}, baseApi, {
     getFull(id) {
         return this.getById(id)
         .then(list => {
+            if (!list.cards) { return list; }
             return cardsApi.getSome(list.cards)
             .then(cards => _.assign({}, list, { cards }));
         });
