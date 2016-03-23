@@ -22,6 +22,7 @@ const boardsApi = _.assign({}, baseApi, {
             });
         });
     },
+    // TODO: Throw error, when trying to add list on nonexistent board. And fix error on 28 line.
     addList(boardId, listId) {
         return listsApi.getById(listId)
         .catch(() => {throw new Error('list does not exist')})

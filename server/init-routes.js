@@ -1,4 +1,5 @@
 const boardsRoutes = require('./routes/boards-routes');
+const listsRoutes = require('./routes/lists-routes');
 
 module.exports = function(app) {
     const post = function(url, handler, method) {
@@ -15,5 +16,7 @@ module.exports = function(app) {
         });
     };
 
+    // TODO: Process 404 routes.
     boardsRoutes(post);
+    listsRoutes(post);
 };
