@@ -22,7 +22,10 @@ describe('boards routes', ()=> {
         .end((err, res) => {
             const body = res.body;
             const expectedBody = {
-                "success": true
+                success: true,
+                data: {
+                    id: 1
+                }
             };
             assert.deepEqual(body, expectedBody);
             done(err);
