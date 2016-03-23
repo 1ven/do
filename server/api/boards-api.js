@@ -10,6 +10,8 @@ const boardsApi = _.assign({}, baseApi, {
     getFull(id) {
         return this.getById(id)
         .then(board => {
+            if (!board.lists) { return board; }
+
             const promises = _.map(board.lists, listId => {
                 return listsApi.getFull(listId);
             });

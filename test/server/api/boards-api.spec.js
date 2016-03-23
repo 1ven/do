@@ -106,5 +106,18 @@ describe('boards api', () => {
                 assert.deepEqual(fullBoard, expected);
             });
         });
+
+        it('should return then same board, when board has no lists', () => {
+            return boardsApi.create({title: 'test board'})
+            .then(() => boardsApi.getFull(1))
+            .then(fullBoard => {
+                const expected = {
+                    id: 1,
+                    title: 'test board',
+                    lists: null
+                };
+                assert.deepEqual(fullBoard, expected);
+            });
+        });
     });
 });
