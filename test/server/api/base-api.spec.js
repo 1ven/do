@@ -23,6 +23,21 @@ describe('base api', () => {
                 assert.equal(entry.title, 'test');
             });
         });
+
+        it('should return id after insert', () => {
+            return baseApi.create({title: 'test entry 1'})
+            .then(result => {
+                assert.deepEqual(result, {id: 1});
+            })
+            .then(() => baseApi.create({title: 'test entry 2'}))
+            .then(result => {
+                assert.deepEqual(result, {id: 2});
+            })
+            .then(() => baseApi.create({title: 'test entry 3'}))
+            .then(result => {
+                assert.deepEqual(result, {id: 3});
+            });
+        });
     });
 
     describe('remove', () => {
