@@ -16,7 +16,6 @@ module.exports = function(app) {
         });
     };
 
-    // TODO: Process 404 routes.
     boardsRoutes(post);
     listsRoutes(post);
 };

@@ -40,11 +40,11 @@ describe('lists routes', () => {
         });
     });
 
-    it('/lists/remove should respond with json', (done) => {
-        boardsApi.create({ title: 'test board' })
-        .then(() => listsApi.create({ title: 'test list' }))
-        .then(() => boardsApi.addList(1, 1))
-        .then(() => { 
-        });
-    });
+    // it('/lists/remove should respond with json', (done) => {
+    //     boardsApi.create({ title: 'test board' })
+    //     .then(() => listsApi.create({ title: 'test list' }))
+    //     .then(() => boardsApi.addList(1, 1))
+    //     .then(() => { 
+    //     });
+    // });
 });
