@@ -1,13 +1,13 @@
 'use strict';
 
 const config = require('../config');
-const fs = require('fs');
+const sql = require('../helpers').sql;
 const pgp = require('pg-promise')({});
 const db = pgp(config.db);
 
-const boards = fs.readFileSync('server/db/tables/boards.sql', 'utf8');
-const lists = fs.readFileSync('server/db/tables/lists.sql', 'utf8');
-const cards = fs.readFileSync('server/db/tables/cards.sql', 'utf8');
+const boards = sql('boards.sql');
+const lists = sql('lists.sql');
+const cards = sql('cards.sql');
 
 db.query(boards);
 db.query(lists);
