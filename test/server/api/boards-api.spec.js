@@ -68,25 +68,25 @@ describe('boards api', () => {
             .then(fullBoard => {
                 const expected = {
                     id: 7,
-                    title: 'boards entry',
+                    title: 'boards entry 7',
                     lists: [
                         {
                             id: 4,
-                            title: 'lists entry',
+                            title: 'lists entry 4',
                             cards: [
                                 {
                                     id: 3,
-                                    text: 'cards entry'
+                                    text: 'cards entry 3'
                                 },
                                 {
                                     id: 5,
-                                    text: 'cards entry'
+                                    text: 'cards entry 5'
                                 }
                             ]
                         },
                         {
                             id: 6,
-                            title: 'lists entry',
+                            title: 'lists entry 6',
                             cards: null
                         }
                     ],

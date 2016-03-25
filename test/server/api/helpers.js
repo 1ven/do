@@ -1,14 +1,14 @@
 import _ from 'lodash';
+import Promise from 'bluebird';
 import boardsApi from 'server/api/boards-api';
 import listsApi from 'server/api/lists-api';
 import cardsApi from 'server/api/cards-api';
 
 const createEntry = function(api, prop = 'title') {
     return function(num = 10) {
-        const promises = _.range(num).map(() => {
-            return api.create({[prop]: `${api.table} entry`});
+        return Promise.each(_.range(num), (item, i) => {
+            return api.create({[prop]: `${api.table} entry ${i + 1}`});
         });
-        return Promise.all(promises);
     };
 };
 
