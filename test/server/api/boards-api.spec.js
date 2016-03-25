@@ -3,21 +3,18 @@ import chaiAsPromised from 'chai-as-promised';
 import boardsApi from 'server/api/boards-api';
 import listsApi from 'server/api/lists-api';
 import cardsApi from 'server/api/cards-api';
-import fs from 'fs';
 import db from 'server/db';
+import { sql } from 'server/helpers';
+import { createBoards, createCards, createLists } from './helpers';
 
 chai.use(chaiAsPromised);
-
-const createBoardsSql = fs.readFileSync('server/db/tables/boards.sql', 'utf8');
-const createListsSql = fs.readFileSync('server/db/tables/lists.sql', 'utf8');
-const createCardsSql = fs.readFileSync('server/db/tables/cards.sql', 'utf8');
 
 describe('boards api', () => {
     beforeEach(() => {
         return db.query('DROP TABLE IF EXISTS boards, lists, cards')
-            .then(() => db.query(createCardsSql))
-            .then(() => db.query(createListsSql))
-            .then(() => db.query(createBoardsSql));
+            .then(() => db.query(sql('cards.sql')))
+            .then(() => db.query(sql('lists.sql')))
+            .then(() => db.query(sql('boards.sql')));
     });
 
     describe('addList', ()=> {
@@ -42,12 +39,7 @@ describe('boards api', () => {
 
     describe('removeList', () => {
         it('should remove list from the board', () => {
-            return boardsApi.create({title: 'test board'})
-            .then(() => boardsApi.create({title: 'test board 2'}))
-            .then(() => boardsApi.create({title: 'test board 3'}))
-            .then(() => listsApi.create({title: 'test list 1'}))
-            .then(() => listsApi.create({title: 'test list 2'}))
-            .then(() => listsApi.create({title: 'test list 3'}))
+            return Promise.all([createBoards()], [createLists()])
             .then(() => boardsApi.addList(2, 1))
             .then(() => boardsApi.addList(2, 2))
             .then(() => boardsApi.addList(2, 3))
@@ -63,42 +55,38 @@ describe('boards api', () => {
 
     describe('getFull', () => {
         it('should get full board by given id', () => {
-            return boardsApi.create({title: 'test board'})
-            .then(() => boardsApi.create({title: 'test board 2'}))
-            .then(() => boardsApi.create({title: 'test board 3'}))
-            .then(() => listsApi.create({title: 'test list 1'}))
-            .then(() => listsApi.create({title: 'test list 2'}))
-            .then(() => listsApi.create({title: 'test list 3'}))
-            .then(() => cardsApi.create({text: 'test card 1'}))
-            .then(() => cardsApi.create({text: 'test card 2'}))
-            .then(() => cardsApi.create({text: 'test card 3'}))
-            .then(() => boardsApi.addList(2, 2))
-            .then(() => boardsApi.addList(2, 3))
-            .then(() => listsApi.addCard(2, 2))
-            .then(() => listsApi.addCard(2, 3))
-            .then(() => boardsApi.getFull(2))
+            return Promise.all(
+                [createBoards()], [createLists()], [createCards()]
+            )
+            .then(() => db.query('select * from boards'))
+            .then(result => console.log(result))
+            .then(() => boardsApi.addList(7, 4))
+            .then(() => boardsApi.addList(7, 6))
+            .then(() => listsApi.addCard(4, 3))
+            .then(() => listsApi.addCard(4, 5))
+            .then(() => boardsApi.getFull(7))
             .then(fullBoard => {
                 const expected = {
-                    id: 2,
-                    title: 'test board 2',
+                    id: 7,
+                    title: 'boards entry',
                     lists: [
                         {
-                            id: 2,
-                            title: 'test list 2',
+                            id: 4,
+                            title: 'lists entry',
                             cards: [
                                 {
-                                    id: 2,
-                                    text: 'test card 2'
+                                    id: 3,
+                                    text: 'cards entry'
                                 },
                                 {
-                                    id: 3,
-                                    text: 'test card 3'
+                                    id: 5,
+                                    text: 'cards entry'
                                 }
                             ]
                         },
                         {
-                            id: 3,
-                            title: 'test list 3',
+                            id: 6,
+                            title: 'lists entry',
                             cards: null
                         }
                     ],

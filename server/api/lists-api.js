@@ -16,7 +16,7 @@ const listsApi = _.assign({}, baseApi, {
         });
     },
     addCard(listId, cardId) {
-        return cardsApi.getById(listId)
+        return cardsApi.getById(cardId)
         .catch(() => { throw new Error('card does not exist'); })
         .then(() => db.none('UPDATE lists SET cards = array_append(cards, $2) WHERE id = $1', [listId, cardId]));
     },
