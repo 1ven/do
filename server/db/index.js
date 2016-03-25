@@ -5,12 +5,12 @@ const sql = require('../helpers').sql;
 const pgp = require('pg-promise')({});
 const db = pgp(config.db);
 
-const boards = sql('boards.sql');
-const lists = sql('lists.sql');
-const cards = sql('cards.sql');
-
-db.query(boards);
-db.query(lists);
-db.query(cards);
+db.tx(() => {
+    return this.batch([
+        this.none(sql('boards.sql')),
+        this.none(sql('lists.sql')),
+        this.none(sql('cards.sql'))
+    ]);
+});
 
 module.exports = db;
