@@ -45,38 +45,38 @@ describe('cards routes', () => {
         });
     });
 
-    // it('/lists/remove should remove list itself and remove it id from board', (done) => {
-    //     const boardId = 5;
-    //     const listId = 3;
+    it('/cards/remove should remove card itself and remove it id from list', (done) => {
+        const listId = 7;
+        const cardId = 4;
 
-    //     Promise.all([createBoards(), createLists()])
-    //     .then(() => boardsApi.addList(boardId, listId))
-    //     .then(() => boardsApi.addList(boardId, 4))
-    //     .then(() => boardsApi.addList(boardId, 8))
-    //     .then(() => { 
-    //         request(app)
-    //         .post('/lists/remove')
-    //         .send({ boardId, listId })
-    //         .expect('Content-Type', /json/)
-    //         .expect(200)
-    //         .end((requestErr, res) => {
-    //             if (requestErr) { done(requestErr); }
+        Promise.all([createLists(), createCards()])
+        .then(() => listsApi.addCard(listId, cardId))
+        .then(() => listsApi.addCard(listId, 6))
+        .then(() => listsApi.addCard(listId, 9))
+        .then(() => { 
+            request(app)
+            .post('/cards/remove')
+            .send({ listId, cardId })
+            .expect('Content-Type', /json/)
+            .expect(200)
+            .end((err, res) => {
+                if (err) { done(err); }
 
-    //             assert.equal(res.body.success, true);
+                assert.equal(res.body.success, true);
 
-    //             boardsApi.getById(boardId)
-    //             .then(board => {
-    //                 assert.notInclude(board.lists, listId);
-    //                 assert.include(board.lists, 4);
-    //                 assert.include(board.lists, 8);
-    //             })
-    //             .then(() => {
-    //                 const promise = listsApi.getById(listId);
-    //                 return expect(promise).to.be.rejectedWith(/No data returned from the query/);
+                listsApi.getById(listId)
+                .then(list => {
+                    assert.notInclude(list.cards, listId);
+                    assert.include(list.cards, 6);
+                    assert.include(list.cards, 9);
+                })
+                .then(() => {
+                    const promise = cardsApi.getById(cardId);
+                    return expect(promise).to.be.rejectedWith(/No data returned from the query/);
 
-    //             })
-    //             .then(done, done);
-    //         });
-    //     });
-    // });
+                })
+                .then(done, done);
+            });
+        });
+    });
 });

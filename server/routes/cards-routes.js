@@ -12,5 +12,8 @@ module.exports = (post) => {
             .then(() => { return { cardId }; });
         });
     });
-    post('/cards/remove', body => {});
+    post('/cards/remove', body => {
+        return cardsApi.remove(body.cardId)
+        .then(() => listsApi.removeCard(body.listId, body.cardId));
+    });
 };
