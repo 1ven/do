@@ -3,19 +3,10 @@ import request from 'supertest';
 import boardsApi from 'server/api/boards-api';
 import listsApi from 'server/api/lists-api';
 import app from 'server/.';
-import fs from 'fs';
-import db from 'server/db';
-import { handleEndRequest } from '../helpers';
-
-const createBoardsSql = fs.readFileSync('server/db/tables/boards.sql', 'utf8');
-const createListsSql = fs.readFileSync('server/db/tables/lists.sql', 'utf8');
+import { handleEndRequest, recreateTables } from '../helpers';
 
 describe('lists routes', () => {
-    beforeEach(() => {
-        return db.query('DROP TABLE IF EXISTS boards, lists')
-            .then(() => db.query(createBoardsSql))
-            .then(() => db.query(createListsSql));
-    });
+    beforeEach(recreateTables);
 
     it('/lists/create should respond with json', (done) => {
         boardsApi.create({

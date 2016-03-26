@@ -2,22 +2,10 @@ import Promise from 'bluebird';
 import { assert, expect } from 'chai';
 import listsApi from 'server/api/lists-api';
 import cardsApi from 'server/api/cards-api';
-import { sql } from 'server/helpers';
-import db from 'server/db';
-import { createLists, createCards } from '../helpers';
+import { createLists, createCards, recreateTables } from '../helpers';
 
 describe('lists api', () => {
-    beforeEach(() => {
-        return db.query('DROP TABLE IF EXISTS lists, cards')
-        .then(() => db.tx(function() {
-            return this.batch(
-                [
-                    db.query(sql('cards.sql')),
-                    db.query(sql('lists.sql')),
-                ]
-            );
-        }));
-    });
+    beforeEach(recreateTables);
 
     describe('getFull', () => {
         it('should get full list by given id', () => {

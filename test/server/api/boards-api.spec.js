@@ -3,22 +3,10 @@ import boardsApi from 'server/api/boards-api';
 import listsApi from 'server/api/lists-api';
 import cardsApi from 'server/api/cards-api';
 import db from 'server/db';
-import { sql } from 'server/helpers';
-import { createBoards, createCards, createLists } from '../helpers';
+import { createBoards, createCards, createLists, recreateTables } from '../helpers';
 
 describe('boards api', () => {
-    beforeEach(() => {
-        return db.query('DROP TABLE IF EXISTS boards, lists, cards')
-        .then(() => db.tx(function() {
-            return this.batch(
-                [
-                    db.query(sql('cards.sql')),
-                    db.query(sql('lists.sql')),
-                    db.query(sql('boards.sql'))
-                ]
-            );
-        }));
-    });
+    beforeEach(recreateTables);
 
     describe('getFull', () => {
         it('should get full board by given id', () => {

@@ -2,16 +2,10 @@ import { assert } from 'chai';
 import request from 'supertest';
 import boardsApi from 'server/api/boards-api';
 import app from 'server/.';
-import fs from 'fs';
-import db from 'server/db';
-
-const createboardsSql = fs.readFileSync('server/db/tables/boards.sql', 'utf8');
+import { recreateTables } from '../helpers';
 
 describe('boards routes', ()=> {
-    beforeEach(() => {
-        return db.query('DROP TABLE IF EXISTS boards')
-            .then(() => db.query(createboardsSql));
-    });
+    beforeEach(recreateTables);
 
     it('/boards/create should respond with json', (done) => {
         request(app)
