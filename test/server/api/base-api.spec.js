@@ -125,7 +125,7 @@ describe('base api', () => {
     describe('addIdToArray', ()=> {
         it('should add id to array', () => {
             return Promise.all([createTestApi1Entries(), createTestApi2Entries()])
-            .then(() => testApi1.addIdToArray('items', 5, 3, testApi2.getById.bind(testApi2)))
+            .then(() => testApi1.addIdToArray('items', 5, 3, testApi2))
             .then(() => testApi1.getById(5))
             .then(entry => {
                 assert.include(entry.items, 3);
@@ -135,7 +135,7 @@ describe('base api', () => {
         it('should not add nonexistent item to array', () => {
             return testApi1.create({title: 'test entry'})
             .then(entry => {
-                const promise = testApi1.addIdToArray('items', 1, 5, testApi2.getById.bind(testApi2));
+                const promise = testApi1.addIdToArray('items', 1, 5, testApi2);
                 return expect(promise).to.be.rejectedWith(/entry does not exist/);
             });
         });
@@ -144,9 +144,9 @@ describe('base api', () => {
     describe('removeIdFromArray', () => {
         it('should remove id from array', () => {
             return Promise.all([createTestApi1Entries(), createTestApi2Entries()])
-            .then(() => testApi1.addIdToArray('items', 5, 3, testApi2.getById.bind(testApi2)))
-            .then(() => testApi1.addIdToArray('items', 5, 7, testApi2.getById.bind(testApi2)))
-            .then(() => testApi1.addIdToArray('items', 5, 9, testApi2.getById.bind(testApi2)))
+            .then(() => testApi1.addIdToArray('items', 5, 3, testApi2))
+            .then(() => testApi1.addIdToArray('items', 5, 7, testApi2))
+            .then(() => testApi1.addIdToArray('items', 5, 9, testApi2))
             .then(() => testApi1.removeIdFromArray('items', 5, 7))
             .then(() => testApi1.getById(5))
             .then(entry => {

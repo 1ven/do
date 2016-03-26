@@ -23,7 +23,7 @@ const boardsApi = _.assign({}, baseApi, {
         });
     },
     addList(boardId, listId) {
-        return this.addIdToArray('lists', boardId, listId, listsApi.getById.bind(listsApi));
+        return this.addIdToArray('lists', boardId, listId, listsApi);
     },
     removeList(boardId, listId) {
         return this.removeIdFromArray('lists', boardId, listId);

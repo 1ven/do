@@ -16,7 +16,7 @@ const listsApi = _.assign({}, baseApi, {
         });
     },
     addCard(listId, cardId) {
-        return this.addIdToArray('cards', listId, cardId, cardsApi.getById.bind(cardsApi));
+        return this.addIdToArray('cards', listId, cardId, cardsApi);
     },
     removeCard(listId, cardId) {
         return this.removeIdFromArray('cards', listId, cardId);
