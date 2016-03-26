@@ -11,7 +11,7 @@ module.exports = function(app) {
             }))
             .catch(err => res.json({
                 success: false,
-                err: err.message || err
+                error: err.message || err
             }));
         });
     };
