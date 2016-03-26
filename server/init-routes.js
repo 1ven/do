@@ -1,11 +1,15 @@
 const boardsRoutes = require('./routes/boards-routes');
 const listsRoutes = require('./routes/lists-routes');
 const cardsRoutes = require('./routes/cards-routes');
+const checkRequiredParams = require('./helpers').checkRequiredParams;
 
 module.exports = function(app) {
-    const post = function(url, handler, method) {
+    const post = function(url, handler, requiredParams, method) {
         app.post(url, (req, res) => {
-            handler(req.body)
+            const body = req.body;
+
+            checkRequiredParams(body, requiredParams)
+            .then(() => handler(body))
             .then(data => res.status(200).json({
                 success: true,
                 data: data

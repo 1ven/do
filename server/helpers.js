@@ -15,6 +15,10 @@ exports.sql = function(file) {
 };
 
 exports.checkRequiredParams = (givenParams, requiredParams) => {
+    if (_.isPlainObject(givenParams)) {
+        givenParams = _.keys(givenParams);
+    }
+
     const promises = _.map(requiredParams, param => {
         if (!_.includes(givenParams, param)) {
             return Promise.reject(
@@ -24,5 +28,6 @@ exports.checkRequiredParams = (givenParams, requiredParams) => {
 
         return Promise.resolve();
     });
+
     return Promise.all(promises);
 };

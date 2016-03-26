@@ -3,13 +3,22 @@
 const boardsApi = require('../api/boards-api');
 
 module.exports = (post)=> {
-    post('/boards/create', body => boardsApi.create({
-        title: body.title
-    }));
+    post('/boards/create', body => {
+        const title = body.title;
+        return boardsApi.create({ title });
+    }, ['title']);
 
-    post('/boards/remove', body => boardsApi.remove(body.id));
+    post('/boards/remove', body => {
+        const id = body.id;
+        return boardsApi.remove(id);
+    }, ['id']);
 
-    post('/boards/get-full', body => boardsApi.getFull(body.id));
+    post('/boards/get-full', body => {
+        const id = body.id;
+        return boardsApi.getFull(id);
+    }, ['id']);
 
-    post('/boards/get-all', body => boardsApi.getAll());
+    post('/boards/get-all', body => {
+        return boardsApi.getAll();
+    });
 };
