@@ -87,4 +87,20 @@ describe('base api', () => {
             });
         });
     });
+
+    describe('getSome', () => {
+        it('should return entries by given ids', () => {
+            return baseApi.create({title: 'test 1'})
+            .then(() => baseApi.create({title: 'test 2'}))
+            .then(() => baseApi.create({title: 'test 3'}))
+            .then(() => baseApi.getSome([2, 3]))
+            .then(entries => {
+                const expected = [
+                    { id: 2, title: 'test 2' },
+                    { id: 3, title: 'test 3' }
+                ];
+                assert.deepEqual(entries, expected);
+            });
+        });
+    });
 });

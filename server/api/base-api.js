@@ -26,5 +26,11 @@ module.exports = {
     },
     getAll() {
         return db.any(`SELECT * FROM ${this.table}`);
-    }
+    },
+    getSome(ids) {
+        const template = _.map(ids, (id, index) => `$${index + 1}`).join(',');
+        return db.query(`SELECT * FROM ${this.table} WHERE id IN (${template})`, ids);
+    },
+    addIdToArray(column, entryId, itemId, getItemId) {},
+    removeIdFromArray(column, entryId, itemId, getItemId) {}
 };
