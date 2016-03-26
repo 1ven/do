@@ -2,10 +2,12 @@
 
 const boardsApi = require('../api/boards-api');
 const listsApi = require('../api/lists-api');
+const checkRequiredParams = require('../helpers').checkRequiredParams;
 
 module.exports = (post) => {
     post('/lists/create', body => {
-        return listsApi.create({ title: body.title })
+        return checkRequiredParams(Object.keys(body), ['title', 'boardId']) 
+        .then(() => listsApi.create({ title: body.title }))
         .then(result => {
             const listId = result.id;
             return boardsApi.addList(body.boardId, listId)
