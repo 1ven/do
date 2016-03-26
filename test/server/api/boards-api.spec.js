@@ -1,56 +1,22 @@
 import chai, { assert, expect } from 'chai';
-import chaiAsPromised from 'chai-as-promised';
 import boardsApi from 'server/api/boards-api';
 import listsApi from 'server/api/lists-api';
 import cardsApi from 'server/api/cards-api';
 import db from 'server/db';
 import { sql } from 'server/helpers';
 import { createBoards, createCards, createLists } from './helpers';
-
-chai.use(chaiAsPromised);
-
 describe('boards api', () => {
     beforeEach(() => {
         return db.query('DROP TABLE IF EXISTS boards, lists, cards')
-            .then(() => db.query(sql('cards.sql')))
-            .then(() => db.query(sql('lists.sql')))
-            .then(() => db.query(sql('boards.sql')));
-    });
-
-    describe('addList', ()=> {
-        it('should add list on the board', () => {
-            return listsApi.create({title: 'test list'})
-            .then(() => boardsApi.create({title: 'test board'}))
-            .then(() => boardsApi.addList(1, 1))
-            .then(() => db.one('SELECT * FROM boards'))
-            .then(board => {
-                assert.include(board.lists, 1);
-            });
-        });
-
-        it('should not add nonexistent list on the board', () => {
-            return boardsApi.create({title: 'test board'})
-            .then(board => {
-                const promise = boardsApi.addList(1, 5);
-                return expect(promise).to.be.rejectedWith(/list does not exist/);
-            });
-        });
-    });
-
-    describe('removeList', () => {
-        it('should remove list from the board', () => {
-            return Promise.all([createBoards()], [createLists()])
-            .then(() => boardsApi.addList(2, 1))
-            .then(() => boardsApi.addList(2, 2))
-            .then(() => boardsApi.addList(2, 3))
-            .then(() => boardsApi.removeList(2, 2))
-            .then(() => boardsApi.getById(2))
-            .then(board => {
-                assert.include(board.lists, 1);
-                assert.notInclude(board.lists, 2);
-                assert.include(board.lists, 3);
-            });
-        });
+        .then(() => db.tx(function() {
+            return this.batch(
+                [
+                    db.query(sql('cards.sql')),
+                    db.query(sql('lists.sql')),
+                    db.query(sql('boards.sql'))
+                ]
+            );
+        }));
     });
 
     describe('getFull', () => {

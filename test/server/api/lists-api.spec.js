@@ -9,44 +9,14 @@ import { createLists, createCards } from './helpers';
 describe('lists api', () => {
     beforeEach(() => {
         return db.query('DROP TABLE IF EXISTS lists, cards')
-        .then(() => db.query(sql('lists.sql')))
-        .then(() => db.query(sql('cards.sql')));
-    });
-
-    describe('addCard', () => {
-        it('should add card on list', () => {
-            return Promise.all([createLists(), createCards()])
-            .then(() => listsApi.addCard(6, 4))
-            .then(() => listsApi.getById(6))
-            .then(list => {
-                assert.equal(list.cards.length, 1);
-                assert.include(list.cards, 4);
-            });
-        });
-
-        it('should throw error, when trying to add nonexistent card on the list', () => {
-            return listsApi.create({title: 'test list'})
-            .then(() => {
-                const promise = listsApi.addCard(1, 8);
-                return expect(promise).to.be.rejectedWith(/card does not exist/);
-            });
-        });
-    });
-
-    describe('removeCard', () => {
-        it('should removeCard from list', () => {
-            return Promise.all([createLists(), createCards()])
-            .then(() => listsApi.addCard(2, 4))
-            .then(() => listsApi.addCard(2, 7))
-            .then(() => listsApi.addCard(2, 9))
-            .then(() => listsApi.removeCard(2, 7))
-            .then(() => listsApi.getById(2))
-            .then(list => {
-                assert.include(list.cards, 4);
-                assert.notInclude(list.cards, 7);
-                assert.include(list.cards, 9);
-            });
-        });
+        .then(() => db.tx(function() {
+            return this.batch(
+                [
+                    db.query(sql('cards.sql')),
+                    db.query(sql('lists.sql')),
+                ]
+            );
+        }));
     });
 
     describe('getFull', () => {

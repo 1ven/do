@@ -31,6 +31,22 @@ module.exports = {
         const template = _.map(ids, (id, index) => `$${index + 1}`).join(',');
         return db.query(`SELECT * FROM ${this.table} WHERE id IN (${template})`, ids);
     },
-    addIdToArray(column, entryId, itemId, getItemId) {},
-    removeIdFromArray(column, entryId, itemId, getItemId) {}
+    // TODO: Throw error, when trying to add list on nonexistent board. And fix error on 28 line.
+    addIdToArray(column, entryId, itemId, getItemById) {
+        return getItemById(itemId)
+        .catch(() => {
+            throw new Error(`${this.table} entry does not exist`);
+        })
+        .then((item) => {
+            return db.none(`UPDATE ${this.table} SET ${column} = array_append(${column}, $2) WHERE id = $1`,
+            [entryId, itemId]);
+        });
+    },
+    removeIdFromArray(column, entryId, itemId) {
+        return this.getById(entryId)
+        .then(entry => {
+            const updatedItems = _.without(entry[column], itemId);
+            return db.none(`UPDATE ${this.table} SET ${column} = $2 WHERE id = $1`, [entryId, updatedItems]);
+        });
+    }
 };

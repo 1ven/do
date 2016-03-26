@@ -4,7 +4,7 @@ import boardsApi from 'server/api/boards-api';
 import listsApi from 'server/api/lists-api';
 import cardsApi from 'server/api/cards-api';
 
-const createEntry = function(api, prop = 'title') {
+const createEntries = function(api, prop = 'title') {
     return function(num = 10) {
         return Promise.each(_.range(num), (item, i) => {
             return api.create({[prop]: `${api.table} entry ${i + 1}`});
@@ -12,6 +12,7 @@ const createEntry = function(api, prop = 'title') {
     };
 };
 
-export const createBoards = createEntry(boardsApi);
-export const createLists = createEntry(listsApi);
-export const createCards = createEntry(cardsApi, 'text');
+export const createBoards = createEntries(boardsApi);
+export const createLists = createEntries(listsApi);
+export const createCards = createEntries(cardsApi, 'text');
+export { createEntries };
