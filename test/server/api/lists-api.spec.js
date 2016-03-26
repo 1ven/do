@@ -4,7 +4,7 @@ import listsApi from 'server/api/lists-api';
 import cardsApi from 'server/api/cards-api';
 import { sql } from 'server/helpers';
 import db from 'server/db';
-import { createLists, createCards } from './helpers';
+import { createLists, createCards } from '../helpers';
 
 describe('lists api', () => {
     beforeEach(() => {

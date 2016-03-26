@@ -4,7 +4,7 @@ import chaiAsPromised from 'chai-as-promised';
 import db from 'server/db';
 import baseApi from 'server/api/base-api';
 import _ from 'lodash';
-import { createEntries } from './helpers';
+import { createEntries } from '../helpers';
 
 chai.use(chaiAsPromised);
 

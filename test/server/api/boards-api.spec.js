@@ -4,7 +4,8 @@ import listsApi from 'server/api/lists-api';
 import cardsApi from 'server/api/cards-api';
 import db from 'server/db';
 import { sql } from 'server/helpers';
-import { createBoards, createCards, createLists } from './helpers';
+import { createBoards, createCards, createLists } from '../helpers';
+
 describe('boards api', () => {
     beforeEach(() => {
         return db.query('DROP TABLE IF EXISTS boards, lists, cards')
