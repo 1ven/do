@@ -37,7 +37,7 @@ module.exports = {
         .catch(() => {
             throw new Error(`${this.table} entry does not exist`);
         })
-        .then((item) => {
+        .then(() => {
             return db.none(`UPDATE ${this.table} SET ${column} = array_append(${column}, $2) WHERE id = $1`,
             [entryId, itemId]);
         });
