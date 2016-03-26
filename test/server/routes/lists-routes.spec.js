@@ -5,7 +5,7 @@ import request from 'supertest';
 import boardsApi from 'server/api/boards-api';
 import listsApi from 'server/api/lists-api';
 import app from 'server/.';
-import { createBoards, createLists, handleEndRequest, recreateTables } from '../helpers';
+import { createBoards, createLists, recreateTables } from '../helpers';
 
 chai.use(chaiAsPromised);
 
@@ -14,6 +14,7 @@ describe('lists routes', () => {
 
     it('/lists/create should create list and place it id on board', (done) => {
         const boardId = 6;
+        const listTitle = 'test list';
 
         createBoards()
         .then(() => {
@@ -21,7 +22,7 @@ describe('lists routes', () => {
             .post('/lists/create')
             .set('Accept', 'application/json')
             .send({
-                title: 'test',
+                title: listTitle,
                 boardId
             })
             .expect('Content-Type', /json/)
@@ -34,6 +35,7 @@ describe('lists routes', () => {
                 const listId = res.body.data.listId;
 
                 listsApi.getById(listId)
+                .then(list => assert.equal(list.title, listTitle))
                 .then(() => boardsApi.getById(boardId))
                 .then(board => {
                     assert.include(board.lists, listId);
