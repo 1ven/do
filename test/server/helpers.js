@@ -7,12 +7,6 @@ import listsApi from 'server/api/lists-api';
 import cardsApi from 'server/api/cards-api';
 import { sql } from 'server/helpers';
 
-export const handleEndRequest = (expectedBody, done, err, res) => {
-    const body = res.body;
-    assert.deepEqual(body, expectedBody);
-    done(err);
-};
-
 export const createEntries = (api, prop = 'title') => {
     return function(num = 10) {
         return Promise.each(_.range(num), (item, i) => {
