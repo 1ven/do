@@ -34,7 +34,8 @@ module.exports = {
     // TODO: Throw error, when trying to add list on nonexistent board. And fix error on 28 line.
     addIdToArray(column, entryId, itemId, getItemById) {
         return getItemById(itemId)
-        .catch(() => {
+        .catch((err) => {
+            console.log(err);
             throw new Error(`${this.table} entry does not exist`);
         })
         .then(() => {
