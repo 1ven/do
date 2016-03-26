@@ -107,7 +107,7 @@ describe('base api', () => {
     });
 
     describe('getSome', () => {
-        it('should return entries by given ids', () => {
+        it('should get entries by given ids', () => {
             return testApi1.create({title: 'test 1'})
             .then(() => testApi1.create({title: 'test 2'}))
             .then(() => testApi1.create({title: 'test 3'}))
