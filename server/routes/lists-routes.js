@@ -13,8 +13,8 @@ module.exports = (post) => {
         });
     });
 
-    // post('/lists/remove', body => {
-    //     return listsApi.remove(body.listId)
-    //     .then(() => boardsApi.removeList(body.boardId, body.listId));
-    // });
+    post('/lists/remove', body => {
+        return listsApi.remove(body.listId)
+        .then(() => boardsApi.removeList(body.boardId, body.listId));
+    });
 };
