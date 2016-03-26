@@ -1,5 +1,6 @@
 const boardsRoutes = require('./routes/boards-routes');
 const listsRoutes = require('./routes/lists-routes');
+const cardsRoutes = require('./routes/cards-routes');
 
 module.exports = function(app) {
     const post = function(url, handler, method) {
@@ -18,4 +19,5 @@ module.exports = function(app) {
 
     boardsRoutes(post);
     listsRoutes(post);
+    cardsRoutes(post);
 };
