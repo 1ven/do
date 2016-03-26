@@ -31,10 +31,9 @@ module.exports = {
         const template = _.map(ids, (id, index) => `$${index + 1}`).join(',');
         return db.query(`SELECT * FROM ${this.table} WHERE id IN (${template})`, ids);
     },
-    // TODO: Throw error, when trying to add list on nonexistent board. And fix error on 28 line.
     addIdToArray(column, entryId, itemId, itemApi) {
-        return itemApi.getById(itemId)
-        .catch(handleExistanceError.bind(null, itemApi))
+        return this.getById(entryId).catch(handleExistanceError.bind(null, this))
+        .then(() => itemApi.getById(itemId)).catch(handleExistanceError.bind(null, itemApi))
         .then(() => {
             return db.none(`UPDATE ${this.table} SET ${column} = array_append(${column}, $2) WHERE id = $1`,
             [entryId, itemId]);
@@ -48,7 +47,6 @@ module.exports = {
         });
     }
 };
-
 
 function handleExistanceError(api, err) {
     if (err.message.search(/No data returned/) !== -1) {

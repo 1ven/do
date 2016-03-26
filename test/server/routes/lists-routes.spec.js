@@ -25,7 +25,7 @@ describe('lists routes', () => {
             .post('/lists/create')
             .send({
                 title: "test",
-                boardId: 20
+                boardId: 1
             })
             .expect('Content-Type', /json/)
             .expect(200)

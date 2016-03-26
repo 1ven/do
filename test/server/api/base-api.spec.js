@@ -132,11 +132,19 @@ describe('base api', () => {
             });
         });
 
-        it('should not add nonexistent item to array', () => {
-            return testApi1.create({title: 'test entry'})
+        it('should throw error, when trying to add item on nonexistent entry', () => {
+            return createTestApi2Entries()
             .then(entry => {
-                const promise = testApi1.addIdToArray('items', 1, 5, testApi2);
-                return expect(promise).to.be.rejectedWith(/entry does not exist/);
+                const promise = testApi1.addIdToArray('items', 3, 5, testApi2);
+                return expect(promise).to.be.rejectedWith(/test_1 entry does not exist/);
+            });
+        });
+
+        it('should throw error, when trying to add nonexistent item to array', () => {
+            return createTestApi1Entries()
+            .then(entry => {
+                const promise = testApi1.addIdToArray('items', 3, 5, testApi2);
+                return expect(promise).to.be.rejectedWith(/test_2 entry does not exist/);
             });
         });
     });
