@@ -9,7 +9,7 @@ module.exports = (post)=> {
 
     post('/boards/remove', body => boardsApi.remove(body.id));
 
-    // post('/boards/get-full', body => boardsApi.getFull(body.id));
+    post('/boards/get-full', body => boardsApi.getFull(body.id));
 
     post('/boards/get-all', body => boardsApi.getAll());
 };

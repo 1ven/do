@@ -27,8 +27,8 @@ describe('lists routes', () => {
             })
             .expect('Content-Type', /json/)
             .expect(200)
-            .end((requestErr, res) => {
-                if (requestErr) { done(requestErr); }
+            .end((err, res) => {
+                if (err) { done(err); }
 
                 assert.equal(res.body.success, true);
 
@@ -59,8 +59,8 @@ describe('lists routes', () => {
             .send({ boardId, listId })
             .expect('Content-Type', /json/)
             .expect(200)
-            .end((requestErr, res) => {
-                if (requestErr) { done(requestErr); }
+            .end((err, res) => {
+                if (err) { done(err); }
 
                 assert.equal(res.body.success, true);
 

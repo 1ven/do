@@ -13,7 +13,6 @@ describe('boards api', () => {
             return Promise.all(
                 [createBoards()], [createLists()], [createCards()]
             )
-            .then(() => db.query('select * from boards'))
             .then(() => boardsApi.addList(7, 4))
             .then(() => boardsApi.addList(7, 6))
             .then(() => listsApi.addCard(4, 3))
