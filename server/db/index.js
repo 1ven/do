@@ -2,7 +2,10 @@
 
 const config = require('../config');
 const sql = require('../helpers').sql;
-const pgp = require('pg-promise')({});
+const bluebird = require('bluebird');
+const pgp = require('pg-promise')({
+    promiseLib: bluebird
+});
 const db = pgp(config.db);
 
 db.tx(function() {
