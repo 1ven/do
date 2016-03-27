@@ -6,10 +6,7 @@ const _ = require('lodash');
 exports.sql = function(file) {
     const p = path.resolve(__dirname, './db/tables/', file);
     const options = {
-        minify: true,
-        params: {
-            schema: 'public'
-        }
+        minify: true
     };
     return new QueryFile(p, options);
 };

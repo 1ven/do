@@ -4,7 +4,7 @@ const cardsRoutes = require('./routes/cards-routes');
 const checkRequiredParams = require('./helpers').checkRequiredParams;
 
 module.exports = function(app) {
-    const post = function(url, handler, requiredParams, method) {
+    const post = function(url, handler, requiredParams) {
         app.post(url, (req, res) => {
             const body = req.body;
 
