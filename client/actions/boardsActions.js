@@ -1,19 +1,20 @@
-import { BOARDS } from '../constants/actionTypes';
+import request from '../utils/request';
+import * as types from '../constants/actionTypes';
+import makeActionCreators from '../utils/makeActionCreators';
 
-export function create(title) {
-    return {
-        type: BOARDS.CREATE,
-        payload: {
-            title
-        }
-    };
-};
+const getActionCreators = makeActionCreators([
+    types.BOARDS_GET_START,
+    types.BOARDS_GET_SUCCESS,
+    types.BOARDS_GET_ERROR
+]);
 
-export function remove(id) {
-    return {
-        type: BOARDS.REMOVE,
-        payload: {
-            id
-        }
+export function getBoards() {
+    return function (dispatch) {
+        dispatch(getActionsCreators.start());
+        return request('/boards/get-all')
+        .then(boards =>
+            dispatch(getActionCreators.success({ boards }))
+         )
+        .catch(err => getActionCreators.error(err.message));
     };
 };

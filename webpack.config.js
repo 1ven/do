@@ -18,6 +18,10 @@ module.exports = {
                 loader: "babel-loader?cacheDirectory=true",
                 exclude: /node_modules/
             },
+            {
+                test: /\.json$/,
+                loader: "json-loader"
+            }
         ],
     },
     resolve: {
@@ -33,10 +37,11 @@ module.exports = {
         contentBase: __dirname + '/build'
     },
     plugins: [
-        new webpack.ProvidePlugin({
-            'React': 'react',
-            'ReactDOM': 'react-dom',
-            '_': 'lodash'
-        }),
-    ]
+        new webpack.IgnorePlugin(/cls-bluebird/)
+    ],
+    node: {
+        fs: 'empty',
+        net: 'empty',
+        tls: 'empty'
+    }
 };
