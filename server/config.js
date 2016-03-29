@@ -6,5 +6,6 @@ module.exports = {
         port: '5432',
         database: env !== 'test' ? 'ello' : 'ello_test',
         user: 'ivan'
-    }
+    },
+    bundle: env === 'production' ? '/public/bundle.js' : 'http://localhost:8080/bundle.js'
 };

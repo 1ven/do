@@ -2,6 +2,7 @@ const boardsRoutes = require('./routes/boards-routes');
 const listsRoutes = require('./routes/lists-routes');
 const cardsRoutes = require('./routes/cards-routes');
 const checkRequiredParams = require('./helpers').checkRequiredParams;
+const config = require('./config');
 
 module.exports = function(app) {
     const post = function(url, handler, requiredParams) {
@@ -24,4 +25,10 @@ module.exports = function(app) {
     boardsRoutes(post);
     listsRoutes(post);
     cardsRoutes(post);
+
+    app.get('/', function(req, res) {
+        res.render('index', {
+            bundle: config.bundle
+        });
+    });
 };
