@@ -42,18 +42,30 @@ describe('base api', () => {
             });
         });
 
-        it('should return id after insert', () => {
+        it('should return entry after insert', () => {
             return testApi1.create({title: 'test entry 1'})
             .then(result => {
-                assert.deepEqual(result, {id: 1});
+                assert.deepEqual(result, {
+                    id: 1,
+                    title: 'test entry 1',
+                    items: null
+                });
             })
             .then(() => testApi1.create({title: 'test entry 2'}))
             .then(result => {
-                assert.deepEqual(result, {id: 2});
+                assert.deepEqual(result, {
+                    id: 2,
+                    title: 'test entry 2',
+                    items: null
+                });
             })
             .then(() => testApi1.create({title: 'test entry 3'}))
             .then(result => {
-                assert.deepEqual(result, {id: 3});
+                assert.deepEqual(result, {
+                    id: 3,
+                    title: 'test entry 3',
+                    items: null
+                });
             });
         });
     });

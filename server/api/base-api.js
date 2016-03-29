@@ -11,7 +11,7 @@ module.exports = {
         const values = _.values(data);
         const template = _.map(values, (item, index) => `$${index + 1}`).join(',');
 
-        return db.one(`INSERT INTO ${this.table} (${columns}) values (${template}) returning id`, values);
+        return db.one(`INSERT INTO ${this.table} (${columns}) values (${template}) returning *`, values);
     },
     remove(id) {
         var id = parseInt(id);

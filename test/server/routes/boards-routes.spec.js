@@ -26,7 +26,9 @@ describe('boards routes', ()=> {
             const expectedBody = {
                 success: true,
                 data: {
-                    id: 1
+                    id: 1,
+                    title: boardTitle,
+                    lists: null
                 }
             };
 
