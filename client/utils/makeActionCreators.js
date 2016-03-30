@@ -1,16 +1,12 @@
+import _ from 'lodash';
+
 export default function (actionTypes) {
     return {
         start(payload) {
-            return {
-                type: actionTypes[0],
-                payload
-            };
+            return getAction(actionTypes[0], payload);
         },
         success(payload) {
-            return {
-                type: actionTypes[1],
-                payload
-            };
+            return getAction(actionTypes[1], payload);
         },
         error(message) {
             return {
@@ -20,4 +16,8 @@ export default function (actionTypes) {
             };
         }
     };
+};
+
+function getAction(type, payload) {
+    return _.assign({}, { type }, payload ? { payload } : {});
 };
