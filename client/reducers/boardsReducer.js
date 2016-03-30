@@ -17,7 +17,7 @@ export default function boards(state = initialState, action) {
         case types.BOARDS_GET_SUCCESS:
             return _.assign({}, state, {
                 loading: false,
-                items: payload.boards
+                items: payload
             });
         case types.BOARDS_GET_ERROR:
             return _.assign({}, state, {

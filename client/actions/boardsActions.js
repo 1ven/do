@@ -1,4 +1,4 @@
-import fetch from 'isomorphic-fetch'
+import fetch from '../utils/fetchWrapper';
 import * as types from '../constants/actionTypes';
 import makeActionCreators from '../utils/makeActionCreators';
 
@@ -12,10 +12,9 @@ export function getBoards() {
     return function (dispatch) {
         dispatch(getActionCreators.start());
         return fetch('/boards/get-all', { method: 'post' })
-            .then(result => result.json())
-            .then(json =>
-                dispatch(getActionCreators.success({ boards: json.data }))
-             )
+            .then(body =>
+                dispatch(getActionCreators.success(body.data))
+            )
             .catch(err =>
                 dispatch(getActionCreators.error(err.message))
             );
