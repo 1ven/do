@@ -4,6 +4,7 @@ const path = require('path');
 const express = require('express');
 const bodyParser = require('body-parser');
 const initRoutes = require('./init-routes');
+const config = require('./config');
 
 const app = express();
 
@@ -13,6 +14,6 @@ app.set('view engine', 'ejs');
 
 initRoutes(app);
 
-app.listen(3000, () => console.log('Listening on 3000...'));
+app.listen(config.port, () => console.log(`Listening on ${config.port}...`));
 
 module.exports = app;
