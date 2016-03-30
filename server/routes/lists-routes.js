@@ -9,12 +9,11 @@ module.exports = (post) => {
         const title = body.title;
 
         return listsApi.create({ title })
-        .then(result => {
-            const listId = result.id;
-
-            return boardsApi.addList(boardId, listId)
-            .then(() => ({ listId }));
-        });
+            .then(result => {
+                const listId = result.id;
+                return boardsApi.addList(boardId, listId)
+                    .then(() => ({ listId }));
+            });
     }, ['title', 'boardId']);
 
     post('/lists/remove', body => {
@@ -22,6 +21,6 @@ module.exports = (post) => {
         const listId = body.listId;
 
         return listsApi.remove(listId)
-        .then(() => boardsApi.removeList(boardId, listId));
+            .then(() => boardsApi.removeList(boardId, listId));
     }, ['boardId', 'listId']);
 };

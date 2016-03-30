@@ -36,12 +36,4 @@ module.exports = {
     devServer: {
         contentBase: __dirname + '/build'
     },
-    plugins: [
-        new webpack.IgnorePlugin(/cls-bluebird/)
-    ],
-    node: {
-        fs: 'empty',
-        net: 'empty',
-        tls: 'empty'
-    }
 };

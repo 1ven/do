@@ -17,9 +17,9 @@ module.exports = {
         var id = parseInt(id);
         // TODO: Implement this queries as one task.
         return db.one(`SELECT * FROM ${this.table} WHERE id = $1`, id)
-        .then(() => {
-            return db.none(`DELETE FROM ${this.table} WHERE id = $1`, id);
-        });
+            .then(() => {
+                return db.none(`DELETE FROM ${this.table} WHERE id = $1`, id);
+            });
     },
     getById(id) {
         return db.one(`SELECT * FROM ${this.table} WHERE id = $1`, id);
@@ -33,18 +33,19 @@ module.exports = {
     },
     addIdToArray(column, entryId, itemId, itemApi) {
         return this.getById(entryId).catch(handleExistanceError.bind(null, this))
-        .then(() => itemApi.getById(itemId)).catch(handleExistanceError.bind(null, itemApi))
-        .then(() => {
-            return db.none(`UPDATE ${this.table} SET ${column} = array_append(${column}, $2) WHERE id = $1`,
-            [entryId, itemId]);
-        });
+            .then(() => itemApi.getById(itemId))
+            .catch(handleExistanceError.bind(null, itemApi))
+            .then(() => {
+                return db.none(`UPDATE ${this.table} SET ${column} = array_append(${column}, $2) WHERE id = $1`,
+                [entryId, itemId]);
+            });
     },
     removeIdFromArray(column, entryId, itemId) {
         return this.getById(entryId)
-        .then(entry => {
-            const updatedItems = _.without(entry[column], itemId);
-            return db.none(`UPDATE ${this.table} SET ${column} = $2 WHERE id = $1`, [entryId, updatedItems]);
-        });
+            .then(entry => {
+                const updatedItems = _.without(entry[column], itemId);
+                return db.none(`UPDATE ${this.table} SET ${column} = $2 WHERE id = $1`, [entryId, updatedItems]);
+            });
     }
 };
 

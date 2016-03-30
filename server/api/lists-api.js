@@ -9,11 +9,11 @@ const listsApi = _.assign({}, baseApi, {
     table: 'lists',
     getFull(id) {
         return this.getById(id)
-        .then(list => {
-            if (!list.cards) { return list; }
-            return cardsApi.getSome(list.cards)
-            .then(cards => _.assign({}, list, { cards }));
-        });
+            .then(list => {
+                if (!list.cards) { return list; }
+                return cardsApi.getSome(list.cards)
+                    .then(cards => _.assign({}, list, { cards }));
+            });
     },
     addCard(listId, cardId) {
         return this.addIdToArray('cards', listId, cardId, cardsApi);

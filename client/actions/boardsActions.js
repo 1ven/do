@@ -10,11 +10,13 @@ const getActionCreators = makeActionCreators([
 
 export function getBoards() {
     return function (dispatch) {
-        dispatch(getActionsCreators.start());
+        dispatch(getActionCreators.start());
         return request('/boards/get-all')
         .then(boards =>
             dispatch(getActionCreators.success({ boards }))
          )
-        .catch(err => getActionCreators.error(err.message));
+        .catch(err =>
+            dispatch(getActionCreators.error(err.message))
+        );
     };
 };

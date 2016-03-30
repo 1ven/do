@@ -1,11 +1,15 @@
-import { createStore } from 'redux'
+import { createStore, applyMiddleware } from 'redux'
+import thunk from 'redux-thunk';
 import rootReducer from './reducers';
 import { getBoards } from './actions/boardsActions';
 
-const store = createStore(rootReducer);
+const store = createStore(
+    rootReducer,
+    applyMiddleware(thunk)
+);
 
 store.subscribe(() => {
-    console.log(store.getStore());
+    console.log(store.getState());
 });
 
 store.dispatch(getBoards());

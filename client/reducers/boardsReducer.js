@@ -1,5 +1,5 @@
 import _ from 'lodash';
-import { BOARDS } from '../constants/actionTypes';
+import * as types from '../constants/actionTypes';
 
 const initialState = {
     loading: false,
@@ -19,10 +19,10 @@ export default function boards(state = initialState, action) {
                 loading: false,
                 items: payload.boards
             });
-        // case BOARDS.REMOVE:
-        //     return _.filter(state, board => {
-        //         return board.id !== payload.id;
-        //     });
+        case types.BOARDS_GET_ERROR:
+            return _.assign({}, state, {
+                loading: false,
+            });
         default:
             return state;
     }

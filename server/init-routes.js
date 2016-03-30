@@ -10,15 +10,15 @@ module.exports = function(app) {
             const body = req.body;
 
             checkRequiredParams(body, requiredParams)
-            .then(() => handler(body))
-            .then(data => res.status(200).json({
-                success: true,
-                data: data
-            }))
-            .catch(err => res.json({
-                success: false,
-                error: err.message || err
-            }));
+                .then(() => handler(body))
+                .then(data => res.status(200).json({
+                    success: true,
+                    data: data
+                }))
+                .catch(err => res.json({
+                    success: false,
+                    error: err.message || err
+                }));
         });
     };
 

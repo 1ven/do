@@ -9,12 +9,12 @@ module.exports = (post) => {
         const listId = body.listId;
 
         return cardsApi.create({ text })
-        .then(result => {
-            const cardId = result.id;
+            .then(result => {
+                const cardId = result.id;
 
-            return listsApi.addCard(listId, cardId)
-            .then(() => ({ cardId }));
-        });
+                return listsApi.addCard(listId, cardId)
+                    .then(() => ({ cardId }));
+            });
     }, ['text', 'listId']);
 
     post('/cards/remove', body => {
@@ -22,6 +22,6 @@ module.exports = (post) => {
         const cardId = body.cardId;
 
         return cardsApi.remove(cardId)
-        .then(() => listsApi.removeCard(listId, cardId));
+            .then(() => listsApi.removeCard(listId, cardId));
     }, ['listId', 'cardId']);
 };
