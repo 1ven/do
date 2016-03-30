@@ -1,4 +1,4 @@
-import request from '../utils/request';
+import fetch from 'isomorphic-fetch'
 import * as types from '../constants/actionTypes';
 import makeActionCreators from '../utils/makeActionCreators';
 
@@ -11,12 +11,13 @@ const getActionCreators = makeActionCreators([
 export function getBoards() {
     return function (dispatch) {
         dispatch(getActionCreators.start());
-        return request('/boards/get-all')
-        .then(boards =>
-            dispatch(getActionCreators.success({ boards }))
-         )
-        .catch(err =>
-            dispatch(getActionCreators.error(err.message))
-        );
+        return fetch('/boards/get-all', { method: 'post' })
+            .then(result => result.json())
+            .then(json =>
+                dispatch(getActionCreators.success({ boards: json.data }))
+             )
+            .catch(err =>
+                dispatch(getActionCreators.error(err.message))
+            );
     };
 };
