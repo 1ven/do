@@ -2,7 +2,7 @@ import _ from 'lodash';
 
 export default function (actionTypes) {
     return {
-        start(payload) {
+        request(payload) {
             return getAction(actionTypes[0], payload);
         },
         success(payload) {

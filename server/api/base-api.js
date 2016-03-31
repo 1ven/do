@@ -32,7 +32,8 @@ module.exports = {
         return db.query(`SELECT * FROM ${this.table} WHERE id IN (${template})`, ids);
     },
     addIdToArray(column, entryId, itemId, itemApi) {
-        return this.getById(entryId).catch(handleExistanceError.bind(null, this))
+        return this.getById(entryId)
+            .catch(handleExistanceError.bind(null, this))
             .then(() => itemApi.getById(itemId))
             .catch(handleExistanceError.bind(null, itemApi))
             .then(() => {

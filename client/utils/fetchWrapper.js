@@ -5,10 +5,10 @@ export default function (url, options) {
 
     return fetch(hostname + url, options)
         .then(result => result.json())
-        .then(json => {
-            if (!json.success) {
-                throw new Error(json.error || 'Something went wrong');
+        .then(body => {
+            if (!body.success) {
+                throw new Error(body.error || 'Something went wrong');
             }
-            return json;
+            return body;
         });
 };

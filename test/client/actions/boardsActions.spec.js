@@ -20,7 +20,7 @@ describe('boardsActions', () => {
                 { id: 2, title: 'board 2', lists: null }
             ];
             const expectedActions = [
-                { type: types.BOARDS_GET_START },
+                { type: types.BOARDS_GET_REQUEST },
                 { type: types.BOARDS_GET_SUCCESS, payload: boards }
             ];
             const store = mockStore({ boards: [] });
@@ -37,7 +37,7 @@ describe('boardsActions', () => {
         it('should create BOARDS_GET_ERROR action when getting boards has been done with error', () => {
             const errorMessage = 'Test error message';
             const expectedActions = [
-                { type: types.BOARDS_GET_START },
+                { type: types.BOARDS_GET_REQUEST },
                 { type: types.BOARDS_GET_ERROR, payload: new Error(errorMessage), error: true }
             ];
             const store = mockStore({ boards: [] });

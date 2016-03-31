@@ -10,7 +10,7 @@ export default function boards(state = initialState, action) {
     const payload = action.payload;
 
     switch (action.type) {
-        case types.BOARDS_GET_START:
+        case types.BOARDS_GET_REQUEST:
             return _.assign({}, state, {
                 loading: true
             });
