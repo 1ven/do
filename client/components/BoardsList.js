@@ -3,10 +3,10 @@ import BoardTile from './BoardTile';
 
 const BoardsList = ({ boards, onBoardClick }) => (
     <div
-        className="c-boards">
+        className="c-boards-list">
         {boards.map((board, i) =>
             <div
-                className="c-boards__item"
+                className="c-boards-list__item"
                 key={i}
             >
                 <BoardTile

@@ -1,16 +1,23 @@
 import 'babel-polyfill';
+import './stylesheet/common.scss';
+
+import React from 'react';
+import { render } from 'react-dom';
 import { createStore, applyMiddleware } from 'redux'
+import { Provider } from 'react-redux'
 import thunk from 'redux-thunk';
 import rootReducer from './reducers';
-import { getBoards } from './actions/boardsActions';
+import App from './components/App';
+// import { getBoards } from './actions/boardsActions';
 
 const store = createStore(
     rootReducer,
     applyMiddleware(thunk)
 );
 
-store.subscribe(() => {
-    console.log(store.getState());
-});
-
-store.dispatch(getBoards());
+render(
+    <Provider store={store}>
+        <App />
+    </Provider>,
+    document.getElementById('root')
+);

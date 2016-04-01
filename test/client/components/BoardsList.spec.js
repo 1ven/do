@@ -3,7 +3,6 @@ import sinon from 'sinon';
 import { shallow } from 'enzyme';
 import { assert } from 'chai';
 import BoardsList from 'client/components/BoardsList';
-import BoardTile from 'client/components/BoardTile';
 
 const setup = () => {
     const props = {
@@ -16,7 +15,7 @@ const setup = () => {
     const component = shallow(<BoardsList {...props} />);
 
     return {
-        boardTiles: component.find(BoardTile),
+        boardTiles: component.find('BoardTile'),
         component,
         props
     };
@@ -29,7 +28,7 @@ describe('<BoardsList />', () => {
         assert.equal(boardTiles.length, 2);
     });
 
-    it('should pass board data object to <BoardTile />', () => {
+    it('should pass board object to <BoardTile /> data prop', () => {
         const { props, boardTiles } = setup();
 
         props.boards.forEach((board, i) => {
@@ -37,10 +36,10 @@ describe('<BoardsList />', () => {
         });
     });
 
-    it('should pass onBoardClick callback to <BoardTile />', () => {
+    it('should pass onBoardClick callback to <BoardTile /> onClick prop', () => {
         const { props, boardTiles } = setup();
 
-        boardTiles.forEach(node => node.simulate('click'));
+        boardTiles.forEach(tile => tile.props().onClick());
         assert.equal(props.onBoardClick.callCount, boardTiles.length);
     });
 });
