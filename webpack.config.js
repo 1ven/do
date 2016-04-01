@@ -21,8 +21,12 @@ module.exports = {
             {
                 test: /\.json$/,
                 loader: "json-loader"
+            },
+            {
+                test: /\.scss$/,
+                loader: "style-loader!css-loader!sass-loader!import-glob-loader"
             }
-        ],
+        ]
     },
     resolve: {
         extensions: ['', '.react.js', '.js', '.jsx'],
