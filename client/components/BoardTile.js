@@ -3,7 +3,7 @@ import React, { PropTypes } from 'react';
 const BoardTile = ({ data, onClick }) => (
     <a
         className="c-board-tile"
-        onClick={onClick}
+        onClick={() => onClick(data.id)}
     >
         {data.title}
     </a>

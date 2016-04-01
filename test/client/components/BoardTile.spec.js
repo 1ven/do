@@ -7,14 +7,18 @@ import BoardTile from 'client/components/BoardTile';
 const setup = () => {
     const props = {
         data: {
-            id: 1,
-            title: 'board 1'
+            id: 5,
+            title: 'board 5'
         },
         onClick: sinon.spy()
     };
     const component = shallow(<BoardTile {...props} />);
 
-    return { component, props };
+    return {
+        boardTileNode: component.find('a.c-board-tile'),
+        component,
+        props
+    };
 };
 
 describe('<BoardTile />', () => {
@@ -24,10 +28,17 @@ describe('<BoardTile />', () => {
         assert(component.children().text(), props.data.title);
     });
 
-    it('should simulate click event', () => {
-        const { component, props } = setup();
+    it('should handle onClick event', () => {
+        const { props, boardTileNode } = setup();
 
-        component.find('a.c-board-tile').simulate('click');
-        assert.equal(props.onClick.called, 1);
+        boardTileNode.simulate('click');
+        assert.equal(props.onClick.callCount, 1);
+    });
+
+    it('should pass id to onClick function', () => {
+        const { props, boardTileNode } = setup();
+
+        boardTileNode.simulate('click');
+        assert(props.onClick.calledWith(props.data.id), 'onClick called without id');
     });
 });
