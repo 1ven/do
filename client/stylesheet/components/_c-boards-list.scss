@@ -1,0 +1,10 @@
+.c-boards-list {
+    display: flex;
+    flex-wrap: wrap;
+    margin: -7px;
+    &__item {
+        width: 25%;
+        height: 100px;
+        padding: 7px;
+    }
+}
