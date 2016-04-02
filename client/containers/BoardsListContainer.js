@@ -1,6 +1,6 @@
 import React, { PropTypes, Component } from 'react';
 import { connect } from 'react-redux'
-import { getBoards } from '../actions/boardsActions';
+import { getBoards, createBoard } from '../actions/boardsActions';
 import BoardsList from '../components/BoardsList.js';
 
 class BoardsListContainer extends Component {
@@ -20,7 +20,8 @@ class BoardsListContainer extends Component {
     }
 
     handleBoardCreatorSubmit(title) {
-        console.log(title);
+        const { dispatch } = this.props;
+        dispatch(createBoard(title));
     }
 
     render() {
