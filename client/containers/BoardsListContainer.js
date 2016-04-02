@@ -7,6 +7,7 @@ class BoardsListContainer extends Component {
     constructor(props) {
         super(props);
         this.handleBoardClick = this.handleBoardClick.bind(this);
+        this.handleBoardCreatorSubmit = this.handleBoardCreatorSubmit.bind(this);
     }
 
     componentDidMount() {
@@ -18,12 +19,17 @@ class BoardsListContainer extends Component {
         console.log(id);
     }
 
+    handleBoardCreatorSubmit(title) {
+        console.log(title);
+    }
+
     render() {
         const { boards } = this.props;
         return (
             <BoardsList
                 boards={boards}
                 onBoardClick={this.handleBoardClick}
+                onBoardCreatorSubmit={this.handleBoardCreatorSubmit}
             />
         );
     }
