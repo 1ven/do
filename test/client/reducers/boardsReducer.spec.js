@@ -16,9 +16,9 @@ describe('boards reducer', () => {
         const action = {
             type: types.BOARDS_GET_REQUEST
         };
-        const state = { items: [], loading: false };
+        const prevState = { items: [], loading: false };
+        const nextState = boardsReducer(prevState, action);
         const expectedState = { items: [], loading: true };
-        const nextState = boardsReducer(state, action);
 
         assert.deepEqual(nextState, expectedState);
     });
@@ -32,9 +32,9 @@ describe('boards reducer', () => {
             type: types.BOARDS_GET_SUCCESS,
             payload: boards
         };
-        const state = { items: [], loading: true };
+        const prevState = { items: [], loading: true };
+        const nextState = boardsReducer(prevState, action);
         const expectedState = { items: boards, loading: false };
-        const nextState = boardsReducer(state, action);
 
         assert.deepEqual(nextState, expectedState);
     });
@@ -45,9 +45,25 @@ describe('boards reducer', () => {
             payload: new Error('Test error'),
             error: true
         };
-        const state = { items: [], loading: true };
+        const prevState = { items: [], loading: true };
+        const nextState = boardsReducer(prevState, action);
         const expectedState = { items: [], loading: false };
-        const nextState = boardsReducer(state, action);
+
+        assert.deepEqual(nextState, expectedState);
+    });
+
+    it('should handle BOARDS_CREATE_SUCCESS', () => {
+        const board = {
+            id: 5,
+            title: 'test board'
+        };
+        const action = {
+            type: types.BOARDS_CREATE_SUCCESS,
+            payload: board
+        };
+        const prevState = { items: [], loading: false };
+        const nextState = boardsReducer(prevState, action);
+        const expectedState = { items: [{ id: 5, title: 'test board' }], loading: false };
 
         assert.deepEqual(nextState, expectedState);
     });

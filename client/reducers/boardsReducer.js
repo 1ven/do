@@ -23,6 +23,10 @@ export default function boards(state = initialState, action) {
             return _.assign({}, state, {
                 loading: false,
             });
+        case types.BOARDS_CREATE_SUCCESS:
+            return _.assign({}, state, {
+                items: [...state.items, payload]
+            });
         default:
             return state;
     }
