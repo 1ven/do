@@ -10,12 +10,14 @@ const setup = () => {
             { id: 1, title: 'board 1' },
             { id: 2, title: 'board 2' }
         ],
-        onBoardClick: sinon.spy()
+        onBoardClick: sinon.spy(),
+        onBoardCreatorSubmit: sinon.spy()
     };
     const component = shallow(<BoardsList {...props} />);
 
     return {
         boardTiles: component.find('BoardTile'),
+        boardCreator: component.find('BoardCreator'),
         component,
         props
     };
@@ -41,5 +43,12 @@ describe('<BoardsList />', () => {
 
         boardTiles.forEach(tile => tile.props().onClick());
         assert.equal(props.onBoardClick.callCount, boardTiles.length);
+    });
+
+    it('should pass onBoardCreatorSubmit callback to <BoardCreator /> onSubmit prop', () => {
+        const { props, boardCreator } = setup();
+
+        boardCreator.props().onSubmit();
+        assert.equal(props.onBoardCreatorSubmit.callCount, 1);
     });
 });
