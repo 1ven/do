@@ -12,7 +12,7 @@ describe('boards reducer', () => {
         assert.deepEqual(nextState, expectedState);
     });
 
-    it('should handle BOARDS_GET_REQUEST', () => {
+    it('should handle BOARDS_GET_REQUEST action', () => {
         const action = {
             type: types.BOARDS_GET_REQUEST
         };
@@ -23,7 +23,7 @@ describe('boards reducer', () => {
         assert.deepEqual(nextState, expectedState);
     });
 
-    it('should handle BOARDS_GET_SUCCESS', () => {
+    it('should handle BOARDS_GET_SUCCESS action', () => {
         const boards = [
             { id: 1, title: 'board 1' },
             { id: 2, title: 'board 2' }
@@ -39,7 +39,7 @@ describe('boards reducer', () => {
         assert.deepEqual(nextState, expectedState);
     });
 
-    it('should handle BOARDS_GET_ERROR', () => {
+    it('should handle BOARDS_GET_ERROR action', () => {
         const action = {
             type: types.BOARDS_GET_ERROR,
             payload: new Error('Test error'),
@@ -52,7 +52,7 @@ describe('boards reducer', () => {
         assert.deepEqual(nextState, expectedState);
     });
 
-    it('should handle BOARDS_CREATE_SUCCESS', () => {
+    it('should handle BOARDS_CREATE_SUCCESS action', () => {
         const board = {
             id: 5,
             title: 'test board'
