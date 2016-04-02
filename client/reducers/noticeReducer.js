@@ -4,7 +4,8 @@ import * as types from '../constants/actionTypes';
 export default function notice(state = null, action) {
     const payload = action.payload;
     const defaults = {
-        message: ''
+        message: '',
+        type: 'info'
     };
 
     switch (action.type) {
