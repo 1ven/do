@@ -14,4 +14,7 @@ client-production:
 	NODE_ENV=production webpack -p
 
 tests:
+	NODE_PATH=. NODE_ENV=test mocha --compilers js:babel-register --recursive -R min
+
+tests-full:
 	NODE_PATH=. NODE_ENV=test mocha --compilers js:babel-register --recursive

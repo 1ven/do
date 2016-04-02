@@ -15,7 +15,7 @@ const setup = () => {
     const component = shallow(<BoardTile {...props} />);
 
     return {
-        boardTileNode: component.find('a.c-board-tile'),
+        boardTileLink: component.find('a.c-board-tile'),
         component,
         props
     };
@@ -29,16 +29,16 @@ describe('<BoardTile />', () => {
     });
 
     it('should handle onClick event', () => {
-        const { props, boardTileNode } = setup();
+        const { props, boardTileLink } = setup();
 
-        boardTileNode.simulate('click');
+        boardTileLink.simulate('click');
         assert.equal(props.onClick.callCount, 1);
     });
 
     it('should pass id to onClick function', () => {
-        const { props, boardTileNode } = setup();
+        const { props, boardTileLink } = setup();
 
-        boardTileNode.simulate('click');
+        boardTileLink.simulate('click');
         assert(props.onClick.calledWith(props.data.id), 'onClick called without id');
     });
 });
