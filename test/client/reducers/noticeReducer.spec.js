@@ -8,16 +8,14 @@ describe('notice reducer', () => {
         assert.deepEqual(nextState, null);
     });
 
-    it('should handle NOTICE_SHOW action with info type by default', () => {
-        const message = 'Test message';
+    it('should handle NOTICE_SHOW action', () => {
+        const payload = { type: 'info', message: 'Test message' };
         const action = {
             type: types.NOTICE_SHOW,
-            payload: {
-                message
-            }
+            payload 
         };
         const nextState = noticeReducer(null, action);
-        assert.deepEqual(nextState, { type: 'info',  message });
+        assert.deepEqual(nextState, payload);
     });
 
     it('should handle NOTICE_HIDE action', () => {
