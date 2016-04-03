@@ -1,6 +1,7 @@
 import fetch from '../utils/fetchWrapper';
 import * as types from '../constants/actionTypes';
 import makeActionCreators from '../utils/makeActionCreators';
+import { showError } from './noticeActions';
 
 const getActionCreators = makeActionCreators([
     types.BOARDS_GET_REQUEST,
@@ -15,9 +16,10 @@ export function getBoards() {
             .then(body =>
                 dispatch(getActionCreators.success(body.data))
             )
-            .catch(err =>
+            .catch(err => {
+                dispatch(showError(err.message));
                 dispatch(getActionCreators.error(err.message))
-            );
+            });
     };
 };
 
@@ -34,8 +36,9 @@ export function createBoard(title) {
             .then(body =>
                 dispatch(createActionCreators.success(body.data))
             )
-            .catch(err =>
+            .catch(err => {
+                dispatch(showError(err.message));
                 dispatch(createActionCreators.error(err.message))
-            );
+            });
     };
 };
