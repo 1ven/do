@@ -20,10 +20,19 @@ class BoardCreator extends Component {
         if (!inputValue.trim()) { return; }
 
         onSubmit(inputValue);
+        this.clearInput();
+    }
+
+    clearInput() {
+        this.setState({
+            inputValue: ''
+        });
     }
 
     handleInputChange(e) {
-        this.setState({ inputValue: e.target.value });
+        this.setState({
+            inputValue: e.target.value
+        });
     }
 
     render() {

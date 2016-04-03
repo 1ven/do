@@ -47,4 +47,13 @@ describe('<BoardCreator />', () => {
 
         assert(props.onSubmit.calledWith(title), `onSubmit is not called with "${title}"`);
     });
+
+    it('should clear input after submit', () => {
+        const { boardCreatorForm, input, component, preventDefault } = setup();
+
+        input.simulate('change', { target: { value: 'test' } });
+        boardCreatorForm.simulate('submit', { preventDefault });
+
+        assert.equal(component.state().inputValue, '');
+    });
 });
