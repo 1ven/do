@@ -36,11 +36,12 @@ describe('boardsActions', () => {
                 });
         });
 
-        it('should dispatch BOARDS_GET_ERROR action when getting boards has been done with error', () => {
+        it('should dispatch BOARDS_GET_ERROR and NOTICE_SHOW actions when getting boards has been done with error', () => {
             const errorMessage = 'Test error message';
             const expectedActions = [
                 { type: types.BOARDS_GET_REQUEST },
-                { type: types.BOARDS_GET_ERROR, payload: new Error(errorMessage), error: true }
+                { type: types.NOTICE_SHOW, payload: { message: errorMessage, type: 'error' } },
+                { type: types.BOARDS_GET_ERROR, payload: new Error(errorMessage), error: true },
             ];
             const store = mockStore({ boards: [] });
 
