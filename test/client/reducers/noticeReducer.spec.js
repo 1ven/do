@@ -29,4 +29,16 @@ describe('notice reducer', () => {
         const nextState = noticeReducer(prevState, action);
         assert.deepEqual(nextState, null);
     });
+
+    it('should handle all actions with "payload.error"', () => {
+        const message = 'Something gone bad';
+        const action = {
+            type: 'SOME_ACTION',
+            payload: {
+                error: message
+            }
+        };
+        const nextState = noticeReducer(null, action);
+        assert.deepEqual(nextState, { type: 'error', message });
+    });
 });
