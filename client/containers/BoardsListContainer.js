@@ -42,8 +42,9 @@ BoardsListContainer.propTypes = {
 };
 
 const mapStateToProps = (state) => {
+    const { boards } = state.entities;
     return {
-        boards: state.boards.items
+        boards: state.boards.ids.map(id => boards[id])
     };
 };
 

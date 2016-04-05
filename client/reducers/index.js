@@ -4,7 +4,7 @@ import noticeReducer from './noticeReducer';
 import entitiesReducer from './entitiesReducer';
 
 const rootReducer = combineReducers({
-    // boards: boardsReducer,
+    boards: boardsReducer,
     notice: noticeReducer,
     entities: entitiesReducer
 });

@@ -1,31 +1,21 @@
-import _ from 'lodash';
+import merge from 'lodash/merge';
 import * as types from '../constants/actionTypes';
 
 const initialState = {
-    loading: false,
-    items: []
+    ids: []
 };
 
-export default function boards(state = initialState, action) {
-    const payload = action.payload;
+export default function boards(state = initialState,  action) {
+    const { payload } = action;
 
     switch (action.type) {
-        case types.BOARDS_GET_REQUEST:
-            return _.assign({}, state, {
-                loading: true
-            });
         case types.BOARDS_GET_SUCCESS:
-            return _.assign({}, state, {
-                loading: false,
-                items: payload
-            });
-        case types.BOARDS_GET_ERROR:
-            return _.assign({}, state, {
-                loading: false,
+            return merge({}, state, {
+                ids: payload.result
             });
         case types.BOARDS_CREATE_SUCCESS:
-            return _.assign({}, state, {
-                items: [...state.items, payload]
+            return merge({}, state, {
+                ids: [...state.ids, payload.result]
             });
         default:
             return state;
