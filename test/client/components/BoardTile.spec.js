@@ -4,7 +4,7 @@ import { shallow } from 'enzyme';
 import { assert } from 'chai';
 import BoardTile from 'client/components/BoardTile';
 
-const setup = () => {
+function setup() {
     const props = {
         data: {
             id: 5,

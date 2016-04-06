@@ -39,12 +39,18 @@ function mapStateToProps(state, ownProps) {
     const board = boards[id];
 
     let listsArray = [];
+    let boardTitle;
+
+    if (boards && !isEmpty(boards[id])) {
+        boardTitle = boards[id].title;
+    }
 
     if (!isEmpty(lists) && !isEmpty(boards) && board && board.lists) {
         listsArray = map(board.lists, id => lists[id]);
     }
 
     return {
+        title: boardTitle,
         lists: listsArray,
         id
     };
