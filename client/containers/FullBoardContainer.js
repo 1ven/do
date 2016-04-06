@@ -10,7 +10,6 @@ class FullBoardContainer extends Component {
     }
 
     componentWillMount() {
-        console.log('cwm')
         this.loadData();
     }
 

@@ -6,17 +6,12 @@ import BoardsList from '../components/BoardsList.js';
 class BoardsListContainer extends Component {
     constructor(props) {
         super(props);
-        this.handleBoardClick = this.handleBoardClick.bind(this);
         this.handleBoardCreatorSubmit = this.handleBoardCreatorSubmit.bind(this);
     }
 
     componentWillMount() {
         const { dispatch } = this.props;
         dispatch(getBoards());
-    }
-
-    handleBoardClick(id) {
-        console.log(id);
     }
 
     handleBoardCreatorSubmit(title) {
@@ -29,7 +24,6 @@ class BoardsListContainer extends Component {
         return (
             <BoardsList
                 boards={boards}
-                onBoardClick={this.handleBoardClick}
                 onBoardCreatorSubmit={this.handleBoardCreatorSubmit}
             />
         );

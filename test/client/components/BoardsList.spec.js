@@ -10,7 +10,6 @@ const setup = () => {
             { id: 1, title: 'board 1' },
             { id: 2, title: 'board 2' }
         ],
-        onBoardClick: sinon.spy(),
         onBoardCreatorSubmit: sinon.spy()
     };
     const component = shallow(<BoardsList {...props} />);
@@ -36,13 +35,6 @@ describe('<BoardsList />', () => {
         props.boards.forEach((board, i) => {
             assert.deepEqual(boardTiles.at(i).props().data, board);
         });
-    });
-
-    it('should pass onBoardClick callback to <BoardTile /> onClick prop', () => {
-        const { props, boardTiles } = setup();
-
-        boardTiles.forEach(tile => tile.props().onClick());
-        assert.equal(props.onBoardClick.callCount, boardTiles.length);
     });
 
     it('should pass onBoardCreatorSubmit callback to <BoardCreator /> onSubmit prop', () => {

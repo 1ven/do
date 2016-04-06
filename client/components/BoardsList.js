@@ -2,7 +2,7 @@ import React, { PropTypes } from 'react';
 import BoardTile from './BoardTile';
 import BoardCreator from './BoardCreator';
 
-const BoardsList = ({ boards, onBoardClick, onBoardCreatorSubmit }) => (
+const BoardsList = ({ boards, onBoardCreatorSubmit }) => (
     <div className="b-container">
         <div className="c-boards-list">
             {boards.map((board, i) =>
@@ -11,7 +11,6 @@ const BoardsList = ({ boards, onBoardClick, onBoardCreatorSubmit }) => (
                     key={i}
                 >
                     <BoardTile
-                        onClick={onBoardClick}
                         data={board}
                     />
                 </div>
@@ -32,7 +31,6 @@ BoardsList.propTypes = {
         id: PropTypes.number.isRequired,
         title: PropTypes.string.isRequired
     }).isRequired).isRequired,
-    onBoardClick: PropTypes.func.isRequired,
     onBoardCreatorSubmit: PropTypes.func.isRequired
 };
 

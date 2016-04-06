@@ -10,12 +10,11 @@ const setup = () => {
             id: 5,
             title: 'board 5'
         },
-        onClick: sinon.spy()
     };
     const component = shallow(<BoardTile {...props} />);
 
     return {
-        boardTileLink: component.find('a.c-board-tile'),
+        boardTileLink: component.find('.c-board-tile'),
         component,
         props
     };
@@ -26,19 +25,5 @@ describe('<BoardTile />', () => {
         const { component, props } = setup();
 
         assert(component.children().text(), props.data.title);
-    });
-
-    it('should handle onClick event', () => {
-        const { props, boardTileLink } = setup();
-
-        boardTileLink.simulate('click');
-        assert.equal(props.onClick.callCount, 1);
-    });
-
-    it('should pass id to onClick function', () => {
-        const { props, boardTileLink } = setup();
-
-        boardTileLink.simulate('click');
-        assert(props.onClick.calledWith(props.data.id), 'onClick called without id');
     });
 });
