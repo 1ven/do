@@ -14,9 +14,9 @@ List.propTypes = {
     id: PropTypes.number.isRequired,
     title: PropTypes.string.isRequired,
     cards: PropTypes.arrayOf(PropTypes.shape({
-        id: PropTypes.number.isRequired,
-        text: PropTypes.string.isRequired
-    }).isRequired).isRequired
+        id: PropTypes.number,
+        text: PropTypes.string
+    }))
 };
 
 export default List;

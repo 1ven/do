@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import map from 'lodash/map';
 import isEmpty from 'lodash/isEmpty';
 import { getFullBoard } from '../actions/fullBoardActions';
+import FullBoard from '../components/FullBoard';
 
 class FullBoardContainer extends Component {
     constructor(props) {
@@ -24,34 +25,37 @@ class FullBoardContainer extends Component {
         dispatch(getFullBoard(id));
     }
 
-    componentDidUpdate() {
-        console.log(this.props.lists);
-    }
-
     render() {
-        return <div/>;
+        const { id, title, fullLists } = this.props;
+        return (
+            <FullBoard
+                id={id}
+                title={title}
+                lists={fullLists}
+            />
+        );
     }
 };
 
 function mapStateToProps(state, ownProps) {
     const { boards, lists } = state.entities;
-    const { id } = ownProps.params;
+    const id = parseInt(ownProps.params.id);
     const board = boards[id];
 
-    let listsArray = [];
-    let boardTitle;
+    let fullLists = [];
+    let boardTitle = '';
 
     if (boards && !isEmpty(boards[id])) {
         boardTitle = boards[id].title;
     }
 
     if (!isEmpty(lists) && !isEmpty(boards) && board && board.lists) {
-        listsArray = map(board.lists, id => lists[id]);
+        fullLists = map(board.lists, id => lists[id]);
     }
 
     return {
         title: boardTitle,
-        lists: listsArray,
+        fullLists,
         id
     };
 };

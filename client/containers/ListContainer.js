@@ -10,12 +10,12 @@ class ListContainer extends Component {
     }
 
     render() {
-        const { id, title, cards } = this.props;
+        const { id, title, fullCards } = this.props;
         return (
             <List
                 id={id}
                 title={title}
-                cards={cards}
+                cards={fullCards}
             />
         );
     }
@@ -25,14 +25,14 @@ function mapStateToProps(state, ownProps) {
     const { cards } = state.entities;
     const cardsIds = ownProps.cards;
 
-    let cardsArray = [];
+    let fullCards = [];
 
     if (!isEmpty(cards) && !isEmpty(cardsIds)) {
-        cardsArray = map(cardsIds, id => cards[id]);
+        fullCards = map(cardsIds, id => cards[id]);
     };
 
     return {
-        cards: cardsArray
+        fullCards
     };
 }
 
@@ -41,7 +41,11 @@ ListContainer.propTypes = {
     title: PropTypes.string.isRequired,
     cards: PropTypes.arrayOf(
         PropTypes.number.isRequired
-    ).isRequired
+    ),
+    fullCards: PropTypes.arrayOf(PropTypes.shape({
+        id: PropTypes.number,
+        text: PropTypes.string
+    })).isRequired
 };
 
 export default connect(mapStateToProps)(ListContainer);
