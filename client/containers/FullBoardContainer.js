@@ -10,6 +10,7 @@ class FullBoardContainer extends Component {
     }
 
     componentWillMount() {
+        console.log('cwm')
         this.loadData();
     }
 
@@ -29,7 +30,7 @@ class FullBoardContainer extends Component {
     }
 
     render() {
-        return null;
+        return <div/>;
     }
 };
 

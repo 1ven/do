@@ -26,7 +26,7 @@ module.exports = function(app) {
     listsRoutes(post);
     cardsRoutes(post);
 
-    app.get('/', function(req, res) {
+    app.get('*', function(req, res) {
         res.render('index', {
             bundle: config.bundle
         });

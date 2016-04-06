@@ -1,14 +1,9 @@
-import React, { PropTypes } from 'react';
-import BoardsListContainer from '../containers/BoardsListContainer';
+import React from 'react';
 import NoticeContainer from '../containers/NoticeContainer';
-import FullBoardContainer from '../containers/FullBoardContainer';
 
-const App = () => (
-    <div className="b-container">
-        <BoardsListContainer />
+export default ({ children }) => (
+    <div>
+        {children}
         <NoticeContainer />
-        <FullBoardContainer params={{ id: 3 }} />
     </div>
 );
-
-export default App;

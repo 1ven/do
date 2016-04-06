@@ -1,12 +1,14 @@
 import React, { PropTypes } from 'react';
+import { Link } from 'react-router';
 
 const BoardTile = ({ data, onClick }) => (
-    <a
+    <Link
+        to={`/boards/${data.id}`}
         className="c-board-tile"
         onClick={() => onClick(data.id)}
     >
         {data.title}
-    </a>
+    </Link>
 );
 
 BoardTile.propTypes = {
