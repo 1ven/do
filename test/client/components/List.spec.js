@@ -17,6 +17,7 @@ function setup() {
 
     return {
         title: component.find('.c-list__title').text(),
+        cards: component.find('Card'),
         component,
         props
     };
@@ -27,5 +28,10 @@ describe('<List />', () => {
         const { title, props } = setup();
 
         assert.equal(title, props.title);
+    });
+
+    it('should render cards', () => {
+        const { cards, props } = setup();
+        assert.equal(cards.length, props.cards.length);
     });
 });

@@ -1,4 +1,5 @@
 import React, { PropTypes } from 'react';
+import Card from './Card';
 
 const List = ({ id, title, cards = [] }) => (
     <div className="c-list">
@@ -6,6 +7,14 @@ const List = ({ id, title, cards = [] }) => (
             {title}
         </div>
         <div className="c-list__cards">
+            {cards.map((card, i) =>
+                <div
+                    key={i}
+                    className="c-list__card"
+                >
+                    <Card {...card} />
+                </div>
+            )}
         </div>
     </div>
 );
