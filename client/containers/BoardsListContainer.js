@@ -10,7 +10,7 @@ class BoardsListContainer extends Component {
         this.handleBoardCreatorSubmit = this.handleBoardCreatorSubmit.bind(this);
     }
 
-    componentDidMount() {
+    componentWillMount() {
         const { dispatch } = this.props;
         dispatch(getBoards());
     }
