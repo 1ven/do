@@ -17,7 +17,7 @@ function setup() {
 
     return {
         listContainers: component.find('Connect'),
-        col: component.find('.c-full-board__col'),
+        list: component.find('.c-full-board__list'),
         component,
         props
     };
@@ -25,9 +25,9 @@ function setup() {
 
 describe('<FullBoard />', () => {
     it('should render lists', () => {
-        const { col, props } = setup();
+        const { list, props } = setup();
 
-        assert.equal(col.length, props.lists.length);
+        assert.equal(list.length, props.lists.length);
     });
 
     it('should provide cards array to <ListContainer />', () => {
