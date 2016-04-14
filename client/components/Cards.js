@@ -1,5 +1,4 @@
 import React, { PropTypes } from 'react';
-import Card from './Card';
 
 const Cards = ({ cards = [] }) => (
     <div className="c-cards">
@@ -8,7 +7,9 @@ const Cards = ({ cards = [] }) => (
                 key={i}
                 className="c-cards__item"
             >
-                <Card {...card} />
+                <div className="c-card">
+                    {card.text}
+                </div>
             </div>
         )}
     </div>
@@ -16,8 +17,8 @@ const Cards = ({ cards = [] }) => (
 
 Cards.propTypes = {
     cards: PropTypes.arrayOf(PropTypes.shape({
-        id: PropTypes.number.isRequired,
-        text: PropTypes.string.isRequired
+        id: PropTypes.number,
+        text: PropTypes.string
     }))
 };
 

@@ -2,7 +2,7 @@ import React, { PropTypes } from 'react';
 import { Route, IndexRoute } from 'react-router';
 import App from './components/app';
 import BoardsListContainer from './containers/BoardsListContainer';
-import FullBoardContainer from './containers/FullBoardContainer';
+import BoardContainer from './containers/BoardContainer';
 
 export default (
     <Route
@@ -14,7 +14,7 @@ export default (
         />
         <Route
             path="/boards/:id"
-            component={FullBoardContainer}
+            component={BoardContainer}
         />
     </Route>
 );

@@ -1,0 +1,9 @@
+.c-lists {
+    margin: -7px;
+    display: flex;
+    flex-wrap: wrap;
+    &__item {
+        width: 20%;
+        padding: 7px;
+    }
+}
