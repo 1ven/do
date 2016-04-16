@@ -1,6 +1,7 @@
 import React, { PropTypes, Component } from 'react';
+import _ from 'lodash';
 import { connect } from 'react-redux';
-import { get } from '../actions/boardsActions';
+import { getBoard } from '../actions/boardsActions';
 import Board from '../components/Board';
 
 class BoardContainer extends Component {
@@ -20,7 +21,7 @@ class BoardContainer extends Component {
 
     loadBoard() {
         const { dispatch, params: { id } } = this.props;
-        dispatch(getFullBoard(id));
+        dispatch(getBoard(id));
     }
 
     render() {
@@ -32,14 +33,26 @@ class BoardContainer extends Component {
 };
 
 function mapStateToProps(state, ownProps) {
-    const boardId = ownProps.params.id;
-    const { boards } = state.entities;
-    console.log(boards)
+    const id = ownProps.params.id;
+    const { boards, lists, cards } = state.entities;
+
+    const nestedBoard = _.assign({}, boards[id], {
+        lists: boards[id].lists.map(id => {
+            const list = lists[id];
+            return _.assign({}, list, {
+                cards: list.cards.map(id => cards[id])
+            });
+        })
+    });
+
+    console.log(nestedBoard);
 
     return {
-        board: boards[boardId] || null
+        board: nestedBoard
     };
 };
+
+function buildTree(entities) {};
 
 export default connect(
     mapStateToProps
