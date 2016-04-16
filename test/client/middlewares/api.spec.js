@@ -15,7 +15,7 @@ function testApi(action, expectedActions, cb) {
 
     nock('http://localhost')
         .get('/test')
-        .reply(200, { success: true, data: items });
+        .reply(200, { success: true, result: items });
 
     return store.dispatch(action).then(assertion);
 };

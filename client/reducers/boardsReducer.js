@@ -9,7 +9,7 @@ export default function boards(state = initialState,  action) {
     const { payload } = action;
 
     switch (action.type) {
-        case types.BOARDS_GET_SUCCESS:
+        case types.BOARDS_GET_ALL_SUCCESS:
             return merge({}, state, {
                 ids: payload.result
             });

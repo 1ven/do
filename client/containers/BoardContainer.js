@@ -1,6 +1,6 @@
 import React, { PropTypes, Component } from 'react';
 import { connect } from 'react-redux';
-import { getFullBoard } from '../actions/fullBoardActions';
+import { get } from '../actions/boardsActions';
 import Board from '../components/Board';
 
 class BoardContainer extends Component {
@@ -34,6 +34,7 @@ class BoardContainer extends Component {
 function mapStateToProps(state, ownProps) {
     const boardId = ownProps.params.id;
     const { boards } = state.entities;
+    console.log(boards)
 
     return {
         board: boards[boardId] || null

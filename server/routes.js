@@ -10,15 +10,15 @@ module.exports = function (app) {
         });
     });
 
-    get('/boards(|/:id)', BoardController, 'get');
-    post('/boards', BoardController, 'create');
-    post('/boards/:id/lists', BoardController, 'createList');
-    del('/boards/:id', BoardController, 'remove');
+    get('/api/boards(|/:id)', BoardController, 'get');
+    post('/api/boards', BoardController, 'create');
+    post('/api/boards/:id/lists', BoardController, 'createList');
+    del('/api/boards/:id', BoardController, 'remove');
 
-    post('/lists/:id/cards', ListController, 'createCard');
-    del('/lists/:id', ListController, 'remove');
+    post('/api/lists/:id/cards', ListController, 'createCard');
+    del('/api/lists/:id', ListController, 'remove');
 
-    del('/cards/:id', CardController, 'remove');
+    del('/api/cards/:id', CardController, 'remove');
 
     function makeRoute(method, path, Controller, action) {
         const callback = typeof action === 'undefined' ?

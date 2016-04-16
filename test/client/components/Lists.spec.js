@@ -6,7 +6,7 @@ import Lists from 'client/components/Lists';
 function setup() {
     const props = {
         lists: [
-            { id: 1, title: 'list 1', cards: [1, 4, 6] },
+            { id: 1, title: 'list 1' },
         ]
     };
 

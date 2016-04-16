@@ -37,14 +37,14 @@ export default store => next => action => {
     return callApi(endpoint, request)
         .then(json => {
             if (schema) {
-                return normalize(json.data, schema);
+                return normalize(json.result, schema);
             }
-            return json.data;
+            return json.result;
         })
         .then(
-            data => next({
+            result => next({
                 type: successType,
-                payload: data
+                payload: result
             }),
             error => next({
                 type: errorType,

@@ -6,12 +6,29 @@ export function getBoards() {
     return {
         [CALL_API]: {
             types: [
+                types.BOARDS_GET_ALL_REQUEST,
+                types.BOARDS_GET_ALL_SUCCESS,
+                types.BOARDS_GET_ALL_ERROR
+            ],
+            endpoint: '/api/boards',
+            schema: BOARD_ARRAY,
+            request: {
+                method: 'get',
+            }
+        }
+    };
+};
+
+export function getBoard(id) {
+    return {
+        [CALL_API]: {
+            types: [
                 types.BOARDS_GET_REQUEST,
                 types.BOARDS_GET_SUCCESS,
                 types.BOARDS_GET_ERROR
             ],
-            endpoint: '/boards',
-            schema: BOARD_ARRAY,
+            endpoint: '/api/boards/' + id,
+            schema: BOARD,
             request: {
                 method: 'get',
             }
@@ -27,7 +44,7 @@ export function createBoard(title) {
                 types.BOARDS_CREATE_SUCCESS,
                 types.BOARDS_CREATE_ERROR
             ],
-            endpoint: '/boards',
+            endpoint: '/api/boards',
             schema: BOARD,
             request: {
                 method: 'post',

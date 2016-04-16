@@ -7,13 +7,13 @@ import app from 'server/.';
 describe('routes', () => {
     beforeEach(recreateTables);
 
-    it('GET /boards should respond with 200 and return all nested boards', (done) => {
+    it('GET /api/boards should respond with 200 and return all nested boards', (done) => {
         db.none(`
             INSERT INTO boards (title) VALUES
             ('test board 1'), ('test board 2'), ('test board 3')
         `).then(() => {
             request(app)
-                .get('/boards')
+                .get('/api/boards')
                 .expect('Content-Type', /json/)
                 .expect(200)
                 .end((err, res) => {
@@ -32,13 +32,13 @@ describe('routes', () => {
         });
     });
 
-    it('GET /boards/:id should respond with 200 and return nested board by given id', (done) => {
+    it('GET /api/boards/:id should respond with 200 and return nested board by given id', (done) => {
         db.none(`
             INSERT INTO boards (title) VALUES
             ('test board 1')
         `).then(() => {
             request(app)
-                .get('/boards/1')
+                .get('/api/boards/1')
                 .expect('Content-Type', /json/)
                 .expect(200)
                 .end((err, res) => {
@@ -51,9 +51,9 @@ describe('routes', () => {
         });
     });
 
-    it('POST /boards should respond with 201 and return created board', (done) => {
+    it('POST /api/boards should respond with 201 and return created board', (done) => {
         request(app)
-            .post('/boards')
+            .post('/api/boards')
             .send({
                 title: 'test board 1'
             })
@@ -68,12 +68,12 @@ describe('routes', () => {
             });
     });
 
-    it('POST /boards/:id/lists should respond with 201 and return created list', (done) => {
+    it('POST /api/boards/:id/lists should respond with 201 and return created list', (done) => {
         db.none(`
             INSERT INTO boards (title) VALUES ('test board')
         `).then(() => {
             request(app)
-                .post('/boards/1/lists')
+                .post('/api/boards/1/lists')
                 .send({
                     title: 'test list'
                 })
@@ -88,12 +88,12 @@ describe('routes', () => {
         });
     });
 
-    it('DELETE /boards/:id should respond with 204', (done) => {
+    it('DELETE /api/boards/:id should respond with 204', (done) => {
         db.none(`
             INSERT INTO boards (title) VALUES ('test board')
         `).then(() => {
             request(app)
-                .delete('/boards/1')
+                .delete('/api/boards/1')
                 .expect(204)
                 .end((err, res) => {
                     if (err) { return done(err); }
@@ -105,19 +105,19 @@ describe('routes', () => {
         });
     });
 
-    it('DELETE /boards/:id should be idempotent', (done) => {
+    it('DELETE /api/boards/:id should be idempotent', (done) => {
         request(app)
-            .delete('/boards/20')
+            .delete('/api/boards/20')
             .expect(204)
             .end(done);
     });
 
-    it('POST /lists/:id/cards should respond with 201 and return created card', (done) => {
+    it('POST /api/lists/:id/cards should respond with 201 and return created card', (done) => {
         db.none(`
             INSERT INTO lists (title) VALUES ('test list')
         `).then(() => {
             request(app)
-                .post('/lists/1/cards')
+                .post('/api/lists/1/cards')
                 .send({
                     text: 'test card'
                 })
@@ -132,12 +132,12 @@ describe('routes', () => {
         });
     });
 
-    it('DELETE /lists/:id should respond with 204', (done) => {
+    it('DELETE /api/lists/:id should respond with 204', (done) => {
         db.none(`
             INSERT INTO lists (title) VALUES ('test list')
         `).then(() => {
             request(app)
-                .delete('/lists/1')
+                .delete('/api/lists/1')
                 .expect(204)
                 .end((err, res) => {
                     if (err) { return done(err); }
@@ -149,19 +149,19 @@ describe('routes', () => {
         });
     });
 
-    it('DELETE /lists/:id should be idempotent', (done) => {
+    it('DELETE /api/lists/:id should be idempotent', (done) => {
         request(app)
-            .delete('/lists/5')
+            .delete('/api/lists/5')
             .expect(204)
             .end(done);
     });
 
-    it('DELETE /cards/:id should respond with 204', (done) => {
+    it('DELETE /api/cards/:id should respond with 204', (done) => {
         db.none(`
             INSERT INTO cards (text) VALUES ('test card')
         `).then(() => {
             request(app)
-                .delete('/cards/1')
+                .delete('/api/cards/1')
                 .expect(204)
                 .end((err, res) => {
                     if (err) { return done(err); }
@@ -173,9 +173,9 @@ describe('routes', () => {
         });
     });
 
-    it('DELETE /cards/:id should be idempotent', (done) => {
+    it('DELETE /api/cards/:id should be idempotent', (done) => {
         request(app)
-            .delete('/cards/7')
+            .delete('/api/cards/7')
             .expect(204)
             .end(done);
     });
