@@ -10,13 +10,10 @@ export function getFullBoard(id) {
                 types.FULL_BOARD_GET_SUCCESS,
                 types.FULL_BOARD_GET_ERROR
             ],
-            endpoint: '/boards/get-full',
+            endpoint: '/boards/' + id,
             schema: BOARD,
             request: {
-                method: 'post',
-                body: {
-                    id
-                }
+                method: 'get',
             }
         }
     };

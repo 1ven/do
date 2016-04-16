@@ -10,10 +10,10 @@ export function getBoards() {
                 types.BOARDS_GET_SUCCESS,
                 types.BOARDS_GET_ERROR
             ],
-            endpoint: '/boards/get-all',
+            endpoint: '/boards',
             schema: BOARD_ARRAY,
             request: {
-                method: 'post',
+                method: 'get',
             }
         }
     };
@@ -27,7 +27,7 @@ export function createBoard(title) {
                 types.BOARDS_CREATE_SUCCESS,
                 types.BOARDS_CREATE_ERROR
             ],
-            endpoint: '/boards/create',
+            endpoint: '/boards',
             schema: BOARD,
             request: {
                 method: 'post',

@@ -1,8 +1,15 @@
+const config = require('./config');
 const BoardController = require('./controllers/BoardController');
 const ListController = require('./controllers/ListController');
 const CardController = require('./controllers/CardController');
 
 module.exports = function (app) {
+    app.get('/', (req, res) => {
+        res.render('index', {
+            bundle: config.bundle
+        });
+    });
+
     get('/boards(|/:id)', BoardController, 'get');
     post('/boards', BoardController, 'create');
     post('/boards/:id/lists', BoardController, 'createList');
