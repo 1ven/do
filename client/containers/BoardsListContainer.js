@@ -20,11 +20,12 @@ class BoardsListContainer extends Component {
     }
 
     render() {
-        const { boards } = this.props;
+        const { boards, loading } = this.props;
         return (
             <BoardsList
                 boards={boards}
                 onBoardCreatorSubmit={this.handleBoardCreatorSubmit}
+                loading={loading}
             />
         );
     }
@@ -38,7 +39,8 @@ BoardsListContainer.propTypes = {
 const mapStateToProps = (state) => {
     const { boards, lists, cards } = state.entities;
     return {
-        boards: state.boards.ids.map(id => boards[id])
+        boards: state.boards.ids.map(id => boards[id]),
+        loading: state.boards.loading
     };
 };
 

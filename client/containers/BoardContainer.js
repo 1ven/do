@@ -10,18 +10,14 @@ class BoardContainer extends Component {
     }
 
     componentWillMount() {
-        this.loadBoard();
+        // caching
+        if (!this.props.board) { loadBoard(this.props); }
     }
 
     componentWillReceiveProps(nextProps) {
         if (this.props.params.id !== nextProps.params.id) {
-            this.loadBoard();
+            loadBoard(nextProps);
         }
-    }
-
-    loadBoard() {
-        const { dispatch, params: { id } } = this.props;
-        dispatch(getBoard(id));
     }
 
     render() {
@@ -30,6 +26,11 @@ class BoardContainer extends Component {
             <Board {...board} />
         ) : null;
     }
+};
+
+function loadBoard(props) {
+    const { dispatch, params: { id } } = props;
+    dispatch(getBoard(id));
 };
 
 function mapStateToProps(state, ownProps) {

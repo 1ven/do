@@ -1,17 +1,19 @@
 import React from 'react';
 import sinon from 'sinon';
+import _ from 'lodash';
 import { shallow } from 'enzyme';
 import { assert } from 'chai';
 import BoardsList from 'client/components/BoardsList';
 
-const setup = () => {
-    const props = {
+const setup = (customProps = {}) => {
+    const props = _.assign({}, {
         boards: [
             { id: 1, title: 'board 1' },
             { id: 2, title: 'board 2' }
         ],
-        onBoardCreatorSubmit: sinon.spy()
-    };
+        onBoardCreatorSubmit: sinon.spy(),
+        loading: false
+    }, customProps);
     const component = shallow(<BoardsList {...props} />);
 
     return {
@@ -42,5 +44,17 @@ describe('<BoardsList />', () => {
 
         boardCreator.props().onSubmit();
         assert.equal(props.onBoardCreatorSubmit.callCount, 1);
+    });
+
+    it('should render loader when boards are loading', () => {
+        const { props, component } = setup({ loading: true });
+
+        assert.equal(component.find('.c-boards-list__loader').length, 1);
+    });
+
+    it('should render loader by default', () => {
+        const { props, component } = setup({ loading: undefined });
+
+        assert.equal(component.find('.c-boards-list__loader').length, 1);
     });
 });
