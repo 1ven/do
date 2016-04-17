@@ -4,12 +4,6 @@ const ListController = require('./controllers/ListController');
 const CardController = require('./controllers/CardController');
 
 module.exports = function (app) {
-    app.get('/', (req, res) => {
-        res.render('index', {
-            bundle: config.bundle
-        });
-    });
-
     get('/api/boards(|/:id)', BoardController, 'get');
     post('/api/boards', BoardController, 'create');
     post('/api/boards/:id/lists', BoardController, 'createList');
@@ -19,6 +13,12 @@ module.exports = function (app) {
     del('/api/lists/:id', ListController, 'remove');
 
     del('/api/cards/:id', CardController, 'remove');
+
+    app.get('*', function(req, res) {
+        res.render('index', {
+            bundle: config.bundle
+        });
+    })
 
     function makeRoute(method, path, Controller, action) {
         const callback = typeof action === 'undefined' ?

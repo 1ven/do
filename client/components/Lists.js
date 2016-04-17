@@ -1,5 +1,5 @@
 import React, { PropTypes } from 'react';
-import Cards from './Cards';
+import CardsContainer from '../containers/CardsContainer';
 
 const Lists = ({ lists = [] }) => (
     <div className="c-lists">
@@ -13,7 +13,7 @@ const Lists = ({ lists = [] }) => (
                         {list.title}
                     </div>
                     <div className="c-list__cards">
-                        <Cards cards={list.cards} />
+                        <CardsContainer cardsIds={list.cards} />
                     </div>
                 </div>
             </div>

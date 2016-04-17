@@ -34,25 +34,12 @@ class BoardContainer extends Component {
 
 function mapStateToProps(state, ownProps) {
     const id = ownProps.params.id;
-    const { boards, lists, cards } = state.entities;
-
-    const nestedBoard = _.assign({}, boards[id], {
-        lists: boards[id].lists.map(id => {
-            const list = lists[id];
-            return _.assign({}, list, {
-                cards: list.cards.map(id => cards[id])
-            });
-        })
-    });
-
-    console.log(nestedBoard);
+    const { boards } = state.entities;
 
     return {
-        board: nestedBoard
+        board: boards[id]
     };
 };
-
-function buildTree(entities) {};
 
 export default connect(
     mapStateToProps

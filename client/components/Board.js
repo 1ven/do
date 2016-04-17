@@ -1,11 +1,11 @@
 import React, { PropTypes } from 'react';
-import Lists from './Lists';
+import ListsContainer from '../containers/ListsContainer';
 
 const Board = ({ id, title, lists = [] }) => (
     <div className="b-container">
         <div className="c-board">
             <div className="c-board__lists">
-                <Lists lists={lists} />
+                <ListsContainer listsIds={lists} />
             </div>
         </div>
     </div>
