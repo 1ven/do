@@ -45,6 +45,7 @@ class InputForm extends Component {
                     className="c-input-form__input"
                     onChange={this.handleInputChange}
                     value={this.state.inputValue}
+                    placeholder={this.props.placeholder}
                 />
             </form>
         );

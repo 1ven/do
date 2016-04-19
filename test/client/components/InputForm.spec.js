@@ -1,18 +1,19 @@
 import React from 'react';
+import _ from 'lodash';
 import sinon from 'sinon';
 import { shallow } from 'enzyme';
 import { assert } from 'chai';
 import InputForm from 'client/components/InputForm';
 
-const setup = () => {
-    const props = {
+const setup = (customProps) => {
+    const props = _.assign({}, {
         onSubmit: sinon.spy()
-    };
+    }, customProps);
     const component = shallow(<InputForm {...props} />);
 
     return {
-        form: component.find('form.c-input-form'),
-        input: component.find('input.c-input-form__input'),
+        form: component.find('.c-input-form'),
+        input: component.find('.c-input-form__input'),
         preventDefault: sinon.spy(),
         component,
         props
@@ -55,5 +56,13 @@ describe('<InputForm />', () => {
         form.simulate('submit', { preventDefault });
 
         assert.equal(component.state().inputValue, '');
+    });
+
+    it('should set input placeholder', () => {
+        const { input } = setup({
+            placeholder: 'Test placeholder'
+        });
+
+        assert.equal(input.props().placeholder, 'Test placeholder');
     });
 });
