@@ -1,11 +1,27 @@
 import merge from 'lodash/merge';
+import * as types from '../constants/actionTypes';
 
 const initialState = { boards: {}, lists: {}, cards: {} };
 
 export default function entities(state = initialState, action) {
-    if (action.payload && action.payload.entities) {
-        return merge({}, state, action.payload.entities);
+    const payload = action.payload;
+
+    if (payload && payload.entities) {
+        return merge({}, state, payload.entities);
     };
 
-    return state;
+    // TODO: Reducers composition.
+    switch (action.type) {
+        case types.LISTS_ADD_CARD_ID:
+            const { listId, cardId } = payload;
+            return merge({}, state, {
+                lists: {
+                    [listId]: {
+                        cards: [...state.lists[listId].cards, cardId]
+                    }
+                }
+            });
+        default:
+            return state;
+    }
 };

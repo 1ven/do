@@ -14,7 +14,10 @@ const Lists = ({ lists = [], onListCreate }) => (
                         {list.title}
                     </div>
                     <div className="c-list__cards">
-                        <CardsContainer cardsIds={list.cards} />
+                        <CardsContainer
+                            listId={list.id}
+                            cardsIds={list.cards}
+                        />
                     </div>
                 </div>
             </div>
