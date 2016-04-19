@@ -5,7 +5,10 @@ const Board = ({ id, title, lists = [] }) => (
     <div className="b-container">
         <div className="c-board">
             <div className="c-board__lists">
-                <ListsContainer listsIds={lists} />
+                <ListsContainer
+                    boardId={id}
+                    listsIds={lists}
+                />
             </div>
         </div>
     </div>

@@ -53,3 +53,13 @@ export function createBoard(title) {
         }
     };
 };
+
+export function addListId(boardId, listId) {
+    return {
+        type: types.BOARDS_ADD_LIST_ID,
+        payload: {
+            boardId,
+            listId
+        }
+    };
+};

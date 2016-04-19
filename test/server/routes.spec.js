@@ -62,7 +62,12 @@ describe('routes', () => {
             .end((err, res) => {
                 if (err) { return done(err); }
 
-                assert.deepEqual(res.body, { result: { id: 1, title: 'test board 1' } });
+                assert.deepEqual(res.body, {
+                    result: {
+                        id: 1,
+                        title: 'test board 1',
+                    }
+                });
 
                 done();
             });
@@ -81,7 +86,12 @@ describe('routes', () => {
                 .end((err, res) => {
                     if (err) { return done(err); }
 
-                    assert.deepEqual(res.body, { result: { id: 1, title: 'test list' } });
+                    assert.deepEqual(res.body, {
+                        result: {
+                            id: 1,
+                            title: 'test list',
+                        }
+                    });
 
                     done();
                 });

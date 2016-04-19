@@ -6,7 +6,7 @@ import { addCardId } from '../actions/listsActions';
 
 function mapStateToProps(state, ownProps) {
     const { cards } = state.entities;
-    const { cardsIds } = ownProps;
+    const cardsIds = ownProps.cardsIds || [];
 
     return {
         cards: cardsIds.map(id => cards[id]),
@@ -16,11 +16,12 @@ function mapStateToProps(state, ownProps) {
 function mapDispatchToProps(dispatch, ownProps) {
     const { listId } = ownProps;
     return {
-        onCardCreate: text =>
+        onCardCreate: text => {
             dispatch(createCard(listId, text))
                 .then(action => {
                     dispatch(addCardId(listId, action.payload.result));
-                })
+                });
+        }
     };
 };
 

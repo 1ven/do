@@ -9,9 +9,27 @@ export default function entities(state = {}, action) {
     };
 
     return {
-        boards: state.boards || {},
+        boards: boardsReducer(state.boards, action),
         lists: listsReducer(state.lists, action),
         cards: state.cards || {}
+    }
+};
+
+function boardsReducer(state = {}, action) {
+    const payload = action.payload;
+
+    switch (action.type) {
+        case types.BOARDS_ADD_LIST_ID:
+            const { boardId, listId } = payload;
+            const lists = state[boardId].lists || [];
+
+            return merge({}, state, {
+                [boardId]: {
+                    lists: [...lists, listId]
+                }
+            });
+        default:
+            return state;
     }
 };
 
@@ -21,9 +39,11 @@ function listsReducer(state = {}, action) {
     switch (action.type) {
         case types.LISTS_ADD_CARD_ID:
             const { listId, cardId } = payload;
+            const cards = state[listId].cards || [];
+
             return merge({}, state, {
                 [listId]: {
-                    cards: [...state[listId].cards, cardId]
+                    cards: [...cards, cardId]
                 }
             });
         default:
