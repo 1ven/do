@@ -3,8 +3,9 @@ import _ from 'lodash';
 import { connect } from 'react-redux';
 import { getBoard } from '../actions/boardsActions';
 import Board from '../components/Board';
+import Loader from '../components/Loader';
 
-class BoardContainer extends Component {
+class BoardPage extends Component {
     constructor(props) {
         super(props);
     }
@@ -21,10 +22,12 @@ class BoardContainer extends Component {
     }
 
     render() {
-        const { board } = this.props;
-        return board ? (
+        const { board, loading } = this.props;
+        console.log(loading);
+
+        return !loading ? (
             <Board {...board} />
-        ) : null;
+        ) : <Loader />;
     }
 };
 
@@ -33,15 +36,17 @@ function loadBoard(props) {
     dispatch(getBoard(id));
 };
 
-function mapStateToProps(state, ownProps) {
-    const id = ownProps.params.id;
-    const { boards } = state.entities;
+function mapStateToProps(state) {
+    const id = state.pages.board.id;
+    const board = state.entities.boards[id];
+    const loading = !board ? true : state.pages.board.loading;
 
     return {
-        board: boards[id]
+        board,
+        loading
     };
 };
 
 export default connect(
     mapStateToProps
-)(BoardContainer);
+)(BoardPage);

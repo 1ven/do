@@ -1,8 +1,8 @@
 import React, { PropTypes } from 'react';
 import { Route, IndexRoute } from 'react-router';
 import App from './components/app';
-import BoardsListContainer from './containers/BoardsListContainer';
-import BoardContainer from './containers/BoardContainer';
+import IndexPage from './containers/IndexPage';
+import BoardPage from './containers/BoardPage';
 
 export default (
     <Route
@@ -10,11 +10,11 @@ export default (
         component={App}
     >
         <IndexRoute
-            component={BoardsListContainer}
+            component={IndexPage}
         />
         <Route
             path="/boards/:id"
-            component={BoardContainer}
+            component={BoardPage}
         />
     </Route>
 );

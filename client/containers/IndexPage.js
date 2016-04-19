@@ -2,48 +2,51 @@ import React, { PropTypes, Component } from 'react';
 import { connect } from 'react-redux'
 import { getBoards, createBoard } from '../actions/boardsActions';
 import BoardsList from '../components/BoardsList.js';
+import Loader from '../components/Loader';
 
-class BoardsListContainer extends Component {
+class IndexPage extends Component {
     constructor(props) {
         super(props);
         this.handleBoardCreatorSubmit = this.handleBoardCreatorSubmit.bind(this);
     }
 
     componentWillMount() {
-        const { dispatch } = this.props;
-        dispatch(getBoards());
+        if (!this.props.boards.length) { this.props.dispatch(getBoards()); }
     }
 
     handleBoardCreatorSubmit(title) {
-        const { dispatch } = this.props;
-        dispatch(createBoard(title));
+        this.props.dispatch(createBoard(title));
     }
 
     render() {
         const { boards, loading } = this.props;
-        return (
+        console.log(loading);
+
+        return !loading ? (
             <BoardsList
                 boards={boards}
                 onBoardCreatorSubmit={this.handleBoardCreatorSubmit}
-                loading={loading}
             />
-        );
+        ) : <Loader />;
     }
 }
 
-BoardsListContainer.propTypes = {
+IndexPage.propTypes = {
     boards: PropTypes.array.isRequired,
     dispatch: PropTypes.func.isRequired
 };
 
 const mapStateToProps = (state) => {
     const { boards, lists, cards } = state.entities;
+    const { boardsIds } = state.pages.index;
+    const loading = !boardsIds.length ? true : state.pages.index.loading;
+
     return {
-        boards: state.boards.ids.map(id => boards[id]),
-        loading: state.boards.loading
+        boards: boardsIds.map(id => boards[id]),
+        loading
     };
 };
 
 export default connect(
     mapStateToProps
-)(BoardsListContainer);
+)(IndexPage);

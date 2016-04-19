@@ -46,15 +46,15 @@ describe('<BoardsList />', () => {
         assert.equal(props.onBoardCreatorSubmit.callCount, 1);
     });
 
-    it('should render loader when boards are loading', () => {
-        const { props, component } = setup({ loading: true });
+    // it('should render loader when boards are loading', () => {
+    //     const { props, component } = setup({ loading: true });
 
-        assert.equal(component.find('.c-boards-list__loader').length, 1);
-    });
+    //     assert.equal(component.find('.c-boards-list__loader').length, 1);
+    // });
 
-    it('should render loader by default', () => {
-        const { props, component } = setup({ loading: undefined });
+    // it('should render loader by default', () => {
+    //     const { props, component } = setup({ loading: undefined });
 
-        assert.equal(component.find('.c-boards-list__loader').length, 1);
-    });
+    //     assert.equal(component.find('.c-boards-list__loader').length, 1);
+    // });
 });

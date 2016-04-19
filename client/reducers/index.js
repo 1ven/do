@@ -1,14 +1,14 @@
 import { combineReducers } from 'redux';
 import { routerReducer } from 'react-router-redux';
-import boardsReducer from './boardsReducer';
 import noticeReducer from './noticeReducer';
 import entitiesReducer from './entitiesReducer';
+import pagesReducer from './pagesReducer';
 
 const rootReducer = combineReducers({
-    boards: boardsReducer,
     notice: noticeReducer,
     entities: entitiesReducer,
-    routing: routerReducer
+    routing: routerReducer,
+    pages: pagesReducer
 });
 
 export default rootReducer;

@@ -14,7 +14,9 @@ const Board = ({ id, title, lists = [] }) => (
 Board.propTypes = {
     id: PropTypes.number.isRequired,
     title: PropTypes.string.isRequired,
-    lists: PropTypes.array
+    lists: PropTypes.arrayOf(
+        PropTypes.number
+    )
 };
 
 export default Board;
