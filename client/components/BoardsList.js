@@ -1,6 +1,6 @@
 import React, { PropTypes } from 'react';
 import BoardTile from './BoardTile';
-import BoardCreator from './BoardCreator';
+import InputForm from './InputForm';
 
 const BoardsList = ({ boards, onBoardCreatorSubmit }) => (
     <div className="b-container">
@@ -16,12 +16,12 @@ const BoardsList = ({ boards, onBoardCreatorSubmit }) => (
                         />
                     </div>
                 )}
-                <div
-                    className="c-boards-list__item"
-                >
-                    <BoardCreator
-                        onSubmit={onBoardCreatorSubmit}
-                    />
+                <div className="c-boards-list__item" >
+                    <div className="b-tile">
+                        <InputForm
+                            onSubmit={onBoardCreatorSubmit}
+                        />
+                    </div>
                 </div>
             </div>
         </div>

@@ -1,6 +1,6 @@
 import React, { PropTypes, Component } from 'react';
 
-class BoardCreator extends Component {
+class InputForm extends Component {
     constructor(props) {
         super(props);
 
@@ -38,11 +38,11 @@ class BoardCreator extends Component {
     render() {
         return (
             <form
-                className="c-board-creator"
+                className="c-input-form"
                 onSubmit={this.handleFormSubmit}
             >
                 <input
-                    className="c-board-creator__input"
+                    className="c-input-form__input"
                     onChange={this.handleInputChange}
                     value={this.state.inputValue}
                 />
@@ -51,8 +51,8 @@ class BoardCreator extends Component {
     }
 }
 
-BoardCreator.propTypes = {
+InputForm.propTypes = {
     onSubmit: PropTypes.func.isRequired
 };
 
-export default BoardCreator;
+export default InputForm;

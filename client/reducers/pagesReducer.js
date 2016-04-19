@@ -3,7 +3,7 @@ import * as types from '../constants/actionTypes';
 import { combineReducers } from 'redux';
 
 function indexReducer(state = {
-    boardsIds: [],
+    ids: [],
     loading: false
 }, action) {
     const payload = action.payload;
@@ -16,11 +16,15 @@ function indexReducer(state = {
         case types.BOARDS_GET_ALL_SUCCESS:
             return merge({}, state, {
                 loading: false,
-                boardsIds: payload.result
+                ids: payload.result
             });
         case types.BOARDS_GET_ALL_ERROR:
             return merge({}, state, {
                 loading: false
+            });
+        case types.BOARDS_CREATE_SUCCESS:
+            return merge({}, state, {
+                ids: [...state.ids, payload.result] 
             });
         default:
             return state;

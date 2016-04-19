@@ -38,11 +38,11 @@ IndexPage.propTypes = {
 
 const mapStateToProps = (state) => {
     const { boards, lists, cards } = state.entities;
-    const { boardsIds } = state.pages.index;
-    const loading = !boardsIds.length ? true : state.pages.index.loading;
+    const { ids } = state.pages.index;
+    const loading = !ids.length ? true : state.pages.index.loading;
 
     return {
-        boards: boardsIds.map(id => boards[id]),
+        boards: ids.map(id => boards[id]),
         loading
     };
 };

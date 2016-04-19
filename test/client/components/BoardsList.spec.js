@@ -18,7 +18,7 @@ const setup = (customProps = {}) => {
 
     return {
         boardTiles: component.find('BoardTile'),
-        boardCreator: component.find('BoardCreator'),
+        boardCreator: component.find('InputForm'),
         component,
         props
     };
@@ -45,16 +45,4 @@ describe('<BoardsList />', () => {
         boardCreator.props().onSubmit();
         assert.equal(props.onBoardCreatorSubmit.callCount, 1);
     });
-
-    // it('should render loader when boards are loading', () => {
-    //     const { props, component } = setup({ loading: true });
-
-    //     assert.equal(component.find('.c-boards-list__loader').length, 1);
-    // });
-
-    // it('should render loader by default', () => {
-    //     const { props, component } = setup({ loading: undefined });
-
-    //     assert.equal(component.find('.c-boards-list__loader').length, 1);
-    // });
 });
