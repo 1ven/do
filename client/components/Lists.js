@@ -1,7 +1,8 @@
 import React, { PropTypes } from 'react';
+import InputForm from './InputForm';
 import CardsContainer from '../containers/CardsContainer';
 
-const Lists = ({ lists = [] }) => (
+const Lists = ({ lists = [], onListCreate }) => (
     <div className="c-lists">
         {lists.map((list, i) => (
             <div
@@ -18,6 +19,14 @@ const Lists = ({ lists = [] }) => (
                 </div>
             </div>
         ))}
+        <div className="c-lists__item">
+            <div className="b-tile">
+                <InputForm
+                    onSubmit={onListCreate}
+                    placeholder="Enter list name"
+                />
+            </div>
+        </div>
     </div>
 );
 
@@ -26,7 +35,8 @@ Lists.propTypes = {
         id: PropTypes.number,
         title: PropTypes.string,
         cards: PropTypes.array
-    }))
+    })),
+    onListCreate: PropTypes.func.isRequired
 };
 
 export default Lists;
