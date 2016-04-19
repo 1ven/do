@@ -38,7 +38,6 @@ function boardReducer(state = {
         case types.BOARDS_GET_SUCCESS:
             return merge({}, state, {
                 loading: false,
-                id: action.payload.result
             });
         case types.BOARDS_GET_ERROR:
             return merge({}, state, {

@@ -36,8 +36,8 @@ function loadBoard(props) {
     dispatch(getBoard(id));
 };
 
-function mapStateToProps(state) {
-    const id = state.pages.board.id;
+function mapStateToProps(state, ownProps) {
+    const id = ownProps.params.id;
     const board = state.entities.boards[id];
     const loading = !board ? true : state.pages.board.loading;
 
