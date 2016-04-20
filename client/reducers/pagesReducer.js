@@ -4,23 +4,25 @@ import { combineReducers } from 'redux';
 
 function indexReducer(state = {
     ids: [],
-    loading: false
+    isFetching: false,
+    lastUpdated: undefined
 }, action) {
     const payload = action.payload;
 
     switch (action.type) {
         case types.BOARDS_GET_ALL_REQUEST:
             return merge({}, state, {
-                loading: true
+                isFetching: true
             });
         case types.BOARDS_GET_ALL_SUCCESS:
             return merge({}, state, {
-                loading: false,
-                ids: payload.result
+                isFetching: false,
+                ids: payload.result,
+                lastUpdated: payload.receivedAt
             });
         case types.BOARDS_GET_ALL_ERROR:
             return merge({}, state, {
-                loading: false
+                isFetching: false
             });
         case types.BOARDS_CREATE_SUCCESS:
             return merge({}, state, {
@@ -31,6 +33,11 @@ function indexReducer(state = {
     }
 };
 
+// implement lastUpdated
+// implement scu
+// rename loading to isFetching
+// merge two reducers into one common
+// implement DT
 function boardReducer(state = {
     loading: false
 }, action) {

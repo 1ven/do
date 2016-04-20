@@ -44,7 +44,9 @@ export default store => next => action => {
         .then(
             result => next({
                 type: successType,
-                payload: result
+                payload: assign({}, result, {
+                    receivedAt: Date.now()
+                })
             }),
             error => next({
                 type: errorType,

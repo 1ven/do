@@ -14,36 +14,52 @@ class IndexPage extends Component {
         if (!this.props.boards.length) { this.props.dispatch(getBoards()); }
     }
 
+    shouldComponentUpdate(nextProps) {
+        return !(!this.props.isFetching && !this.props.lastUpdated && nextProps.isFetching);
+    }
+
     handleBoardCreatorSubmit(title) {
         this.props.dispatch(createBoard(title));
     }
 
     render() {
-        const { boards, loading } = this.props;
-        console.log(loading);
+        const { boards, isFetching, lastUpdated } = this.props;
+        const isEmpty = boards.length === 0;
 
-        return !loading ? (
-            <BoardsList
-                boards={boards}
-                onBoardCreatorSubmit={this.handleBoardCreatorSubmit}
-            />
-        ) : <Loader />;
+        return isEmpty ? (
+            isFetching || !lastUpdated ? (
+                <Loader />
+            ) : (
+                <div>No result.</div>
+            )
+        ) : (
+            isFetching ? (
+                <Loader />
+            ) : (
+                <BoardsList
+                    boards={boards}
+                    onBoardCreatorSubmit={this.handleBoardCreatorSubmit}
+                />
+            )
+        );
     }
 }
 
 IndexPage.propTypes = {
     boards: PropTypes.array.isRequired,
-    dispatch: PropTypes.func.isRequired
+    dispatch: PropTypes.func.isRequired,
+    isFetching: PropTypes.bool.isRequired,
+    lastUpdated: PropTypes.number
 };
 
 const mapStateToProps = (state) => {
     const { boards, lists, cards } = state.entities;
-    const { ids } = state.pages.index;
-    const loading = !ids.length ? true : state.pages.index.loading;
+    const { ids, isFetching, lastUpdated } = state.pages.index;
 
     return {
         boards: ids.map(id => boards[id]),
-        loading
+        isFetching,
+        lastUpdated
     };
 };
 
