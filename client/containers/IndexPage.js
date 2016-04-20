@@ -26,21 +26,15 @@ class IndexPage extends Component {
         const { boards, isFetching, lastUpdated } = this.props;
         const isEmpty = boards.length === 0;
 
-        return isEmpty ? (
-            isFetching || !lastUpdated ? (
-                <Loader />
-            ) : (
-                <div>No result.</div>
-            )
+        return isFetching || !lastUpdated ? (
+            <Loader />
+        ) : isEmpty ? (
+            <div>No result.</div>
         ) : (
-            isFetching ? (
-                <Loader />
-            ) : (
-                <BoardsList
-                    boards={boards}
-                    onBoardCreatorSubmit={this.handleBoardCreatorSubmit}
-                />
-            )
+            <BoardsList
+                boards={boards}
+                onBoardCreatorSubmit={this.handleBoardCreatorSubmit}
+            />
         );
     }
 }
