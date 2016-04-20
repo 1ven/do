@@ -38,6 +38,13 @@ class BoardPage extends Component {
     }
 };
 
+BoardPage.propTypes = {
+    board: PropTypes.object,
+    isFetching: PropTypes.bool.isRequired,
+    lastUpdated: PropTypes.number,
+    dispatch: PropTypes.func.isRequired
+};
+
 function loadBoard(props) {
     const { dispatch, params: { id } } = props;
     dispatch(getBoard(id));
