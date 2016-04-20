@@ -37,7 +37,7 @@ function indexReducer(state = {
 // implement scu
 // rename loading to isFetching
 // merge two reducers into one common
-// implement DT
+// write tests for pagesReducer
 function boardReducer(state = {
     loading: false
 }, action) {

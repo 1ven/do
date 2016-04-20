@@ -10,12 +10,12 @@ const mockStore = configureMockStore(middlewares);
 
 function testApi(action, expectedActions, cb) {
     const store = mockStore();
-    const items = [ { id: 1, title: 'test' } ];
+    const result = [ { id: 1, title: 'test' } ];
     const assertion = () => cb ? cb.bind(null, store.getActions) : assert.deepEqual(store.getActions(), expectedActions);
 
     nock('http://localhost')
         .get('/test')
-        .reply(200, { success: true, result: items });
+        .reply(200, { success: true, result });
 
     return store.dispatch(action).then(assertion);
 };
@@ -34,11 +34,28 @@ describe('apiMiddleware', () => {
         };
 
         const expectedActions = [
-            { type: 'REQUEST' },
-            { type: 'SUCCESS', payload: [ { id: 1, title: 'test' } ] }
+            {
+                type: 'REQUEST'
+            },
+            {
+                type: 'SUCCESS',
+                payload: {
+                    result: [
+                        {
+                            id: 1,
+                            title: 'test'
+                        }
+                    ]
+                }
+            }
         ];
 
-        return testApi(action, expectedActions);
+        return testApi(action, null, (getActions) => {
+            const actions = getActions();
+            assert.isNumber(actions[1].payload.receivedAt);
+            delete actions[1].payload.receivedAt;
+            assert.deepEqual(actions, expectedActions);
+        });
     });
 
     it('should normalize JSON response, when schema is provided', () => {
@@ -65,7 +82,12 @@ describe('apiMiddleware', () => {
             { type: 'SUCCESS', payload: normalized }
         ];
 
-        return testApi(action, expectedActions);
+        return testApi(action, null, (getActions) => {
+            const actions = getActions();
+            assert.isNumber(actions[1].payload.receivedAt);
+            delete actions[1].payload.receivedAt;
+            assert.deepEqual(actions, expectedActions);
+        });
     });
 
     it('should dispatch ERROR action when request returned an error', () => {

@@ -42,12 +42,18 @@ export default store => next => action => {
             return json.result;
         })
         .then(
-            result => next({
-                type: successType,
-                payload: assign({}, result, {
-                    receivedAt: Date.now()
-                })
-            }),
+            data => {
+                if (!data.entities) {
+                    data = { data };
+                }
+
+                return next({
+                    type: successType,
+                    payload: assign({}, data, {
+                        receivedAt: Date.now()
+                    })
+                });
+            },
             error => next({
                 type: errorType,
                 payload: {
