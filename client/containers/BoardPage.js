@@ -15,6 +15,10 @@ class BoardPage extends Component {
         if (!this.props.board) { loadBoard(this.props); }
     }
 
+    shouldComponentUpdate(nextProps) {
+        return !(!this.props.isFetching && !this.props.lastUpdated && nextProps.isFetching);
+    }
+
     componentWillReceiveProps(nextProps) {
         if (this.props.params.id !== nextProps.params.id) {
             loadBoard(nextProps);
@@ -22,12 +26,15 @@ class BoardPage extends Component {
     }
 
     render() {
-        const { board, loading } = this.props;
-        console.log(loading);
+        const { board, isFetching, lastUpdated } = this.props;
 
-        return !loading ? (
+        return isFetching || !lastUpdated ? (
+            <Loader />
+        ) : !board ? (
+            <div>Board not found</div>
+        ) : (
             <Board {...board} />
-        ) : <Loader />;
+        );
     }
 };
 
@@ -39,11 +46,12 @@ function loadBoard(props) {
 function mapStateToProps(state, ownProps) {
     const id = ownProps.params.id;
     const board = state.entities.boards[id];
-    const loading = !board ? true : state.pages.board.loading;
+    const { isFetching, lastUpdated } = state.pages.board;
 
     return {
         board,
-        loading
+        isFetching,
+        lastUpdated
     };
 };
 

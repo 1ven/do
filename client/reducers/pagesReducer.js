@@ -33,26 +33,24 @@ function indexReducer(state = {
     }
 };
 
-// implement lastUpdated
-// implement scu
-// rename loading to isFetching
 // merge two reducers into one common
 // write tests for pagesReducer
 function boardReducer(state = {
-    loading: false
+    isFetching: false
 }, action) {
     switch (action.type) {
         case types.BOARDS_GET_REQUEST:
             return merge({}, state, {
-                loading: true
+                isFetching: true
             });
         case types.BOARDS_GET_SUCCESS:
             return merge({}, state, {
-                loading: false,
+                isFetching: false,
+                lastUpdated: action.payload.receivedAt
             });
         case types.BOARDS_GET_ERROR:
             return merge({}, state, {
-                loading: false
+                isFetching: false
             });
         default:
             return state;
