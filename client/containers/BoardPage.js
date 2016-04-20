@@ -28,7 +28,7 @@ class BoardPage extends Component {
     render() {
         const { board, isFetching, lastUpdated } = this.props;
 
-        return isFetching || !lastUpdated ? (
+        return isFetching || (!lastUpdated && !board) ? (
             <Loader />
         ) : !board ? (
             <div>Board not found</div>

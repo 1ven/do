@@ -26,7 +26,7 @@ class IndexPage extends Component {
         const { boards, isFetching, lastUpdated } = this.props;
         const isEmpty = boards.length === 0;
 
-        return isFetching || !lastUpdated ? (
+        return isFetching || (!lastUpdated && isEmpty) ? (
             <Loader />
         ) : isEmpty ? (
             <div>No result.</div>
