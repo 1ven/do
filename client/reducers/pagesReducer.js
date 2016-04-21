@@ -1,4 +1,4 @@
-import merge from 'lodash/merge';
+import assign from 'lodash/assign';
 import * as types from '../constants/actionTypes';
 import { combineReducers } from 'redux';
 
@@ -11,21 +11,21 @@ function indexReducer(state = {
 
     switch (action.type) {
         case types.BOARDS_GET_ALL_REQUEST:
-            return merge({}, state, {
+            return assign({}, state, {
                 isFetching: true
             });
         case types.BOARDS_GET_ALL_SUCCESS:
-            return merge({}, state, {
+            return assign({}, state, {
                 isFetching: false,
                 ids: payload.result,
                 lastUpdated: payload.receivedAt
             });
         case types.BOARDS_GET_ALL_ERROR:
-            return merge({}, state, {
+            return assign({}, state, {
                 isFetching: false
             });
         case types.BOARDS_CREATE_SUCCESS:
-            return merge({}, state, {
+            return assign({}, state, {
                 ids: [...state.ids, payload.result] 
             });
         default:
@@ -33,7 +33,6 @@ function indexReducer(state = {
     }
 };
 
-// write tests for pagesReducer
 function boardReducer(state = {
     id: undefined,
     isFetching: false,
@@ -41,17 +40,17 @@ function boardReducer(state = {
 }, action) {
     switch (action.type) {
         case types.BOARDS_GET_REQUEST:
-            return merge({}, state, {
+            return assign({}, state, {
                 isFetching: true
             });
         case types.BOARDS_GET_SUCCESS:
-            return merge({}, state, {
+            return assign({}, state, {
                 id: action.payload.result,
                 isFetching: false,
                 lastUpdated: action.payload.receivedAt
             });
         case types.BOARDS_GET_ERROR:
-            return merge({}, state, {
+            return assign({}, state, {
                 isFetching: false
             });
         default:
