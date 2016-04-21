@@ -33,9 +33,9 @@ function indexReducer(state = {
     }
 };
 
-// merge two reducers into one common
 // write tests for pagesReducer
 function boardReducer(state = {
+    id: undefined,
     isFetching: false,
     lastUpdated: undefined
 }, action) {
@@ -46,6 +46,7 @@ function boardReducer(state = {
             });
         case types.BOARDS_GET_SUCCESS:
             return merge({}, state, {
+                id: action.payload.result,
                 isFetching: false,
                 lastUpdated: action.payload.receivedAt
             });
