@@ -54,8 +54,8 @@ const Base = {
             throw new Error('`id` must be a number');
         }
 
-        return db.none(
-            'DELETE FROM $1~ WHERE id = $2', [this.table, id]
+        return db.one(
+            'DELETE FROM $1~ WHERE id = $2 RETURNING id', [this.table, id]
         );
     },
 

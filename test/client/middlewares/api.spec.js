@@ -11,7 +11,7 @@ const mockStore = configureMockStore(middlewares);
 function testApi(action, expectedActions, cb) {
     const store = mockStore();
     const result = [ { id: 1, title: 'test' } ];
-    const assertion = () => cb ? cb.bind(null, store.getActions) : assert.deepEqual(store.getActions(), expectedActions);
+    const assertion = () => cb ? cb.call(null, store.getActions) : assert.deepEqual(store.getActions(), expectedActions);
 
     nock('http://localhost')
         .get('/test')
@@ -100,8 +100,10 @@ describe('apiMiddleware', () => {
 
         return testApi(action, null, (getActions) => {
             const actions = getActions();
-            assert.equal(actions[0], { type: 'REQUEST' });
-            assert.equal(actions[0], { type: 'ERROR' });
+            assert.deepEqual(actions[0], { type: 'REQUEST' });
+            assert.isString(actions[1].payload.error);
+            delete actions[1].payload;
+            assert.deepEqual(actions[1], { type: 'ERROR' });
         });
     });
 });

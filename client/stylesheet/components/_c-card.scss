@@ -4,8 +4,18 @@
     padding: 4px;
     color: $black;
     font-size: 14px;
+    &__text {
+        float: left;
+    }
     &__remove {
         float: right;
         color: $black;
+    }
+    &:after {
+        content: '';
+        display: block;
+        visibility: hidden;
+        height: 0;
+        clear: both;
     }
 }

@@ -147,13 +147,11 @@ describe('Base model', () => {
                 ]));
         });
 
-        it('should be idempotent', () => {
+        it('should resolve removed id', () => {
             return db.none(`INSERT INTO boards (title) VALUES
                 ('test title 1'), ('test title 2'), ('test title 3')
             `).then(() => Board.remove(2))
-                .then(result => assert.isUndefined(result))
-                .then(() => Board.remove(2))
-                .then(result => assert.isUndefined(result));
+                .then(result => assert.deepEqual(result, { id: 2 }))
         });
     });
 

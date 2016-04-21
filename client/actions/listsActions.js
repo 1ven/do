@@ -12,6 +12,16 @@ export function addCardId(listId, cardId) {
     };
 };
 
+export function removeCardId(listId, cardId) {
+    return {
+        type: types.LISTS_REMOVE_CARD_ID,
+        payload: {
+            listId,
+            cardId
+        }
+    };
+};
+
 export function createList(boardId, title) {
     return {
         [CALL_API]: {

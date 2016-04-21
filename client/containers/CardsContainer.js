@@ -1,8 +1,8 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import Cards from '../components/Cards';
-import { createCard } from '../actions/cardsActions';
-import { addCardId } from '../actions/listsActions';
+import { createCard, removeCard } from '../actions/cardsActions';
+import { addCardId, removeCardId } from '../actions/listsActions';
 
 function mapStateToProps(state, ownProps) {
     const { cards } = state.entities;
@@ -20,6 +20,12 @@ function mapDispatchToProps(dispatch, ownProps) {
             dispatch(createCard(listId, text))
                 .then(action => {
                     dispatch(addCardId(listId, action.payload.result));
+                });
+        },
+        onCardRemoveClick: id => {
+            dispatch(removeCard(id))
+                .then(action => {
+                    dispatch(removeCardId(listId, action.payload.result.id));
                 });
         }
     };

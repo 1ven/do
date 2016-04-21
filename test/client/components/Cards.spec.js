@@ -9,14 +9,15 @@ function setup() {
         cards: [
             { id: 1, text: 'card 1' }
         ],
-        onCardCreate: sinon.spy()
+        onCardCreate: sinon.spy(),
+        onCardRemoveClick: sinon.spy()
     };
 
     const component = shallow(<Cards {...props} />);
 
     return {
-        cards: component.find('.c-card'),
         inputForm: component.find('InputForm'),
+        card: component.find('Card'),
         component,
         props
     };
@@ -24,8 +25,8 @@ function setup() {
 
 describe('<Cards />', () => {
     it('should render cards', () => {
-        const { cards, props } = setup();
-        assert.equal(cards.length, props.cards.length);
+        const { card, props } = setup();
+        assert.equal(card.length, props.cards.length);
     });
 
     it('should pass `onCardCreate` callback to <InputForm />', () => {
@@ -33,5 +34,12 @@ describe('<Cards />', () => {
 
         inputForm.props().onSubmit();
         assert.equal(props.onCardCreate.callCount, 1);
+    });
+
+    it('should pass `onCardRemoveClick` callback to <Card />', () => {
+        const { card, props } = setup();
+
+        card.props().onRemoveClick();
+        assert.equal(props.onCardRemoveClick.callCount, 1);
     });
 });

@@ -98,28 +98,25 @@ describe('routes', () => {
         });
     });
 
-    it('DELETE /api/boards/:id should respond with 204', (done) => {
+    it('DELETE /api/boards/:id should respond with 200 and return removed id', (done) => {
         db.none(`
             INSERT INTO boards (title) VALUES ('test board')
         `).then(() => {
             request(app)
                 .delete('/api/boards/1')
-                .expect(204)
+                .expect(200)
                 .end((err, res) => {
                     if (err) { return done(err); }
 
-                    assert.deepEqual(res.body, {});
+                    assert.deepEqual(res.body, {
+                        result: {
+                            id: 1
+                        }
+                    });
 
                     done();
                 });
         });
-    });
-
-    it('DELETE /api/boards/:id should be idempotent', (done) => {
-        request(app)
-            .delete('/api/boards/20')
-            .expect(204)
-            .end(done);
     });
 
     it('POST /api/lists/:id/cards should respond with 201 and return created card', (done) => {
@@ -142,51 +139,45 @@ describe('routes', () => {
         });
     });
 
-    it('DELETE /api/lists/:id should respond with 204', (done) => {
+    it('DELETE /api/lists/:id should respond with 200 and return removed id', (done) => {
         db.none(`
             INSERT INTO lists (title) VALUES ('test list')
         `).then(() => {
             request(app)
                 .delete('/api/lists/1')
-                .expect(204)
+                .expect(200)
                 .end((err, res) => {
                     if (err) { return done(err); }
 
-                    assert.deepEqual(res.body, {});
+                    assert.deepEqual(res.body, {
+                        result: {
+                            id: 1
+                        }
+                    });
 
                     done();
                 });
         });
     });
 
-    it('DELETE /api/lists/:id should be idempotent', (done) => {
-        request(app)
-            .delete('/api/lists/5')
-            .expect(204)
-            .end(done);
-    });
-
-    it('DELETE /api/cards/:id should respond with 204', (done) => {
+    it('DELETE /api/cards/:id should respond with 200 and return removed id', (done) => {
         db.none(`
             INSERT INTO cards (text) VALUES ('test card')
         `).then(() => {
             request(app)
                 .delete('/api/cards/1')
-                .expect(204)
+                .expect(200)
                 .end((err, res) => {
                     if (err) { return done(err); }
 
-                    assert.deepEqual(res.body, {});
+                    assert.deepEqual(res.body, {
+                        result: {
+                            id: 1
+                        }
+                    });
 
                     done();
                 });
         });
-    });
-
-    it('DELETE /api/cards/:id should be idempotent', (done) => {
-        request(app)
-            .delete('/api/cards/7')
-            .expect(204)
-            .end(done);
     });
 });

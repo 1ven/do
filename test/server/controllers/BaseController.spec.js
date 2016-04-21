@@ -16,7 +16,7 @@ const Model = {
             return Promise.reject('test error');
         }
 
-        return Promise.resolve();
+        return Promise.resolve({ id });
     },
     getWithChildren(id) {
         if (_.isNaN(id)) {
@@ -117,7 +117,7 @@ describe('BaseController', () => {
     });
 
     describe('remove', () => {
-        it('should respond with status 204', () => {
+        it('should respond with status 200', () => {
             const spy = sinon.spy();
             const req = {
                 params: { id: 5 }
@@ -130,7 +130,7 @@ describe('BaseController', () => {
             };
             return TestController.remove(req, res)
                 .then(() => {
-                    assert(spy.calledWith(204));
+                    assert(spy.calledWith(200));
                 });
         });
 
@@ -146,7 +146,7 @@ describe('BaseController', () => {
                 });
         });
 
-        it('should return empty json body', () => {
+        it('should return removed id', () => {
             const spy = sinon.spy();
             const req = {
                 params: { id: 3 }
@@ -158,7 +158,7 @@ describe('BaseController', () => {
             };
             return TestController.remove(req, res)
                 .then(() => {
-                    assert(spy.calledWith());
+                    assert(spy.calledWith({ result: { id: 3 } }));
                 });
         });
     });

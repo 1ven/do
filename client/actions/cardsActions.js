@@ -21,3 +21,19 @@ export function createCard(listId, text) {
         }
     };
 };
+
+export function removeCard(id) {
+    return {
+        [CALL_API]: {
+            types: [
+                types.CARDS_REMOVE_REQUEST,
+                types.CARDS_REMOVE_SUCCESS,
+                types.CARDS_REMOVE_ERROR
+            ],
+            endpoint: `/api/cards/${id}`,
+            request: {
+                method: 'delete'
+            }
+        }
+    };
+};

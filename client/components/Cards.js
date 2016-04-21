@@ -1,7 +1,12 @@
 import React, { PropTypes } from 'react';
 import InputForm from './InputForm';
+import Card from './Card';
 
-const Cards = ({ cards = [], onCardCreate }) => {
+const Cards = ({
+    cards = [],
+    onCardCreate,
+    onCardRemoveClick
+}) => {
     return (
         <div className="c-cards">
             {cards.map((card, i) =>
@@ -9,10 +14,10 @@ const Cards = ({ cards = [], onCardCreate }) => {
                     key={i}
                     className="c-cards__item"
                 >
-                    <div className="c-card">
-                        {card.text}
-                        <a className="c-card__remove">X</a>
-                    </div>
+                    <Card
+                        {...card}
+                        onRemoveClick={onCardRemoveClick}
+                    />
                 </div>
             )}
             <div className="c-cards__item">
@@ -30,7 +35,8 @@ Cards.propTypes = {
         id: PropTypes.number,
         text: PropTypes.string
     })),
-    onCardCreate: PropTypes.func.isRequired
+    onCardCreate: PropTypes.func.isRequired,
+    onCardRemoveClick: PropTypes.func.isRequired
 };
 
 export default Cards;

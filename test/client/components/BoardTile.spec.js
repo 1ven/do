@@ -1,5 +1,4 @@
 import React from 'react';
-import sinon from 'sinon';
 import { shallow } from 'enzyme';
 import { assert } from 'chai';
 import BoardTile from 'client/components/BoardTile';
@@ -23,6 +22,6 @@ describe('<BoardTile />', () => {
     it('should render board title', () => {
         const { component, props } = setup();
 
-        assert(component.find('.b-tile__top-left').text(), props.data.title);
+        assert.equal(component.find('.b-tile__top-left').text(), props.data.title);
     });
 });

@@ -44,7 +44,7 @@ export default store => next => action => {
         .then(
             data => {
                 if (!data.entities) {
-                    data = { data };
+                    data = { result: data };
                 }
 
                 return next({

@@ -21,7 +21,7 @@ const BaseController = {
         const id = parseInt(req.params.id);
 
         return this.Model.remove(id)
-            .then(() => res.status(204).json(), next);
+            .then(result => res.status(200).json({ result }), next);
     }
 };
 

@@ -1,4 +1,6 @@
 import merge from 'lodash/merge';
+import without from 'lodash/without';
+import assign from 'lodash/assign';
 import * as types from '../constants/actionTypes';
 
 export default function entities(state = {}, action) {
@@ -37,7 +39,7 @@ function listsReducer(state = {}, action) {
     const payload = action.payload;
 
     switch (action.type) {
-        case types.LISTS_ADD_CARD_ID:
+        case types.LISTS_ADD_CARD_ID: {
             const { listId, cardId } = payload;
             const cards = state[listId].cards || [];
 
@@ -46,6 +48,17 @@ function listsReducer(state = {}, action) {
                     cards: [...cards, cardId]
                 }
             });
+        }
+        case types.LISTS_REMOVE_CARD_ID: {
+            const { listId, cardId } = payload;
+            const cards = state[listId].cards || [];
+
+            return assign({}, state, {
+                [listId]: assign({}, state[listId], {
+                    cards: without(cards, cardId)
+                })
+            });
+        }
         default:
             return state;
     }
