@@ -11,7 +11,7 @@ const Cards = ({ cards = [], onCardCreate }) => {
                 >
                     <div className="c-card">
                         {card.text}
-                        <a className="c-card__remove">Remove</a>
+                        <a className="c-card__remove">X</a>
                     </div>
                 </div>
             )}

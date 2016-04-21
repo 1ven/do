@@ -9,11 +9,16 @@ const Lists = ({ lists = [], onListCreate }) => (
                 key={i}
                 className="c-lists__item"
             >
-                <div className="c-list">
-                    <div className="c-list__title">
-                        {list.title}
+                <div className="b-tile">
+                    <div className="b-tile__top">
+                        <div className="b-tile__top-left">
+                            {list.title}
+                        </div>
+                        <div className="b-tile__top-right">
+                            <a>X</a>
+                        </div>
                     </div>
-                    <div className="c-list__cards">
+                    <div className="b-tile__body">
                         <CardsContainer
                             listId={list.id}
                             cardsIds={list.cards}

@@ -4,4 +4,8 @@
     padding: 4px;
     color: $black;
     font-size: 14px;
+    &__remove {
+        float: right;
+        color: $black;
+    }
 }

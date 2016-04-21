@@ -19,6 +19,7 @@ const BoardsList = ({ boards, onBoardCreatorSubmit }) => (
                 <div className="c-boards-list__item" >
                     <div className="b-tile">
                         <InputForm
+                            placeholder="Enter board name"
                             onSubmit={onBoardCreatorSubmit}
                         />
                     </div>
