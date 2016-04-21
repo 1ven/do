@@ -34,7 +34,6 @@ function indexReducer(state = {
 };
 
 function boardReducer(state = {
-    id: undefined,
     isFetching: false,
     lastUpdated: undefined
 }, action) {
@@ -45,7 +44,6 @@ function boardReducer(state = {
             });
         case types.BOARDS_GET_SUCCESS:
             return assign({}, state, {
-                id: action.payload.result,
                 isFetching: false,
                 lastUpdated: action.payload.receivedAt
             });

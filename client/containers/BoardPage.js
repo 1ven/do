@@ -51,8 +51,8 @@ function loadBoard(props) {
 };
 
 function mapStateToProps(state, ownProps) {
-    const { id, isFetching, lastUpdated } = state.pages.board;
-    const board = state.entities.boards[id];
+    const { isFetching, lastUpdated } = state.pages.board;
+    const board = state.entities.boards[ownProps.params.id];
 
     return {
         board,

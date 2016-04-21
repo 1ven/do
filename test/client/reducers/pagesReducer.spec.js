@@ -11,7 +11,6 @@ function getState(customState = {}) {
             lastUpdated: undefined
         },
         board: {
-            id: undefined,
             isFetching: false,
             lastUpdated: undefined
         }
@@ -108,14 +107,12 @@ describe('pagesReducer', () => {
         const nextState = pagesReducer(prevState, {
             type: types.BOARDS_GET_SUCCESS,
             payload: {
-                result: 5,
                 receivedAt: 1
             }
         });
         assert.deepEqual(nextState, getState({
             board: {
                 isFetching: false,
-                id: 5,
                 lastUpdated: 1
             }
         }));
