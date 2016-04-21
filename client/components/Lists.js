@@ -9,7 +9,7 @@ const Lists = ({ lists = [], onListCreate }) => (
                 key={i}
                 className="c-lists__item"
             >
-                <div className="b-tile">
+                <div className="b-list b-tile">
                     <div className="b-tile__top">
                         <div className="b-tile__top-left">
                             {list.title}

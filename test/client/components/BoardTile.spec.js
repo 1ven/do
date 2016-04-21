@@ -14,7 +14,6 @@ function setup() {
     const component = shallow(<BoardTile {...props} />);
 
     return {
-        boardTileLink: component.find('.c-board-tile'),
         component,
         props
     };
@@ -24,6 +23,6 @@ describe('<BoardTile />', () => {
     it('should render board title', () => {
         const { component, props } = setup();
 
-        assert(component.children().text(), props.data.title);
+        assert(component.find('.b-tile__top-left').text(), props.data.title);
     });
 });

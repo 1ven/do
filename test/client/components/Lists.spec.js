@@ -15,7 +15,7 @@ function setup() {
     const component = shallow(<Lists {...props} />);
 
     return {
-        lists: component.find('.c-list'),
+        lists: component.find('.b-list'),
         inputForm: component.find('InputForm'),
         component,
         props
