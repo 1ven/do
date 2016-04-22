@@ -41,3 +41,19 @@ export function createList(boardId, title) {
         }
     };
 };
+
+export function removeList(id) {
+    return {
+        [CALL_API]: {
+            types: [
+                types.LISTS_REMOVE_REQUEST,
+                types.LISTS_REMOVE_SUCCESS,
+                types.LISTS_REMOVE_ERROR
+            ],
+            endpoint: `/api/lists/${id}`,
+            request: {
+                method: 'delete'
+            }
+        }
+    };
+};

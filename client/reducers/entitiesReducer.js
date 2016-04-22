@@ -21,7 +21,7 @@ function boardsReducer(state = {}, action) {
     const payload = action.payload;
 
     switch (action.type) {
-        case types.BOARDS_ADD_LIST_ID:
+        case types.BOARDS_ADD_LIST_ID: {
             const { boardId, listId } = payload;
             const lists = state[boardId].lists || [];
 
@@ -30,6 +30,17 @@ function boardsReducer(state = {}, action) {
                     lists: [...lists, listId]
                 }
             });
+        }
+        case types.BOARDS_REMOVE_LIST_ID: {
+            const { boardId, listId } = payload;
+            const lists = state[boardId].lists || [];
+
+            return assign({}, state, {
+                [boardId]: assign({}, state[boardId], {
+                    lists: without(lists, listId)
+                })
+            });
+        }
         default:
             return state;
     }
@@ -40,6 +51,7 @@ function listsReducer(state = {}, action) {
 
     switch (action.type) {
         case types.LISTS_ADD_CARD_ID: {
+            // TODO: Remove variables duplicating.
             const { listId, cardId } = payload;
             const cards = state[listId].cards || [];
 

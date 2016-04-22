@@ -65,6 +65,31 @@ describe('entities reducer', () => {
         assert.deepEqual(nextState.boards[1].lists, [2, 5, 7]);
     });
 
+    it('should handle BOARDS_REMOVE_LIST_ID', () => {
+        const prevState = {
+            boards: {
+                1: { id: 1, title: 'board 1', lists: [2, 5] }
+            },
+            lists: {},
+            cards: {}
+        };
+        const nextState = entitiesReducer(prevState, {
+            type: types.BOARDS_REMOVE_LIST_ID,
+            payload: {
+                boardId: 1,
+                listId: 2
+            }
+        });
+        const expectedState = {
+            boards: {
+                1: { id: 1, title: 'board 1', lists: [5] }
+            },
+            lists: {},
+            cards: {}
+        };
+        assert.deepEqual(nextState, expectedState);
+    });
+
     it('should handle LISTS_ADD_CARD_ID', () => {
         const prevState = {
             boards: {},

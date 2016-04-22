@@ -16,6 +16,7 @@ function mapStateToProps(state, ownProps) {
 function mapDispatchToProps(dispatch, ownProps) {
     const { listId } = ownProps;
     return {
+        // TODO: May be rename callback
         onCardCreate: text => {
             dispatch(createCard(listId, text))
                 .then(action => {
@@ -25,7 +26,7 @@ function mapDispatchToProps(dispatch, ownProps) {
         onCardRemoveClick: id => {
             dispatch(removeCard(id))
                 .then(action => {
-                    dispatch(removeCardId(listId, action.payload.result.id));
+                    dispatch(removeCardId(listId, id));
                 });
         }
     };

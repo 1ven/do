@@ -7,15 +7,16 @@ import Lists from 'client/components/Lists';
 function setup() {
     const props = {
         lists: [
-            { id: 1, title: 'list 1' },
+            { id: 1, title: 'list 1', cards: [1, 5] },
         ],
-        onListCreate: sinon.spy()
+        onListCreate: sinon.spy(),
+        onListRemoveClick: sinon.spy()
     };
 
     const component = shallow(<Lists {...props} />);
 
     return {
-        lists: component.find('.b-list'),
+        lists: component.find('List'),
         inputForm: component.find('InputForm'),
         component,
         props
@@ -28,11 +29,27 @@ describe('<Lists />', () => {
         assert.equal(lists.length, props.lists.length);
     });
 
+    it('should pass data to <List />', () => {
+        const { lists, props } = setup();
+        const listProps = lists.at(0).props();
+        const ownProps = props.lists[0];
+
+        assert.equal(listProps.id, ownProps.id);
+        assert.equal(listProps.title, ownProps.title);
+        assert.equal(listProps.cardsIds, ownProps.cards);
+    });
 
     it('should pass `onListCreate` callback to <InputForm />', () => {
         const { inputForm, props } = setup();
 
         inputForm.props().onSubmit();
         assert.equal(props.onListCreate.callCount, 1);
+    });
+
+    it('should pass `onListRemoveClick` callback to <List />', () => {
+        const { lists, props } = setup();
+
+        lists.at(0).props().onRemoveClick();
+        assert.equal(props.onListRemoveClick.callCount, 1);
     });
 });

@@ -1,30 +1,24 @@
 import React, { PropTypes } from 'react';
 import InputForm from './InputForm';
-import CardsContainer from '../containers/CardsContainer';
+import List from './List';
 
-const Lists = ({ lists = [], onListCreate }) => (
+const Lists = ({
+    lists = [],
+    onListCreate,
+    onListRemoveClick
+}) => (
     <div className="c-lists">
         {lists.map((list, i) => (
             <div
                 key={i}
                 className="c-lists__item"
             >
-                <div className="b-list b-tile">
-                    <div className="b-tile__top">
-                        <div className="b-tile__top-left">
-                            {list.title}
-                        </div>
-                        <div className="b-tile__top-right">
-                            <a>X</a>
-                        </div>
-                    </div>
-                    <div className="b-tile__body">
-                        <CardsContainer
-                            listId={list.id}
-                            cardsIds={list.cards}
-                        />
-                    </div>
-                </div>
+                <List
+                    id={list.id}
+                    title={list.title}
+                    cardsIds={list.cards}
+                    onRemoveClick={onListRemoveClick}
+                />
             </div>
         ))}
         <div className="c-lists__item">
@@ -44,7 +38,8 @@ Lists.propTypes = {
         title: PropTypes.string,
         cards: PropTypes.array
     })),
-    onListCreate: PropTypes.func.isRequired
+    onListCreate: PropTypes.func.isRequired,
+    onListRemoveClick: PropTypes.func.isRequired
 };
 
 export default Lists;

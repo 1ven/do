@@ -63,3 +63,13 @@ export function addListId(boardId, listId) {
         }
     };
 };
+
+export function removeListId(boardId, listId) {
+    return {
+        type: types.BOARDS_REMOVE_LIST_ID,
+        payload: {
+            boardId,
+            listId
+        }
+    };
+};
