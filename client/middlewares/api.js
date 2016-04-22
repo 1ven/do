@@ -15,7 +15,7 @@ function callApi(endpoint, request) {
     return fetch(hostname + endpoint, requestWithHeaders)
         .then(response => response.json().then(body => ({ response, body })))
         .then(({ response, body }) => {
-            if (!response.ok)  { Promise.reject(body); } 
+            if (!response.ok)  { return Promise.reject(body); } 
             return body;
         });
 };

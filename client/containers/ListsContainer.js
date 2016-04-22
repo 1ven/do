@@ -25,7 +25,9 @@ function mapDispatchToProps(dispatch, ownProps) {
         onListRemoveClick: id => {
             dispatch(removeList(id))
                 .then(action => {
-                    dispatch(removeListId(boardId, id));
+                    if (!action.payload.error) {
+                        dispatch(removeListId(boardId, id));
+                    }
                 });
         }
     };
