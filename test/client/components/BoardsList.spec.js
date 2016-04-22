@@ -12,7 +12,7 @@ const setup = (customProps = {}) => {
             { id: 2, title: 'board 2' }
         ],
         onBoardCreatorSubmit: sinon.spy(),
-        loading: false
+        onBoardTileRemoveClick: sinon.spy()
     }, customProps);
     const component = shallow(<BoardsList {...props} />);
 
@@ -31,18 +31,26 @@ describe('<BoardsList />', () => {
         assert.equal(boardTiles.length, 2);
     });
 
-    it('should pass board object to <BoardTile /> data prop', () => {
+    it('should pass board data to <BoardTile />', () => {
         const { props, boardTiles } = setup();
 
         props.boards.forEach((board, i) => {
-            assert.deepEqual(boardTiles.at(i).props().data, board);
+            assert.equal(boardTiles.at(i).props().id, board.id);
+            assert.equal(boardTiles.at(i).props().title, board.title);
         });
     });
 
-    it('should pass onBoardCreatorSubmit callback to <BoardCreator /> onSubmit prop', () => {
+    it('should pass `onBoardCreatorSubmit` callback to <BoardCreator /> onSubmit prop', () => {
         const { props, boardCreator } = setup();
 
         boardCreator.props().onSubmit();
         assert.equal(props.onBoardCreatorSubmit.callCount, 1);
+    });
+
+    it('should pass `onBoardTileRemoveClick` callback to <BoardTile /> onRemoveClick prop', () => {
+        const { props, boardTiles } = setup();
+
+        boardTiles.at(0).props().onRemoveClick();
+        assert.equal(props.onBoardTileRemoveClick.callCount, 1);
     });
 });

@@ -54,6 +54,22 @@ export function createBoard(title) {
     };
 };
 
+export function removeBoard(id) {
+    return {
+        [CALL_API]: {
+            types: [
+                types.BOARDS_REMOVE_REQUEST,
+                types.BOARDS_REMOVE_SUCCESS,
+                types.BOARDS_REMOVE_ERROR
+            ],
+            endpoint: '/api/boards/' + id,
+            request: {
+                method: 'delete'
+            }
+        }
+    };
+};
+
 export function addListId(boardId, listId) {
     return {
         type: types.BOARDS_ADD_LIST_ID,

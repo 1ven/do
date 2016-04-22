@@ -87,6 +87,22 @@ describe('pagesReducer', () => {
         }));
     });
 
+    it('should handle BOARDS_REMOVE_SUCCESS', () => {
+        const prevState = getState({
+            index: { ids: [2, 6, 8] }
+        });
+        const nextState = pagesReducer(prevState, {
+            type: types.BOARDS_REMOVE_SUCCESS,
+            payload: {
+                result: { id: 6 }
+            }
+        });
+        const expectedState = getState({
+            index: { ids: [2, 8] }
+        });
+        assert.deepEqual(nextState, expectedState);
+    });
+
     it('should handle BOARDS_GET_REQUEST', () => {
         const nextState = pagesReducer(getState(), {
             type: types.BOARDS_GET_REQUEST

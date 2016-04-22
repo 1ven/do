@@ -1,0 +1,15 @@
+.c-board-tile {
+    @extend .b-tile;
+    &__top-left {
+        @extend .b-tile__top-left;
+    }
+    &__top-right {
+        @extend .b-tile__top-right;
+    }
+    &__top {
+        @extend .b-tile__top;
+    }
+    &__more {
+        color: $white;
+    }
+}

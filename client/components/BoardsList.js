@@ -2,7 +2,11 @@ import React, { PropTypes } from 'react';
 import BoardTile from './BoardTile';
 import InputForm from './InputForm';
 
-const BoardsList = ({ boards, onBoardCreatorSubmit }) => (
+const BoardsList = ({
+    boards,
+    onBoardCreatorSubmit,
+    onBoardTileRemoveClick
+}) => (
     <div className="b-container">
         <div className="c-boards-list">
             <div className="c-boards-list__items">
@@ -12,7 +16,8 @@ const BoardsList = ({ boards, onBoardCreatorSubmit }) => (
                         key={i}
                     >
                         <BoardTile
-                            data={board}
+                            {...board}
+                            onRemoveClick={onBoardTileRemoveClick}
                         />
                     </div>
                 )}
@@ -35,6 +40,7 @@ BoardsList.propTypes = {
         title: PropTypes.string.isRequired
     }).isRequired).isRequired,
     onBoardCreatorSubmit: PropTypes.func.isRequired,
+    onBoardTileRemoveClick: PropTypes.func.isRequired,
 };
 
 export default BoardsList;

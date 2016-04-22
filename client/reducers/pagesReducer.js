@@ -1,4 +1,5 @@
 import assign from 'lodash/assign';
+import without from 'lodash/without';
 import * as types from '../constants/actionTypes';
 import { combineReducers } from 'redux';
 
@@ -27,6 +28,10 @@ function indexReducer(state = {
         case types.BOARDS_CREATE_SUCCESS:
             return assign({}, state, {
                 ids: [...state.ids, payload.result] 
+            });
+        case types.BOARDS_REMOVE_SUCCESS:
+            return assign({}, state, {
+                ids: without(state.ids, payload.result.id)
             });
         default:
             return state;

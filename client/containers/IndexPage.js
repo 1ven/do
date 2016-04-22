@@ -1,6 +1,6 @@
 import React, { PropTypes, Component } from 'react';
 import { connect } from 'react-redux'
-import { getBoards, createBoard } from '../actions/boardsActions';
+import { getBoards, createBoard, removeBoard } from '../actions/boardsActions';
 import BoardsList from '../components/BoardsList.js';
 import Loader from '../components/Loader';
 
@@ -8,6 +8,7 @@ class IndexPage extends Component {
     constructor(props) {
         super(props);
         this.handleBoardCreatorSubmit = this.handleBoardCreatorSubmit.bind(this);
+        this.handleBoardTileRemoveClick = this.handleBoardTileRemoveClick.bind(this);
     }
 
     componentWillMount() {
@@ -22,6 +23,10 @@ class IndexPage extends Component {
         this.props.dispatch(createBoard(title));
     }
 
+    handleBoardTileRemoveClick(id) {
+        this.props.dispatch(removeBoard(id));
+    }
+
     render() {
         const { boards, isFetching, lastUpdated } = this.props;
         const isEmpty = boards.length === 0;
@@ -34,6 +39,7 @@ class IndexPage extends Component {
             <BoardsList
                 boards={boards}
                 onBoardCreatorSubmit={this.handleBoardCreatorSubmit}
+                onBoardTileRemoveClick={this.handleBoardTileRemoveClick}
             />
         );
     }
