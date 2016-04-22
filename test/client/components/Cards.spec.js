@@ -10,7 +10,9 @@ function setup() {
             { id: 1, text: 'card 1' }
         ],
         onCardCreate: sinon.spy(),
-        onCardRemoveClick: sinon.spy()
+        onCardRemoveClick: sinon.spy(),
+        onCardInputFormSubmit: sinon.spy(),
+        onCardTextClick: sinon.spy()
     };
 
     const component = shallow(<Cards {...props} />);
@@ -41,5 +43,19 @@ describe('<Cards />', () => {
 
         card.props().onRemoveClick();
         assert.equal(props.onCardRemoveClick.callCount, 1);
+    });
+
+    it('should pass `onCardInputFormSubmit` callback to <Card />', () => {
+        const { card, props } = setup();
+
+        card.props().onInputFormSubmit();
+        assert.equal(props.onCardInputFormSubmit.callCount, 1);
+    });
+
+    it('should pass `onCardTextClick` callback to <Card />', () => {
+        const { card, props } = setup();
+
+        card.props().onTextClick();
+        assert.equal(props.onCardTextClick.callCount, 1);
     });
 });

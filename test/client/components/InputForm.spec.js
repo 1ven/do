@@ -55,7 +55,7 @@ describe('<InputForm />', () => {
         input.simulate('change', { target: { value: 'test' } });
         form.simulate('submit', { preventDefault });
 
-        assert.equal(component.state().inputValue, '');
+        assert.equal(component.state().value, '');
     });
 
     it('should set input placeholder', () => {
@@ -64,5 +64,15 @@ describe('<InputForm />', () => {
         });
 
         assert.equal(input.props().placeholder, 'Test placeholder');
+    });
+
+    it('should set input value if it provided by props', () => {
+        const { form, props, preventDefault } = setup({
+            value: 'test'
+        });
+
+        form.simulate('submit', { preventDefault });
+
+        assert(props.onSubmit.calledWith('test'));
     });
 });

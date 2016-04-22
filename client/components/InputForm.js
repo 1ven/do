@@ -7,31 +7,31 @@ class InputForm extends Component {
         this.handleFormSubmit = this.handleFormSubmit.bind(this);
         this.handleInputChange = this.handleInputChange.bind(this);
         this.state = {
-            inputValue: ''
+            value: this.props.value || ''
         };
     }
 
     handleFormSubmit(e) {
         e.preventDefault();
 
-        const { inputValue } = this.state;
+        const { value } = this.state;
         const { onSubmit } = this.props;
 
-        if (!inputValue.trim()) { return; }
+        if (!value.trim()) { return; }
 
-        onSubmit(inputValue);
+        onSubmit(value);
         this.clearInput();
     }
 
     clearInput() {
         this.setState({
-            inputValue: ''
+            value: ''
         });
     }
 
     handleInputChange(e) {
         this.setState({
-            inputValue: e.target.value
+            value: e.target.value
         });
     }
 
@@ -44,7 +44,7 @@ class InputForm extends Component {
                 <input
                     className="c-input-form__input"
                     onChange={this.handleInputChange}
-                    value={this.state.inputValue}
+                    value={this.state.value}
                     placeholder={this.props.placeholder}
                 />
             </form>

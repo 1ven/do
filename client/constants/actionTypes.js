@@ -31,3 +31,6 @@ export const CARDS_REMOVE_ERROR = 'CARDS_REMOVE_ERROR';
 
 export const NOTICE_SHOW = 'NOTICE_SHOW';
 export const NOTICE_HIDE = 'NOTICE_HIDE';
+
+export const EDIT_FORM_SHOW = 'EDIT_FORM_SHOW';
+export const EDIT_FORM_HIDE = 'EDIT_FORM_HIDE';

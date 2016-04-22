@@ -5,7 +5,9 @@ import Card from './Card';
 const Cards = ({
     cards = [],
     onCardCreate,
-    onCardRemoveClick
+    onCardRemoveClick,
+    onCardInputFormSubmit,
+    onCardTextClick
 }) => {
     return (
         <div className="c-cards">
@@ -17,6 +19,8 @@ const Cards = ({
                     <Card
                         {...card}
                         onRemoveClick={onCardRemoveClick}
+                        onInputFormSubmit={onCardInputFormSubmit}
+                        onTextClick={onCardTextClick}
                     />
                 </div>
             )}
@@ -36,7 +40,9 @@ Cards.propTypes = {
         text: PropTypes.string
     })),
     onCardCreate: PropTypes.func.isRequired,
-    onCardRemoveClick: PropTypes.func.isRequired
+    onCardRemoveClick: PropTypes.func.isRequired,
+    onCardInputFormSubmit: PropTypes.func.isRequired,
+    onCardTextClick: PropTypes.func.isRequired
 };
 
 export default Cards;
