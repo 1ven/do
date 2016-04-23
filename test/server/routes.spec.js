@@ -292,7 +292,7 @@ describe('routes', () => {
 
     it('PUT /api/lists/:id should respond with 404 when trying to update nonexistent list', (done) => {
         request(app)
-            .put('/api/list/1')
+            .put('/api/lists/1')
             .send({
                 title: 'new title'
             })
@@ -325,9 +325,9 @@ describe('routes', () => {
         });
     });
 
-    it('PUT /api/lists/:id should respond with 404 when trying to update nonexistent list', (done) => {
+    it('PUT /api/cards/:id should respond with 404 when trying to update nonexistent card', (done) => {
         request(app)
-            .put('/api/text/1')
+            .put('/api/cards/1')
             .send({
                 text: 'new text'
             })
