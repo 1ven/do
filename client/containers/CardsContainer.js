@@ -2,7 +2,7 @@ import React from 'react';
 import assign from 'lodash/assign';
 import { connect } from 'react-redux';
 import Cards from '../components/Cards';
-import { createCard, removeCard } from '../actions/cardsActions';
+import { createCard, removeCard, updateCard } from '../actions/cardsActions';
 import { addCardId, removeCardId } from '../actions/listsActions';
 import { showEditForm, hideEditForm } from '../actions/editFormActions';
 
@@ -40,8 +40,12 @@ function mapDispatchToProps(dispatch, ownProps) {
             dispatch(showEditForm(id, 'card'));
         },
         onCardInputFormSubmit: (id, text) => {
-            console.log(text);
-            dispatch(hideEditForm());
+            dispatch(updateCard(id, { text }))
+                .then(action => {
+                    if (!action.payload.error) {
+                        dispatch(hideEditForm());
+                    }
+                });
         }
     };
 };

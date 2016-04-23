@@ -37,3 +37,21 @@ export function removeCard(id) {
         }
     };
 };
+
+export function updateCard(id, props) {
+    return {
+        [CALL_API]: {
+            types: [
+                types.CARDS_UPDATE_REQUEST,
+                types.CARDS_UPDATE_SUCCESS,
+                types.CARDS_UPDATE_ERROR
+            ],
+            endpoint: `/api/cards/${id}`,
+            schema: CARD,
+            request: {
+                method: 'put',
+                body: props
+            }
+        }
+    };
+};
