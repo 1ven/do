@@ -106,6 +106,54 @@ describe('tables', () => {
                 });
         });
     });
+
+    describe('users', () => {
+        it('should be created', () => {
+            return selectColumnsInfo('users')
+                .then(prettyColumnsInfo)
+                .then(columns => {
+                    assert.equal(columns.id, 'integer');
+                    assert.equal(columns.username, 'character varying');
+                    assert.equal(columns.email, 'text');
+                    assert.equal(columns.hash, 'text');
+                    assert.equal(columns.salt, 'text');
+                });
+        });
+
+        it('should not allow to create users with username length more than 20 symbols', () => {
+            const promise = db.none(`
+                INSERT INTO users (username, email, hash, salt)
+                VALUES ('veryveryveryveryverylongusername', 'test@mail.com', 'hash', 'salt')
+            `);
+            return assert.isRejected(promise, /too long/);
+        });
+
+        it('should not allow to create users with username length less than 3 symbols', () => {
+            const promise = db.none(`
+                INSERT INTO users (username, email, hash, salt)
+                VALUES ('ab', 'test@mail.com', 'hash', 'salt')
+            `);
+            return assert.isRejected(promise, /violates check constraint/);
+        });
+
+        it('should not allow to create user with duplicate username', () => {
+            const promise = db.none(`
+                INSERT INTO users (username, email, hash, salt)
+                VALUES ('user1', 'test@mail.com', 'hash', 'salt'),
+                ('user1', 'test2@mail.com', 'hash', 'salt')
+            `);
+            return assert.isRejected(promise, /violates unique constraint.*username/);
+        });
+
+        it('should not allow to create user with duplicate email', () => {
+            const promise = db.none(`
+                INSERT INTO users (username, email, hash, salt)
+                VALUES ('user1', 'test@mail.com', 'hash', 'salt'),
+                ('user2', 'test@mail.com', 'hash', 'salt')
+            `);
+            return assert.isRejected(promise, /violates unique constraint.*email/);
+        });
+    });
 });
 
 function prettyColumnsInfo(data) {
