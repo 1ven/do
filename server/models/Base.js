@@ -9,6 +9,7 @@ const Base = {
     table: '',
     immutableFields: [],
     children: [],
+    hiddenFields: [],
 
     /**
      * @param {Object} props - Props of creating entry.
@@ -23,9 +24,9 @@ const Base = {
         const values = _.values(props);
 
         return db.one(
-            'INSERT INTO $1~($2^) VALUES($3:csv) RETURNING *',
+            'INSERT INTO $1~($2^) VALUES($3:csv) RETURNING id',
             [this.table, columns, values]
-        );
+        ).then(result => this.get(result.id));
     },
 
     /**
@@ -82,10 +83,10 @@ const Base = {
                 return db.one(
                     `UPDATE $1~ SET ($2^) = ($3:csv)
                      WHERE id = $4
-                     RETURNING *
+                     RETURNING id
                     `,
                     [this.table, columns, values, id]
-                );
+                ).then(result => this.get(result.id));
             });
     },
 
