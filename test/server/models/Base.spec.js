@@ -8,7 +8,7 @@ chai.use(chaiAsPromised);
 
 const Card = _.assign({}, Base, {
     table: 'cards',
-    immutableFields: ['id']
+    immutableFields: ['id'],
 });
 
 const List = _.assign({}, Base, {
@@ -21,6 +21,12 @@ const Board = _.assign({}, Base, {
     table: 'boards',
     immutableFields: ['id'],
     children: [List]
+});
+
+const User = _.assign({}, Base, {
+    table: 'users',
+    immutableFields: ['id', 'hash', 'salt'],
+    hiddenFields: ['hash', 'salt']
 });
 
 function setup() {
@@ -80,7 +86,8 @@ describe('Base model', () => {
             boards_lists,
             lists,
             lists_cards,
-            cards
+            cards,
+            users
             CASCADE
         `)
             .then(() => db.none(`
@@ -103,6 +110,12 @@ describe('Base model', () => {
                 CREATE TABLE lists_cards(
                     list_id integer NOT NULL REFERENCES lists ON DELETE RESTRICT,
                     card_id integer PRIMARY KEY REFERENCES cards ON DELETE CASCADE
+                );
+                CREATE TABLE IF NOT EXISTS users(
+                    id serial PRIMARY KEY,
+                    username character varying(20),
+                    hash text NOT NULL CHECK (hash <> ''),
+                    salt text NOT NULL CHECK (salt <> '')
                 );
             `));
     });
@@ -134,6 +147,34 @@ describe('Base model', () => {
                     { id: 1, title: 'test board 1' },
                     { id: 2, title: 'test board 2' },
                     { id: 3, title: 'test board 3' }
+                ]));
+        });
+
+        it('should not return hidden columns when id is provided', () => {
+            return db.one(`
+                INSERT INTO users (username, hash, salt)
+                VALUES ('test user', 'hash', 'salt') RETURNING id
+            `).then(result => User.get(result.id))
+                .then(entry => assert.deepEqual(entry, {
+                    id: 1,
+                    username: 'test user'
+                }));
+        });
+
+        it('should not return hidden columns when id is not provided', () => {
+            return db.none(`
+                INSERT INTO users (username, hash, salt)
+                VALUES ('test user 1', 'hash', 'salt'), ('test user 2', 'hash', 'salt')
+            `).then(() => User.get())
+                .then(users => assert.deepEqual(users, [
+                    {
+                        id: 1,
+                        username: 'test user 1'
+                    },
+                    {
+                        id: 2,
+                        username: 'test user 2'
+                    }
                 ]));
         });
     });

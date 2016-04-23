@@ -35,7 +35,8 @@ const Base = {
      */
     get(id) {
         if (typeof id === 'undefined') {
-            return db.query('SELECT * FROM $1~', [this.table]);
+            return db.query('SELECT * FROM $1~', [this.table])
+                .then(entries => _.map(entries, this._filterEntry.bind(this)));
         }
 
         if (!_.isInteger(id)) {
@@ -43,9 +44,10 @@ const Base = {
         }
 
         return this._isEntryExists(id)
-            .then(() => db.oneOrNone(
+            .then(() => db.one(
                 'SELECT * FROM $1~ WHERE id = $2', [this.table, id]
-            ));
+            ))
+            .then(this._filterEntry.bind(this));
     },
 
     /**
@@ -224,6 +226,16 @@ const Base = {
                     return Promise.reject(err);
                 }
             });
+    },
+
+    _filterEntry(entry) {
+        const entryWithoutHidden = {};
+        _.forIn(entry, (value, key) => {
+            if (this.hiddenFields.indexOf(key) === -1) {
+                entryWithoutHidden[key] = value;
+            }
+        });
+        return entryWithoutHidden;
     }
 };
 
