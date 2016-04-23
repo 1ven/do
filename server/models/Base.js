@@ -1,12 +1,13 @@
 'use strict';
 
 const Promise = require('bluebird');
+const pgp = require('pg-promise');
 const db = require('../db');
 const _ = require('lodash');
 
 const Base = {
     table: '',
-    readOnlyFields: [],
+    immutableFields: [],
     children: [],
 
     /**
@@ -18,11 +19,11 @@ const Base = {
             throw new Error('`props` must be an object');
         }
 
-        const columns =  _.keys(props).join();
-        const values = _.values(props).join();
+        const columns = _.keys(props).map(k => pgp.as.name(k)).join();
+        const values = _.values(props);
 
         return db.one(
-            'INSERT INTO $1~($2~) VALUES($3) RETURNING *',
+            'INSERT INTO $1~($2^) VALUES($3:csv) RETURNING *',
             [this.table, columns, values]
         );
     },
@@ -40,9 +41,10 @@ const Base = {
             throw new Error('`id` must be a number');
         }
 
-        return db.oneOrNone(
-            'SELECT * FROM $1~ WHERE id = $2', [this.table, id]
-        );
+        return this._isEntryExists(id)
+            .then(() => db.oneOrNone(
+                'SELECT * FROM $1~ WHERE id = $2', [this.table, id]
+            ));
     },
 
     /**
@@ -54,23 +56,38 @@ const Base = {
             throw new Error('`id` must be a number');
         }
 
-        return db.one(
-            'DELETE FROM $1~ WHERE id = $2 RETURNING id', [this.table, id]
-        );
+        return this._isEntryExists(id)
+            .then(() => db.one(
+                'DELETE FROM $1~ WHERE id = $2 RETURNING id', [this.table, id]
+            ));
     },
 
-    // update(props) {
-    //     if (!_.isPlainObject(props)) {
-    //         return Promise.reject('Wrong `props` type');
-    //     }
+    update(id, props) {
+        if (!_.isPlainObject(props)) {
+            return Promise.reject('Wrong `props` type');
+        }
 
-    //     const keys = _.keys(props);
-    //     const intersection = _.intersection(keys, this.readOnlyFields);
+        const keys = _.keys(props);
+        const intersection = _.intersection(keys, this.immutableFields);
 
-    //     if (intersection.length) {
-    //         return Promise.reject(`${intersection.join()} field's - read only`);
-    //     }
-    // },
+        if (intersection.length) {
+            return Promise.reject(`${intersection.join()} field's - read only`);
+        }
+
+        return this._isEntryExists(id)
+            .then(() => {
+                const columns = keys.map(k => pgp.as.name(k)).join();
+                const values = _.values(props);
+
+                return db.one(
+                    `UPDATE $1~ SET ($2^) = ($3:csv)
+                     WHERE id = $4
+                     RETURNING *
+                    `,
+                    [this.table, columns, values, id]
+                );
+            });
+    },
 
     /**
      * Creates child and relates it with parent entry.
@@ -100,8 +117,11 @@ const Base = {
                             .then(children => _.assign({}, entry, children));
                     });
                 }
-                return this._getAllChildren(id)
-                    .then(children => _.assign({}, result, children));
+
+                if (_.isObject(result)) {
+                    return this._getAllChildren(id)
+                        .then(children => _.assign({}, result, children));
+                }
             });
     },
 

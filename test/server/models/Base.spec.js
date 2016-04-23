@@ -7,16 +7,19 @@ import Base from 'server/models/Base';
 chai.use(chaiAsPromised);
 
 const Card = _.assign({}, Base, {
-    table: 'cards'
+    table: 'cards',
+    immutableFields: ['id']
 });
 
 const List = _.assign({}, Base, {
     table: 'lists',
+    immutableFields: ['id'],
     children: [Card]
 });
 
 const Board = _.assign({}, Base, {
     table: 'boards',
+    immutableFields: ['id'],
     children: [List]
 });
 
@@ -268,7 +271,60 @@ describe('Base model', () => {
 
         it('should be rejected when entry does not exists', () => {
             const promise = Board._isEntryExists(1);
-            assert.isRejected(promise);
+            return assert.isRejected(promise);
+        });
+    });
+
+    describe('update', () => {
+        function insert() {
+            return db.none(`
+                INSERT INTO boards (title) VALUES ('test board 1'), ('test board 2'), ('test board 3')
+            `)
+        };
+
+        it('should update entry', () => {
+            return insert()
+                .then(() => Board.update(2, {
+                    title: 'new title'
+                }))
+                .then(() => db.one('SELECT * FROM boards WHERE id = 2'))
+                .then(updatedBoard => assert.deepEqual(updatedBoard, {
+                    id: 2,
+                    title: 'new title'
+                }));
+        });
+
+        it('should return updated entry', () => {
+            return insert()
+                .then(() => Board.update(2, {
+                    title: 'new title'
+                })).then(updatedBoard => assert.deepEqual(updatedBoard, {
+                    id: 2,
+                    title: 'new title'
+                }));
+        });
+
+        it('should throw error, when trying to update immutable fields', () => {
+            return insert()
+                .then(() => {
+                    const promise = Board.update(2, { id: 4 });
+                    return assert.isRejected(promise, /read only/);
+                });
+        });
+
+        it('should throw error, when providing nonexistent fields', () => {
+            return insert()
+                .then(() => {
+                    const promise = Board.update(2, { nonexistent: 'some value' });
+                    return assert.isRejected(promise, /column.*not exist/);
+                });
+        });
+
+        it('should throw error, when trying to update nonexistent entry', () => {
+            const promise = Board.update(1, {
+                title: 'new title'
+            });
+            return assert.isRejected(promise, /not exists/);
         });
     });
 });

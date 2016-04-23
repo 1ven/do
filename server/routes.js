@@ -8,11 +8,14 @@ module.exports = function (app) {
     post('/api/boards', BoardController, 'create');
     post('/api/boards/:id/lists', BoardController, 'createList');
     del('/api/boards/:id', BoardController, 'remove');
+    put('/api/boards/:id', BoardController, 'update');
 
     post('/api/lists/:id/cards', ListController, 'createCard');
     del('/api/lists/:id', ListController, 'remove');
+    put('/api/lists/:id', ListController, 'update');
 
     del('/api/cards/:id', CardController, 'remove');
+    put('/api/cards/:id', CardController, 'update');
 
     app.get('*', function(req, res) {
         res.render('index', {
@@ -35,8 +38,8 @@ module.exports = function (app) {
         return makeRoute('post', path, Controller, action);
     };
 
-    function update(path, Controller, action) {
-        return makeRoute('update', path, Controller, action);
+    function put(path, Controller, action) {
+        return makeRoute('put', path, Controller, action);
     };
 
     function del(path, Controller, action) {

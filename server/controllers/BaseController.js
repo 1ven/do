@@ -22,6 +22,14 @@ const BaseController = {
 
         return this.Model.remove(id)
             .then(result => res.status(200).json({ result }), next);
+    },
+
+    update(req, res, next) {
+        const id = parseInt(req.params.id);
+        const props = req.body;
+
+        return this.Model.update(id, props)
+            .then(result => res.status(200).json({ result }), next);
     }
 };
 
