@@ -2,9 +2,10 @@
 
 const path = require('path');
 const express = require('express');
-const bodyParser = require('body-parser');
 const config = require('./config');
-const errorHandler = require('./middlewares').errorHandler;
+
+const bodyParser = require('body-parser');
+const errorHandler = require('./middlewares/').errorHandler;
 const initRoutes = require('./routes');
 
 const app = express();

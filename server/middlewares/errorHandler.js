@@ -1,6 +1,6 @@
 'use strict';
 
-exports.errorHandler = function (err, req, res, next) {
+module.exports = function (err, req, res, next) {
     const message = process.env.NODE_ENV !== 'production' ? (err.message || err) : undefined;
 
     let status = 500;
