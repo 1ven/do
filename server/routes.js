@@ -4,18 +4,18 @@ const ListController = require('./controllers/ListController');
 const CardController = require('./controllers/CardController');
 
 module.exports = function (app) {
-    get('/api/boards(|/:id)', BoardController, 'get');
-    post('/api/boards', BoardController, 'create');
-    post('/api/boards/:id/lists', BoardController, 'createList');
-    del('/api/boards/:id', BoardController, 'remove');
-    put('/api/boards/:id', BoardController, 'update');
+    app.get('/api/boards(|/:id)', handleRoute(BoardController, 'get'));
+    app.post('/api/boards', handleRoute(BoardController, 'create'));
+    app.post('/api/boards/:id/lists', handleRoute(BoardController, 'createList'));
+    app.delete('/api/boards/:id', handleRoute(BoardController, 'remove'));
+    app.put('/api/boards/:id', handleRoute(BoardController, 'update'));
 
-    post('/api/lists/:id/cards', ListController, 'createCard');
-    del('/api/lists/:id', ListController, 'remove');
-    put('/api/lists/:id', ListController, 'update');
+    app.post('/api/lists/:id/cards', handleRoute(ListController, 'createCard'));
+    app.delete('/api/lists/:id', handleRoute(ListController, 'remove'));
+    app.put('/api/lists/:id', handleRoute(ListController, 'update'));
 
-    del('/api/cards/:id', CardController, 'remove');
-    put('/api/cards/:id', CardController, 'update');
+    app.delete('/api/cards/:id', handleRoute(CardController, 'remove'));
+    app.put('/api/cards/:id', handleRoute(CardController, 'update'));
 
     app.get('*', function(req, res) {
         res.render('index', {
@@ -23,26 +23,7 @@ module.exports = function (app) {
         });
     })
 
-    function makeRoute(method, path, Controller, action) {
-        const callback = typeof action === 'undefined' ?
-            Controller : Controller[action].bind(Controller);
-
-        return app[method](path, callback);
-    };
-
-    function get(path, Controller, action) {
-        return makeRoute('get', path, Controller, action);
-    };
-
-    function post(path, Controller, action) {
-        return makeRoute('post', path, Controller, action);
-    };
-
-    function put(path, Controller, action) {
-        return makeRoute('put', path, Controller, action);
-    };
-
-    function del(path, Controller, action) {
-        return makeRoute('delete', path, Controller, action);
+    function handleRoute(Controller, action) {
+        return Controller[action].bind(Controller);
     };
 };
