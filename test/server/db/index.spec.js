@@ -133,7 +133,23 @@ describe('tables', () => {
                 INSERT INTO users (username, email, hash, salt)
                 VALUES ('ab', 'test@mail.com', 'hash', 'salt')
             `);
-            return assert.isRejected(promise, /violates check constraint/);
+            return assert.isRejected(promise, /violates check constraint.*username/);
+        });
+
+        it('should not allow to create user with username, containing whitespaces', () => {
+            const promise = db.none(`
+                INSERT INTO users (username, email, hash, salt)
+                VALUES ('i am john', 'test@mail.com', 'hash', 'salt')
+            `);
+            return assert.isRejected(promise, /violates check constraint.*username/);
+        });
+
+        it('should not allow to create username containing uppercase characters', () => {
+            const promise = db.none(`
+                INSERT INTO users (username, email, hash, salt)
+                VALUES ('jOhNNy', 'test@mail.com', 'hash', 'salt')
+            `);
+            return assert.isRejected(promise, /violates check constraint.*username/);
         });
 
         it('should not allow to create user with duplicate username', () => {
@@ -152,6 +168,22 @@ describe('tables', () => {
                 ('user2', 'test@mail.com', 'hash', 'salt')
             `);
             return assert.isRejected(promise, /violates unique constraint.*email/);
+        });
+
+        it('should not allow to create user with not valid email', () => {
+            const promise = db.none(`
+                INSERT INTO users (username, email, hash, salt)
+                VALUES ('user1', 'not valid email', 'hash', 'salt')
+            `);
+            return assert.isRejected(promise, /violates check constraint.*email/);
+        });
+
+        it('should not allow to create email containing uppercase characters', () => {
+            const promise = db.none(`
+                INSERT INTO users (username, email, hash, salt)
+                VALUES ('user1', 'tEsT@mAil.com', 'hash', 'salt')
+            `);
+            return assert.isRejected(promise, /violates check constraint.*email/);
         });
     });
 });
