@@ -12,6 +12,7 @@
     "babel-polyfill": "^6.7.4",
     "bluebird": "^3.3.4",
     "body-parser": "^1.15.0",
+    "crypto": "0.0.3",
     "ejs": "^2.4.1",
     "express": "^4.13.4",
     "isomorphic-fetch": "^2.2.1",
