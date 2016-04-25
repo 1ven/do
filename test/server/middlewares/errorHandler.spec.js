@@ -13,11 +13,11 @@ describe('errorHandler', () => {
                 return { json: spy };
             }
         };
-        errorHandler('test error', null, res);
+        errorHandler({ message: 'test error' }, null, res);
 
         process.env.NODE_ENV = initialEnv;
 
-        assert(spy.calledWith({ message: undefined }));
+        assert(spy.calledWith({}));
     });
 
     it('should return status 500 by default', () => {
@@ -62,7 +62,6 @@ describe('errorHandler', () => {
 
     it('should return error message in json in all environments except production', () => {
         const spy = sinon.spy();
-        const spy2 = sinon.spy();
         const err = new Error('test error');
 
         errorHandler(err, null, {
@@ -71,11 +70,5 @@ describe('errorHandler', () => {
             }
         });
         assert(spy.calledWith({ message: 'test error' }));
-        errorHandler('another error', null, {
-            status: () => {
-                return { json: spy2 };
-            }
-        });
-        assert(spy2.calledWith({ message: 'another error' }));
     });
 });
