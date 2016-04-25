@@ -2,6 +2,7 @@ const config = require('./config');
 const BoardController = require('./controllers/BoardController');
 const ListController = require('./controllers/ListController');
 const CardController = require('./controllers/CardController');
+const UserController = require('./controllers/UserController');
 
 module.exports = function (app) {
     app.get('/api/boards(|/:id)', handleRoute(BoardController, 'get'));
@@ -16,6 +17,8 @@ module.exports = function (app) {
 
     app.delete('/api/cards/:id', handleRoute(CardController, 'remove'));
     app.put('/api/cards/:id', handleRoute(CardController, 'update'));
+
+    app.post('/api/users', handleRoute(UserController, 'register'));
 
     app.get('*', function(req, res) {
         res.render('index', {

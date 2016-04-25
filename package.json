@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "NODE_PATH=. NODE_ENV=test mocha --compilers js:babel-register --recursive"
+    "test": "NODE_PATH=. NODE_ENV=test mocha --compilers js:babel-register --recursive -R min"
   },
   "author": "",
   "license": "ISC",
@@ -14,6 +14,7 @@
     "body-parser": "^1.15.0",
     "crypto": "0.0.3",
     "ejs": "^2.4.1",
+    "escape-html": "^1.0.3",
     "express": "^4.13.4",
     "isomorphic-fetch": "^2.2.1",
     "lodash": "^4.6.1",

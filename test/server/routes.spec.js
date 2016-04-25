@@ -340,4 +340,31 @@ describe('routes', () => {
                 .end(done);
         });
     });
+    
+    describe('users routes', () => {
+        it('POST /api/users should respond with 201 and return created user data', () => {
+            request(app)
+                .post('/api/users')
+                .send({
+                    username: 'test',
+                    email: 'test@mail.com',
+                    password: 123456,
+                    rePassword: 123456
+                })
+                .expect('Content-Type', /json/)
+                .expect(201)
+                .end((err, res) => {
+                    if (err) { return done(err); }
+
+                    assert.deepEqual(res.body, {
+                        result: {
+                            id: 1,
+                            username: 'test'
+                        }
+                    });
+
+                    done();
+                });
+        });
+    });
 });
