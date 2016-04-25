@@ -8,25 +8,27 @@ chai.use(chaiAsPromised);
 
 const Card = _.assign({}, Base, {
     table: 'cards',
-    immutableFields: ['id'],
+    mutableFields: ['text'],
+    visibleFields: ['id', 'text']
 });
 
 const List = _.assign({}, Base, {
     table: 'lists',
-    immutableFields: ['id'],
+    mutableFields: ['title'],
+    visibleFields: ['id', 'title'],
     children: [Card]
 });
 
 const Board = _.assign({}, Base, {
     table: 'boards',
-    immutableFields: ['id'],
+    mutableFields: ['title'],
+    visibleFields: ['id', 'title'],
     children: [List]
 });
 
 const User = _.assign({}, Base, {
     table: 'users',
-    immutableFields: ['id', 'hash', 'salt'],
-    hiddenFields: ['hash', 'salt']
+    visibleFields: ['id', 'username']
 });
 
 function setup() {
@@ -150,7 +152,7 @@ describe('Base model', () => {
                 ]));
         });
 
-        it('should not return hidden columns when id is provided', () => {
+        it('should return columns, declared in `this.visibleFields`, when id is provided', () => {
             return db.one(`
                 INSERT INTO users (username, hash, salt)
                 VALUES ('test user', 'hash', 'salt') RETURNING id
@@ -161,7 +163,7 @@ describe('Base model', () => {
                 }));
         });
 
-        it('should not return hidden columns when id is not provided', () => {
+        it('should return columns, declared in `this.visibleFields`, when id is not provided', () => {
             return db.none(`
                 INSERT INTO users (username, hash, salt)
                 VALUES ('test user 1', 'hash', 'salt'), ('test user 2', 'hash', 'salt')
@@ -345,19 +347,11 @@ describe('Base model', () => {
                 }));
         });
 
-        it('should throw error, when trying to update immutable fields', () => {
+        it('should throw error, when trying to update fields out of `this.mutableFields` array', () => {
             return insert()
                 .then(() => {
                     const promise = Board.update(2, { id: 4 });
-                    return assert.isRejected(promise, /read only/);
-                });
-        });
-
-        it('should throw error, when providing nonexistent fields', () => {
-            return insert()
-                .then(() => {
-                    const promise = Board.update(2, { nonexistent: 'some value' });
-                    return assert.isRejected(promise, /column.*not exist/);
+                    return assert.isRejected(promise, /can't update/);
                 });
         });
 

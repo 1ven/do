@@ -5,7 +5,8 @@ const Base = require('./Base');
 
 const Card = _.assign({}, Base, {
     table: 'cards',
-    immutableFields: ['id'],
+    mutableFields: ['text'],
+    visibleFields: ['id', 'text'],
 });
 
 module.exports = Card;

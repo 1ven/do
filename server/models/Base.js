@@ -7,9 +7,9 @@ const _ = require('lodash');
 
 const Base = {
     table: '',
-    immutableFields: [],
+    mutableFields: [],
+    visibleFields: [],
     children: [],
-    hiddenFields: [],
 
     /**
      * @param {Object} props - Props of creating entry.
@@ -71,10 +71,10 @@ const Base = {
         }
 
         const keys = _.keys(props);
-        const intersection = _.intersection(keys, this.immutableFields);
+        const difference = _.difference(keys, this.mutableFields);
 
-        if (intersection.length) {
-            return Promise.reject(`${intersection.join()} field's - read only`);
+        if (difference.length) {
+            return Promise.reject(`You can't update [${difference.join()}] field's`);
         }
 
         return this._isEntryExists(id)
@@ -229,18 +229,18 @@ const Base = {
     },
 
     _filterEntry(entry) {
-        const entryWithoutHidden = {};
+        const visible = {};
         _.forIn(entry, (value, key) => {
-            if (this.hiddenFields.indexOf(key) === -1) {
-                entryWithoutHidden[key] = value;
+            if (this.visibleFields.indexOf(key) !== -1) {
+                visible[key] = value;
             }
         });
-        return entryWithoutHidden;
+        return visible;
     }
 };
 
 function getTableFields(table) {
-    return db.result('select * from $1~', [table])
+    return db.result('SELECT * FROM $1~', [table])
         .then(result => _.map(result.fields, field => field.name))
 };
 

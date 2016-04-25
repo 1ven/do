@@ -8,7 +8,8 @@ const Card = require('./Card');
 const List = _.assign({}, Base, {
     table: 'lists',
     children: [Card],
-    immutableFields: ['id'],
+    mutableFields: ['title'],
+    visibleFields: ['id', 'title'],
 
     createCard(listId, cardProps) {
         return this.createChild(listId, cardProps, Card);
