@@ -156,7 +156,7 @@ const Base = {
                 const args = [ relationTable, fields[0], fields[1], id ];
 
                 if (isLeaf(Child)) {
-                    return this._getChildLeaves.apply(this, [...args, Child.table]);
+                    return this._getChildLeaves.apply(this, [...args, Child]);
                 }
 
                 return this._getChildTrees.apply(this, [...args, Child]);
@@ -168,7 +168,7 @@ const Base = {
      * @param {String} parentIdName - Name of parent entity id column in relation table. For example 'board_id'.
      * @param {String} childIdName - Name of child entity id column in relation table. For example 'list_id'.
      * @param {Number} parentId - Id of parent entry.
-     * @param {String} tableName - Child entity table name.
+     * @param {Object} Child - Child model object.
      * @returns {Promise} - Resolves array of related leaves child entries. For example, if parent is List, function will resolve all related cards.
      */
     _getChildLeaves(
@@ -176,12 +176,13 @@ const Base = {
         parentIdName,
         childIdName,
         parentId,
-        tableName
+        Child
     ) {
         return db.query(`
             SELECT a.* FROM $5~ AS a
             JOIN $1~ ON ($2~ = $4 and a.id = $3~)
-        `, [relationTable, parentIdName, childIdName, parentId, tableName]);
+        `, [relationTable, parentIdName, childIdName, parentId, Child.table])
+            .then(childLeaves => _.map(childLeaves, this._filterEntry.bind(Child)));
     },
 
     /**

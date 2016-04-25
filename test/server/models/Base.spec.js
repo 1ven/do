@@ -35,7 +35,7 @@ function setup() {
     return db.none(`
         INSERT INTO boards (title) VALUES ('boards entry 1'), ('boards entry 2'), ('boards entry 3');
         INSERT INTO lists (title) VALUES ('lists entry 1'), ('lists entry 2'), ('lists entry 3');
-        INSERT INTO cards (title) VALUES ('cards entry 1'), ('cards entry 2'), ('cards entry 3');
+        INSERT INTO cards (text) VALUES ('cards entry 1'), ('cards entry 2'), ('cards entry 3');
         INSERT INTO boards_lists VALUES (2, 2), (2, 3);
         INSERT INTO lists_cards VALUES (2, 1), (3, 2);
     `);
@@ -57,7 +57,7 @@ const expected = [
                 cards: [
                     {
                         id: 1,
-                        title: 'cards entry 1'
+                        text: 'cards entry 1'
                     }
                 ]
             },
@@ -67,7 +67,7 @@ const expected = [
                 cards: [
                     {
                         id: 2,
-                        title: 'cards entry 2'
+                        text: 'cards entry 2'
                     }
                 ]
             }
@@ -95,15 +95,18 @@ describe('Base model', () => {
             .then(() => db.none(`
                 CREATE TABLE boards(
                     id serial PRIMARY KEY,
-                    title text NOT NULL
+                    title text NOT NULL,
+                    hidden text
                 );
                 CREATE TABLE lists(
                     id serial PRIMARY KEY,
-                    title text NOT NULL
+                    title text NOT NULL,
+                    hidden text
                 );
                 CREATE TABLE cards(
                     id serial PRIMARY KEY,
-                    title text NOT NULL
+                    text text NOT NULL,
+                    hidden text
                 );
                 CREATE TABLE boards_lists(
                     board_id integer NOT NULL REFERENCES boards ON DELETE RESTRICT,
@@ -186,7 +189,7 @@ describe('Base model', () => {
             return db.none(`INSERT INTO boards (title) VALUES
                 ('test board 1'), ('test board 2'), ('test board 3')
             `).then(() => Board.remove(2))
-                .then(() => db.query('SELECT * FROM boards'))
+                .then(() => db.query('SELECT id, title FROM boards'))
                 .then(boards => assert.deepEqual(boards, [
                     { id: 1, title: 'test board 1' },
                     { id: 3, title: 'test board 3' }
@@ -208,7 +211,7 @@ describe('Base model', () => {
             `).then(() => {
                 return Board.createChild(2, { title: 'test list' }, List)
             }).then(() => {
-                return db.one('SELECT * FROM lists WHERE id = 1');
+                return db.one('SELECT id, title FROM lists WHERE id = 1');
             }).then(list => {
                 assert.deepEqual(list, { id: 1, title: 'test list' });
             });
@@ -220,7 +223,7 @@ describe('Base model', () => {
             `).then(() => {
                 return Board.createChild(2, { title: 'test list' }, List);
             }).then(() => {
-                return db.one('SELECT * FROM boards_lists WHERE board_id = 2');
+                return db.one('SELECT board_id, list_id FROM boards_lists WHERE board_id = 2');
             }).then(entry => assert.deepEqual(entry, { board_id: 2, list_id: 1 }));
         });
 
@@ -271,20 +274,20 @@ describe('Base model', () => {
 
         it('should return all related child leaves', () => {
             return setup().then(() => List._getChildEntries(2, Card))
-                .then(cards => assert.deepEqual(cards, [{ id: 1, title: 'cards entry 1' }]));
+                .then(cards => assert.deepEqual(cards, [{ id: 1, text: 'cards entry 1' }]));
         });
     });
 
     describe('_getChildLeaves', () => {
-        it('should return array of related childs which are leaves', () => {
+        it('should return array of related childs which are leaves, only with columns declared in `this.visibleFields`', () => {
             return setup().then(() => {
-                return List._getChildLeaves('lists_cards', 'list_id', 'card_id', 2, 'cards');
-            }).then(cards => assert.deepEqual(cards, [{ id: 1, title: 'cards entry 1' }]));
+                return List._getChildLeaves('lists_cards', 'list_id', 'card_id', 2, Card);
+            }).then(cards => assert.deepEqual(cards, [{ id: 1, text: 'cards entry 1' }]));
         });
     });
 
     describe('_getChildTrees', () => {
-        it('should return array of related childs which are trees', () => {
+        it('should return array of related childs which are trees, only with columns declared in `this.visibleFields`', () => {
             return setup().then(() => {
                 return Board._getChildTrees('boards_lists', 'board_id', 'list_id', 2, List);
             }).then(nestedLists => assert.deepEqual(nestedLists, expected[1].lists));
@@ -298,7 +301,7 @@ describe('Base model', () => {
                 INSERT INTO lists (title) VALUES ('lists entry 1'), ('lists entry 2');
             `)
                 .then(() => Board._relate(2, 1, 'lists'))
-                .then(() => db.one('SELECT * FROM boards_lists WHERE board_id = 2'))
+                .then(() => db.one('SELECT board_id, list_id FROM boards_lists WHERE board_id = 2'))
                 .then(entry => assert.deepEqual(entry, { board_id: 2, list_id: 1 }));
         });
     });
@@ -330,7 +333,7 @@ describe('Base model', () => {
                 .then(() => Board.update(2, {
                     title: 'new title'
                 }))
-                .then(() => db.one('SELECT * FROM boards WHERE id = 2'))
+                .then(() => db.one('SELECT id, title FROM boards WHERE id = 2'))
                 .then(updatedBoard => assert.deepEqual(updatedBoard, {
                     id: 2,
                     title: 'new title'
