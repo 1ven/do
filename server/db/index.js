@@ -5,7 +5,7 @@ const pgp = require('pg-promise')({
     promiseLib: bluebird
 });
 const config = require('../config');
-const sql = require('../helpers').sql;
+const sql = require('../utils/sql');
 
 const db = pgp(config.db);
 

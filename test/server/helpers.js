@@ -1,5 +1,5 @@
 import db from 'server/db';
-import { sql } from 'server/helpers';
+import sql from 'server/utils/sql';
 
 export function recreateTables() {
     return db.query('DROP TABLE IF EXISTS boards, boards_lists, lists, lists_cards, cards, users CASCADE')

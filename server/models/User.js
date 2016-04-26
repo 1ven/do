@@ -2,8 +2,10 @@
 
 const _ = require('lodash');
 const crypto = require('crypto');
-const validate = require('../helpers').validate;
+const Promise = require('bluebird');
+const validator = require('../utils/validator');
 const Base = require('./Base');
+const db = require('../db');
 
 const User = _.assign({}, Base, {
     table: 'users',
@@ -12,24 +14,19 @@ const User = _.assign({}, Base, {
 
     register(props) {
         const _props = this.sanitize(props);
-        const errors = this.validate(_props);
+        return this.validate(props)
+            .then(() => {
+                const salt = Math.random() + '';
+                const hash = this.encryptPassword(_props.password, salt);
 
-        if (errors.length) {
-            const err = new Error('Validation error');
-            err.validation = errors;
-            throw err;
-        }
+                delete _props.password;
+                delete _props.rePassword;
 
-        const salt = Math.random() + '';
-        const hash = this.encryptPassword(_props.password, salt);
-
-        delete _props.password;
-        delete _props.rePassword;
-
-        return this.create(_.assign({}, _props, {
-            hash,
-            salt
-        }));
+                return this.create(_.assign({}, _props, {
+                    hash,
+                    salt
+                }));
+            });
     },
 
     encryptPassword(password, salt) {
@@ -46,7 +43,7 @@ const User = _.assign({}, Base, {
     },
 
     validate(props) {
-        return validate(props, {
+        return validator.validate(props, {
             username: [
                 {
                     assert: value => value.length >= 3 && value.length <= 20,
@@ -55,6 +52,10 @@ const User = _.assign({}, Base, {
                 {
                     assert: value => !! value.match(/^\S*$/g),
                     message: 'Must not contain spaces'
+                },
+                {
+                    assert: this.isUsernameFree,
+                    message: 'Username is already taken'
                 }
             ],
             password: [
@@ -75,7 +76,19 @@ const User = _.assign({}, Base, {
                     message: 'Invalid email'
                 }
             ]
+        }).then(errors => {
+            if (errors.length) {
+                const err = new Error('Validation error');
+                err.validation = errors;
+                throw err;
+            }
         });
+    },
+
+    isUsernameFree(username) {
+        return db.result(`
+            SELECT id FROM users WHERE username = $1
+        `, username).then(result => !result.rowCount);
     }
 });
 

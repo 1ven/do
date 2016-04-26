@@ -51,43 +51,56 @@ describe('User model', () => {
 
     describe('validate', () => {
         describe('username', () => {
-            it('should be invalid, when username is not between 3 and 20 characters', () => {
-                const errors = User.validate(_.assign({}, props, {
+            it('should be rejected, when username is not between 3 and 20 characters', () => {
+                return User.validate(_.assign({}, props, {
                     username: 'ab'
-                }));
-                assert.match(errors[0].message, /between 3 and 20/);
+                })).catch(err => assert.match(err.validation[0].message, /between 3 and 20/));
             });
 
-            it('should be invalid, when username contains spaces', () => {
-                const errors = User.validate(_.assign({}, props, {
+            it('should be rejected, when username contains spaces', () => {
+                return User.validate(_.assign({}, props, {
                     username: 'i am john'
-                }));
-                assert.match(errors[0].message, /not contain spaces/);
+                })).catch(err => assert.match(err.validation[0].message, /not contain spaces/));
             });
         });
 
         describe('password', () => {
-            it('should be invalid, when password less than 6 characters length', () => {
-                const errors = User.validate(_.assign({}, props, {
-                    password: 1234
-                }));
-                assert.match(errors[0].message, /at least 6/);
+            it('should be rejected, when password less than 6 characters length', () => {
+                return User.validate(_.assign({}, props, {
+                    password: 1234,
+                    rePassword: 1234
+                })).catch(err => assert.match(err.validation[0].message, /at least 6/));
             });
 
-            it('should be invalid, when given passwords do not match', () => {
-                const errors = User.validate(_.assign({}, props, {
+            it('should be rejected, when given passwords do not match', () => {
+                return User.validate(_.assign({}, props, {
                     rePassword: 1234
-                }));
-                assert.match(errors[0].message, /not match/);
+                })).catch(err => assert.match(err.validation[0].message, /not match/));
             });
         });
 
         describe('email', () => {
-            it('should be invalid, when email is invalid', () => {
-                const errors = User.validate(_.assign({}, props, {
+            it('should be rejected, when email is invalid', () => {
+                return User.validate(_.assign({}, props, {
                     email: 'not valid email'
-                }));
-                assert.match(errors[0].message, /Invalid email/);
+                })).catch(err => assert.match(err.validation[0].message, /Invalid email/));
+            });
+        });
+    });
+
+    describe('isUsernameFree', () => {
+        it('should resolve true, if username is free', () => {
+            return User.isUsernameFree('test')
+                .then(isValid => assert.isTrue(isValid));
+        });
+
+        it('should resolve false, if username is not free', () => {
+            return db.none(`
+                INSERT INTO users (username, email, hash, salt)
+                VALUES ('test', 'test@mail.com', 'hash', 'salt')
+            `).then(() => {
+                return User.isUsernameFree('test')
+                    .then(isValid => assert.isNotTrue(isValid));
             });
         });
     });

@@ -1,7 +1,7 @@
 import chai, { assert } from 'chai';
 import chaiAsPromised from 'chai-as-promised';
 import db from 'server/db';
-import { sql } from 'server/helpers';
+import sql from 'server/utils/sql';
 import { recreateTables } from '../helpers';
 
 chai.use(chaiAsPromised);
