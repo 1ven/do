@@ -10,13 +10,17 @@ const UserController = _.assign({}, BaseController, {
 
     register(req, res, next) {
         const props = _.assign({}, req.body, {
-            username: escape(req.body.username.trim()),
-            email: escape(req.body.email.trim())
+            username: sanitize(req.body.username),
+            email: sanitize(req.body.email)
         });
 
         return this.Model.register(props)
             .then(entry => res.status(201).json({ result: entry }), next);
     }
 });
+
+function sanitize(value) {
+    return value ? escape(value.trim()) : undefined;
+};
 
 module.exports = UserController;
