@@ -34,8 +34,8 @@ const User = _.assign({}, Base, {
     },
 
     sanitize(props) {
-        const username = props.username.toLowerCase();
-        const email = props.email.toLowerCase();
+        const username = (props.username || '').toLowerCase();
+        const email = (props.email || '').toLowerCase();
         return _.assign({}, props, {
             username,
             email
@@ -46,6 +46,10 @@ const User = _.assign({}, Base, {
         return validator.validate(props, {
             username: [
                 {
+                    assert: value => !! value,
+                    message: 'Username is required'
+                },
+                {
                     assert: value => value.length >= 3 && value.length <= 20,
                     message: 'Must be between 3 and 20 characters long'
                 },
@@ -54,11 +58,15 @@ const User = _.assign({}, Base, {
                     message: 'Must not contain spaces'
                 },
                 {
-                    assert: this.isUsernameFree,
+                    assert: value => this.checkAvailability('username', value),
                     message: 'Username is already taken'
                 }
             ],
             password: [
+                {
+                    assert: value => !! value,
+                    message: 'Password is required'
+                },
                 {
                     assert: value => value.length >= 6,
                     message: 'Must be at least 6 characters long'
@@ -72,12 +80,20 @@ const User = _.assign({}, Base, {
             ],
             email: [
                 {
+                    assert: value => !! value,
+                    message: 'Email is required'
+                },
+                {
                     assert: value => !! value.match(/^[A-Za-z0-9._%-]+@[A-Za-z0-9.-]+[.][A-Za-z]+$/g),
                     message: 'Invalid email'
+                },
+                {
+                    assert: value => this.checkAvailability('email', value),
+                    message: 'Email is already taken'
                 }
             ]
         }).then(errors => {
-            if (errors.length) {
+            if (errors && errors.length) {
                 const err = new Error('Validation error');
                 err.validation = errors;
                 throw err;
@@ -85,10 +101,11 @@ const User = _.assign({}, Base, {
         });
     },
 
-    isUsernameFree(username) {
+    checkAvailability(prop, value) {
         return db.result(`
-            SELECT id FROM users WHERE username = $1
-        `, username).then(result => !result.rowCount);
+            SELECT id FROM users WHERE $1~ = $2
+        `, [prop, value])
+            .then(result => !result.rowCount);
     }
 });
 

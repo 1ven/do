@@ -20,7 +20,15 @@ module.exports = {
                 throw new Error(`Assertion for \`${check.message}\` must be a function`);
             }
 
-            const isValid = check.assert(check.value + '');
+            let value = check.value;
+
+            if (typeof value === 'number') {
+                value = value + '';
+            } else if (typeof value !== 'string') {
+                value = '';
+            }
+
+            const isValid = check.assert(value);
             const errorInfo = this._getErrorInfo(check);
 
             if (typeof isValid.then === 'function') {
@@ -53,6 +61,7 @@ module.exports = {
                     name
                 });
             });
+
             return [...acc, ...assignedPropChecks];
         }, []);
     }

@@ -340,7 +340,7 @@ describe('routes', () => {
                 .end(done);
         });
     });
-    
+
     describe('users routes', () => {
         it('POST /api/users should respond with 201 and return created user data', () => {
             request(app)
