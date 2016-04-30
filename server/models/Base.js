@@ -26,28 +26,37 @@ const Base = {
         return db.one(
             'INSERT INTO $1~($2^) VALUES($3:csv) RETURNING id',
             [this.table, columns, values]
-        ).then(result => this.get(result.id));
+        ).then(result => this.getOne({ id: result.id }));
     },
 
     /**
-     * @param {Number} id - Entry id.
-     * @returns {Promise} - Resolves object of particular entry by given id or array of entries if id is not provided.
+     * @param {Object} props - Query props.
+     * @returns {Promise} - Resolves array of entries by given props.
      */
-    get(id) {
-        if (typeof id === 'undefined') {
-            return db.query('SELECT * FROM $1~', [this.table])
-                .then(entries => _.map(entries, this._filterEntry.bind(this)));
+    get(props) {
+        props = typeof props !== 'undefined' ? props : {};
+
+        if (!_.isPlainObject(props)) {
+            throw new Error('`props` must be an object');
         }
 
-        if (!_.isInteger(id)) {
-            throw new Error('`id` must be a number');
-        }
+        const columns = _.keys(props).map(k => pgp.as.name(k));
+        const values = _.values(props).map(v => pgp.as.text(v));
 
-        return this._isEntryExists(id)
-            .then(() => db.one(
-                'SELECT * FROM $1~ WHERE id = $2', [this.table, id]
-            ))
-            .then(this._filterEntry.bind(this));
+        let conditions = columns.reduce((acc, column, i) => {
+            const end = i !== columns.length - 1 ? ' AND ' : '';
+            return acc + column + ' = ' + values[i] + end;
+        }, '');
+
+        conditions = conditions.length ? conditions : 'true';
+
+        return db.any(`SELECT * FROM $1~ WHERE $2^`, [this.table, conditions])
+            .then(this._filterEntries.bind(this));
+    },
+
+    getOne(props) {
+        return this.get(props)
+            .then(this._getFirst.bind(this));
     },
 
     /**
@@ -88,7 +97,7 @@ const Base = {
                      RETURNING id
                     `,
                     [this.table, columns, values, id]
-                ).then(result => this.get(result.id));
+                ).then(result => this.getOne({ id: result.id }));
             });
     },
 
@@ -111,21 +120,19 @@ const Base = {
      * @param {Number} id - Id of parent entry.
      * @returns {Promise} - Array of parent objects or particular object (if id is provided) with all nested children.
      */
-    getWithChildren(id) {
-        return this.get(id)
+    getWithChildren(props) {
+        return this.get(props)
             .then(result => {
-                if (result instanceof Array) {
-                    return Promise.map(result, entry => {
-                        return this._getAllChildren(entry.id)
-                            .then(children => _.assign({}, entry, children));
-                    });
-                }
-
-                if (_.isObject(result)) {
-                    return this._getAllChildren(id)
-                        .then(children => _.assign({}, result, children));
-                }
+                return Promise.map(result, entry => {
+                    return this._getAllChildren(entry.id)
+                        .then(children => _.assign({}, entry, children));
+                });
             });
+    },
+
+    getWithChildrenOne(props) {
+        return this.getWithChildren(props)
+            .then(this._getFirst.bind(this));
     },
 
     /**
@@ -182,7 +189,7 @@ const Base = {
             SELECT a.* FROM $5~ AS a
             JOIN $1~ ON ($2~ = $4 and a.id = $3~)
         `, [relationTable, parentIdName, childIdName, parentId, Child.table])
-            .then(childLeaves => _.map(childLeaves, this._filterEntry.bind(Child)));
+            .then(this._filterEntries.bind(Child));
     },
 
     /**
@@ -206,7 +213,7 @@ const Base = {
             );
         `, [relationTable, parentIdName, childIdName, parentId])
             .then(result => result.array)
-            .then(treesIds => Promise.map(treesIds, Child.getWithChildren.bind(Child)))
+            .then(treesIds => Promise.map(treesIds, id => Child.getWithChildrenOne({ id })))
     },
 
     _relate(id, childId, childTable) {
@@ -220,24 +227,40 @@ const Base = {
         return db.result('SELECT FROM $1~ WHERE id = $2', [this.table, id])
             .then(result => {
                 if (result.rowCount == 0) {
-                    const err = new Error(`${this.table} entry does not exists`);
-
-                    err.code = 0;
+                    const err = this._getNotExistError();
 
                     return Promise.reject(err);
                 }
             });
     },
 
-    _filterEntry(entry) {
-        const visible = {};
-        _.forIn(entry, (value, key) => {
-            if (this.visibleFields.indexOf(key) !== -1) {
-                visible[key] = value;
-            }
+    _filterEntries(entries) {
+        return _.map(entries, entry => {
+            const visible = {};
+            _.forIn(entry, (value, key) => {
+                if (this.visibleFields.indexOf(key) !== -1) {
+                    visible[key] = value;
+                }
+            });
+            return visible;
         });
-        return visible;
+    },
+
+    _getFirst(entries) {
+        const entry = entries[0];
+        if (!entry) {
+            const err = this._getNotExistError();
+            throw err;
+        }
+        return entry;
+    },
+
+    _getNotExistError() {
+        const err = new Error(`${this.table} entry does not exists`);
+        err.code = 0;
+        return err;
     }
+
 };
 
 function getTableFields(table) {

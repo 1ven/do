@@ -20,6 +20,8 @@
     "lodash": "^4.6.1",
     "normalize.css": "^4.0.0",
     "normalizr": "^2.0.1",
+    "passport": "^0.3.2",
+    "passport-local": "^1.0.0",
     "pg-promise": "^3.3.0",
     "react": "^0.14.8",
     "react-dom": "^0.14.8",

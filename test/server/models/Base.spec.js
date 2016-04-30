@@ -136,15 +136,24 @@ describe('Base model', () => {
         });
     });
 
-    describe('get', () => {
-        it('should return entry by given id', () => {
+    describe('getOne', () => {
+        it('should return entry by given props', () => {
             return db.none(`INSERT INTO boards (title) VALUES
                 ('test board 1'), ('test board 2'), ('test board 3')
-            `).then(() => Board.get(2))
+            `).then(() => Board.getOne({ id: 2 }))
                 .then(board => assert.deepEqual(board, { id: 2, title: 'test board 2'}));
         });
+    });
 
-        it('should return all entries when id is not provided', () => {
+    describe('get', () => {
+        it('should return entries by given props', () => {
+            return db.none(`INSERT INTO boards (title) VALUES
+                ('test board 1'), ('test board 2'), ('test board 3')
+            `).then(() => Board.get({ id: 2 }))
+                .then(board => assert.deepEqual(board[0], { id: 2, title: 'test board 2'}));
+        });
+
+        it('should return all entries when props are not provided', () => {
             return db.none(`INSERT INTO boards (title) VALUES
                 ('test board 1'), ('test board 2'), ('test board 3')
             `).then(() => Board.get())
@@ -155,18 +164,7 @@ describe('Base model', () => {
                 ]));
         });
 
-        it('should return columns, declared in `this.visibleFields`, when id is provided', () => {
-            return db.one(`
-                INSERT INTO users (username, hash, salt)
-                VALUES ('test user', 'hash', 'salt') RETURNING id
-            `).then(result => User.get(result.id))
-                .then(entry => assert.deepEqual(entry, {
-                    id: 1,
-                    username: 'test user'
-                }));
-        });
-
-        it('should return columns, declared in `this.visibleFields`, when id is not provided', () => {
+        it('should return columns, declared in `this.visibleFields`', () => {
             return db.none(`
                 INSERT INTO users (username, hash, salt)
                 VALUES ('test user 1', 'hash', 'salt'), ('test user 2', 'hash', 'salt')
@@ -243,15 +241,24 @@ describe('Base model', () => {
         });
     });
 
-    describe('getWithChildren', () => {
-        it('should return entry by given id with all nested children', () => {
-            return setup().then(() => Board.getWithChildren(2))
+    describe('getWithChildrenOne', () => {
+        it('should return entry by given props with all nested children', () => {
+            return setup().then(() => Board.getWithChildrenOne({ id: 2 }))
                 .then(nestedBoard => {
                     assert.deepEqual(nestedBoard, expected[1]);
                 });
         });
+    });
 
-        it('should return all entries with all nested children when id is not provided', () => {
+    describe('getWithChildren', () => {
+        it('should return entries with all nested children', () => {
+            return setup().then(() => Board.getWithChildren({ id: 2 }))
+                .then(nestedBoards => {
+                    assert.deepEqual(nestedBoards, [expected[1]]);
+                });
+        });
+
+        it('should return all entries with all nested children when props are not provided', () => {
             return setup().then(() => Board.getWithChildren())
                 .then(nestedBoards => {
                     assert.deepEqual(nestedBoards, expected);

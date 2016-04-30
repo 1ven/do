@@ -9,11 +9,14 @@ const BaseController = {
     },
 
     get(req, res, next) {
-        let id = req && req.params ? req.params.id : undefined;
+        let id, props = {};
 
-        if (typeof id !== 'undefined') { id = parseInt(id); }
+        if (req && req.params && req.params.id) {
+            id = parseInt(req.params.id);
+            props = { id };
+        }
 
-        return this.Model.getWithChildren(id)
+        return this.Model[id !== undefined ? 'getWithChildrenOne' : 'getWithChildren'](props)
             .then(result => res.status(200).json({ result }), next);
     },
 

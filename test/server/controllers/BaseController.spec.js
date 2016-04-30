@@ -18,12 +18,18 @@ const Model = {
 
         return Promise.resolve({ id });
     },
-    getWithChildren(id) {
-        if (_.isNaN(id)) {
+    getWithChildren(props) {
+        if (props && _.isNaN(props.id)) {
             return Promise.reject('test error');
         }
 
-        return Promise.resolve({ title: 'test entry' });
+        return Promise.resolve([{ title: 'test entry' }]);
+    },
+    getWithChildrenOne(props) {
+        // console.log(props);
+        return this.getWithChildren(props)
+            .then(entries => entries[0]);
+
     },
     update(id, props) {
         if (_.isNaN(id)) {
@@ -116,7 +122,7 @@ describe('BaseController', () => {
         it('should call `next` function with error, if promise was rejected', () => {
             const spy = sinon.spy();
             const req = {
-                params: { id: false }
+                params: { id: 'wrong id' }
             };
 
             return TestController.get(req, {}, spy)
