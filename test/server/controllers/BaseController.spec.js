@@ -26,7 +26,6 @@ const Model = {
         return Promise.resolve([{ title: 'test entry' }]);
     },
     getWithChildrenOne(props) {
-        // console.log(props);
         return this.getWithChildren(props)
             .then(entries => entries[0]);
 
@@ -84,6 +83,21 @@ describe('BaseController', () => {
             return TestController.create({}, {}, spy)
                 .then(() => {
                     assert(spy.calledWith('test error'));
+                });
+        });
+    });
+
+    describe('get', () => {
+        it('should return all entries', () => {
+            const spy = sinon.spy();
+            const res = {
+                status() {
+                    return { json: spy };
+                }
+            };
+            return TestController.get({}, res)
+                .then(() => {
+                    assert(spy.calledWith({ result: [{ title: 'test entry' }] }));
                 });
         });
     });

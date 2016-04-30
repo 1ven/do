@@ -15,7 +15,10 @@ const BaseController = {
             .then(result => res.status(200).json({ result }), next);
     },
 
-    get(req, res, next) {},
+    get(req, res, next) {
+        return this.Model.getWithChildren()
+            .then(result => res.status(200).json({ result }), next);
+    },
 
     remove(req, res, next) {
         const id = parseInt(req.params.id);

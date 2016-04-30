@@ -8,6 +8,31 @@ describe('routes', () => {
     beforeEach(recreateTables);
 
     describe('boards routes', () => {
+        it('GET /api/boards should respond with 200 and return all nested boards', (done) => {
+            db.none(`
+                INSERT INTO boards (title) VALUES
+                ('test board 1'), ('test board 2'), ('test board 3')
+            `).then(() => {
+                request(app)
+                    .get('/api/boards')
+                    .expect('Content-Type', /json/)
+                    .expect(200)
+                    .end((err, res) => {
+                        if (err) { return done(err); }
+
+                        assert.deepEqual(res.body, { result:
+                            [
+                                { id: 1, title: 'test board 1', lists: [] },
+                                { id: 2, title: 'test board 2', lists: [] },
+                                { id: 3, title: 'test board 3', lists: [] }
+                            ]
+                        });
+
+                        done();
+                    });
+            });
+        });
+
         it('GET /api/boards/:id should respond with 200 and return nested board by given id', (done) => {
             db.none(`
                 INSERT INTO boards (title) VALUES
@@ -33,6 +58,28 @@ describe('routes', () => {
                 .expect('Content-Type', /json/)
                 .expect(404)
                 .end(done);
+        });
+
+        it('POST /api/boards should respond with 201 and return created board', (done) => {
+            request(app)
+                .post('/api/boards')
+                .send({
+                    title: 'test board 1'
+                })
+                .expect('Content-Type', /json/)
+                .expect(201)
+                .end((err, res) => {
+                    if (err) { return done(err); }
+
+                    assert.deepEqual(res.body, {
+                        result: {
+                            id: 1,
+                            title: 'test board 1',
+                        }
+                    });
+
+                    done();
+                });
         });
 
         it('POST /api/boards/:id/lists should respond with 201 and return created list', (done) => {
@@ -318,84 +365,6 @@ describe('routes', () => {
 
                     done();
                 });
-        });
-
-        it('POST /api/users/:id/boards should respond with 201 and return created board', (done) => {
-            db.none(`
-                INSERT INTO users (username, email, hash, salt)
-                VALUES ('testuser', 'test@mail.com', 'hash', 'salt')
-            `).then(() => {
-                request(app)
-                    .post('/api/users/1/boards')
-                    .send({
-                        title: 'test board 1'
-                    })
-                    .expect('Content-Type', /json/)
-                    .expect(201)
-                    .end((err, res) => {
-                        if (err) { return done(err); }
-
-                        assert.deepEqual(res.body, {
-                            result: {
-                                id: 1,
-                                title: 'test board 1',
-                            }
-                        });
-
-                        done();
-                    });
-            });
-        });
-
-        it('GET /api/users/:id/boards should respond with 200 and return all boards, related with particular user', (done) => {
-            db.none(`
-                INSERT INTO users (id, username, email, hash, salt)
-                    VALUES (5, 'testuser', 'test@mail.com', 'hash', 'salt');
-                INSERT INTO boards (title)
-                    VALUES ('test board 1'), ('test board 2'), ('test board 3');
-                INSERT INTO users_boards
-                    VALUES (5, 1), (5, 2), (5, 3);
-                INSERT INTO lists (title)
-                    VALUES ('test list 1');
-                INSERT INTO boards_lists
-                    VALUES (2, 1);
-            `).then(() => {
-                request(app)
-                    .get('/api/users/5/boards')
-                    .expect('Content-Type', /json/)
-                    .expect(200)
-                    .end((err, res) => {
-                        if (err) { return done(err); }
-
-                        assert.deepEqual(res.body, {
-                            result: [
-                                {
-                                    id: 1,
-                                    title: 'test board 1',
-                                    lists: []
-                                },
-                                {
-                                    id: 2,
-                                    title: 'test board 2',
-                                    lists: [
-                                        {
-                                            id: 1,
-                                            title: 'test list 1',
-                                            cards: []
-                                        }
-                                    ]
-                                },
-                                {
-                                    id: 3,
-                                    title: 'test board 3',
-                                    lists: []
-                                }
-                            ]
-                        });
-
-                        done();
-                    });
-            });
         });
     });
 });
