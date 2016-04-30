@@ -2,7 +2,7 @@ import db from 'server/db';
 import sql from 'server/utils/sql';
 
 export function recreateTables() {
-    return db.query('DROP TABLE IF EXISTS boards, boards_lists, lists, lists_cards, cards, users CASCADE')
+    return db.query('DROP TABLE IF EXISTS users, users_boards, boards, boards_lists, lists, lists_cards, cards CASCADE')
         .then(() => db.tx(function() {
             return this.sequence(index => {
                 switch(index) {

@@ -9,6 +9,108 @@ chai.use(chaiAsPromised);
 describe('tables', () => {
     beforeEach(recreateTables);
 
+    describe('users', () => {
+        it('should be created', () => {
+            return selectColumnsInfo('users')
+                .then(prettyColumnsInfo)
+                .then(columns => {
+                    assert.equal(columns.id, 'integer');
+                    assert.equal(columns.username, 'character varying');
+                    assert.equal(columns.email, 'text');
+                    assert.equal(columns.hash, 'text');
+                    assert.equal(columns.salt, 'text');
+                });
+        });
+
+        it('should not allow to create users with username length more than 20 symbols', () => {
+            const promise = db.none(`
+                INSERT INTO users (username, email, hash, salt)
+                VALUES ('veryveryveryveryverylongusername', 'test@mail.com', 'hash', 'salt')
+            `);
+            return assert.isRejected(promise, /too long/);
+        });
+
+        it('should not allow to create users with username length less than 3 symbols', () => {
+            const promise = db.none(`
+                INSERT INTO users (username, email, hash, salt)
+                VALUES ('ab', 'test@mail.com', 'hash', 'salt')
+            `);
+            return assert.isRejected(promise, /violates check constraint.*username/);
+        });
+
+        it('should not allow to create user with username, containing whitespaces', () => {
+            const promise = db.none(`
+                INSERT INTO users (username, email, hash, salt)
+                VALUES ('i am john', 'test@mail.com', 'hash', 'salt')
+            `);
+            return assert.isRejected(promise, /violates check constraint.*username/);
+        });
+
+        it('should not allow to create username containing uppercase characters', () => {
+            const promise = db.none(`
+                INSERT INTO users (username, email, hash, salt)
+                VALUES ('jOhNNy', 'test@mail.com', 'hash', 'salt')
+            `);
+            return assert.isRejected(promise, /violates check constraint.*username/);
+        });
+
+        it('should not allow to create user with duplicate username', () => {
+            const promise = db.none(`
+                INSERT INTO users (username, email, hash, salt)
+                VALUES ('user1', 'test@mail.com', 'hash', 'salt'),
+                ('user1', 'test2@mail.com', 'hash', 'salt')
+            `);
+            return assert.isRejected(promise, /violates unique constraint.*username/);
+        });
+
+        it('should not allow to create user with duplicate email', () => {
+            const promise = db.none(`
+                INSERT INTO users (username, email, hash, salt)
+                VALUES ('user1', 'test@mail.com', 'hash', 'salt'),
+                ('user2', 'test@mail.com', 'hash', 'salt')
+            `);
+            return assert.isRejected(promise, /violates unique constraint.*email/);
+        });
+
+        it('should not allow to create user with not valid email', () => {
+            const promise = db.none(`
+                INSERT INTO users (username, email, hash, salt)
+                VALUES ('user1', 'not valid email', 'hash', 'salt')
+            `);
+            return assert.isRejected(promise, /violates check constraint.*email/);
+        });
+
+        it('should not allow to create email containing uppercase characters', () => {
+            const promise = db.none(`
+                INSERT INTO users (username, email, hash, salt)
+                VALUES ('user1', 'tEsT@mAil.com', 'hash', 'salt')
+            `);
+            return assert.isRejected(promise, /violates check constraint.*email/);
+        });
+    });
+
+    describe('users_boards', () => {
+        it('should be created', () => {
+            return selectColumnsInfo('users_boards')
+                .then(prettyColumnsInfo)
+                .then(columns => {
+                    assert.equal(columns.user_id, 'integer');
+                    assert.equal(columns.board_id, 'integer');
+                });
+        });
+
+        it('should remove entry from `users_boards` after corresponding board was removed', () => {
+            return db.query(`
+                INSERT INTO users (id, username, email, hash, salt)
+                VALUES (8, 'user1', 'test@mail.com', 'hash', 'salt');
+                INSERT INTO boards VALUES (4, 'test board');
+                INSERT INTO users_boards VALUES (8, 4);
+                DELETE FROM boards WHERE id = 4;
+            `)
+                .then(() => db.query('SELECT * FROM users_boards'))
+                .then(result => assert.lengthOf(result, 0));
+        });
+    });
     describe('boards', () => {
         it('should be created', () => {
             return selectColumnsInfo('boards')
@@ -104,86 +206,6 @@ describe('tables', () => {
                     assert.equal(columns.id, 'integer');
                     assert.equal(columns.text, 'text');
                 });
-        });
-    });
-
-    describe('users', () => {
-        it('should be created', () => {
-            return selectColumnsInfo('users')
-                .then(prettyColumnsInfo)
-                .then(columns => {
-                    assert.equal(columns.id, 'integer');
-                    assert.equal(columns.username, 'character varying');
-                    assert.equal(columns.email, 'text');
-                    assert.equal(columns.hash, 'text');
-                    assert.equal(columns.salt, 'text');
-                });
-        });
-
-        it('should not allow to create users with username length more than 20 symbols', () => {
-            const promise = db.none(`
-                INSERT INTO users (username, email, hash, salt)
-                VALUES ('veryveryveryveryverylongusername', 'test@mail.com', 'hash', 'salt')
-            `);
-            return assert.isRejected(promise, /too long/);
-        });
-
-        it('should not allow to create users with username length less than 3 symbols', () => {
-            const promise = db.none(`
-                INSERT INTO users (username, email, hash, salt)
-                VALUES ('ab', 'test@mail.com', 'hash', 'salt')
-            `);
-            return assert.isRejected(promise, /violates check constraint.*username/);
-        });
-
-        it('should not allow to create user with username, containing whitespaces', () => {
-            const promise = db.none(`
-                INSERT INTO users (username, email, hash, salt)
-                VALUES ('i am john', 'test@mail.com', 'hash', 'salt')
-            `);
-            return assert.isRejected(promise, /violates check constraint.*username/);
-        });
-
-        it('should not allow to create username containing uppercase characters', () => {
-            const promise = db.none(`
-                INSERT INTO users (username, email, hash, salt)
-                VALUES ('jOhNNy', 'test@mail.com', 'hash', 'salt')
-            `);
-            return assert.isRejected(promise, /violates check constraint.*username/);
-        });
-
-        it('should not allow to create user with duplicate username', () => {
-            const promise = db.none(`
-                INSERT INTO users (username, email, hash, salt)
-                VALUES ('user1', 'test@mail.com', 'hash', 'salt'),
-                ('user1', 'test2@mail.com', 'hash', 'salt')
-            `);
-            return assert.isRejected(promise, /violates unique constraint.*username/);
-        });
-
-        it('should not allow to create user with duplicate email', () => {
-            const promise = db.none(`
-                INSERT INTO users (username, email, hash, salt)
-                VALUES ('user1', 'test@mail.com', 'hash', 'salt'),
-                ('user2', 'test@mail.com', 'hash', 'salt')
-            `);
-            return assert.isRejected(promise, /violates unique constraint.*email/);
-        });
-
-        it('should not allow to create user with not valid email', () => {
-            const promise = db.none(`
-                INSERT INTO users (username, email, hash, salt)
-                VALUES ('user1', 'not valid email', 'hash', 'salt')
-            `);
-            return assert.isRejected(promise, /violates check constraint.*email/);
-        });
-
-        it('should not allow to create email containing uppercase characters', () => {
-            const promise = db.none(`
-                INSERT INTO users (username, email, hash, salt)
-                VALUES ('user1', 'tEsT@mAil.com', 'hash', 'salt')
-            `);
-            return assert.isRejected(promise, /violates check constraint.*email/);
         });
     });
 });

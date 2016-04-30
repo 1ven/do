@@ -8,17 +8,14 @@ const BaseController = {
             .then(entry => res.status(201).json({ result: entry }), next);
     },
 
-    get(req, res, next) {
-        let id, props = {};
+    getOne(req, res, next) {
+        const id = parseInt(req.params.id);
 
-        if (req && req.params && req.params.id) {
-            id = parseInt(req.params.id);
-            props = { id };
-        }
-
-        return this.Model[id !== undefined ? 'getWithChildrenOne' : 'getWithChildren'](props)
+        return this.Model.getWithChildrenOne({ id })
             .then(result => res.status(200).json({ result }), next);
     },
+
+    get(req, res, next) {},
 
     remove(req, res, next) {
         const id = parseInt(req.params.id);

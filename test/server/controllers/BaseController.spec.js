@@ -88,7 +88,7 @@ describe('BaseController', () => {
         });
     });
 
-    describe('get', () => {
+    describe('getOne', () => {
         it('should return entry by given id', () => {
             const spy = sinon.spy();
             const req = {
@@ -99,7 +99,7 @@ describe('BaseController', () => {
                     return { json: spy };
                 }
             };
-            return TestController.get(req, res)
+            return TestController.getOne(req, res)
                 .then(() => {
                     assert(spy.calledWith({ result: { title: 'test entry' } }));
                 });
@@ -107,13 +107,16 @@ describe('BaseController', () => {
 
         it('should respond with status 200', () => {
             const spy = sinon.spy();
+            const req = {
+                params: { id: 3 }
+            };
             const res = {
                 status(code) {
                     spy(code);
                     return { json: function() {} };
                 }
             };
-            return TestController.get({}, res)
+            return TestController.getOne(req, res)
                 .then(() => {
                     assert(spy.calledWith(200));
                 });
@@ -125,7 +128,7 @@ describe('BaseController', () => {
                 params: { id: 'wrong id' }
             };
 
-            return TestController.get(req, {}, spy)
+            return TestController.getOne(req, {}, spy)
                 .then(() => {
                     assert(spy.calledWith('test error'));
                 });

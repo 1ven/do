@@ -129,9 +129,19 @@ describe('Base model', () => {
         it('should create entry', () => {
             const props = { title: 'test board' };
             return Board.create(props)
+                .then(() => db.one('SELECT title FROM boards'))
                 .then(board => {
-                    assert.property(board, 'id');
                     assert.equal(board.title, props.title);
+                });
+        });
+
+        it('should return created entry without hidden fields', () => {
+            return Board.create({ title: 'test board' })
+                .then(board => {
+                    assert.deepEqual(board, {
+                        id: 1,
+                        title: 'test board'
+                    });
                 });
         });
     });

@@ -15,7 +15,22 @@ const UserController = _.assign({}, BaseController, {
         });
 
         return this.Model.register(props)
-            .then(entry => res.status(201).json({ result: entry }), next);
+            .then(user => res.status(201).json({ result: user }), next);
+    },
+
+    createBoard(req, res, next) {
+        const userId = parseInt(req.params.id);
+        const title = req.body.title;
+
+        User.createBoard(userId, { title })
+            .then(board => res.status(201).json({ result: board }), next);
+    },
+
+    getBoards(req, res, next) {
+        const userId = parseInt(req.params.id);
+
+        User.getWithChildrenOne({ id: userId })
+            .then(user => res.status(200).json({ result: user.boards }), next);
     }
 });
 

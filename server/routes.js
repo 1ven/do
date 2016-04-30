@@ -5,8 +5,11 @@ const CardController = require('./controllers/CardController');
 const UserController = require('./controllers/UserController');
 
 module.exports = function (app) {
-    app.get('/api/boards(|/:id)', handleRoute(BoardController, 'get'));
-    app.post('/api/boards', handleRoute(BoardController, 'create'));
+    app.post('/api/users', handleRoute(UserController, 'register'));
+    app.post('/api/users/:id/boards', handleRoute(UserController, 'createBoard'));
+    app.get('/api/users/:id/boards', handleRoute(UserController, 'getBoards'));
+
+    app.get('/api/boards/:id', handleRoute(BoardController, 'getOne'));
     app.post('/api/boards/:id/lists', handleRoute(BoardController, 'createList'));
     app.delete('/api/boards/:id', handleRoute(BoardController, 'remove'));
     app.put('/api/boards/:id', handleRoute(BoardController, 'update'));
@@ -17,8 +20,6 @@ module.exports = function (app) {
 
     app.delete('/api/cards/:id', handleRoute(CardController, 'remove'));
     app.put('/api/cards/:id', handleRoute(CardController, 'update'));
-
-    app.post('/api/users', handleRoute(UserController, 'register'));
 
     app.get('*', function(req, res) {
         res.render('index', {

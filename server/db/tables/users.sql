@@ -12,3 +12,8 @@ CREATE TABLE IF NOT EXISTS users(
     hash text NOT NULL CHECK (hash <> ''),
     salt text NOT NULL CHECK (salt <> '')
 );
+
+CREATE TABLE IF NOT EXISTS users_boards(
+    user_id integer NOT NULL REFERENCES users ON DELETE RESTRICT,
+    board_id integer PRIMARY KEY REFERENCES boards ON DELETE CASCADE
+);

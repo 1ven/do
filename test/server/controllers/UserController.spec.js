@@ -10,18 +10,23 @@ const Model = {
             delete props.password;
             delete props.rePassword;
 
-            return Promise.resolve(_.assign({}, props, {
-                hash: 'hash',
-                salt: 'salt'
-            }));
+            return Promise.resolve(props);
         }
         return Promise.reject(new Error('test error'));
     }
 };
 
-UserController.Model = Model;
+const initialModel = UserController.Model;
 
 describe('UserController', () => {
+    before(() => {
+        UserController.Model = Model;
+    });
+
+    after(() => {
+        UserController.Model = initialModel;
+    });
+
     const body = {
         username: 'johnnnnnny',
         password: 123456,
@@ -46,7 +51,7 @@ describe('UserController', () => {
                 });
         });
 
-        it('should return created entry', () => {
+        it('should return result, returned from model', () => {
             const spy = sinon.spy();
             const req = {
                 body
@@ -60,9 +65,7 @@ describe('UserController', () => {
                 .then(() => {
                     const result = {
                         username: req.body.username,
-                        email: req.body.email,
-                        hash: 'hash',
-                        salt: 'salt'
+                        email: req.body.email
                     };
                     assert(spy.calledWith({ result }));
                 });

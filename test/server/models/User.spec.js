@@ -37,6 +37,16 @@ describe('User model', () => {
                     });
                 });
         });
+
+        it('should return created user, only with visible fields', () => {
+            return User.register(props)
+                .then(user => {
+                    assert.deepEqual(user, {
+                        id: 1,
+                        username: props.username
+                    });
+                });
+        });
     });
 
     describe('sanitize', () => {

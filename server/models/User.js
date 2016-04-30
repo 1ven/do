@@ -5,12 +5,18 @@ const crypto = require('crypto');
 const Promise = require('bluebird');
 const validator = require('../utils/validator');
 const Base = require('./Base');
+const Board = require('./Board');
 const db = require('../db');
 
 const User = _.assign({}, Base, {
     table: 'users',
+    children: [Board],
     mutableFields: ['email'],
     visibleFields: ['id', 'username'],
+
+    createBoard(userId, boardProps) {
+        return this.createChild(userId, boardProps, Board);
+    },
 
     register(props) {
         const _props = this.sanitize(props);
