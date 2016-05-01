@@ -57,7 +57,7 @@ gulp.task('vendor-css', () => {
 });
 
 gulp.task('sass:watch', () => {
-    gulp.watch(paths.style.sass.src, ['sass']);
+    gulp.watch(paths.style.sass.watch, ['sass']);
 });
 
 gulp.task('vendor-css:watch', () => {
