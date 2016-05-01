@@ -8,7 +8,7 @@ module.exports = {
         app: './index.js',
     },
     output: {
-        path: __dirname + '/build',
+        path: __dirname + '/build/assets/js',
         filename: 'bundle.js'
     },
     module: {
@@ -21,10 +21,6 @@ module.exports = {
             {
                 test: /\.json$/,
                 loader: "json-loader"
-            },
-            {
-                test: /\.scss$/,
-                loader: "style-loader!css-loader!sass-loader!import-glob-loader"
             }
         ]
     },

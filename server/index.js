@@ -2,15 +2,20 @@
 
 const path = require('path');
 const express = require('express');
-const config = require('./config');
-
+const session = require('express-session');
 const bodyParser = require('body-parser');
+const passport = require('./lib/passport');
+const config = require('./config');
 const errorHandler = require('./middlewares/').errorHandler;
 const initRoutes = require('./routes');
 
 const app = express();
 
 app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(session(config.session));
+app.use(passport.initialize());
+app.use(passport.session());
 initRoutes(app);
 app.use(errorHandler);
 

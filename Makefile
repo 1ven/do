@@ -1,6 +1,9 @@
 install:
 	npm install
 
+gulp:
+	gulp
+
 server-dev:
 	NODE_ENV=development nodemon ./server
 
