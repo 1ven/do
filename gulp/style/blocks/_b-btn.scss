@@ -1,0 +1,17 @@
+.b-btn {
+    display: inline-block;
+    vertical-align: top;
+    background-color: $gray;
+    color: $dark;
+    border-radius: 3px;
+    border: 1px solid darken($gray, 10%);
+    padding: 7px 14px;
+    cursor: pointer;
+    &:hover {
+        background: darken($gray, 5%);
+        border-color: darken($gray, 15%);
+    }
+    &_full-width {
+        width: 100%;
+    }
+}

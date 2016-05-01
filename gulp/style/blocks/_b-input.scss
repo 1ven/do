@@ -1,0 +1,14 @@
+.b-input {
+    display: block;
+    width: 100%;
+    height: 40px;
+    padding: 0 10px;
+    border-radius: 3px;
+    border: 1px solid $dark-gray;
+    &:focus {
+        border-color: darken($dark-gray, 15%)
+    }
+    &_error {
+        border-color: $red;
+    }
+}
