@@ -1,10 +1,24 @@
 const config = require('./config');
+const passport = require('./lib/passport');
 const BoardController = require('./controllers/BoardController');
 const ListController = require('./controllers/ListController');
 const CardController = require('./controllers/CardController');
 const UserController = require('./controllers/UserController');
+const AuthController = require('./controllers/AuthController');
+const ensureLoggedIn = AuthController.ensureLoggedIn;
+const ensureLoggedOut = AuthController.ensureLoggedOut;
 
 module.exports = function (app) {
+    app.post('/auth/local', passport.authenticate('local', {
+        failureRedirect: '/sign-in',
+        successRedirect: '/'
+    }));
+
+    app.get('/logout', (req, res) => {
+        req.logout();
+        res.redirect('/sign-in');
+    });
+
     app.post('/api/users', handleRoute(UserController, 'register'));
 
     app.get('/api/boards', handleRoute(BoardController, 'get'));
@@ -21,13 +35,17 @@ module.exports = function (app) {
     app.delete('/api/cards/:id', handleRoute(CardController, 'remove'));
     app.put('/api/cards/:id', handleRoute(CardController, 'update'));
 
-    app.get('*', function(req, res) {
+    app.get('/sign-in', (req, res) => {
+        res.render('sign-in');
+    });
+
+    app.get('*', ensureLoggedIn, (req, res) => {
         res.render('index', {
             bundle: config.bundle
         });
-    })
+    });
+};
 
-    function handleRoute(Controller, action) {
-        return Controller[action].bind(Controller);
-    };
+function handleRoute(Controller, action) {
+    return Controller[action].bind(Controller);
 };

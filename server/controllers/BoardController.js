@@ -7,6 +7,8 @@ const BaseController = require('./BaseController');
 const BoardController = _.assign({}, BaseController, {
     Model: Board,
 
+    getByUser() {},
+
     createList(req, res, next) {
         const boardId = parseInt(req.params.id);
         const title = req.body.title;

@@ -39,6 +39,18 @@ const User = _.assign({}, Base, {
         return crypto.createHash('md5').update(password + salt).digest('hex');
     },
 
+    isValidPassword(hash, salt, givenPassword) {
+        return hash == this.encryptPassword(givenPassword, salt);
+    },
+
+    serialize(user) {
+        return user.id;
+    },
+
+    deserialize(id) {
+        return this.getOne({ id });
+    },
+
     sanitize(props) {
         const username = (props.username || '').toLowerCase();
         const email = (props.email || '').toLowerCase();

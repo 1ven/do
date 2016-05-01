@@ -10,5 +10,10 @@ module.exports = {
         user: 'ivan'
     },
     bundle: env === 'production' ? '/public/bundle.js' : 'http://localhost:8080/bundle.js',
-    port: env !== 'test' ? 3000 : 1337
+    port: env !== 'test' ? 3000 : 1337,
+    session: {
+        secret: 'this is my awesome very secret phrase',
+        resave: false,
+        saveUninitialized: false
+    }
 };
