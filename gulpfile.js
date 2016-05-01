@@ -10,6 +10,7 @@ const order = require('gulp-order');
 const concat = require('gulp-concat');
 const cleanCss = require('gulp-clean-css');
 const sassGlob = require('gulp-sass-glob');
+const babel = require('gulp-babel');
 
 const paths = {
     style: {
@@ -22,6 +23,11 @@ const paths = {
         },
         vendor: './gulp/style/vendor/*.css',
         dest: './public/css'
+    },
+    javascript: {
+        src: './gulp/javascript/*.*',
+        watch: './gulp/javascript/*.*',
+        dest: './public/js'
     }
 };
 
@@ -56,6 +62,17 @@ gulp.task('vendor-css', () => {
         .pipe(gulp.dest(paths.style.dest));
 });
 
+gulp.task('javascript', () => {
+    return gulp.src(paths.javascript.src)
+        .pipe(babel({
+            presets: ['es2015']
+        }))
+        .pipe(rename({
+            suffix: '.min'
+        }))
+        .pipe(gulp.dest(paths.javascript.dest));
+});
+
 gulp.task('sass:watch', () => {
     gulp.watch(paths.style.sass.watch, ['sass']);
 });
@@ -64,7 +81,12 @@ gulp.task('vendor-css:watch', () => {
     gulp.watch(paths.style.vendor, ['vendor-css']);
 });
 
+gulp.task('javascript:watch', () => {
+    gulp.watch(paths.javascript.watch, ['javascript']);
+});
+
 gulp.task('default', [
     'sass', 'sass:watch',
-    'vendor-css', 'vendor-css:watch'
+    'vendor-css', 'vendor-css:watch',
+    'javascript', 'javascript:watch'
 ]);
