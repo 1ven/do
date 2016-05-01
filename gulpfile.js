@@ -10,7 +10,12 @@ const order = require('gulp-order');
 const concat = require('gulp-concat');
 const cleanCss = require('gulp-clean-css');
 const sassGlob = require('gulp-sass-glob');
-const babel = require('gulp-babel');
+const source = require('vinyl-source-stream');
+const browserify = require('browserify');
+const watchify = require('watchify');
+const babel = require('babelify');
+const glob = require('glob');
+const es = require('event-stream');
 
 const paths = {
     style: {
@@ -26,7 +31,6 @@ const paths = {
     },
     javascript: {
         src: './gulp/javascript/*.*',
-        watch: './gulp/javascript/*.*',
         dest: './public/js'
     }
 };
@@ -62,15 +66,40 @@ gulp.task('vendor-css', () => {
         .pipe(gulp.dest(paths.style.dest));
 });
 
-gulp.task('javascript', () => {
-    return gulp.src(paths.javascript.src)
-        .pipe(babel({
-            presets: ['es2015']
-        }))
-        .pipe(rename({
-            suffix: '.min'
-        }))
-        .pipe(gulp.dest(paths.javascript.dest));
+gulp.task('javascript', (done) => {
+    glob(paths.javascript.src, (err, files) => {
+        if (err) { done(err); }
+
+        const tasks = files.map(file => {
+            const bundler = watchify(
+                browserify(file, {
+                    debug: false
+                }).transform(babel)
+            );
+
+            const bundle = () => bundler.bundle()
+                .on('error', function(err) {
+                    console.error(err);
+                    this.emit('end');
+                })
+                .pipe(source(file))
+                .pipe(rename({
+                    dirname: '',
+                    suffix: '.min'
+                }))
+                .pipe(gulp.dest(paths.javascript.dest));
+
+            bundler.on('update', () => {
+                console.log('Bundling...');
+                bundle();
+            });
+
+            return bundle;
+        });
+
+        es.merge(tasks.map(task => task())).on('end', done);
+    });
+
 });
 
 gulp.task('sass:watch', () => {
@@ -81,12 +110,8 @@ gulp.task('vendor-css:watch', () => {
     gulp.watch(paths.style.vendor, ['vendor-css']);
 });
 
-gulp.task('javascript:watch', () => {
-    gulp.watch(paths.javascript.watch, ['javascript']);
-});
-
 gulp.task('default', [
     'sass', 'sass:watch',
     'vendor-css', 'vendor-css:watch',
-    'javascript', 'javascript:watch'
+    'javascript'
 ]);
