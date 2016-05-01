@@ -1,5 +1,6 @@
 node_modules
 server/npm-debug.log
-build
+server/config.js
+public
 npm-debug.log
 .DS_Store

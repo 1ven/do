@@ -21,7 +21,7 @@ const paths = {
             ],
         },
         vendor: './gulp/style/vendor/*.css',
-        dest: './build/assets/css'
+        dest: './public/css'
     }
 };
 

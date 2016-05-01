@@ -8,7 +8,7 @@ module.exports = {
         app: './index.js',
     },
     output: {
-        path: __dirname + '/build/assets/js',
+        path: __dirname + '/public/js',
         filename: 'bundle.js'
     },
     module: {
@@ -33,7 +33,7 @@ module.exports = {
         moduleTemplates: ['*-loader', '*'],
         extensions: ['', '.js'],
     },
-    devServer: {
-        contentBase: __dirname + '/build'
-    },
+    // devServer: {
+    //     contentBase: __dirname + '/build'
+    // },
 };
