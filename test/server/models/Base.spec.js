@@ -190,6 +190,27 @@ describe('Base model', () => {
                     }
                 ]));
         });
+
+        it('should return all columns, instead of columns declared `this.visibleFields`, if `disableFilter` is true', () => {
+            return db.none(`
+                INSERT INTO users (username, hash, salt)
+                VALUES ('test user 1', 'hash', 'salt'), ('test user 2', 'hash', 'salt')
+            `).then(() => User.get({}, true))
+                .then(users => assert.deepEqual(users, [
+                    {
+                        id: 1,
+                        username: 'test user 1',
+                        hash: 'hash',
+                        salt: 'salt'
+                    },
+                    {
+                        id: 2,
+                        username: 'test user 2',
+                        hash: 'hash',
+                        salt: 'salt'
+                    }
+                ]));
+        });
     });
 
     describe('remove', () => {

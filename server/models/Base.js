@@ -33,7 +33,7 @@ const Base = {
      * @param {Object} props - Query props.
      * @returns {Promise} - Resolves array of entries by given props.
      */
-    get(props) {
+    get(props, disableFilter) {
         props = typeof props !== 'undefined' ? props : {};
 
         if (!_.isPlainObject(props)) {
@@ -51,11 +51,13 @@ const Base = {
         conditions = conditions.length ? conditions : 'true';
 
         return db.any(`SELECT * FROM $1~ WHERE $2^`, [this.table, conditions])
-            .then(this._filterEntries.bind(this));
+            .then(entries => {
+                return !disableFilter ? this._filterEntries(entries) : entries;
+            });
     },
 
-    getOne(props) {
-        return this.get(props)
+    getOne(props, disableFilter) {
+        return this.get(props, disableFilter)
             .then(this._getFirst.bind(this));
     },
 
