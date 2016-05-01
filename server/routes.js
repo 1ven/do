@@ -9,17 +9,25 @@ const ensureLoggedIn = AuthController.ensureLoggedIn;
 const ensureLoggedOut = AuthController.ensureLoggedOut;
 
 module.exports = function (app) {
-    app.post('/auth/local', passport.authenticate('local', {
-        failureRedirect: '/sign-in',
-        successRedirect: '/'
-    }));
+    app.get('/sign-in', ensureLoggedOut, (req, res) => {
+        res.render('sign-in');
+    });
 
-    app.get('/logout', (req, res) => {
+    app.get('/sign-up', ensureLoggedOut, (req, res) => {
+        res.render('sign-up');
+    });
+
+    app.post('/sign-up', ensureLoggedOut, handleRoute(UserController, 'register'));
+
+    app.get('/logout', ensureLoggedOut, (req, res) => {
         req.logout();
         res.redirect('/sign-in');
     });
 
-    app.post('/api/users', handleRoute(UserController, 'register'));
+    app.post('/auth/local', passport.authenticate('local', {
+        failureRedirect: '/sign-in',
+        successRedirect: '/'
+    }));
 
     app.get('/api/boards', handleRoute(BoardController, 'get'));
     app.get('/api/boards/:id', handleRoute(BoardController, 'getOne'));
@@ -34,10 +42,6 @@ module.exports = function (app) {
 
     app.delete('/api/cards/:id', handleRoute(CardController, 'remove'));
     app.put('/api/cards/:id', handleRoute(CardController, 'update'));
-
-    app.get('/sign-in', (req, res) => {
-        res.render('sign-in');
-    });
 
     app.get('*', ensureLoggedIn, (req, res) => {
         res.render('index', {

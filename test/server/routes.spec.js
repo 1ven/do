@@ -341,10 +341,10 @@ describe('routes', () => {
         });
     });
 
-    describe('users routes', () => {
-        it('POST /api/users should respond with 201 and return created user data', (done) => {
+    describe('sign-up', () => {
+        it('POST /sign-up should respond with 201 and return created user data', (done) => {
             request(app)
-                .post('/api/users')
+                .post('/sign-up')
                 .send({
                     username: 'test',
                     email: 'test@mail.com',
