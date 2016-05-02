@@ -51,30 +51,56 @@ describe('validator', () => {
         });
     });
 
-    describe('validate', () => {
-        const props = {
-            username: 'test'
-        };
-
-        function getChecksObj (assert) {
+    describe('_makeCheck', () => {
+        function getCheck(assert) {
             return {
-                username: [
-                    {
-                        message: 'test message',
-                        assert
-                    }
-                ]
+                name: 'username',
+                value: 'test',
+                message: 'test message',
+                assert
             };
         };
 
-        const expectedErrors = [
-            {
-                message: 'test message',
-                name: 'username',
-                value: 'test'
-            }
-        ];
+        const expectedError = {
+            name: 'username',
+            value: 'test',
+            message: 'test message'
+        };
 
+        it('should resolve error info, when `assert` function has returned false', () => {
+            const check = getCheck(() => false);
+            return validator._makeCheck(check)
+                .then(error => {
+                    assert.deepEqual(error, expectedError);
+                });
+        });
+
+        it('should resolve `null`, when `assert` function has returned true', () => {
+            const check = getCheck(() => true);
+            return validator._makeCheck(check)
+                .then(error => {
+                    assert.isNull(error);
+                });
+        });
+
+        it('should resolve error info, when `assert` function returned promise and it resolved false', () => {
+            const check = getCheck(() => Promise.resolve(false));
+            return validator._makeCheck(check)
+                .then(error => {
+                    assert.deepEqual(error, expectedError);
+                });
+        });
+
+        it('should resolve `null`, when `assert` function has returned promise and it resolved true', () => {
+            const check = getCheck(() => Promise.resolve(true));
+            return validator._makeCheck(check)
+                .then(error => {
+                    assert.isNull(error);
+                });
+        });
+    });
+
+    describe('validate', () => {
         it('should throw error, when passed `props` have wrong type', () => {
             const fn = () => validator.validate(null, {});
             assert.throws(fn, /`props` must be.*object/);
@@ -85,42 +111,39 @@ describe('validator', () => {
             assert.throws(fn, /`checksObj` must be.*object/);
         });
 
-        it('should set field as invalid, where `assert` function returned false', () => {
-            const checksObj = getChecksObj(() => false);
-            return validator.validate(props, checksObj)
-                .then(errors => {
-                    assert.deepEqual(errors, expectedErrors);
-                });
-        });
-
-        it('should set field as valid, where `assert` function returned true', () => {
-            const checksObj = getChecksObj(() => true);
-            return validator.validate(props, checksObj)
-                .then(errors => {
-                    assert.deepEqual(errors, []);
-                });
-        });
-
-        it('should set field as invalid, where `assert` function is promise and it resolved false', () => {
-            const checksObj = getChecksObj(() => Promise.resolve(false));
-            return validator.validate(props, checksObj)
-                .then(errors => {
-                    assert.deepEqual(errors, expectedErrors);
-                });
-        });
-
-        it('should set field as valid, where `assert` function is promise and it resolved true', () => {
-            const checksObj = getChecksObj(() => Promise.resolve(true));
-            return validator.validate(props, checksObj)
-                .then(errors => {
-                    assert.deepEqual(errors, []);
-                });
-        });
-
         it('should resolve `[]`, when `checksObj = {}`', () => {
-            return validator.validate(props, {})
+            return validator.validate({}, {})
                 .then(errors => {
                     assert.deepEqual(errors, []);
+                });
+        });
+
+        it('should not run next assertion, if first assertion of this prop is failed', () => {
+            const expectedErrors = [
+                {
+                    name: 'username',
+                    value: '',
+                    message: 'Username is required'
+                }
+            ];
+            const props = {
+                username: ''
+            };
+            const checksObj = {
+                username: [
+                    {
+                        assert: value => !! value,
+                        message: 'Username is required'
+                    },
+                    {
+                        assert: value => value.length >= 3 && value.length <= 20,
+                        message: 'Must be between 3 and 20 characters long'
+                    }
+                ]
+            };
+            return validator.validate(props, checksObj)
+                .then(errors => {
+                    assert.deepEqual(errors, expectedErrors);
                 });
         });
     });

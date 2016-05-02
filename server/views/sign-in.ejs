@@ -8,8 +8,8 @@
 </head>
 <body>
     <div class="b-container">
-        <div class="b-sign-in">
-            <div class="b-sign-in__middle">
+        <div class="b-box">
+            <div class="b-box__middle">
                 <form class="b-form" method="post" action="/auth/local">
                     <label class="b-form__row">
                         <input class="b-input" type="text" name="username" placeholder="Username">
@@ -18,7 +18,10 @@
                         <input class="b-input" type="password" name="password" placeholder="Password">
                     </label>
                     <label class="b-form__row">
-                        <input class="b-btn b-btn_full-width" type="submit" value="Enter">
+                        <input class="b-btn b-btn_full-width" type="submit" value="Sign in">
+                    </label>
+                    <label class="b-form__row">
+                        or you can <a href="/sign-up">sign up</a>
                     </label>
                 </form>
             </div>

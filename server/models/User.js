@@ -20,7 +20,7 @@ const User = _.assign({}, Base, {
 
     register(props) {
         const _props = this.sanitize(props);
-        return this.validate(props)
+        return this.validate(_props)
             .then(() => {
                 const salt = Math.random() + '';
                 const hash = this.encryptPassword(_props.password, salt);
@@ -91,6 +91,10 @@ const User = _.assign({}, Base, {
                 }
             ],
             rePassword: [
+                {
+                    assert: value => !! value,
+                    message: 'Password confirmation is required'
+                },
                 {
                     assert: value => value === props.password + '',
                     message: 'Passwords not match'

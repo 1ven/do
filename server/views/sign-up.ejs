@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Sign up</title>
+    <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,600,700,400italic,600italic&subset=latin,cyrillic' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" href="./css/vendor.min.css">
+    <link rel="stylesheet" href="./css/client.min.css">
+</head>
+<body>
+    <div class="b-container">
+        <div class="b-box">
+            <div class="b-box__middle">
+                <form class="b-form" id="sign_up" method="post" action="/sign-up">
+                    <label class="b-form__row">
+                        <input class="b-input" type="text" name="username" placeholder="Username">
+                    </label>
+                    <label class="b-form__row">
+                        <input class="b-input" type="text" name="email" placeholder="Email">
+                    </label>
+                    <label class="b-form__row">
+                        <input class="b-input" type="password" name="password" placeholder="Password">
+                    </label>
+                    <label class="b-form__row">
+                        <input class="b-input" type="password" name="rePassword" placeholder="Confirm password">
+                    </label>
+                    <label class="b-form__row">
+                        <input class="b-btn b-btn_full-width" type="submit" value="Sign up">
+                    </label>
+                </form>
+                <form class="b-success-sign-up -hidden" method="post" action="/auth/local">
+                    <span class="b-success-sign-up__text">
+                        Congratulations! You've successfully registered!
+                    </span>
+                    <div class="b-success-sign-up__begin">
+                        <input type="hidden" name="username">
+                        <input type="hidden" name="password">
+                        <input type="submit" class="b-btn b-btn_full-width" value="Begin using service">
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <script src="/js/sign-up.min.js"></script>
+</body>
+</html>

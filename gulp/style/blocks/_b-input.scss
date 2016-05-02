@@ -10,5 +10,8 @@
     }
     &_error {
         border-color: $red;
+        &:focus {
+            border-color: darken($red, 15%)
+        }
     }
 }

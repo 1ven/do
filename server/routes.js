@@ -19,7 +19,7 @@ module.exports = function (app) {
 
     app.post('/sign-up', ensureLoggedOut, handleRoute(UserController, 'register'));
 
-    app.get('/logout', ensureLoggedOut, (req, res) => {
+    app.get('/logout', ensureLoggedIn, (req, res) => {
         req.logout();
         res.redirect('/sign-in');
     });

@@ -15,30 +15,39 @@ module.exports = {
 
         const checks = this._flattenChecks(props, checksObj);
 
-        return Promise.map(checks, check => {
-            if (typeof check.assert !== 'function') {
-                throw new Error(`Assertion for \`${check.message}\` must be a function`);
-            }
+        return Promise.reduce(checks, (acc, check) => {
+            const isNameInArray = _.filter(acc, item => item.name === check.name).length === 1;
 
-            let value = check.value;
+            if (isNameInArray) { return acc; }
 
-            if (typeof value === 'number') {
-                value = value + '';
-            } else if (typeof value !== 'string') {
-                value = '';
-            }
+            return this._makeCheck(check)
+                .then(error => error ? [...acc, error] : acc);
+        }, []);
+    },
 
-            const isValid = check.assert(value);
-            const errorInfo = this._getErrorInfo(check);
+    _makeCheck(check) {
+        if (typeof check.assert !== 'function') {
+            throw new Error(`Assertion for \`${check.message}\` must be a function`);
+        }
 
-            if (typeof isValid.then === 'function') {
-                return isValid.then(result => !result ? errorInfo : false);
-            }
+        let value = check.value;
 
-            if (!isValid) { return errorInfo; }
+        if (typeof value === 'number') {
+            value = value + '';
+        } else if (typeof value !== 'string') {
+            value = '';
+        }
 
-            return false;
-        }).then(_.filter);
+        const isValid = check.assert(value);
+        const errorInfo = this._getErrorInfo(check);
+
+        if (typeof isValid.then === 'function') {
+            return isValid.then(result => !result ? errorInfo : null);
+        }
+
+        return Promise.resolve(
+            !isValid ? errorInfo : null
+        );
     },
 
     _getErrorInfo(check) {

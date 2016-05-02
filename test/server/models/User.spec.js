@@ -128,6 +128,15 @@ describe('User model', () => {
 
             });
 
+            it('should be rejected, when password is not provided', () => {
+                return User.validate({}).catch(getMessages)
+                    .then(messages => {
+                        assert.include(messages, 'Password is required');
+                    });
+            });
+        });
+
+        describe('rePassword', () => {
             it('should be rejected, when given passwords do not match', () => {
                 return User.validate(_.assign({}, props, {
                     rePassword: 1234
@@ -138,10 +147,10 @@ describe('User model', () => {
 
             });
 
-            it('should be rejected, when password is not provided', () => {
+            it('should be rejected, when password confirmation is not provided', () => {
                 return User.validate({}).catch(getMessages)
                     .then(messages => {
-                        assert.include(messages, 'Password is required');
+                        assert.include(messages, 'Password confirmation is required');
                     });
             });
         });

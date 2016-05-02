@@ -1,27 +1,38 @@
 html, body {
     height: 100%;
 }
+
 html {
     box-sizing: border-box;
     -webkit-font-smoothing: antialiased;
 }
+
 *, *:before, *:after {
     box-sizing: inherit;
 }
+
 body {
     font-family: 'Open Sans', sans-serif;
 }
+
 input {
     outline: none;
 }
+
 ul {
     list-style: none;
     margin: 0;
     padding: 0;
 }
+
 a {
     cursor: pointer;
+    color: $blue;
     &:hover {
         text-decoration: none;
     }
+}
+
+.-hidden {
+    display: none !important;
 }
