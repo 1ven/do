@@ -1,36 +1,76 @@
 import { assert } from 'chai';
+import Promise from 'bluebird';
 import request from 'supertest';
 import db from 'server/db';
 import { recreateTables } from './helpers';
 import app from 'server/.';
 
+function getAuthenticatedReq() {
+    const authRequest = request.agent(app);
+    const data = {
+        username: 'test',
+        email: 'test@mail.com',
+        password: 123456,
+        rePassword: 123456
+    };
+
+    return new Promise((resolve, reject) => {
+        authRequest
+            .post('/sign-up')
+            .send(data)
+            .end((err, res) => {
+                if (err) { reject(err); }
+                authRequest
+                    .post('/auth/local')
+                    .send({
+                        username: data.username,
+                        password: data.password
+                    })
+                    .end((err, res) => {
+                        if (err) { reject(err); }
+                        resolve(authRequest);
+                    });
+            });
+    });
+};
+
 describe('routes', () => {
     beforeEach(recreateTables);
 
     describe('boards routes', () => {
-        it('GET /api/boards should respond with 200 and return all nested boards', (done) => {
-            db.none(`
-                INSERT INTO boards (title) VALUES
-                ('test board 1'), ('test board 2'), ('test board 3')
-            `).then(() => {
-                request(app)
-                    .get('/api/boards')
-                    .expect('Content-Type', /json/)
-                    .expect(200)
-                    .end((err, res) => {
-                        if (err) { return done(err); }
+        it('GET /api/boards should respond with 200 and return all nested boards, related to user', (done) => {
+            getAuthenticatedReq()
+                .then(authRequest => {
+                    return db.none(`
+                        INSERT INTO boards (id, title)
+                        VALUES (1, 'board 1'), (2, 'board 2'), (3, 'board 3'), (4, 'board 4');
+                        INSERT INTO users_boards VALUES (1, 2), (1, 4);
+                    `).then(() => {
+                        authRequest
+                            .get('/api/boards')
+                            .end((err, res) => {
+                                if (err) { return done(err); }
 
-                        assert.deepEqual(res.body, { result:
-                            [
-                                { id: 1, title: 'test board 1', lists: [] },
-                                { id: 2, title: 'test board 2', lists: [] },
-                                { id: 3, title: 'test board 3', lists: [] }
-                            ]
-                        });
+                                assert.equal(res.statusCode, 200);
+                                assert.deepEqual(res.body, { result:
+                                    [
+                                        {
+                                            id: 2,
+                                            title: 'board 2',
+                                            lists: []
+                                        },
+                                        {
+                                            id: 4,
+                                            title: 'board 4',
+                                            lists: []
+                                        }
+                                    ]
+                                });
 
-                        done();
+                                done();
+                            });
                     });
-            });
+                }).catch(done);
         });
 
         it('GET /api/boards/:id should respond with 200 and return nested board by given id', (done) => {
@@ -60,25 +100,30 @@ describe('routes', () => {
                 .end(done);
         });
 
-        it('POST /api/boards should respond with 201 and return created board', (done) => {
-            request(app)
-                .post('/api/boards')
-                .send({
-                    title: 'test board 1'
-                })
-                .expect('Content-Type', /json/)
-                .expect(201)
-                .end((err, res) => {
-                    if (err) { return done(err); }
+        it('POST /api/boards should respond with 201, create board, related to user and return created board', (done) => {
+            getAuthenticatedReq()
+                .then(authRequest => {
+                    authRequest
+                        .post('/api/boards')
+                        .send({
+                            title: 'test board 1'
+                        })
+                        .end((err, res) => {
+                            if (err) { return done(err); }
 
-                    assert.deepEqual(res.body, {
-                        result: {
-                            id: 1,
-                            title: 'test board 1',
-                        }
-                    });
+                            assert.equal(res.statusCode, 201);
+                            assert.deepEqual(res.body, {
+                                result: {
+                                    id: 1,
+                                    title: 'test board 1',
+                                }
+                            });
 
-                    done();
+                            db.query('SELECT board_id FROM users_boards WHERE user_id = 1')
+                                .then(result => result.map(item => item.board_id))
+                                .then(ids => assert.include(ids, 1))
+                                .then(done, done);
+                        });
                 });
         });
 

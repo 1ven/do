@@ -10,7 +10,9 @@ function callApi(endpoint, request) {
         request.body = JSON.stringify(request.body);
     }
 
-    const requestWithHeaders = assign({}, { headers }, request);
+    const requestWithHeaders = assign({}, { headers }, request, {
+        credentials: 'same-origin'
+    });
 
     return fetch(hostname + endpoint, requestWithHeaders)
         .then(response => response.json().then(body => ({ response, body })))
