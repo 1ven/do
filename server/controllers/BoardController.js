@@ -4,6 +4,7 @@ const _ = require('lodash');
 const Board = require('../models/Board');
 const User = require('../models/User');
 const BaseController = require('./BaseController');
+const secureController = require('../utils/secureController');
 
 const BoardController = _.assign({}, BaseController, {
     Model: Board,
@@ -33,4 +34,4 @@ const BoardController = _.assign({}, BaseController, {
     },
 });
 
-module.exports = BoardController;
+module.exports = secureController(BoardController, ['getOne', 'update', 'remove', 'createList']);

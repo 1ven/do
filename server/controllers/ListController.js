@@ -3,6 +3,7 @@
 const _ = require('lodash');
 const List = require('../models/List');
 const BaseController = require('./BaseController');
+const secureController = require('../utils/secureController');
 
 const ListController = _.assign({}, BaseController, {
     Model: List,
@@ -16,4 +17,4 @@ const ListController = _.assign({}, BaseController, {
     },
 });
 
-module.exports = ListController;
+module.exports = secureController(ListController, ['getOne', 'update', 'remove', 'createCard']);
