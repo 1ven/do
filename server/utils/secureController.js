@@ -21,7 +21,7 @@ function wrapMethod(Controller, method, req, res, next) {
         [this.Model.table]: id
     }).then(areRelate => {
         if (!areRelate) {
-            res.status(403).json();
+            res.status(404).json();
             return;
         }
         return Controller[method].call(this, req, res, next);
