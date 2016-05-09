@@ -24,4 +24,23 @@
             text-decoration: underline;
         }
     }
+    &__menu-link {
+        width: 12px;
+        opacity: .8;
+        transition: opacity .2s ease-out;
+        display: block;
+        cursor: pointer;
+        &:hover {
+            opacity: 1;
+        }
+    }
+    &__board-info {
+        display: flex;
+    }
+    &__icon-item {
+        margin-right: 15px;
+        &:last-child {
+            margin-right: 0;
+        }
+    }
 }
