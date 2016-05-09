@@ -1,11 +1,11 @@
 $avatar-size: 38px;
 
 .b-user-box {
-    color: $white;
     position: relative;
     @include no-select();
     &__username, &__role {
         display: block;
+        color: $white;
     }
     &__username {
         font-size: 15px;
