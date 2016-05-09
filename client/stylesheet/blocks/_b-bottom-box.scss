@@ -1,0 +1,14 @@
+.b-bottom-box {
+    position: fixed;
+    width: 100%;
+    height: 128px;
+    bottom: 0;
+    left: 0;
+    background-image: linear-gradient(-180deg, rgba(44,50,60,0.00) 0%, #2C333D 73%);
+    &__button-wrap {
+        display: flex;
+        height: 100%;
+        align-items: flex-end;
+        justify-content: flex-end;
+    }
+}
