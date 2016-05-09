@@ -1,14 +1,15 @@
 import React, { PropTypes } from 'react';
 import BoardTile from './BoardTile';
 import InputForm from './InputForm';
+import BottomBox from './BottomBox';
 
 const BoardsList = ({
     boards,
     onBoardCreatorSubmit,
     onBoardTileRemoveClick
 }) => (
-    <div className="b-container">
-        <div className="c-boards-list">
+    <div className="c-boards-list">
+        <div className="b-container">
             <div className="c-boards-list__items">
                 {boards.map((board, i) =>
                     <div
@@ -31,6 +32,9 @@ const BoardsList = ({
                 </div>
             </div>
         </div>
+        <BottomBox
+            button={<div>1</div>}
+        />
     </div>
 );
 
