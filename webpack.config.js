@@ -15,12 +15,20 @@ module.exports = {
         loaders: [
             {
                 test: /\.js$/,
-                loader: "babel-loader?cacheDirectory=true",
+                loader: 'babel-loader?cacheDirectory=true',
                 exclude: /node_modules/
             },
             {
                 test: /\.json$/,
-                loader: "json-loader"
+                loader: 'json-loader'
+            },
+            {
+                test: /\.svg$/,
+                loader: 'svg-inline-loader?removeTags=true'
+            },
+            {
+                test: /\.scss$/,
+                loader: "style-loader!css-loader!sass-loader!import-glob-loader"
             }
         ]
     },

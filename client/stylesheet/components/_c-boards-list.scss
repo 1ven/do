@@ -2,11 +2,10 @@
     &__items {
         display: flex;
         flex-wrap: wrap;
-        margin: -7px;
+        margin: -10px;
     }
     &__item {
         width: 25%;
-        height: 100px;
-        padding: 7px;
+        padding: 10px;
     }
 }

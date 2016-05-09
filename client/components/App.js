@@ -2,6 +2,8 @@ import React from 'react';
 import NoticeContainer from '../containers/NoticeContainer';
 import Header from './Header';
 
+import '../stylesheet/common.scss';
+
 export default ({ children }) => (
     <div>
         <Header
