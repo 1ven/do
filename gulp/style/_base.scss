@@ -1,5 +1,7 @@
 html, body {
     height: 100%;
+    background-color: $bg;
+    font-size: $rootFontSize;
 }
 
 html {
@@ -12,7 +14,7 @@ html {
 }
 
 body {
-    font-family: 'Open Sans', sans-serif;
+    font-family: 'Lato', sans-serif;
 }
 
 input {
