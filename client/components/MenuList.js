@@ -29,6 +29,7 @@ class MenuList extends Component {
                         <a
                             className="b-menu-list__link"
                             href={item.href}
+                            onClick={item.onClick}
                         >
                             {item.title}
                         </a>
@@ -44,7 +45,10 @@ MenuList.defaultProps = {
 };
 
 MenuList.propTypes = {
-    items: PropTypes.array.isRequired,
+    items: PropTypes.arrayOf(PropTypes.shape({
+        href: PropTypes.string,
+        onClick: PropTypes.func
+    })).isRequired,
     modifiers: PropTypes.array
 };
 
