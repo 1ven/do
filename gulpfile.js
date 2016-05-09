@@ -16,7 +16,6 @@ const watchify = require('watchify');
 const babel = require('babelify');
 const glob = require('glob');
 const es = require('event-stream');
-const spritesmith = require('gulp.spritesmith');
 
 const paths = {
     style: {
@@ -33,12 +32,6 @@ const paths = {
     javascript: {
         src: './gulp/javascript/*.*',
         dest: './public/js'
-    },
-    sprite: {
-        src: './gulp/images/sprite/*.png',
-        watch: './gulp/images/sprite/*.png',
-        dest: './public/images',
-        icons: './gulp/style/'
     }
 };
 
@@ -109,30 +102,8 @@ gulp.task('javascript', (done) => {
 
 });
 
-gulp.task('sprite', function() {
-    let spriteData;
-
-    spriteData = gulp.src(paths.sprite.src).pipe(spritesmith({
-        imgName: 'sprite.png',
-        cssName: '_sprite.scss',
-        cssFormat: 'scss',
-        padding: 5,
-        algorithm: 'binary-tree',
-        cssVarMap: function(sprite) {
-            sprite.name = "s-" + sprite.name;
-        }
-    }));
-    spriteData.img.pipe(gulp.dest(paths.sprite.dest));
-
-    return spriteData.css.pipe(gulp.dest(paths.sprite.icons));
-});
-
 gulp.task('sass:watch', () => {
     gulp.watch(paths.style.sass.watch, ['sass']);
-});
-
-gulp.task('sprite:watch', () => {
-    gulp.watch(paths.sprite.watch, ['sprite']);
 });
 
 gulp.task('vendor-css:watch', () => {
@@ -142,6 +113,5 @@ gulp.task('vendor-css:watch', () => {
 gulp.task('default', [
     'sass', 'sass:watch',
     'vendor-css', 'vendor-css:watch',
-    'sprite', 'sprite:watch',
     'javascript'
 ]);
