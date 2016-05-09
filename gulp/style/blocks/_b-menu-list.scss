@@ -1,0 +1,21 @@
+.b-menu-list {
+    box-shadow: $shadow;
+    background-color: $white;
+    border-radius: 2px;
+    padding: 13px;
+    &__item {
+        line-height: 1;
+        margin-bottom: 8px;
+        &:last-child {
+            margin-bottom: 0;
+        }
+    }
+    &__link {
+        color: $black;
+        text-decoration: none;
+        transition: opacity .2s ease-out;
+        &:hover {
+            opacity: .8;
+        }
+    }
+}
