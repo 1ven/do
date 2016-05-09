@@ -28,6 +28,7 @@ IconItem.defaultProps = {
 IconItem.propTypes = {
     iconName: PropTypes.string.isRequired,
     iconWidth: PropTypes.string,
+    children: PropTypes.node.isRequired
 };
 
 export default IconItem;
