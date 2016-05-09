@@ -2,6 +2,8 @@ import React, { PropTypes, Component } from 'react';
 import { Link } from 'react-router';
 import Icon from './Icon';
 import IconItem from './IconItem';
+import MenuList from './MenuList';
+import Toggle from './Toggle';
 
 class BoardTile extends Component {
     constructor(props) {
@@ -16,6 +18,25 @@ class BoardTile extends Component {
 
     render() {
         const { id, title, onRemoveClick } = this.props;
+
+        const menuLink = (
+            <div className="b-board-tile__menu-link">
+                <Icon name="cog" />
+            </div>
+        );
+
+        const menuWrap = (
+            <div className="b-board-tile__menu-wrap">
+                <MenuList
+                    modifiers={['sm']}
+                    items={[
+                        { title: 'Edit', href: '/sign-out' },
+                        { title: 'Remove', href: '/sign-out' }
+                    ]}
+                />
+            </div>
+        );
+
         return (
             <div className="b-board-tile">
                 <div className="b-board-tile__top">
@@ -24,11 +45,10 @@ class BoardTile extends Component {
                     </div>
                     <div className="b-board-tile__right">
                         <div className="b-board-tile__menu">
-                            <a className="b-board-tile__menu-link">
-                                <Icon name="cog" />
-                            </a>
-                            <div className="b-board-tile__menu-wrap">
-                            </div>
+                            <Toggle
+                                link={menuLink}
+                                content={menuWrap}
+                            />
                         </div>
                     </div>
                 </div>

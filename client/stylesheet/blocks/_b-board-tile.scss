@@ -6,6 +6,7 @@
     padding: 10px 16px;
     display: flex;
     flex-direction: column;
+    @include no-select();
     &__bottom {
         margin-top: auto;
     }
@@ -24,6 +25,9 @@
             text-decoration: underline;
         }
     }
+    &__menu {
+        position: relative;
+    }
     &__menu-link {
         width: 12px;
         opacity: .8;
@@ -33,6 +37,11 @@
         &:hover {
             opacity: 1;
         }
+    }
+    &__menu-wrap {
+        position: absolute;
+        right: 0;
+        margin-top: 10px;
     }
     &__board-info {
         display: flex;
