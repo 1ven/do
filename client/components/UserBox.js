@@ -4,10 +4,7 @@ import Toggle from './Toggle';
 
 const UserBox = function ({ username, role, avatar }) {
     const wrap = (
-        <div
-            className="b-user-box__wrap"
-            onClick={this.handleClick}
-        >
+        <div className="b-user-box__wrap">
             <div className="b-user-box__left">
                 <span className="b-user-box__username">
                     @{username}
