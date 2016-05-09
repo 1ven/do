@@ -9,11 +9,16 @@ class BoardTile extends Component {
     constructor(props) {
         super(props);
         this.handleRemoveClick = this.handleRemoveClick.bind(this);
+        this.handleEditClick = this.handleEditClick.bind(this);
     }
 
     handleRemoveClick() {
         const { onRemoveClick, id } = this.props;
         onRemoveClick(id);
+    }
+
+    handleEditClick() {
+        console.log('Edit');
     }
 
     render() {
@@ -30,8 +35,8 @@ class BoardTile extends Component {
                 <MenuList
                     modifiers={['sm']}
                     items={[
-                        { title: 'Edit', href: '/sign-out' },
-                        { title: 'Remove', href: '/sign-out' }
+                        { title: 'Edit', onClick: this.handleEditClick },
+                        { title: 'Remove', onClick: this.handleRemoveClick }
                     ]}
                 />
             </div>
