@@ -1,31 +1,30 @@
 import React, { PropTypes } from 'react';
+import assign from 'lodash/assign';
 
 const Btn = function ({
     text,
+    tagName,
     modifiers,
     onClick,
-    href
+    nodeAttrs
 }) {
-    return (
-        <a
-            className="b-btn"
-            href={href}
-            onClick={onClick}
-        >
-            {text}
-        </a>
-    );
+    return React.createElement(tagName, assign({}, {
+        className: 'b-btn',
+        onClick
+    }, nodeAttrs), text);
 };
 
 Btn.defaultProps = {
-    modifiers: []
+    modifiers: [],
+    tagName: 'a'
 };
 
 Btn.propTypes = {
-    color: PropTypes.string,
     text: PropTypes.string.isRequired,
+    tagName: PropTypes.string.isRequired,
+    modifiers: PropTypes.arrayOf(PropTypes.string),
     onClick: PropTypes.func,
-    href: PropTypes.string
+    nodeAttrs: PropTypes.object
 };
 
 export default Btn;
