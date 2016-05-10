@@ -1,0 +1,19 @@
+.b-board {
+    margin-top: 24px;
+    &__top {
+        display: flex;
+        flex-direction: column;
+        margin-bottom: 45px;
+    }
+    &__title, &__description {
+        color: $white;
+        font-weight: 300;
+    }
+    &__title {
+        font-size: 36px;
+        margin-bottom: 6px;
+    }
+    &__description {
+        font-size: 20px;
+    }
+}

@@ -13,9 +13,17 @@ function Board({ data, onAddListBtnClick }) {
 
     return (
         <div>
-            <div className="c-board">
+            <div className="b-board">
                 <div className="b-container">
-                    <div className="c-board__lists">
+                    <div className="b-board__top">
+                        <span className="b-board__title">
+                            {data.title}
+                        </span>
+                        <span className="b-board__description">
+                            Some text with board description
+                        </span>
+                    </div>
+                    <div className="b-board__lists">
                         <ListsContainer
                             boardId={data.id}
                             listsIds={data.lists}
