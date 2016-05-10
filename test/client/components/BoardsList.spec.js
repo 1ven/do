@@ -11,14 +11,13 @@ const setup = (customProps = {}) => {
             { id: 1, title: 'board 1' },
             { id: 2, title: 'board 2' }
         ],
-        onBoardCreatorSubmit: sinon.spy(),
+        onAddBoardBtnClick: sinon.spy(),
         onBoardTileRemoveClick: sinon.spy()
     }, customProps);
     const component = shallow(<BoardsList {...props} />);
 
     return {
         boardTiles: component.find('BoardTile'),
-        boardCreator: component.find('InputForm'),
         component,
         props
     };
@@ -38,13 +37,6 @@ describe('<BoardsList />', () => {
             assert.equal(boardTiles.at(i).props().id, board.id);
             assert.equal(boardTiles.at(i).props().title, board.title);
         });
-    });
-
-    it('should pass `onBoardCreatorSubmit` callback to <BoardCreator /> onSubmit prop', () => {
-        const { props, boardCreator } = setup();
-
-        boardCreator.props().onSubmit();
-        assert.equal(props.onBoardCreatorSubmit.callCount, 1);
     });
 
     it('should pass `onBoardTileRemoveClick` callback to <BoardTile /> onRemoveClick prop', () => {

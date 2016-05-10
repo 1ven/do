@@ -6,7 +6,6 @@ import Btn from './Btn';
 
 const BoardsList = ({
     boards,
-    onBoardCreatorSubmit,
     onBoardTileRemoveClick,
     onAddBoardBtnClick
 }) => {
@@ -32,14 +31,6 @@ const BoardsList = ({
                             />
                         </div>
                     )}
-                    <div className="c-boards-list__item" >
-                        <div className="b-tile">
-                            <InputForm
-                                placeholder="Enter board name"
-                                onSubmit={onBoardCreatorSubmit}
-                            />
-                        </div>
-                    </div>
                 </div>
             </div>
             <BottomBox
@@ -54,7 +45,6 @@ BoardsList.propTypes = {
         id: PropTypes.number.isRequired,
         title: PropTypes.string.isRequired
     }).isRequired).isRequired,
-    onBoardCreatorSubmit: PropTypes.func.isRequired,
     onBoardTileRemoveClick: PropTypes.func.isRequired,
     onAddBoardBtnClick: PropTypes.func.isRequired
 };
