@@ -17,7 +17,6 @@ function setup() {
 
     return {
         lists: component.find('List'),
-        inputForm: component.find('InputForm'),
         component,
         props
     };
@@ -37,13 +36,6 @@ describe('<Lists />', () => {
         assert.equal(listProps.id, ownProps.id);
         assert.equal(listProps.title, ownProps.title);
         assert.equal(listProps.cardsIds, ownProps.cards);
-    });
-
-    it('should pass `onListCreate` callback to <InputForm />', () => {
-        const { inputForm, props } = setup();
-
-        inputForm.props().onSubmit();
-        assert.equal(props.onListCreate.callCount, 1);
     });
 
     it('should pass `onListRemoveClick` callback to <List />', () => {
