@@ -1,9 +1,10 @@
 import React, { PropTypes, Component } from 'react';
 import { connect } from 'react-redux'
 import { getBoards, createBoard, removeBoard } from '../actions/boardsActions';
-import { showModal } from '../actions/modalActions';
+import { showModal, hideModal } from '../actions/modalActions';
 import BoardsList from '../components/BoardsList.js';
 import Loader from '../components/Loader';
+import BoardCreator from '../components/BoardCreator';
 
 class IndexPage extends Component {
     constructor(props) {
@@ -23,7 +24,6 @@ class IndexPage extends Component {
             boards,
             isFetching,
             lastUpdated,
-            onBoardCreatorSubmit,
             onBoardTileRemoveClick,
             onAddBoardBtnClick
         } = this.props;
@@ -37,7 +37,6 @@ class IndexPage extends Component {
         ) : (
             <BoardsList
                 boards={boards}
-                onBoardCreatorSubmit={onBoardCreatorSubmit}
                 onBoardTileRemoveClick={onBoardTileRemoveClick}
                 onAddBoardBtnClick={onAddBoardBtnClick}
             />
@@ -64,12 +63,23 @@ function mapStateToProps(state) {
 };
 
 function mapDispatchToProps(dispatch) {
+    const createBoardCb = formData => {
+        dispatch(createBoard(formData.title))
+            .then(action => {
+                if (!action.payload.error) {
+                    dispatch(hideModal());
+                }
+            });
+    };
+
     return {
         onAddBoardBtnClick: () => dispatch(showModal(
             'Create board',
-            <div>test</div>
+            <BoardCreator
+                onModalFormCancelClick={() => dispatch(hideModal())}
+                onModalFormSubmit={createBoardCb}
+            />
         )),
-        onBoardCreatorSubmit: title => dispatch(createBoard(title)),
         onBoardTileRemoveClick: id => dispatch(removeBoard(id)),
         dispatch
     };
