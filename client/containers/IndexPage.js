@@ -1,14 +1,13 @@
 import React, { PropTypes, Component } from 'react';
 import { connect } from 'react-redux'
 import { getBoards, createBoard, removeBoard } from '../actions/boardsActions';
+import { showModal } from '../actions/modalActions';
 import BoardsList from '../components/BoardsList.js';
 import Loader from '../components/Loader';
 
 class IndexPage extends Component {
     constructor(props) {
         super(props);
-        this.handleBoardCreatorSubmit = this.handleBoardCreatorSubmit.bind(this);
-        this.handleBoardTileRemoveClick = this.handleBoardTileRemoveClick.bind(this);
     }
 
     componentWillMount() {
@@ -19,16 +18,16 @@ class IndexPage extends Component {
         return !(!this.props.isFetching && !this.props.lastUpdated && nextProps.isFetching);
     }
 
-    handleBoardCreatorSubmit(title) {
-        this.props.dispatch(createBoard(title));
-    }
-
-    handleBoardTileRemoveClick(id) {
-        this.props.dispatch(removeBoard(id));
-    }
-
     render() {
-        const { boards, isFetching, lastUpdated } = this.props;
+        const {
+            boards,
+            isFetching,
+            lastUpdated,
+            onBoardCreatorSubmit,
+            onBoardTileRemoveClick,
+            onAddBoardBtnClick
+        } = this.props;
+
         const isEmpty = boards.length === 0;
 
         return isFetching || (!lastUpdated && isEmpty) ? (
@@ -38,8 +37,9 @@ class IndexPage extends Component {
         ) : (
             <BoardsList
                 boards={boards}
-                onBoardCreatorSubmit={this.handleBoardCreatorSubmit}
-                onBoardTileRemoveClick={this.handleBoardTileRemoveClick}
+                onBoardCreatorSubmit={onBoardCreatorSubmit}
+                onBoardTileRemoveClick={onBoardTileRemoveClick}
+                onAddBoardBtnClick={onAddBoardBtnClick}
             />
         );
     }
@@ -52,7 +52,7 @@ IndexPage.propTypes = {
     lastUpdated: PropTypes.number
 };
 
-const mapStateToProps = (state) => {
+function mapStateToProps(state) {
     const { boards, lists, cards } = state.entities;
     const { ids, isFetching, lastUpdated } = state.pages.index;
 
@@ -63,6 +63,19 @@ const mapStateToProps = (state) => {
     };
 };
 
+function mapDispatchToProps(dispatch) {
+    return {
+        onAddBoardBtnClick: () => dispatch(showModal(
+            'Add board',
+            <div>test</div>
+        )),
+        onBoardCreatorSubmit: title => dispatch(createBoard(title)),
+        onBoardTileRemoveClick: id => dispatch(removeBoard(id)),
+        dispatch
+    };
+};
+
 export default connect(
-    mapStateToProps
+    mapStateToProps,
+    mapDispatchToProps
 )(IndexPage);
