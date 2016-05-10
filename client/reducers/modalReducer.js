@@ -1,9 +1,6 @@
 import * as types from '../constants/actionTypes';
 
-const initialState = {
-    title: null,
-    content: null
-};
+const initialState = null;
 
 function modalReducer(state = initialState, action) {
     const payload = action.payload;

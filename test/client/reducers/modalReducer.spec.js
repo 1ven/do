@@ -5,10 +5,7 @@ import * as types from 'client/constants/actionTypes';
 describe('modalReducer', () => {
     it('should return initial state', () => {
         const nextState = modalReducer(undefined, {});
-        assert.deepEqual(nextState, {
-            title: null,
-            content: null
-        });
+        assert.deepEqual(nextState, null);
     });
 
     it('should handle MODAL_SHOW action', () => {
@@ -34,9 +31,6 @@ describe('modalReducer', () => {
         };
         const nextState = modalReducer(prevState, action);
 
-        assert.deepEqual(nextState, {
-            title: null,
-            content: null
-        });
+        assert.deepEqual(nextState, null);
     });
 });
