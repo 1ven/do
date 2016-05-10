@@ -25,9 +25,16 @@ class Toggle extends Component {
         const { link, content } = this.props;
         const { isVisible } = this.state;
 
+        let className = 'b-toggle';
+
+        className = className + (isVisible ? ' b-toggle_visible' : '');
+
         return (
             <div>
-                <a onClick={this.handleLinkClick}>{link}</a>
+                <a
+                    className={className}
+                    onClick={this.handleLinkClick}
+                >{link}</a>
                 {isVisible ? content : null}
             </div>
         );
