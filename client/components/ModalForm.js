@@ -48,6 +48,7 @@ class ModalForm extends Component {
                         <Btn
                             text="Cancel"
                             onClick={onCancelClick}
+                            modifiers={['red']}
                         />
                     </div>
                     <div className="b-modal-form__button">
