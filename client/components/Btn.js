@@ -1,4 +1,5 @@
 import React, { PropTypes } from 'react';
+import addModifiers from '../utils/addModifiers';
 import assign from 'lodash/assign';
 
 const Btn = function ({
@@ -8,8 +9,10 @@ const Btn = function ({
     onClick,
     nodeAttrs
 }) {
+    const className = addModifiers('b-btn', modifiers);
+
     return React.createElement(tagName, assign({}, {
-        className: 'b-btn',
+        className,
         onClick
     }, nodeAttrs), text);
 };
