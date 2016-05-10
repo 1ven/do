@@ -4,16 +4,11 @@
     position: relative;
     z-index: 1;
     &__wrap {
-        display: table;
-        width: 100%;
+        display: flex;
+        align-items: center;
         height: 100%;
     }
-    &__left, &__right {
-        display: table-cell;
-        vertical-align: middle;
-    }
     &__right {
-        width: 1px;
-        white-space: nowrap;
+        margin-left: auto;
     }
 }
