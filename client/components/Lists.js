@@ -6,11 +6,11 @@ const Lists = ({
     lists = [],
     onListRemoveClick
 }) => (
-    <div className="c-lists">
+    <div className="b-lists">
         {lists.map((list, i) => (
             <div
                 key={i}
-                className="c-lists__item"
+                className="b-lists__item"
             >
                 <List
                     id={list.id}

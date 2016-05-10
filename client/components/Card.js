@@ -27,7 +27,7 @@ class Card extends Component {
     render() {
         const { onTextClick, text, isEditing } = this.props;
         return (
-            <div className="c-card">
+            <div className="b-card">
                 {isEditing ? (
                     <InputForm
                         value={text}
@@ -35,11 +35,10 @@ class Card extends Component {
                     />
                 ) : (
                     <div
-                        className="c-card__text"
+                        className="b-card__text"
                         onClick={this.handleTextClick}
                     >{text}</div>
                 )}
-                <a className="c-card__remove" onClick={this.handleRemoveClick}>X</a>
             </div>
         );
     }
