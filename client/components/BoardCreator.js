@@ -9,7 +9,10 @@ function BoardCreator({
     return (
         <ModalForm
             rows={[
-                <Input name="title" />
+                <Input
+                    name="title"
+                    placeholder="Title"
+                />
             ]}
             onSubmit={onModalFormSubmit}
             onCancelClick={onModalFormCancelClick}
