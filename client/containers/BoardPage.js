@@ -1,13 +1,20 @@
 import React, { PropTypes, Component } from 'react';
 import _ from 'lodash';
 import { connect } from 'react-redux';
-import { getBoard } from '../actions/boardsActions';
+import { getBoard, addListId } from '../actions/boardsActions';
+import { createList } from '../actions/listsActions';
+import { showModal, hideModal } from '../actions/modalActions';
 import Board from '../components/Board';
 import Loader from '../components/Loader';
+import ModalForm from '../components/ModalForm';
+import Input from '../components/Input';
 
 class BoardPage extends Component {
     constructor(props) {
         super(props);
+
+        this.handleAddListBtnClick = this.handleAddListBtnClick.bind(this);
+        this.handleModalFormSubmit = this.handleModalFormSubmit.bind(this);
     }
 
     componentWillMount() {
@@ -25,15 +32,50 @@ class BoardPage extends Component {
         }
     }
 
+    handleAddListBtnClick() {
+        const { dispatch } = this.props;
+
+        dispatch(showModal(
+            'Create list',
+            <ModalForm
+                rows={[
+                    <Input name="title" placeholder="Title" />
+                ]}
+                onSubmit={this.handleModalFormSubmit}
+                onCancelClick={() => dispatch(hideModal())}
+            />
+        ));
+    }
+
+    handleModalFormSubmit(formData) {
+        const boardId = this.props.board.id;
+        const { dispatch } = this.props;
+
+        dispatch(createList(boardId, formData.title))
+            .then(action => {
+                if (!action.payload.error) {
+                    dispatch(addListId(boardId, action.payload.result))
+                    dispatch(hideModal());
+                }
+            });
+    }
+
     render() {
-        const { board, isFetching, lastUpdated } = this.props;
+        const {
+            board,
+            isFetching,
+            lastUpdated
+        } = this.props;
 
         return isFetching || (!lastUpdated && !board) ? (
             <Loader />
         ) : !board ? (
             <div>Board not found</div>
         ) : (
-            <Board {...board} />
+            <Board
+                data={board}
+                onAddListBtnClick={this.handleAddListBtnClick}
+            />
         );
     }
 };
