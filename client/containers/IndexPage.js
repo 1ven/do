@@ -66,7 +66,7 @@ function mapStateToProps(state) {
 function mapDispatchToProps(dispatch) {
     return {
         onAddBoardBtnClick: () => dispatch(showModal(
-            'Add board',
+            'Create board',
             <div>test</div>
         )),
         onBoardCreatorSubmit: title => dispatch(createBoard(title)),
