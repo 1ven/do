@@ -1,8 +1,8 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import Lists from '../components/Lists';
-import { createList, removeList } from '../actions/listsActions';
-import { addListId, removeListId } from '../actions/boardsActions';
+import { removeList } from '../actions/listsActions';
+import { removeListId } from '../actions/boardsActions';
 
 function mapStateToProps(state, ownProps) {
     const { lists } = state.entities;
@@ -16,12 +16,6 @@ function mapStateToProps(state, ownProps) {
 function mapDispatchToProps(dispatch, ownProps) {
     const { boardId } = ownProps;
     return {
-        onListCreate: title => {
-            dispatch(createList(boardId, title))
-                .then(action => {
-                    dispatch(addListId(boardId, action.payload.result));
-                });
-        },
         onListRemoveClick: id => {
             dispatch(removeList(id))
                 .then(action => {
