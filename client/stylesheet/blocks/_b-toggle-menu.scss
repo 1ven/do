@@ -1,0 +1,19 @@
+.b-toggle-menu {
+    position: relative;
+    @include no-select();
+    &__link {
+        width: 12px;
+        opacity: .8;
+        transition: opacity .2s ease-out;
+        display: block;
+        cursor: pointer;
+        &:hover {
+            opacity: 1;
+        }
+    }
+    &__content {
+        position: absolute;
+        right: 0;
+        margin-top: 10px;
+    }
+}
