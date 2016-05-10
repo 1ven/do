@@ -2,11 +2,13 @@ import React, { PropTypes } from 'react';
 
 function Input(props) {
     return (
-        <input
-            className="b-input"
-            type="text"
-            {...props}
-        />
+        <div className="b-input">
+            <input
+                className="b-input__node"
+                type="text"
+                {...props}
+            />
+        </div>
     );
 };
 
