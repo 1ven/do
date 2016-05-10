@@ -1,26 +1,17 @@
 import React, { PropTypes, Component } from 'react';
+import addModifiers from '../utils/addModifiers';
 
 class MenuList extends Component {
     constructor(props) {
         super(props);
     }
 
-    getRootClassName(className) {
-        const { modifiers } = this.props;
-
-        if (modifiers.length) {
-            return modifiers.reduce((acc, modifier) => {
-                return `${acc} ${className}_${modifier}`;
-            }, className);
-        }
-
-        return className;
-    }
-
     render() {
-        const { items } = this.props;
+        const { items, modifiers } = this.props;
+        const rootClassName = addModifiers('b-menu-list', modifiers);
+
         return (
-            <div className={this.getRootClassName('b-menu-list')}>
+            <div className={rootClassName}>
                 {items.map((item, i) => (
                     <div
                         className="b-menu-list__item"
