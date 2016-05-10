@@ -1,0 +1,11 @@
+.b-input-form {
+    &__input {
+        border: 0;
+        border-radius: 2px;
+        height: 32px;
+        padding: 0 10px;
+        font-size: 12px;
+        width: 100%;
+        box-shadow: $shadow;
+    }
+}

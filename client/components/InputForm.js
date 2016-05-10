@@ -38,11 +38,11 @@ class InputForm extends Component {
     render() {
         return (
             <form
-                className="c-input-form"
+                className="b-input-form"
                 onSubmit={this.handleFormSubmit}
             >
                 <input
-                    className="c-input-form__input"
+                    className="b-input-form__input"
                     onChange={this.handleInputChange}
                     value={this.state.value}
                     placeholder={this.props.placeholder}
