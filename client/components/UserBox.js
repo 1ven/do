@@ -1,10 +1,14 @@
 import React, { PropTypes, Component } from 'react';
 import MenuList from './MenuList';
 import Toggle from './Toggle';
+import Icon from './Icon';
 
 const UserBox = function ({ username, role, avatar }) {
     const wrap = (
         <div className="b-user-box__wrap">
+            <div className="b-user-box__icon">
+                <Icon name="chevron-down" />
+            </div>
             <div className="b-user-box__left">
                 <span className="b-user-box__username">
                     @{username}

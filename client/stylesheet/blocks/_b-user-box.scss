@@ -22,24 +22,36 @@ $avatar-size: 38px;
         height: $avatar-size;
     }
     &__wrap {
-        display: table;
-        table-layout: fixed;
+        display: flex;
+        align-items: center;
         cursor: pointer;
     }
-    &__left, &__right {
-        display: table-cell;
-        vertical-align: middle;
+    &__icon {
+        width: 10px;
+        path {
+            fill: #fff;
+        }
     }
     &__left {
-        padding-right: 12px;
+        margin-left: 11px;
         text-align: right;
     }
     &__right {
         width: $avatar-size;
+        margin-left: 11px;
     }
     &__menu {
         position: absolute;
         margin-top: 15px;
         right: 0;
+    }
+    .b-toggle {
+        &_visible {
+            .b-user-box {
+                &__icon {
+                    transform: rotate(180deg);
+                }
+            }
+        }
     }
 }
