@@ -14,6 +14,12 @@
     &:hover {
         background-color: darken($turquoise, 5%);
     }
+    &_red {
+        background-color: $red;
+        &:hover {
+            background-color: darken($red, 5%);
+        }
+    }
     &_full-width {
         width: 100%;
     }
