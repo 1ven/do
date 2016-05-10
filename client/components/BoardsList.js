@@ -17,12 +17,12 @@ const BoardsList = ({
     );
 
     return (
-        <div className="c-boards-list">
+        <div className="b-boards-list">
             <div className="b-container">
-                <div className="c-boards-list__items">
+                <div className="b-boards-list__items">
                     {boards.map((board, i) =>
                         <div
-                            className="c-boards-list__item"
+                            className="b-boards-list__item"
                             key={i}
                         >
                             <BoardTile
