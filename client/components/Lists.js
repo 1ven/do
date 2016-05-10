@@ -4,7 +4,6 @@ import List from './List';
 
 const Lists = ({
     lists = [],
-    onListCreate,
     onListRemoveClick
 }) => (
     <div className="c-lists">
@@ -21,14 +20,6 @@ const Lists = ({
                 />
             </div>
         ))}
-        <div className="c-lists__item">
-            <div className="b-tile">
-                <InputForm
-                    onSubmit={onListCreate}
-                    placeholder="Enter list name"
-                />
-            </div>
-        </div>
     </div>
 );
 
@@ -38,7 +29,6 @@ Lists.propTypes = {
         title: PropTypes.string,
         cards: PropTypes.array
     })),
-    onListCreate: PropTypes.func.isRequired,
     onListRemoveClick: PropTypes.func.isRequired
 };
 
