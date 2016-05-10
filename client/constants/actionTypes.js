@@ -37,3 +37,6 @@ export const NOTICE_HIDE = 'NOTICE_HIDE';
 
 export const EDIT_FORM_SHOW = 'EDIT_FORM_SHOW';
 export const EDIT_FORM_HIDE = 'EDIT_FORM_HIDE';
+
+export const MODAL_SHOW = 'MODAL_SHOW';
+export const MODAL_HIDE = 'MODAL_HIDE';
