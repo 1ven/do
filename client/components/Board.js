@@ -1,25 +1,42 @@
 import React, { PropTypes } from 'react';
 import ListsContainer from '../containers/ListsContainer';
+import BottomBox from './BottomBox';
+import Btn from './Btn';
 
-const Board = ({ id, title, lists = [] }) => (
-    <div className="b-container">
-        <div className="c-board">
-            <div className="c-board__lists">
-                <ListsContainer
-                    boardId={id}
-                    listsIds={lists}
-                />
+function Board({ data, onAddListBtnClick }) {
+    const addListBtn = (
+        <Btn
+            text="Add new list"
+            onClick={onAddListBtnClick}
+        />
+    );
+
+    return (
+        <div>
+            <div className="c-board">
+                <div className="b-container">
+                    <div className="c-board__lists">
+                        <ListsContainer
+                            boardId={data.id}
+                            listsIds={data.lists}
+                        />
+                    </div>
+                </div>
             </div>
+            <BottomBox button={addListBtn} />
         </div>
-    </div>
-);
+    );
+};
 
 Board.propTypes = {
-    id: PropTypes.number.isRequired,
-    title: PropTypes.string.isRequired,
-    lists: PropTypes.arrayOf(
-        PropTypes.number
-    )
+    data: PropTypes.shape({
+        id: PropTypes.number.isRequired,
+        title: PropTypes.string.isRequired,
+        lists: PropTypes.arrayOf(
+            PropTypes.number
+        )
+    }).isRequired,
+    onAddListBtnClick: PropTypes.func.isRequired
 };
 
 export default Board;
