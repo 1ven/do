@@ -4,11 +4,15 @@ import { getBoards, createBoard, removeBoard } from '../actions/boardsActions';
 import { showModal, hideModal } from '../actions/modalActions';
 import BoardsList from '../components/BoardsList.js';
 import Loader from '../components/Loader';
-import BoardCreator from '../components/BoardCreator';
+import ModalForm from '../components/ModalForm';
+import Input from '../components/Input';
 
 class IndexPage extends Component {
     constructor(props) {
         super(props);
+
+        this.handleModalFormSubmit = this.handleModalFormSubmit.bind(this);
+        this.handleAddBoardBtnClick = this.handleAddBoardBtnClick.bind(this);
     }
 
     componentWillMount() {
@@ -19,13 +23,38 @@ class IndexPage extends Component {
         return !(!this.props.isFetching && !this.props.lastUpdated && nextProps.isFetching);
     }
 
+    handleAddBoardBtnClick() {
+        const { dispatch } = this.props;
+
+        dispatch(showModal(
+            'Create board',
+            <ModalForm
+                rows={[
+                    <Input name="title" placeholder="Title" />
+                ]}
+                onSubmit={this.handleModalFormSubmit}
+                onCancelClick={() => dispatch(hideModal())}
+            />
+        ));
+    }
+
+    handleModalFormSubmit(formData) {
+        const { dispatch } = this.props;
+
+        dispatch(createBoard(formData.title))
+            .then(action => {
+                if (!action.payload.error) {
+                    dispatch(hideModal());
+                }
+            });
+    }
+
     render() {
         const {
             boards,
             isFetching,
             lastUpdated,
-            onBoardTileRemoveClick,
-            onAddBoardBtnClick
+            dispatch
         } = this.props;
 
         const isEmpty = boards.length === 0;
@@ -37,8 +66,8 @@ class IndexPage extends Component {
         ) : (
             <BoardsList
                 boards={boards}
-                onBoardTileRemoveClick={onBoardTileRemoveClick}
-                onAddBoardBtnClick={onAddBoardBtnClick}
+                onBoardTileRemoveClick={id => dispatch(removeBoard(id))}
+                onAddBoardBtnClick={this.handleAddBoardBtnClick}
             />
         );
     }
@@ -62,30 +91,6 @@ function mapStateToProps(state) {
     };
 };
 
-function mapDispatchToProps(dispatch) {
-    const createBoardCb = formData => {
-        dispatch(createBoard(formData.title))
-            .then(action => {
-                if (!action.payload.error) {
-                    dispatch(hideModal());
-                }
-            });
-    };
-
-    return {
-        onAddBoardBtnClick: () => dispatch(showModal(
-            'Create board',
-            <BoardCreator
-                onModalFormCancelClick={() => dispatch(hideModal())}
-                onModalFormSubmit={createBoardCb}
-            />
-        )),
-        onBoardTileRemoveClick: id => dispatch(removeBoard(id)),
-        dispatch
-    };
-};
-
 export default connect(
-    mapStateToProps,
-    mapDispatchToProps
+    mapStateToProps
 )(IndexPage);
