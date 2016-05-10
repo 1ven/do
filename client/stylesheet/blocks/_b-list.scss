@@ -1,0 +1,14 @@
+.b-list {
+    background-color: $gray-a;
+    border-radius: 2px;
+    box-shadow: $shadow;
+    padding: 10px;
+    &__top {
+        margin-bottom: 10px;
+        display: flex;
+        align-items: center;
+    }
+    &__menu {
+        margin-left: auto;
+    }
+}
