@@ -1,0 +1,17 @@
+.b-modal-form {
+    &__rows {
+        padding: 20px;
+        border-bottom: 1px solid $gray;
+    }
+    &__buttons {
+        padding: 15px 20px;
+        display: flex;
+        justify-content: flex-end;
+    }
+    &__button {
+        margin-right: 15px;
+        &:last-child {
+            margin-right: 0;
+        }
+    }
+}
