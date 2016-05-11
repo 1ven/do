@@ -1,13 +1,11 @@
 import React, { PropTypes, Component } from 'react';
 import { connect } from 'react-redux'
-import { getBoards, createBoard, removeBoard, updateBoard } from '../actions/boardsActions';
-import { showModal, hideModal } from '../actions/modalActions';
-import EditBoardModal from './EditBoardModal';
+import { getBoards, removeBoard } from '../actions/boardsActions';
+import { showModal } from '../actions/modalActions';
 import BoardsList from '../components/BoardsList.js';
 import Loader from '../components/Loader';
-import ModalForm from '../components/ModalForm';
-import Input from '../components/Input';
 import CreateBoardModal from './CreateBoardModal';
+import EditBoardModal from './EditBoardModal';
 
 class IndexPage extends Component {
     constructor(props) {
@@ -33,15 +31,15 @@ class IndexPage extends Component {
         ));
     }
 
-    handleBoardTileRemoveClick(id) {
-        this.props.dispatch(removeBoard(id));
-    }
-
     handleBoardTileEditClick(board) {
         this.props.dispatch(showModal(
             'Edit board',
             <EditBoardModal board={board} />
         ));
+    }
+
+    handleBoardTileRemoveClick(id) {
+        this.props.dispatch(removeBoard(id));
     }
 
     render() {

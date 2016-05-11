@@ -1,11 +1,9 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import Lists from '../components/Lists';
-import { removeList, updateList } from '../actions/listsActions';
+import { removeList } from '../actions/listsActions';
 import { removeListId } from '../actions/boardsActions';
-import { showModal, hideModal } from '../actions/modalActions';
-import ModalForm from '../components/ModalForm';
-import Input from '../components/Input';
+import { showModal } from '../actions/modalActions';
 import EditListModal from './EditListModal';
 
 function mapStateToProps(state, ownProps) {

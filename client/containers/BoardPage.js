@@ -1,13 +1,13 @@
 import React, { PropTypes, Component } from 'react';
 import _ from 'lodash';
 import { connect } from 'react-redux';
-import { getBoard, updateBoard } from '../actions/boardsActions';
+import { getBoard } from '../actions/boardsActions';
 import { createList } from '../actions/listsActions';
-import { showModal, hideModal } from '../actions/modalActions';
-import EditBoardModal from './EditBoardModal';
+import { showModal } from '../actions/modalActions';
 import Board from '../components/Board';
 import Loader from '../components/Loader';
 import CreateListModal from './CreateListModal';
+import EditBoardModal from './EditBoardModal';
 
 class BoardPage extends Component {
     constructor(props) {
