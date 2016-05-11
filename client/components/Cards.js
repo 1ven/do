@@ -1,6 +1,7 @@
 import React, { PropTypes } from 'react';
 import InputForm from './InputForm';
 import Card from './Card';
+import Btn from './Btn';
 
 const Cards = ({
     cards = [],
@@ -25,10 +26,17 @@ const Cards = ({
                 </div>
             )}
             <div className="c-cards__item">
-                <InputForm
-                    onSubmit={onCardCreate}
-                    placeholder="Enter card name"
-                />
+                {false ? (
+                    <InputForm
+                        onSubmit={onCardCreate}
+                        placeholder="Enter card name"
+                    />
+                ) : (
+                    <Btn
+                        text="Add new card"
+                        modifiers={['full_width', 'sm']}
+                    />
+                )}
             </div>
         </div>
     );
