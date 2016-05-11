@@ -32,7 +32,11 @@ class IndexPage extends Component {
             'Create board',
             <ModalForm
                 rows={[
-                    <Input name="title" placeholder="Title" />
+                    <Input
+                        name="title"
+                        placeholder="Title"
+                        focus={true}
+                    />
                 ]}
                 onSubmit={this.handleCreateFormSubmit}
                 onCancelClick={() => dispatch(hideModal())}
@@ -55,6 +59,7 @@ class IndexPage extends Component {
                         name="title"
                         placeholder="Title"
                         value={board.title}
+                        focus={true}
                     />
                 ]}
                 onSubmit={formData => this.handleEditFormSubmit(board.id, formData)}
