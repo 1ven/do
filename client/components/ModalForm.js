@@ -53,7 +53,7 @@ class ModalForm extends Component {
                     </div>
                     <div className="b-modal-form__button">
                         <Btn
-                            text="Create"
+                            text="Submit"
                             tagName="button"
                             nodeAttrs={{ type: 'submit' }}
                         />
