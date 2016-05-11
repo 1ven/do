@@ -89,3 +89,21 @@ export function removeListId(boardId, listId) {
         }
     };
 };
+
+export function updateBoard(id, props) {
+    return {
+        [CALL_API]: {
+            types: [
+                types.BOARDS_UPDATE_REQUEST,
+                types.BOARDS_UPDATE_SUCCESS,
+                types.BOARDS_UPDATE_ERROR
+            ],
+            endpoint: `/api/boards/${id}`,
+            schema: BOARD,
+            request: {
+                method: 'put',
+                body: props
+            }
+        }
+    };
+};
