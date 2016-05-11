@@ -3,8 +3,19 @@
     padding-bottom: 128px;
     &__top {
         display: flex;
-        flex-direction: column;
+        align-items: center;
         margin-bottom: 45px;
+    }
+    &__info {
+        display: flex;
+        flex-direction: column;
+    }
+    &__edit {
+        margin-left: auto;
+        width: 20px;
+        path {
+            fill: $white;
+        }
     }
     &__title, &__description {
         color: $white;

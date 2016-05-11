@@ -42,7 +42,11 @@ function mapDispatchToProps(dispatch, ownProps) {
                 'Create card',
                 <ModalForm
                     rows={[
-                        <Input name="text" placeholder="Text" />
+                        <Input
+                            name="text"
+                            placeholder="Text"
+                            focus={true}
+                        />
                     ]}
                     onSubmit={handleModalFormSubmit}
                     onCancelClick={() => dispatch(hideModal())}

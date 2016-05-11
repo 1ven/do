@@ -1,9 +1,10 @@
 import React, { PropTypes, Component } from 'react';
 import _ from 'lodash';
 import { connect } from 'react-redux';
-import { getBoard, addListId } from '../actions/boardsActions';
+import { getBoard, addListId, updateBoard } from '../actions/boardsActions';
 import { createList } from '../actions/listsActions';
 import { showModal, hideModal } from '../actions/modalActions';
+import EditBoardContainer from './EditBoardContainer';
 import Board from '../components/Board';
 import Loader from '../components/Loader';
 import ModalForm from '../components/ModalForm';
@@ -15,6 +16,7 @@ class BoardPage extends Component {
 
         this.handleAddListBtnClick = this.handleAddListBtnClick.bind(this);
         this.handleCreateListFormSubmit = this.handleCreateListFormSubmit.bind(this);
+        this.handleEditBoardClick = this.handleEditBoardClick.bind(this);
     }
 
     componentWillMount() {
@@ -64,6 +66,15 @@ class BoardPage extends Component {
             });
     }
 
+    handleEditBoardClick() {
+        const { board, dispatch } = this.props;
+
+        dispatch(showModal(
+            'Edit board',
+            <EditBoardContainer board={board} />
+        ));
+    }
+
     render() {
         const {
             board,
@@ -79,6 +90,7 @@ class BoardPage extends Component {
             <Board
                 data={board}
                 onAddListBtnClick={this.handleAddListBtnClick}
+                onEditBoardClick={this.handleEditBoardClick}
             />
         );
     }

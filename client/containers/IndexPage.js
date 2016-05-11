@@ -2,6 +2,7 @@ import React, { PropTypes, Component } from 'react';
 import { connect } from 'react-redux'
 import { getBoards, createBoard, removeBoard, updateBoard } from '../actions/boardsActions';
 import { showModal, hideModal } from '../actions/modalActions';
+import EditBoardContainer from './EditBoardContainer';
 import BoardsList from '../components/BoardsList.js';
 import Loader from '../components/Loader';
 import ModalForm from '../components/ModalForm';
@@ -53,30 +54,8 @@ class IndexPage extends Component {
 
         dispatch(showModal(
             'Edit board',
-            <ModalForm
-                rows={[
-                    <Input
-                        name="title"
-                        placeholder="Title"
-                        value={board.title}
-                        focus={true}
-                    />
-                ]}
-                onSubmit={formData => this.handleEditFormSubmit(board.id, formData)}
-                onCancelClick={() => dispatch(hideModal())}
-            />
+            <EditBoardContainer board={board} />
         ));
-    }
-
-    handleEditFormSubmit(boardId, formData) {
-        const { dispatch } = this.props;
-
-        dispatch(updateBoard(boardId, formData))
-            .then(action => {
-                if (!action.payload.error) {
-                    dispatch(hideModal());
-                }
-            });
     }
 
     handleCreateFormSubmit(formData) {

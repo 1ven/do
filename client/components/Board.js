@@ -2,8 +2,13 @@ import React, { PropTypes } from 'react';
 import ListsContainer from '../containers/ListsContainer';
 import BottomBox from './BottomBox';
 import Btn from './Btn';
+import Icon from './Icon';
 
-function Board({ data, onAddListBtnClick }) {
+function Board({
+    data,
+    onAddListBtnClick,
+    onEditBoardClick
+}) {
     const addListBtn = (
         <Btn
             text="Add new list"
@@ -16,12 +21,20 @@ function Board({ data, onAddListBtnClick }) {
             <div className="b-board">
                 <div className="b-container">
                     <div className="b-board__top">
-                        <span className="b-board__title">
-                            {data.title}
-                        </span>
-                        <span className="b-board__description">
-                            Some text with board description
-                        </span>
+                        <div className="b-board__info">
+                            <span className="b-board__title">
+                                {data.title}
+                            </span>
+                            <span className="b-board__description">
+                                Some text with board description
+                            </span>
+                        </div>
+                        <a
+                            className="b-board__edit"
+                            onClick={onEditBoardClick}
+                        >
+                            <Icon name="pencil" />
+                        </a>
                     </div>
                     <div className="b-board__lists">
                         <ListsContainer
@@ -44,7 +57,8 @@ Board.propTypes = {
             PropTypes.number
         )
     }).isRequired,
-    onAddListBtnClick: PropTypes.func.isRequired
+    onAddListBtnClick: PropTypes.func.isRequired,
+    onEditBoardClick: PropTypes.func.isRequired
 };
 
 export default Board;
