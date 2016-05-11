@@ -1,41 +1,19 @@
 import React, { PropTypes, Component } from 'react';
-import InputForm from './InputForm';
 import Card from './Card';
 import Btn from './Btn';
 
 class Cards extends Component {
     constructor(props) {
         super(props);
-
-        this.state = {
-            isInputFormVisible: false
-        };
-
-        this.handleInputFormCrossClick = this.handleInputFormCrossClick.bind(this);
-        this.handleAddCardBtnClick = this.handleAddCardBtnClick.bind(this);
-    }
-
-    handleInputFormCrossClick() {
-        this.setState({
-            isInputFormVisible: false
-        });
-    }
-
-    handleAddCardBtnClick() {
-        this.setState({
-            isInputFormVisible: true
-        });
     }
 
     render() {
         const {
             cards,
-            onCardCreate,
             onCardRemoveClick,
-            onCardInputFormSubmit,
-            onCardTextClick
+            onCardTextClick,
+            onAddCardBtnClick
         } = this.props;
-        const { isInputFormVisible } = this.state;
 
         return (
             <div className="b-cards">
@@ -47,26 +25,16 @@ class Cards extends Component {
                         <Card
                             {...card}
                             onRemoveClick={onCardRemoveClick}
-                            onInputFormSubmit={onCardInputFormSubmit}
                             onTextClick={onCardTextClick}
                         />
                     </div>
                 )}
                 <div className="b-cards__item">
-                    {isInputFormVisible ? (
-                        <InputForm
-                            onSubmit={onCardCreate}
-                            placeholder="Enter card text"
-                            onCrossClick={this.handleInputFormCrossClick}
-                            autoFocus={true}
-                        />
-                    ) : (
-                        <Btn
-                            text="Add new card"
-                            modifiers={['full_width', 'sm']}
-                            onClick={this.handleAddCardBtnClick}
-                        />
-                    )}
+                    <Btn
+                        text="Add new card"
+                        modifiers={['full_width', 'sm']}
+                        onClick={onAddCardBtnClick}
+                    />
                 </div>
             </div>
         );
@@ -82,9 +50,8 @@ Cards.propTypes = {
         id: PropTypes.number,
         text: PropTypes.string
     })),
-    onCardCreate: PropTypes.func.isRequired,
+    onAddCardBtnClick: PropTypes.func.isRequired,
     onCardRemoveClick: PropTypes.func.isRequired,
-    onCardInputFormSubmit: PropTypes.func.isRequired,
     onCardTextClick: PropTypes.func.isRequired
 };
 
