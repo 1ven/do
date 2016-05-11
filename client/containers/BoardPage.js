@@ -1,21 +1,19 @@
 import React, { PropTypes, Component } from 'react';
 import _ from 'lodash';
 import { connect } from 'react-redux';
-import { getBoard, addListId, updateBoard } from '../actions/boardsActions';
+import { getBoard, updateBoard } from '../actions/boardsActions';
 import { createList } from '../actions/listsActions';
 import { showModal, hideModal } from '../actions/modalActions';
 import EditBoardModal from './EditBoardModal';
 import Board from '../components/Board';
 import Loader from '../components/Loader';
-import ModalForm from '../components/ModalForm';
-import Input from '../components/Input';
+import CreateListModal from './CreateListModal';
 
 class BoardPage extends Component {
     constructor(props) {
         super(props);
 
         this.handleAddListBtnClick = this.handleAddListBtnClick.bind(this);
-        this.handleCreateListFormSubmit = this.handleCreateListFormSubmit.bind(this);
         this.handleEditBoardClick = this.handleEditBoardClick.bind(this);
     }
 
@@ -35,35 +33,12 @@ class BoardPage extends Component {
     }
 
     handleAddListBtnClick() {
-        const { dispatch } = this.props;
+        const { dispatch, board } = this.props;
 
         dispatch(showModal(
             'Create list',
-            <ModalForm
-                rows={[
-                    <Input
-                        name="title"
-                        placeholder="Title"
-                        focus={true}
-                    />
-                ]}
-                onSubmit={this.handleCreateListFormSubmit}
-                onCancelClick={() => dispatch(hideModal())}
-            />
+            <CreateListModal boardId={board.id} />
         ));
-    }
-
-    handleCreateListFormSubmit(formData) {
-        const boardId = this.props.board.id;
-        const { dispatch } = this.props;
-
-        dispatch(createList(boardId, formData.title))
-            .then(action => {
-                if (!action.payload.error) {
-                    dispatch(addListId(boardId, action.payload.result))
-                    dispatch(hideModal());
-                }
-            });
     }
 
     handleEditBoardClick() {
