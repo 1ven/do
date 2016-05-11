@@ -14,7 +14,7 @@ class BoardPage extends Component {
         super(props);
 
         this.handleAddListBtnClick = this.handleAddListBtnClick.bind(this);
-        this.handleModalFormSubmit = this.handleModalFormSubmit.bind(this);
+        this.handleCreateListFormSubmit = this.handleCreateListFormSubmit.bind(this);
     }
 
     componentWillMount() {
@@ -39,15 +39,19 @@ class BoardPage extends Component {
             'Create list',
             <ModalForm
                 rows={[
-                    <Input name="title" placeholder="Title" />
+                    <Input
+                        name="title"
+                        placeholder="Title"
+                        focus={true}
+                    />
                 ]}
-                onSubmit={this.handleModalFormSubmit}
+                onSubmit={this.handleCreateListFormSubmit}
                 onCancelClick={() => dispatch(hideModal())}
             />
         ));
     }
 
-    handleModalFormSubmit(formData) {
+    handleCreateListFormSubmit(formData) {
         const boardId = this.props.board.id;
         const { dispatch } = this.props;
 
