@@ -5,7 +5,7 @@ import { hideModal } from '../actions/modalActions';
 import ModalForm from '../components/ModalForm';
 import Input from '../components/Input';
 
-class EditBoardContainer extends Component {
+class EditBoardModal extends Component {
     render() {
         const { board, onSubmit, onCancelClick } = this.props;
 
@@ -42,7 +42,7 @@ function mapDispatchToProps(dispatch, ownProps) {
     };
 };
 
-EditBoardContainer.propTypes = {
+EditBoardModal.propTypes = {
     board: PropTypes.object.isRequired,
     onSubmit: PropTypes.func.isRequired,
     onCancelClick: PropTypes.func.isRequired,
@@ -51,4 +51,4 @@ EditBoardContainer.propTypes = {
 export default connect(
     null,
     mapDispatchToProps
-)(EditBoardContainer);
+)(EditBoardModal);

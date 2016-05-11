@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import { getBoard, addListId, updateBoard } from '../actions/boardsActions';
 import { createList } from '../actions/listsActions';
 import { showModal, hideModal } from '../actions/modalActions';
-import EditBoardContainer from './EditBoardContainer';
+import EditBoardModal from './EditBoardModal';
 import Board from '../components/Board';
 import Loader from '../components/Loader';
 import ModalForm from '../components/ModalForm';
@@ -71,7 +71,7 @@ class BoardPage extends Component {
 
         dispatch(showModal(
             'Edit board',
-            <EditBoardContainer board={board} />
+            <EditBoardModal board={board} />
         ));
     }
 

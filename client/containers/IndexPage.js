@@ -2,7 +2,7 @@ import React, { PropTypes, Component } from 'react';
 import { connect } from 'react-redux'
 import { getBoards, createBoard, removeBoard, updateBoard } from '../actions/boardsActions';
 import { showModal, hideModal } from '../actions/modalActions';
-import EditBoardContainer from './EditBoardContainer';
+import EditBoardModal from './EditBoardModal';
 import BoardsList from '../components/BoardsList.js';
 import Loader from '../components/Loader';
 import ModalForm from '../components/ModalForm';
@@ -54,7 +54,7 @@ class IndexPage extends Component {
 
         dispatch(showModal(
             'Edit board',
-            <EditBoardContainer board={board} />
+            <EditBoardModal board={board} />
         ));
     }
 
