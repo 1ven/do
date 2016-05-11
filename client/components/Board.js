@@ -26,7 +26,7 @@ function Board({ data, onAddListBtnClick }) {
                     <div className="b-board__lists">
                         <ListsContainer
                             boardId={data.id}
-                            listsIds={data.lists}
+                            lists={data.lists}
                         />
                     </div>
                 </div>

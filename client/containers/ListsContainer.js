@@ -9,7 +9,7 @@ import Input from '../components/Input';
 
 function mapStateToProps(state, ownProps) {
     const { lists } = state.entities;
-    const listsIds = ownProps.listsIds || [];
+    const listsIds = ownProps.lists || [];
 
     return {
         lists: listsIds.map(id => lists[id])
