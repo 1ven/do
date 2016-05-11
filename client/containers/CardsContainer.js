@@ -5,6 +5,9 @@ import Cards from '../components/Cards';
 import { createCard, removeCard, updateCard } from '../actions/cardsActions';
 import { addCardId, removeCardId } from '../actions/listsActions';
 import { showEditForm, hideEditForm } from '../actions/editFormActions';
+import { showModal, hideModal } from '../actions/modalActions';
+import ModalForm from '../components/ModalForm';
+import Input from '../components/Input';
 
 function mapStateToProps(state, ownProps) {
     const { cards } = state.entities;
@@ -22,13 +25,29 @@ function mapStateToProps(state, ownProps) {
 
 function mapDispatchToProps(dispatch, ownProps) {
     const { listId } = ownProps;
-    return {
-        // TODO: May be rename callback
-        onCardCreate: text => {
-            dispatch(createCard(listId, text))
-                .then(action => {
+
+    const handleModalFormSubmit = formData => {
+        dispatch(createCard(listId, formData.text))
+            .then(action => {
+                if (!action.error) {
                     dispatch(addCardId(listId, action.payload.result));
-                });
+                    dispatch(hideModal());
+                }
+            });
+    };
+
+    return {
+        onAddCardBtnClick: () => {
+            dispatch(showModal(
+                'Create card',
+                <ModalForm
+                    rows={[
+                        <Input name="text" placeholder="Text" />
+                    ]}
+                    onSubmit={handleModalFormSubmit}
+                    onCancelClick={() => dispatch(hideModal())}
+                />
+            ));
         },
         onCardRemoveClick: id => {
             dispatch(removeCard(id))

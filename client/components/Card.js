@@ -4,19 +4,7 @@ import InputForm from './InputForm';
 class Card extends Component {
     constructor(props) {
         super(props);
-        this.handleRemoveClick = this.handleRemoveClick.bind(this);
-        this.handleInputFormSubmit = this.handleInputFormSubmit.bind(this);
         this.handleTextClick = this.handleTextClick.bind(this);
-    }
-
-    handleRemoveClick() {
-        const { onRemoveClick, id } = this.props;
-        onRemoveClick(id);
-    }
-
-    handleInputFormSubmit(text) {
-        const { onInputFormSubmit, id } = this.props;
-        onInputFormSubmit(id, text);
     }
 
     handleTextClick() {
@@ -31,7 +19,6 @@ class Card extends Component {
                 {isEditing ? (
                     <InputForm
                         value={text}
-                        onSubmit={this.handleInputFormSubmit}
                     />
                 ) : (
                     <div
@@ -48,8 +35,6 @@ Card.propTypes = {
     id: PropTypes.number.isRequired,
     text: PropTypes.string.isRequired,
     isEditing: PropTypes.bool,
-    onRemoveClick: PropTypes.func.isRequired,
-    onInputFormSubmit: PropTypes.func.isRequired,
     onTextClick: PropTypes.func.isRequired
 };
 
