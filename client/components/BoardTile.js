@@ -7,21 +7,23 @@ import ToggleMenu from './ToggleMenu';
 class BoardTile extends Component {
     constructor(props) {
         super(props);
+
         this.handleRemoveClick = this.handleRemoveClick.bind(this);
         this.handleEditClick = this.handleEditClick.bind(this);
     }
 
     handleRemoveClick() {
-        const { onRemoveClick, id } = this.props;
+        const { onRemoveClick, data: { id } } = this.props;
         onRemoveClick(id);
     }
 
     handleEditClick() {
-        console.log('Edit');
+        const { onEditClick, data } = this.props;
+        onEditClick(data);
     }
 
     render() {
-        const { id, title, onRemoveClick } = this.props;
+        const { data: { id, title }, onRemoveClick } = this.props;
 
         const menu = (
             <MenuList
@@ -79,8 +81,10 @@ class BoardTile extends Component {
 };
 
 BoardTile.propTypes = {
-    id: PropTypes.number.isRequired,
-    title: PropTypes.string.isRequired,
+    data: PropTypes.shape({
+        id: PropTypes.number.isRequired,
+        title: PropTypes.string.isRequired,
+    }),
     onRemoveClick: PropTypes.func.isRequired
 };
 

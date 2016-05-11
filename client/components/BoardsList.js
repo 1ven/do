@@ -7,6 +7,7 @@ import Btn from './Btn';
 const BoardsList = ({
     boards,
     onBoardTileRemoveClick,
+    onBoardTileEditClick,
     onAddBoardBtnClick
 }) => {
     const addBoardBtn = (
@@ -26,8 +27,9 @@ const BoardsList = ({
                             key={i}
                         >
                             <BoardTile
-                                {...board}
+                                data={board}
                                 onRemoveClick={onBoardTileRemoveClick}
+                                onEditClick={onBoardTileEditClick}
                             />
                         </div>
                     )}
@@ -46,6 +48,7 @@ BoardsList.propTypes = {
         title: PropTypes.string.isRequired
     }).isRequired).isRequired,
     onBoardTileRemoveClick: PropTypes.func.isRequired,
+    onBoardTileEditClick: PropTypes.func.isRequired,
     onAddBoardBtnClick: PropTypes.func.isRequired
 };
 

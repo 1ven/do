@@ -1,6 +1,6 @@
 import React, { PropTypes, Component } from 'react';
 import { connect } from 'react-redux'
-import { getBoards, createBoard, removeBoard } from '../actions/boardsActions';
+import { getBoards, createBoard, removeBoard, updateBoard } from '../actions/boardsActions';
 import { showModal, hideModal } from '../actions/modalActions';
 import BoardsList from '../components/BoardsList.js';
 import Loader from '../components/Loader';
@@ -11,8 +11,10 @@ class IndexPage extends Component {
     constructor(props) {
         super(props);
 
-        this.handleModalFormSubmit = this.handleModalFormSubmit.bind(this);
+        this.handleCreateFormSubmit = this.handleCreateFormSubmit.bind(this);
         this.handleAddBoardBtnClick = this.handleAddBoardBtnClick.bind(this);
+        this.handleBoardTileEditClick = this.handleBoardTileEditClick.bind(this);
+        this.handleBoardTileRemoveClick = this.handleBoardTileRemoveClick.bind(this);
     }
 
     componentWillMount() {
@@ -32,13 +34,47 @@ class IndexPage extends Component {
                 rows={[
                     <Input name="title" placeholder="Title" />
                 ]}
-                onSubmit={this.handleModalFormSubmit}
+                onSubmit={this.handleCreateFormSubmit}
                 onCancelClick={() => dispatch(hideModal())}
             />
         ));
     }
 
-    handleModalFormSubmit(formData) {
+    handleBoardTileRemoveClick(id) {
+        dispatch(removeBoard(id));
+    }
+
+    handleBoardTileEditClick(board) {
+        const { dispatch } = this.props;
+
+        dispatch(showModal(
+            'Edit board',
+            <ModalForm
+                rows={[
+                    <Input
+                        name="title"
+                        placeholder="Title"
+                        value={board.title}
+                    />
+                ]}
+                onSubmit={formData => this.handleEditFormSubmit(board.id, formData)}
+                onCancelClick={() => dispatch(hideModal())}
+            />
+        ));
+    }
+
+    handleEditFormSubmit(boardId, formData) {
+        const { dispatch } = this.props;
+
+        dispatch(updateBoard(boardId, formData))
+            .then(action => {
+                if (!action.payload.error) {
+                    dispatch(hideModal());
+                }
+            });
+    }
+
+    handleCreateFormSubmit(formData) {
         const { dispatch } = this.props;
 
         dispatch(createBoard(formData.title))
@@ -66,7 +102,8 @@ class IndexPage extends Component {
         ) : (
             <BoardsList
                 boards={boards}
-                onBoardTileRemoveClick={id => dispatch(removeBoard(id))}
+                onBoardTileRemoveClick={this.handleBoardTileRemoveClick}
+                onBoardTileEditClick={this.handleBoardTileEditClick}
                 onAddBoardBtnClick={this.handleAddBoardBtnClick}
             />
         );
