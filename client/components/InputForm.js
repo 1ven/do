@@ -1,4 +1,5 @@
 import React, { PropTypes, Component } from 'react';
+import ReactDOM from 'react-dom';
 import Icon from './Icon';
 
 class InputForm extends Component {
@@ -7,9 +8,16 @@ class InputForm extends Component {
 
         this.handleFormSubmit = this.handleFormSubmit.bind(this);
         this.handleInputChange = this.handleInputChange.bind(this);
+
         this.state = {
             value: this.props.value || ''
         };
+    }
+
+    componentDidMount() {
+        if (this.props.autoFocus) {
+            ReactDOM.findDOMNode(this.refs.input).focus();
+        }
     }
 
     handleFormSubmit(e) {
@@ -57,6 +65,7 @@ class InputForm extends Component {
                     onChange={this.handleInputChange}
                     value={this.state.value}
                     placeholder={this.props.placeholder}
+                    ref="input"
                 />
                 {cross}
             </form>
@@ -66,7 +75,8 @@ class InputForm extends Component {
 
 InputForm.propTypes = {
     onSubmit: PropTypes.func.isRequired,
-    onCrossClick: PropTypes.func
+    onCrossClick: PropTypes.func,
+    autoFocus: PropTypes.bool
 };
 
 export default InputForm;
