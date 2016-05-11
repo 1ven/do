@@ -1,4 +1,5 @@
 .b-input-form {
+    position: relative;
     &__input {
         border: 0;
         border-radius: 2px;
@@ -7,5 +8,16 @@
         font-size: 12px;
         width: 100%;
         box-shadow: $shadow;
+    }
+    &__cross {
+        position: absolute;
+        height: 100%;
+        top: 0;
+        right: 6px;
+        display: flex;
+        align-items: center;
+        i {
+            width: 12px;
+        }
     }
 }

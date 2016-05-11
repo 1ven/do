@@ -1,4 +1,5 @@
 import React, { PropTypes, Component } from 'react';
+import Icon from './Icon';
 
 class InputForm extends Component {
     constructor(props) {
@@ -36,6 +37,16 @@ class InputForm extends Component {
     }
 
     render() {
+        const { onCrossClick } = this.props;
+        const cross = onCrossClick ? (
+            <a
+                className="b-input-form__cross"
+                onClick={onCrossClick}
+            >
+                <Icon name="cross" />
+            </a>
+        ) : null;
+
         return (
             <form
                 className="b-input-form"
@@ -47,13 +58,15 @@ class InputForm extends Component {
                     value={this.state.value}
                     placeholder={this.props.placeholder}
                 />
+                {cross}
             </form>
         );
     }
 }
 
 InputForm.propTypes = {
-    onSubmit: PropTypes.func.isRequired
+    onSubmit: PropTypes.func.isRequired,
+    onCrossClick: PropTypes.func
 };
 
 export default InputForm;
