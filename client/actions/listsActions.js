@@ -57,3 +57,21 @@ export function removeList(id) {
         }
     };
 };
+
+export function updateList(id, props) {
+    return {
+        [CALL_API]: {
+            types: [
+                types.LISTS_UPDATE_REQUEST,
+                types.LISTS_UPDATE_SUCCESS,
+                types.LISTS_UPDATE_ERROR
+            ],
+            endpoint: `/api/lists/${id}`,
+            schema: LIST,
+            request: {
+                method: 'put',
+                body: props
+            }
+        }
+    };
+};

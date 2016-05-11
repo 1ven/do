@@ -23,7 +23,8 @@ function mapDispatchToProps(dispatch, ownProps) {
                         dispatch(removeListId(boardId, id));
                     }
                 });
-        }
+        },
+        onListEditClick: list => {}
     };
 };
 
