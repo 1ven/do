@@ -7,12 +7,12 @@ import BoardsList from '../components/BoardsList.js';
 import Loader from '../components/Loader';
 import ModalForm from '../components/ModalForm';
 import Input from '../components/Input';
+import CreateBoardModal from './CreateBoardModal';
 
 class IndexPage extends Component {
     constructor(props) {
         super(props);
 
-        this.handleCreateFormSubmit = this.handleCreateFormSubmit.bind(this);
         this.handleAddBoardBtnClick = this.handleAddBoardBtnClick.bind(this);
         this.handleBoardTileEditClick = this.handleBoardTileEditClick.bind(this);
         this.handleBoardTileRemoveClick = this.handleBoardTileRemoveClick.bind(this);
@@ -27,46 +27,21 @@ class IndexPage extends Component {
     }
 
     handleAddBoardBtnClick() {
-        const { dispatch } = this.props;
-
-        dispatch(showModal(
+        this.props.dispatch(showModal(
             'Create board',
-            <ModalForm
-                rows={[
-                    <Input
-                        name="title"
-                        placeholder="Title"
-                        focus={true}
-                    />
-                ]}
-                onSubmit={this.handleCreateFormSubmit}
-                onCancelClick={() => dispatch(hideModal())}
-            />
+            <CreateBoardModal />
         ));
     }
 
     handleBoardTileRemoveClick(id) {
-        dispatch(removeBoard(id));
+        this.props.dispatch(removeBoard(id));
     }
 
     handleBoardTileEditClick(board) {
-        const { dispatch } = this.props;
-
-        dispatch(showModal(
+        this.props.dispatch(showModal(
             'Edit board',
             <EditBoardModal board={board} />
         ));
-    }
-
-    handleCreateFormSubmit(formData) {
-        const { dispatch } = this.props;
-
-        dispatch(createBoard(formData.title))
-            .then(action => {
-                if (!action.payload.error) {
-                    dispatch(hideModal());
-                }
-            });
     }
 
     render() {
