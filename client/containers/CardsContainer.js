@@ -11,7 +11,7 @@ import Input from '../components/Input';
 
 function mapStateToProps(state, ownProps) {
     const { cards } = state.entities;
-    const cardsIds = ownProps.cardsIds || [];
+    const cardsIds = ownProps.cards || [];
     const { editForm } = state;
 
     return {

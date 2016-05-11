@@ -17,11 +17,12 @@ class List extends Component {
     }
 
     handleEditClick() {
-        console.log('Edit');
+        const { onEditClick, data } = this.props;
+        onEditClick(data);
     }
 
     render() {
-        const { id, title, cardsIds } = this.props;
+        const { id, title, cards } = this.props.data;
 
         const menu = (
             <MenuList
@@ -46,7 +47,7 @@ class List extends Component {
                 <div className="b-list__body">
                     <CardsContainer
                         listId={id}
-                        cardsIds={cardsIds}
+                        cards={cards}
                     />
                 </div>
             </div>
@@ -55,10 +56,13 @@ class List extends Component {
 };
 
 List.propTypes = {
-    id: PropTypes.number.isRequired,
-    title: PropTypes.string.isRequired,
-    cardsIds: PropTypes.array,
-    onRemoveClick: PropTypes.func.isRequired
+    data: PropTypes.shape({
+        id: PropTypes.number.isRequired,
+        title: PropTypes.string.isRequired,
+        cards: PropTypes.array,
+    }),
+    onRemoveClick: PropTypes.func.isRequired,
+    onEditClick: PropTypes.func.isRequired
 };
 
 export default List;
