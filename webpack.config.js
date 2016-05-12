@@ -1,14 +1,16 @@
 'use strict';
 
 const webpack = require('webpack');
+const path = require('path');
 
 module.exports = {
-    context: __dirname + '/client',
-    entry: {
-        app: './index.js',
-    },
+    entry: [
+        'webpack-hot-middleware/client?reload=true',
+        path.join(__dirname, 'client/index.js')
+    ],
     output: {
-        path: __dirname + '/public/js',
+        publicPath: '/public/',
+        path: path.join(__dirname, '/server/public/'),
         filename: 'bundle.js'
     },
     module: {
@@ -32,6 +34,10 @@ module.exports = {
             }
         ]
     },
+    plugins: [
+        new webpack.optimize.OccurenceOrderPlugin(),
+        new webpack.HotModuleReplacementPlugin()
+    ],
     resolve: {
         extensions: ['', '.react.js', '.js', '.jsx'],
         modulesDirectories: ['client', 'node_modules']
@@ -40,8 +46,5 @@ module.exports = {
         modulesDirectories: ['node_modules'],
         moduleTemplates: ['*-loader', '*'],
         extensions: ['', '.js'],
-    },
-    // devServer: {
-    //     contentBase: __dirname + '/build'
-    // },
+    }
 };

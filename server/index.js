@@ -13,6 +13,7 @@ const config = require('./config');
 const errorHandler = require('./middlewares/').errorHandler;
 const initRoutes = require('./routes');
 
+const isDeveloping = process.env.NODE_ENV === 'development';
 const app = express();
 const sessionOpts = _.assign({}, config.session, {
     store: new pgSession({
@@ -20,13 +21,28 @@ const sessionOpts = _.assign({}, config.session, {
     })
 });
 
+if (isDeveloping) {
+    const webpack = require('webpack');
+    const webpackDevMiddleware = require('webpack-dev-middleware');
+    const webpackHotMiddleware = require('webpack-hot-middleware');
+    const webpackConfig = require('../webpack.config');
+
+    const compiler = webpack(webpackConfig);
+
+    app.use(webpackDevMiddleware(compiler, {
+        publicPath: webpackConfig.output.publicPath,
+        noInfo: true
+    }));
+    app.use(webpackHotMiddleware(compiler));
+}
+
 app.use(cookieParser());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(session(sessionOpts));
 app.use(passport.initialize());
 app.use(passport.session());
-app.use(express.static(path.join(__dirname, '../public')));
+app.use(express.static(path.join(__dirname, 'public')));
 initRoutes(app);
 app.use(errorHandler);
 
