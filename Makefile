@@ -1,16 +1,16 @@
 install:
 	npm install
 
-server-dev:
+development:
 	NODE_ENV=development nodemon ./server
 
-server-production:
+production:
 	NODE_ENV=production node ./server
 
 client-dev:
 	NODE_ENV=development node ./server
 
-client-production:
+build-client:
 	NODE_ENV=production webpack -p
 
 tests:
