@@ -11,6 +11,7 @@
     padding: 0 16px;
     transition: background-color .2s ease-out;
     box-shadow: $shadow;
+    text-decoration: none;
     @include no-select();
     &:hover {
         background-color: darken($turquoise, 5%);

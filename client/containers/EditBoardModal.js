@@ -26,6 +26,11 @@ class EditBoardModal extends Component {
     }
 };
 
+// TODO: may be get `board` from entities by given id(from `ownProps.boardId`) instead of `ownProps.board`.
+// May be not pass `board` to <EditBoardModal />, pass only `boardId`.
+// Because data from props may be stale. In entities data always will be fresh.
+// But specifically in this case it's not necessary.
+
 function mapDispatchToProps(dispatch, ownProps) {
     return {
         onCancelClick: function () {

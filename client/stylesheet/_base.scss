@@ -30,6 +30,7 @@ ul {
 a {
     cursor: pointer;
     color: $blue;
+    text-decoration: underline;
     &:hover {
         text-decoration: none;
     }

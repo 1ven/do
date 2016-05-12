@@ -8,6 +8,7 @@ import { showEditForm, hideEditForm } from '../actions/editFormActions';
 import { showModal, hideModal } from '../actions/modalActions';
 import ModalForm from '../components/ModalForm';
 import Input from '../components/Input';
+import FullCardModal from './FullCardModal';
 
 function mapStateToProps(state, ownProps) {
     const { cards } = state.entities;
@@ -38,6 +39,7 @@ function mapDispatchToProps(dispatch, ownProps) {
 
     return {
         onAddCardBtnClick: () => {
+            // TODO: Move to separate component
             dispatch(showModal(
                 'Create card',
                 <ModalForm
@@ -59,16 +61,11 @@ function mapDispatchToProps(dispatch, ownProps) {
                     dispatch(removeCardId(listId, id));
                 });
         },
-        onCardTextClick: id => {
-            dispatch(showEditForm(id, 'card'));
-        },
-        onCardInputFormSubmit: (id, text) => {
-            dispatch(updateCard(id, { text }))
-                .then(action => {
-                    if (!action.payload.error) {
-                        dispatch(hideEditForm());
-                    }
-                });
+        onCardClick: id => {
+            dispatch(showModal(
+                'Edit card',
+                <FullCardModal id={id} />
+            ));
         }
     };
 };
