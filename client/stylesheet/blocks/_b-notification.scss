@@ -1,0 +1,21 @@
+.b-notification {
+    opacity: .9;
+    color: $white;
+    padding: 12px 15px;
+    box-shadow: $shadow;
+    font-size: 13px;
+    border-radius: 2px;
+    cursor: pointer;
+    transition: opacity .2s ease-out;
+    &_type {
+        &_info {
+            background-color: $blue;
+        }
+        &_error {
+            background-color: $red;
+        }
+    }
+    &:hover {
+        opacity: 1;
+    }
+}

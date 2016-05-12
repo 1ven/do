@@ -8,6 +8,8 @@ import Loader from '../components/Loader';
 import CreateBoardModal from './CreateBoardModal';
 import EditBoardModal from './EditBoardModal';
 
+import { createNotificationWithTimeout } from '../actions/notificationsActions';
+
 class IndexPage extends Component {
     constructor(props) {
         super(props);

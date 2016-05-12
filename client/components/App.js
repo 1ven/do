@@ -1,6 +1,6 @@
 import React from 'react';
-import NoticeContainer from '../containers/NoticeContainer';
 import ModalContainer from '../containers/ModalContainer';
+import NotificationsContainer from '../containers/NotificationsContainer';
 import Header from './Header';
 
 import '../stylesheet/common.scss';
@@ -17,6 +17,6 @@ export default ({ children }) => (
             {children}
         </div>
         <ModalContainer />
-        <NoticeContainer />
+        <NotificationsContainer />
     </div>
 );
