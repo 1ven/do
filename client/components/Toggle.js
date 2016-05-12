@@ -7,27 +7,27 @@ class Toggle extends Component {
         this.handleLinkClick = this.handleLinkClick.bind(this);
 
         this.state = {
-            isVisible: false
+            isActive: false
         };
     }
 
     handleLinkClick(e) {
         e.preventDefault();
 
-        const { isVisible } = this.state;
+        const { isActive } = this.state;
 
         this.setState({
-            isVisible: !isVisible
+            isActive: !isActive
         });
     }
 
     render() {
         const { link, content } = this.props;
-        const { isVisible } = this.state;
+        const { isActive } = this.state;
 
         let className = 'b-toggle';
 
-        className = className + (isVisible ? ' b-toggle_visible' : '');
+        className = className + (isActive ? ' b-toggle_active' : '');
 
         return (
             <div>
@@ -35,7 +35,7 @@ class Toggle extends Component {
                     className={className}
                     onClick={this.handleLinkClick}
                 >{link}</a>
-                {isVisible ? content : null}
+                {isActive ? content : null}
             </div>
         );
     }

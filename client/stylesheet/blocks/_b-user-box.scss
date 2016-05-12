@@ -46,7 +46,7 @@ $avatar-size: 38px;
         right: 0;
     }
     .b-toggle {
-        &_visible {
+        &_active {
             .b-user-box {
                 &__icon {
                     transform: rotate(180deg);
