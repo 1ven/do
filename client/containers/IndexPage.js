@@ -1,4 +1,5 @@
 import React, { PropTypes, Component } from 'react';
+import _ from 'lodash';
 import { connect } from 'react-redux'
 import { getBoards, removeBoard } from '../actions/boardsActions';
 import { showModal } from '../actions/modalActions';
@@ -75,14 +76,35 @@ IndexPage.propTypes = {
 };
 
 function mapStateToProps(state) {
-    const { boards, lists, cards } = state.entities;
+    const { boards, lists } = state.entities;
     const { ids, isFetching, lastUpdated } = state.pages.index;
 
+    const items = ids.map(id => {
+        const board = boards[id];
+        const stats = getBoardStats(board, state);
+
+        return _.assign({}, board, stats);
+    }, []);
+
     return {
-        boards: ids.map(id => boards[id]),
+        boards: items,
         isFetching,
         lastUpdated
     };
+};
+
+function getBoardStats(board, state) {
+    const { lists } = state.entities;
+    const listsIds = board.lists || [];
+
+    const listsLength = listsIds.length;
+    const cardsLength = listsIds.reduce((acc, listId) => {
+        const list = lists[listId];
+        const cardsIds = list.cards || [];
+        return acc + cardsIds.length;
+    }, 0);
+
+    return { listsLength, cardsLength };
 };
 
 export default connect(

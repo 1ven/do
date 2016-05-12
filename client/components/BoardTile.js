@@ -23,7 +23,15 @@ class BoardTile extends Component {
     }
 
     render() {
-        const { data: { id, title }, onRemoveClick } = this.props;
+        const {
+            data: {
+                id,
+                title,
+                listsLength,
+                cardsLength
+            },
+            onRemoveClick
+        } = this.props;
 
         const menu = (
             <MenuList
@@ -53,7 +61,7 @@ class BoardTile extends Component {
                                     iconWidth="15"
                                     iconName="list"
                                 >
-                                    4
+                                    {listsLength}
                                 </IconItem>
                             </div>
                             <div className="b-board-tile__icon-item">
@@ -61,7 +69,7 @@ class BoardTile extends Component {
                                     iconWidth="14"
                                     iconName="card"
                                 >
-                                    10
+                                    {cardsLength}
                                 </IconItem>
                             </div>
                         </div>
@@ -84,6 +92,8 @@ BoardTile.propTypes = {
     data: PropTypes.shape({
         id: PropTypes.number.isRequired,
         title: PropTypes.string.isRequired,
+        listsLength: PropTypes.number.isRequired,
+        cardsLength: PropTypes.number.isRequired
     }),
     onRemoveClick: PropTypes.func.isRequired
 };
