@@ -5,6 +5,7 @@ import Sign from './components/Sign';
 import IndexPage from './containers/IndexPage';
 import BoardPage from './containers/BoardPage';
 import SignInPage from './containers/SignInPage';
+import SignUpPage from './containers/SignUpPage';
 
 export default (
     <Route path="/">
@@ -21,6 +22,10 @@ export default (
             <Route
                 path="sign-in"
                 component={SignInPage}
+            />
+            <Route
+                path="sign-up"
+                component={SignUpPage}
             />
         </Route>
     </Route>
