@@ -42,7 +42,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(session(sessionOpts));
 app.use(passport.initialize());
 app.use(passport.session());
-app.use('/static', express.static(path.join(__dirname, 'public')));
+app.use('/static', express.static(path.join(__dirname, 'static')));
 initRoutes(app);
 app.use(errorHandler);
 
