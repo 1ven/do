@@ -7,9 +7,14 @@ import BoardPage from './containers/BoardPage';
 import SignInPage from './containers/SignInPage';
 import SignUpPage from './containers/SignUpPage';
 
+const isAuthenticated = true;
+
 export default (
     <Route path="/">
-        <Route component={App}>
+        <Route
+            onEnter={ensureLoggedIn}
+            component={App}
+        >
             <IndexRoute
                 component={IndexPage}
             />
@@ -18,7 +23,10 @@ export default (
                 component={BoardPage}
             />
         </Route>
-        <Route component={Sign}>
+        <Route
+            onEnter={ensureLoggedOut}
+            component={Sign}
+        >
             <Route
                 path="sign-in"
                 component={SignInPage}
@@ -30,3 +38,15 @@ export default (
         </Route>
     </Route>
 );
+
+function ensureLoggedIn(nextState, replace) {
+    if (!isAuthenticated) {
+        replace('/sign-in');
+    }
+};
+
+function ensureLoggedOut(nextState, replace) {
+    if (isAuthenticated) {
+        replace('/');
+    }
+};
