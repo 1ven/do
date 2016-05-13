@@ -9,7 +9,9 @@
     &__middle {
         position: relative;
         z-index: 1;
-        width: 340px;
+        max-width: 380px;
+        padding: 0 20px;
+        width: 100%;
     }
     &__nav {
         display: flex;
@@ -23,6 +25,7 @@
         border-bottom: 2px solid transparent;
         margin-right: 18px;
         padding-bottom: 4px;
+        transition: border-color .2s ease-out;
         &_active, &:hover {
             border-color: $white;
         }

@@ -1,5 +1,4 @@
 .b-input {
-    @include placeholder(lighten($gray, 10%));
     &__node {
         display: block;
         width: 100%;
@@ -12,6 +11,9 @@
         &:focus {
             border-color: darken($gray, 15%)
         }
+        @include placeholder() {
+            color: lighten($black, 10%);
+        };
     }
     &_error {
         .b-input {

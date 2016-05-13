@@ -1,0 +1,28 @@
+.b-checkbox {
+    display: flex;
+    color: $white;
+    cursor: pointer;
+    @include no-select();
+    &__native {
+        display: none;
+    }
+    &__icon {
+        width: 20px;
+        height: 20px;
+        border-radius: 2px;
+        background-color: $white;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        box-shadow: $shadow;
+        i {
+            display: flex;
+        }
+        svg {
+            height: 8px;
+        }
+    }
+    &__text {
+        margin-left: 10px;
+    }
+}
