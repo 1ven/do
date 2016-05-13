@@ -8,12 +8,16 @@ html {
     -webkit-font-smoothing: antialiased;
 }
 
+body {
+    font-family: 'Lato', sans-serif;
+}
+
 *, *:before, *:after {
     box-sizing: inherit;
 }
 
-body {
-    font-family: 'Lato', sans-serif;
+#root, #root > div {
+    height: 100%;
 }
 
 input {
