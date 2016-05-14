@@ -1,6 +1,13 @@
 #!/usr/bin/env node
 
+const Sequelize = require('sequelize');
 const app = require('../');
+const connect = require('../db');
 const config = require('../config');
 
-app.listen(config.port, () => console.log(`Listening on ${config.port}...`));
+const pg = new Sequelize.apply(config.sequelize);
+const db = connect(pg);
+
+db.sequelize.sync().then(() => {
+    app.listen(config.port, () => console.log(`Listening on ${config.port}...`));
+});
