@@ -13,15 +13,15 @@ const config = require('./config');
 const errorHandler = require('./middlewares/').errorHandler;
 const initRoutes = require('./routes');
 
-const isDeveloping = process.env.NODE_ENV === 'development';
 const app = express();
+
 const sessionOpts = _.assign({}, config.session, {
     store: new pgSession({
         conString: makeConString(config.db)
     })
 });
 
-if (isDeveloping) {
+if (process.env.NODE_ENV === 'development') {
     const webpack = require('webpack');
     const webpackDevMiddleware = require('webpack-dev-middleware');
     const webpackHotMiddleware = require('webpack-hot-middleware');
@@ -48,7 +48,5 @@ app.use(errorHandler);
 
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
-
-app.listen(config.port, () => console.log(`Listening on ${config.port}...`));
 
 module.exports = app;
