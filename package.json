@@ -26,6 +26,8 @@
     "normalizr": "^2.0.1",
     "passport": "^0.3.2",
     "passport-local": "^1.0.0",
+    "pg": "^4.5.5",
+    "pg-hstore": "^2.3.2",
     "pg-promise": "^3.3.0",
     "react": "^0.14.8",
     "react-dom": "^0.14.8",
