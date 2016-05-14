@@ -3,10 +3,8 @@ import ModalContainer from '../containers/ModalContainer';
 import NotificationsContainer from '../containers/NotificationsContainer';
 import Header from './Header';
 
-import '../stylesheet/common.scss';
-
 export default ({ children }) => (
-    <div>
+    <div className="b-app">
         <Header
             user={{
                 username: 'roaiven',

@@ -64,9 +64,6 @@ class ModalForm extends Component {
     }
 };
 
-function ModalForm() {
-};
-
 ModalForm.propTypes = {
     rows: PropTypes.arrayOf(PropTypes.node).isRequired,
     onSubmit: PropTypes.func.isRequired,

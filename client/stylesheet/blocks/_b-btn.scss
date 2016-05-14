@@ -12,6 +12,7 @@
     transition: background-color .2s ease-out;
     box-shadow: $shadow;
     text-decoration: none;
+    outline: 0;
     @include no-select();
     &:hover {
         background-color: darken($turquoise, 5%);
@@ -26,6 +27,15 @@
         }
         &:active {
             background-color: darken($red, 10%);
+        }
+    }
+    &_blue {
+        background-color: $blue;
+        &:hover {
+            background-color: darken($blue, 5%);
+        }
+        &:active {
+            background-color: darken($blue, 10%);
         }
     }
     &_full-width {

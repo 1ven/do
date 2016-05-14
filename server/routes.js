@@ -9,14 +9,6 @@ const ensureLoggedIn = AuthController.ensureLoggedIn;
 const ensureLoggedOut = AuthController.ensureLoggedOut;
 
 module.exports = function (app) {
-    app.get('/sign-in', ensureLoggedOut, (req, res) => {
-        res.render('sign-in');
-    });
-
-    app.get('/sign-up', ensureLoggedOut, (req, res) => {
-        res.render('sign-up');
-    });
-
     app.post('/sign-up', ensureLoggedOut, handleRoute(UserController, 'register'));
 
     app.get('/logout', ensureLoggedIn, (req, res) => {
