@@ -57,6 +57,11 @@ module.exports = function (sequelize, DataTypes) {
                 user.username = user.username.toLowerCase();
                 user.email = user.email.toLowerCase();
             }
+        },
+        classMethods: {
+            associate(models) {
+                User.hasMany(models.Board);
+            }
         }
     });
 
