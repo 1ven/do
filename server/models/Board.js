@@ -1,19 +1,31 @@
 'use strict';
 
-const _ = require('lodash');
-const db = require('../db');
-const Base = require('./Base');
-const List = require('./List');
+const shortid = require('shortid');
 
-const Board = _.assign({}, Base, {
-    table: 'boards',
-    children: [List],
-    mutableFields: ['title'],
-    visibleFields: ['id', 'title'],
+module.exports = function (sequelize, DataTypes) {
+    const Board = sequelize.define('Board', {
+        id: {
+            type: DataTypes.STRING,
+            defaultValue: shortid.generate,
+            primaryKey: true
+        },
+        title: {
+            type: DataTypes.STRING,
+            defaultValue: '',
+            validate: {
+                notEmpty: {
+                    args: true,
+                    msg: 'Board title must not be empty'
+                }
+            }
+        }
+    }, {
+        classMethods: {
+            associate(models) {
+                Board.hasMany(models.List);
+            }
+        }
+    });
 
-    createList(boardId, listProps) {
-        return this.createChild(boardId, listProps, List);
-    },
-});
-
-module.exports = Board;
+    return Board;
+};

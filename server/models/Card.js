@@ -1,12 +1,25 @@
 'use strict';
 
-const _ = require('lodash');
-const Base = require('./Base');
+const shortid = require('shortid');
 
-const Card = _.assign({}, Base, {
-    table: 'cards',
-    mutableFields: ['text'],
-    visibleFields: ['id', 'text'],
-});
+module.exports = function (sequelize, DataTypes) {
+    const Card = sequelize.define('Card', {
+        id: {
+            type: DataTypes.STRING,
+            defaultValue: shortid.generate,
+            primaryKey: true
+        },
+        text: {
+            type: DataTypes.STRING,
+            defaultValue: '',
+            validate: {
+                notEmpty: {
+                    args: true,
+                    msg: 'Card text must be not empty'
+                }
+            }
+        }
+    });
 
-module.exports = Card;
+    return Card;
+};

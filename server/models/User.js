@@ -1,134 +1,81 @@
 'use strict';
 
-const _ = require('lodash');
-const crypto = require('crypto');
-const Promise = require('bluebird');
-const validator = require('../utils/validator');
-const Base = require('./Base');
-const Board = require('./Board');
-const db = require('../db');
+const shortid = require('shortid');
 
-const User = _.assign({}, Base, {
-    table: 'users',
-    children: [Board],
-    mutableFields: ['email'],
-    visibleFields: ['id', 'username'],
-
-    createBoard(userId, boardProps) {
-        return this.createChild(userId, boardProps, Board);
-    },
-
-    register(props) {
-        const _props = this.sanitize(props);
-        return this.validate(_props)
-            .then(() => {
-                const salt = Math.random() + '';
-                const hash = this.encryptPassword(_props.password, salt);
-
-                delete _props.password;
-                delete _props.rePassword;
-
-                return this.create(_.assign({}, _props, {
-                    hash,
-                    salt
-                }));
-            });
-    },
-
-    encryptPassword(password, salt) {
-        return crypto.createHash('md5').update(password + salt).digest('hex');
-    },
-
-    isValidPassword(hash, salt, givenPassword) {
-        return hash == this.encryptPassword(givenPassword, salt);
-    },
-
-    serialize(user) {
-        return user.id;
-    },
-
-    deserialize(id) {
-        return this.getOne({ id });
-    },
-
-    sanitize(props) {
-        const username = (props.username || '').toLowerCase();
-        const email = (props.email || '').toLowerCase();
-        return _.assign({}, props, {
-            username,
-            email
-        });
-    },
-
-    validate(props) {
-        return validator.validate(props, {
-            username: [
-                {
-                    assert: value => !! value,
-                    message: 'Username is required'
+module.exports = function (sequelize, DataTypes) {
+    const User = sequelize.define('User', {
+        id: {
+            type: DataTypes.STRING,
+            defaultValue: shortid.generate,
+            primaryKey: true
+        },
+        username: {
+            type: DataTypes.STRING,
+            defaultValue: '',
+            validate: {
+                notEmpty: {
+                    args: true,
+                    msg: 'Username is required'
                 },
-                {
-                    assert: value => value.length >= 3 && value.length <= 20,
-                    message: 'Must be between 3 and 20 characters long'
+                len: {
+                    args: [3, 20],
+                    msg: 'Username must be between 3 and 20 charachters length'
                 },
-                {
-                    assert: value => !! value.match(/^\S*$/g),
-                    message: 'Must not contain spaces'
+                is: {
+                    args: /^\S*$/g,
+                    msg: 'Username must not contain spaces'
                 },
-                {
-                    assert: value => this.checkAvailability('username', value),
-                    message: 'Username is already taken'
-                }
-            ],
-            password: [
-                {
-                    assert: value => !! value,
-                    message: 'Password is required'
-                },
-                {
-                    assert: value => value.length >= 6,
-                    message: 'Must be at least 6 characters long'
-                }
-            ],
-            rePassword: [
-                {
-                    assert: value => !! value,
-                    message: 'Password confirmation is required'
-                },
-                {
-                    assert: value => value === props.password + '',
-                    message: 'Passwords not match'
-                }
-            ],
-            email: [
-                {
-                    assert: value => !! value,
-                    message: 'Email is required'
-                },
-                {
-                    assert: value => !! value.match(/^[A-Za-z0-9._%-]+@[A-Za-z0-9.-]+[.][A-Za-z]+$/g),
-                    message: 'Invalid email'
-                },
-                {
-                    assert: value => this.checkAvailability('email', value),
-                    message: 'Email is already taken'
-                }
-            ]
-        }).then(errors => {
-            if (errors && errors.length) {
-                const err = new Error('Validation error');
-                err.validation = errors;
-                throw err;
+                isUnique: isUnique(User, 'username')
             }
-        });
-    },
+        },
+        email: {
+            type: DataTypes.STRING,
+            defaultValue: '',
+            validate: {
+                notEmpty: {
+                    args: true,
+                    msg: 'Email is required'
+                },
+                isEmail: {
+                    args: true,
+                    msg: 'Email is not valid'
+                },
+                isUnique: isUnique(User, 'email')
+            }
+        },
+        hash: {
+            type: DataTypes.STRING,
+            allowNull: false
+        },
+        salt: {
+            type: DataTypes.STRING,
+            allowNull: false
+        }
+    }, {
+        hooks: {
+            beforeValidate(user) {
+                user.username = user.username.toLowerCase();
+                user.email = user.email.toLowerCase();
+            }
+        },
+        classMethods: {
+            associate(models) {
+                User.hasMany(models.Board);
+            }
+        }
+    });
 
-    checkAvailability(prop, value) {
-        return db.result(`
-            SELECT id FROM users WHERE $1~ = $2
-        `, [prop, value])
-            .then(result => !result.rowCount);
-    }
-});
+    return User;
+};
 
-module.exports = User;
+function isUnique(Model, prop) {
+    return function (value, next) {
+        Model.count({ where: { [prop]: value } })
+            .then(length => {
+                const capitalized = prop[0].toLowerCase() + prop.substring(1);
+                if (length) { return next(`${capitalized} is already in use`) }
+                next();
+            })
+            .catch(next);
+    };
+};
