@@ -11,9 +11,10 @@ module.exports = function (sequelize, DataTypes) {
         },
         text: {
             type: DataTypes.STRING,
+            defaultValue: '',
             validate: {
-                min: {
-                    args: 1,
+                notEmpty: {
+                    args: true,
                     msg: 'Card text must be not empty'
                 }
             }

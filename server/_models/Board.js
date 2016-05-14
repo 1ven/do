@@ -11,9 +11,10 @@ module.exports = function (sequelize, DataTypes) {
         },
         title: {
             type: DataTypes.STRING,
+            defaultValue: '',
             validate: {
-                min: {
-                    args: 1,
+                notEmpty: {
+                    args: true,
                     msg: 'Board title must not be empty'
                 }
             }
