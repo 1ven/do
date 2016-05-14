@@ -34,6 +34,8 @@
     "react-router-redux": "^4.0.1",
     "redux": "^3.3.1",
     "redux-thunk": "^2.0.1",
+    "sequelize": "^3.23.1",
+    "shortid": "^2.2.6",
     "svg-inline-react": "^1.0.1"
   },
   "devDependencies": {
