@@ -6,26 +6,23 @@ const path = require('path');
 const config = require('./config');
 
 module.exports = function (sequelize) {
-    const db = {};
+    const models = {};
 
-    fs.readdirSync(path.join(__dirname, 'models'))
+    fs.readdirSync(path.join(__dirname, '../models'))
         .filter(file => {
             return (file.indexOf('.') !== 0) && (file !== 'index.js');
         })
         .forEach(file => {
             const model = sequelize.import(path.join(__dirname, file));
-            db[model.name] = model;
+            models[model.name] = model;
         });
 
-    Object.keys(db).forEach(modelName => {
-        const model = db[modelName];
+    Object.keys(models).forEach(modelName => {
+        const model = models[modelName];
         if ('associate' in model) {
-            model.associate(db);
+            model.associate(models);
         }
     });
 
-    db.sequelize = sequelize;
-    db.Sequelize = Sequelize;
-
-    return db;
+    return { sequelize, models };
 };

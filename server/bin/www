@@ -2,8 +2,8 @@
 
 const app = require('../');
 const config = require('../config');
-const db = require('../db');
+const postgres = require('../db/postgres');
 
-db.sequelize.sync().then(() => {
+postgres.sequelize.sync().then(() => {
     app.listen(config.port, () => console.log(`Listening on ${config.port}...`));
 });
