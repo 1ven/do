@@ -17,21 +17,21 @@ describe('Board', () => {
             });
     });
 
-    it('should return error message, when title is not provided', () => {
-        const promise = Board.create();
-        return assert.isRejected(promise, /Validation error/);
-    });
-
-    it('should return error message, when title is emty string', () => {
-        const promise = Board.create({ title: '' });
-        return assert.isRejected(promise, /Validation error/);
-    });
-
     it('should generate valid shortid', () => {
         return Board.create({ title: 'test board' })
             .then(board => {
                 assert.isTrue(shortid.isValid(board.id));
             });
+    });
+
+    it('should return error message, when title is not provided', () => {
+        const promise = Board.create();
+        return assert.isRejected(promise, /Validation error.*must be not empty/);
+    });
+
+    it('should return error message, when title is emty string', () => {
+        const promise = Board.create({ title: '' });
+        return assert.isRejected(promise, /Validation error.*must be not empty/);
     });
 
     it('should return board with attributes declared in `defaultScope`', () => {
