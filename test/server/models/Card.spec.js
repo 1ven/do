@@ -8,11 +8,17 @@ chai.use(chaiAsPromised);
 
 describe('Card', () => {
     it('should create card', () => {
-        const text = 'test card';
-        return Card.create({ text })
+        return Card.create({ text: 'test card' })
             .then(card => {
                 const _card = card.toJSON();
-                assert.equal(_card.text, text);
+                assert.equal(_card.text, 'test card');
+            });
+    });
+
+    it('should generate valid shortid', () => {
+        return Card.create({ text: 'test card' })
+            .then(card => {
+                assert.isTrue(shortid.isValid(card.id));
             });
     });
 
@@ -32,18 +38,11 @@ describe('Card', () => {
 
     it('should return error message, when text is not provided', () => {
         const promise = Card.create();
-        return assert.isRejected(promise, /Validation error/);
+        return assert.isRejected(promise, /Validation error.*must be not empty/);
     });
 
     it('should return error message, when text is emty string', () => {
         const promise = Card.create({ text: '' });
-        return assert.isRejected(promise, /Validation error/);
-    });
-
-    it('should generate valid shortid', () => {
-        return Card.create({ text: 'test card' })
-            .then(card => {
-                assert.isTrue(shortid.isValid(card.id));
-            });
+        return assert.isRejected(promise, /Validation error.*must be not empty/);
     });
 });
