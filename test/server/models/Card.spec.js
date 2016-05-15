@@ -7,24 +7,22 @@ import Card from 'server/models/Card';
 chai.use(chaiAsPromised);
 
 describe('Card', () => {
-    // it('should create card and return created entry with declared in `defaultScope` attributes', () => {
-    //     const text = 'test card';
-    //     return Card.create({ text })
-    //         .then(card => {
-    //             assert.deepEqual(card.get(), {
-    //                 id: card.id,
-    //                 text
-    //             });
-    //         });
-    // });
+    it('should create card', () => {
+        const text = 'test card';
+        return Card.create({ text })
+            .then(card => {
+                const _card = card.toJSON();
+                assert.equal(_card.text, text);
+            });
+    });
 
-    it('should return card with declared in `defaultScope` attributes', () => {
+    it('should return card with attributes declared in `defaultScope`', () => {
         const text = 'test card';
         return Card.create({ text })
             .then(card => {
                 return Card.findById(card.id)
-                    .then(card => {
-                        assert.deepEqual(card.get(), {
+                    .then(entry => {
+                        assert.deepEqual(entry.toJSON(), {
                             id: card.id,
                             text
                         });

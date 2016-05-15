@@ -8,16 +8,14 @@ import Board from 'server/models/Board';
 chai.use(chaiAsPromised);
 
 describe('Board', () => {
-    // it('should create board and return created entry with declared in `defaultScope` attributes', () => {
-    //     const title = 'test board';
-    //     return Board.create({ title })
-    //         .then(board => {
-    //             assert.deepEqual(board.toJSON(), {
-    //                 id: board.id,
-    //                 title
-    //             });
-    //         });
-    // });
+    it('should create board and return created entry', () => {
+        const title = 'test board';
+        return Board.create({ title })
+            .then(board => {
+                const _board = board.toJSON();
+                assert.deepEqual(_board.title, title);
+            });
+    });
 
     it('should return error message, when title is not provided', () => {
         const promise = Board.create();
@@ -36,20 +34,36 @@ describe('Board', () => {
             });
     });
 
-    // it('should be associated with card', () => {
-    //     return Board.create({ title: 'test board' })
-    //         .then(board => {
-    //             return board.createCard({ text: 'test card' })
-    //                 .then(card => {
-    //                     const expected = _.assign({}, board.toJSON(), {
-    //                         cards: [card.toJSON()],
-    //                     });
-    //                     return Board.findById(board.id)
-    //                         .then(boardWithCard => {
-    //                             console.log(boardWithCard.toJSON(), expected);
-    //                             assert.deepEqual(boardWithCard.toJSON(), expected);
-    //                         });
-    //                 });
-    //         });
-    // });
+    it('should return board with attributes declared in `defaultScope`', () => {
+        const title = 'test board';
+        return Board.create({ title })
+            .then(board => {
+                return Board.findById(board.id)
+                    .then(entry => {
+                        assert.deepEqual(entry.toJSON(), {
+                            id: board.id,
+                            lists: [],
+                            title
+                        });
+                    });
+            });
+    });
+
+    it('should be associated to list', () => {
+        return Board.create({ id: 1, title: 'test board' })
+            .then(board => board.createList({ id: 1, title: 'test list' }))
+            .then(() => Board.findById(1))
+            .then(board => {
+                const _board = board.toJSON();
+                assert.deepEqual(_board, {
+                    id: '1',
+                    title: 'test board',
+                    lists: [{
+                        id: '1',
+                        title: 'test list',
+                        cards: []
+                    }]
+                });
+            });
+    });
 });

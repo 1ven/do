@@ -8,16 +8,29 @@ import List from 'server/models/List';
 chai.use(chaiAsPromised);
 
 describe('List', () => {
-    // it('should create list and return created entry with declared in `defaultScope` attributes', () => {
-    //     const title = 'test list';
-    //     return List.create({ title })
-    //         .then(list => {
-    //             assert.deepEqual(list.toJSON(), {
-    //                 id: list.id,
-    //                 title
-    //             });
-    //         });
-    // });
+    it('should create list and return created entry', () => {
+        const title = 'test list';
+        return List.create({ title })
+            .then(list => {
+                const _list = list.toJSON();
+                assert.deepEqual(_list.title, title);
+            });
+    });
+
+    it('should return list with attributes declared in `defaultScope`', () => {
+        const title = 'test list';
+        return List.create({ title })
+            .then(list => {
+                return List.findById(list.id)
+                    .then(entry => {
+                        assert.deepEqual(entry.toJSON(), {
+                            id: list.id,
+                            cards: [],
+                            title
+                        });
+                    });
+            });
+    });
 
     it('should return error message, when title is not provided', () => {
         const promise = List.create();
@@ -36,20 +49,20 @@ describe('List', () => {
             });
     });
 
-    // it('should be associated with card', () => {
-    //     return List.create({ title: 'test list' })
-    //         .then(list => {
-    //             return list.createCard({ text: 'test card' })
-    //                 .then(card => {
-    //                     const expected = _.assign({}, list.toJSON(), {
-    //                         cards: [card.toJSON()],
-    //                     });
-    //                     return List.findById(list.id)
-    //                         .then(listWithCard => {
-    //                             console.log(listWithCard.toJSON(), expected);
-    //                             assert.deepEqual(listWithCard.toJSON(), expected);
-    //                         });
-    //                 });
-    //         });
-    // });
+    it('should be associated to card', () => {
+        return List.create({ id: 1, title: 'test list' })
+            .then(list => list.createCard({ id: 1, text: 'test card' }))
+            .then(() => List.findById(1))
+            .then(list => {
+                const _list = list.toJSON();
+                assert.deepEqual(_list, {
+                    id: '1',
+                    title: 'test list',
+                    cards: [{
+                        id: '1',
+                        text: 'test card'
+                    }]
+                });
+            });
+    });
 });
