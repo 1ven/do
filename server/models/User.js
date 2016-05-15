@@ -3,7 +3,6 @@
 const db = require('../db');
 const Sequelize = require('sequelize');
 const shortid = require('shortid');
-const isUnique = require('../utils/sequelize-helpers').isUnique;
 
 const Board = require('./Board');
 
@@ -29,7 +28,14 @@ const User = db.define('user', {
                 args: /^\S*$/g,
                 msg: 'Username must not contain spaces'
             },
-            // isUnique: isUnique(User, 'username')
+            isUnique: function (username, next) {
+                User.count({ where: { username } })
+                    .then(length => {
+                        if (length) { return next('Username is already in use') }
+                        next();
+                    })
+                    .catch(next);
+            }
         }
     },
     email: {
@@ -44,7 +50,14 @@ const User = db.define('user', {
                 args: true,
                 msg: 'Email is not valid'
             },
-            // isUnique: isUnique(User, 'email')
+            isUnique: function (email, next) {
+                User.count({ where: { email } })
+                    .then(length => {
+                        if (length) { return next('Email is already in use') }
+                        next();
+                    })
+                    .catch(next);
+            }
         }
     },
     // hash: {
@@ -63,10 +76,7 @@ const User = db.define('user', {
         }
     },
     defaultScope: {
-        attributes: ['id', 'username'],
-        include: [{
-            model: Board
-        }],
+        attributes: ['id', 'username']
     },
     scopes: {
         self: {
