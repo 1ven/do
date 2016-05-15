@@ -17,6 +17,13 @@ describe('List', () => {
             });
     });
 
+    it('should generate valid shortid', () => {
+        return List.create({ title: 'test list' })
+            .then(list => {
+                assert.isTrue(shortid.isValid(list.id));
+            });
+    });
+
     it('should return list with attributes declared in `defaultScope`', () => {
         const title = 'test list';
         return List.create({ title })
@@ -34,19 +41,12 @@ describe('List', () => {
 
     it('should return error message, when title is not provided', () => {
         const promise = List.create();
-        return assert.isRejected(promise, /Validation error/);
+        return assert.isRejected(promise, /Validation error.*title must be not empty/);
     });
 
     it('should return error message, when title is emty string', () => {
         const promise = List.create({ title: '' });
-        return assert.isRejected(promise, /Validation error/);
-    });
-
-    it('should generate valid shortid', () => {
-        return List.create({ title: 'test list' })
-            .then(list => {
-                assert.isTrue(shortid.isValid(list.id));
-            });
+        return assert.isRejected(promise, /Validation error.*title must be not empty/);
     });
 
     it('should be associated to card', () => {
