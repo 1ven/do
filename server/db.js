@@ -5,15 +5,16 @@ const Sequelize = require('sequelize');
 const path = require('path');
 const config = require('./config');
 
+const modelsDir = path.join(__dirname, 'models');
 const sequelize = new Sequelize(config.db);
 const models = {};
 
-fs.readdirSync(path.join(__dirname, 'models'))
+fs.readdirSync(modelsDir)
     .filter(file => {
         return (file.indexOf('.') !== 0) && (file !== 'index.js');
     })
     .forEach(file => {
-        const model = sequelize.import(path.join(__dirname, file));
+        const model = sequelize.import(path.join(modelsDir, file));
         models[model.name] = model;
     });
 
@@ -24,4 +25,4 @@ Object.keys(models).forEach(modelName => {
     }
 });
 
-module.exports = { sequelize, models };
+module.exports = { Sequelize, sequelize, models };
