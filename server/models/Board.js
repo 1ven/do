@@ -1,31 +1,34 @@
 'use strict';
 
+const db = require('../db');
+const Sequelize = require('sequelize');
 const shortid = require('shortid');
 
-module.exports = function (sequelize, DataTypes) {
-    const Board = sequelize.define('Board', {
-        id: {
-            type: DataTypes.STRING,
-            defaultValue: shortid.generate,
-            primaryKey: true
-        },
-        title: {
-            type: DataTypes.STRING,
-            defaultValue: '',
-            validate: {
-                notEmpty: {
-                    args: true,
-                    msg: 'Board title must not be empty'
-                }
-            }
-        }
-    }, {
-        classMethods: {
-            associate(models) {
-                Board.hasMany(models.List);
-            }
-        }
-    });
+const List = require('./List');
 
-    return Board;
-};
+const Board = db.define('board', {
+    id: {
+        type: Sequelize.STRING,
+        defaultValue: shortid.generate,
+        primaryKey: true
+    },
+    title: {
+        type: Sequelize.STRING,
+        defaultValue: '',
+        validate: {
+            notEmpty: {
+                args: true,
+                msg: 'Board title must not be empty'
+            }
+        }
+    }
+}, {
+    defaultScope: {
+        attributes: ['id', 'title'],
+        include: [{
+            model: List
+        }]
+    }
+});
+
+module.exports = Board;

@@ -8,13 +8,16 @@ import List from 'server/models/List';
 chai.use(chaiAsPromised);
 
 describe('List', () => {
-    it('should create list and return created entry', () => {
-        const title = 'test list';
-        return List.create({ title })
-            .then(list => {
-                assert.equal(list.title, title);
-            });
-    });
+    // it('should create list and return created entry with declared in `defaultScope` attributes', () => {
+    //     const title = 'test list';
+    //     return List.create({ title })
+    //         .then(list => {
+    //             assert.deepEqual(list.toJSON(), {
+    //                 id: list.id,
+    //                 title
+    //             });
+    //         });
+    // });
 
     it('should return error message, when title is not provided', () => {
         const promise = List.create();
