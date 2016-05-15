@@ -38,14 +38,13 @@ describe('List', () => {
     //         .then(list => {
     //             return list.createCard({ text: 'test card' })
     //                 .then(card => {
-    //                     const expected = _.assign({}, list.get(), {
-    //                         BoardId: null,
-    //                         cards: [card.get()]
+    //                     const expected = _.assign({}, list.toJSON(), {
+    //                         cards: [card.toJSON()],
     //                     });
     //                     return List.findById(list.id)
     //                         .then(listWithCard => {
-    //                             console.log(listWithCard.get(), expected);
-    //                             assert.deepEqual(listWithCard.get(), expected);
+    //                             console.log(listWithCard.toJSON(), expected);
+    //                             assert.deepEqual(listWithCard.toJSON(), expected);
     //                         });
     //                 });
     //         });
