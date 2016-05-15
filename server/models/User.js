@@ -29,7 +29,7 @@ const User = db.define('user', {
                 args: /^\S*$/g,
                 msg: 'Username must not contain spaces'
             },
-            isUnique: isUnique(User, 'username')
+            // isUnique: isUnique(User, 'username')
         }
     },
     email: {
@@ -44,17 +44,17 @@ const User = db.define('user', {
                 args: true,
                 msg: 'Email is not valid'
             },
-            isUnique: isUnique(User, 'email')
+            // isUnique: isUnique(User, 'email')
         }
     },
-    hash: {
-        type: Sequelize.STRING,
-        allowNull: false
-    },
-    salt: {
-        type: Sequelize.STRING,
-        allowNull: false
-    }
+    // hash: {
+    //     type: Sequelize.STRING,
+    //     allowNull: false
+    // },
+    // salt: {
+    //     type: Sequelize.STRING,
+    //     allowNull: false
+    // }
 }, {
     hooks: {
         beforeValidate(user) {
@@ -62,19 +62,19 @@ const User = db.define('user', {
             user.email = user.email.toLowerCase();
         }
     },
+    defaultScope: {
+        attributes: ['id', 'username'],
+        include: [{
+            model: Board
+        }],
+    },
     scopes: {
         self: {
+            attributes: ['id', 'username', 'email'],
             include: [{
-                model: Board,
-                attributes: ['id', 'username', 'email']
+                model: Board
             }]
         },
-        public: {
-            include: [{
-                model: Board,
-                attributes: ['id', 'username']
-            }]
-        }
     }
 });
 

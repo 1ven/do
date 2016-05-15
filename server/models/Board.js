@@ -18,7 +18,7 @@ const Board = db.define('board', {
         validate: {
             notEmpty: {
                 args: true,
-                msg: 'Board title must not be empty'
+                msg: 'Board title must be not empty'
             }
         }
     }

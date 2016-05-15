@@ -18,7 +18,7 @@ const List = db.define('list', {
         validate: {
             notEmpty: {
                 args: true,
-                msg: 'List title must not be empty'
+                msg: 'List title must be not empty'
             }
         }
     }

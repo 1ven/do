@@ -1,4 +1,5 @@
 exports.isUnique = function (Model, prop) {
+    console.log(Model);
     return function (value, next) {
         Model.count({ where: { [prop]: value } })
             .then(length => {
