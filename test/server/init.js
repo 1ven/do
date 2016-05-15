@@ -1,5 +1,9 @@
 const db = require('server/db');
 
 before(() => {
-    db.sequelize.sync();
+    return db.sequelize.sync();
+});
+
+beforeEach(() => {
+    return db.sequelize.truncate();
 });
