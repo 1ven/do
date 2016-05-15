@@ -4,7 +4,7 @@ const db = require('../db');
 const Sequelize = require('sequelize');
 const shortid = require('shortid');
 
-const Card = db.define('Card', {
+const Card = db.define('card', {
     id: {
         type: Sequelize.STRING,
         defaultValue: shortid.generate,
