@@ -18,12 +18,12 @@ describe('Card', () => {
 
     it('should return error message, when text is not provided', () => {
         const promise = Card.create();
-        return assert.isRejected(promise, /Validation error.*Card text must be not empty/);
+        return assert.isRejected(promise, /Validation error/);
     });
 
     it('should return error message, when text is emty string', () => {
         const promise = Card.create({ text: '' });
-        return assert.isRejected(promise, /Validation error.*Card text must be not empty/);
+        return assert.isRejected(promise, /Validation error/);
     });
 
     it('should generate valid shortid', () => {
