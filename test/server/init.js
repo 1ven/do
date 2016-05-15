@@ -1,9 +1,9 @@
-const db = require('server/db');
+const db = require('server/models');
 
 before(() => {
-    return db.sequelize.sync();
+    return db.sync();
 });
 
 beforeEach(() => {
-    return db.sequelize.truncate();
+    return db.truncate();
 });

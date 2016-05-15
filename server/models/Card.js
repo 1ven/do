@@ -1,25 +1,29 @@
 'use strict';
 
+const db = require('../db');
+const Sequelize = require('sequelize');
 const shortid = require('shortid');
 
-module.exports = function (sequelize, DataTypes) {
-    const Card = sequelize.define('Card', {
-        id: {
-            type: DataTypes.STRING,
-            defaultValue: shortid.generate,
-            primaryKey: true
-        },
-        text: {
-            type: DataTypes.STRING,
-            defaultValue: '',
-            validate: {
-                notEmpty: {
-                    args: true,
-                    msg: 'Card text must be not empty'
-                }
+const Card = db.define('Card', {
+    id: {
+        type: Sequelize.STRING,
+        defaultValue: shortid.generate,
+        primaryKey: true
+    },
+    text: {
+        type: Sequelize.STRING,
+        defaultValue: '',
+        validate: {
+            notEmpty: {
+                args: true,
+                msg: 'Card text must be not empty'
             }
         }
-    });
+    }
+}, {
+    defaultScope: {
+        attributes: ['id', 'text']
+    }
+});
 
-    return Card;
-};
+module.exports = Card;

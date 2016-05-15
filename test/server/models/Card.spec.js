@@ -1,18 +1,34 @@
 import chai, { assert } from 'chai';
 import chaiAsPromised from 'chai-as-promised';
 import shortid from 'shortid';
-import { models } from 'server/db';
+
+import Card from 'server/models/Card';
 
 chai.use(chaiAsPromised);
 
-const Card = models.Card;
-
 describe('Card', () => {
-    it('should create card and return created entry', () => {
+    // it('should create card and return created entry with declared in `defaultScope` attributes', () => {
+    //     const text = 'test card';
+    //     return Card.create({ text })
+    //         .then(card => {
+    //             assert.deepEqual(card.get(), {
+    //                 id: card.id,
+    //                 text
+    //             });
+    //         });
+    // });
+
+    it('should return card with declared in `defaultScope` attributes', () => {
         const text = 'test card';
         return Card.create({ text })
             .then(card => {
-                assert.equal(card.text, text);
+                return Card.findById(card.id)
+                    .then(card => {
+                        assert.deepEqual(card.get(), {
+                            id: card.id,
+                            text
+                        });
+                    });
             });
     });
 
