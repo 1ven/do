@@ -1,6 +1,6 @@
 node_modules
 server/npm-debug.log
 server/config.js
-public
+server/db.dev.sqlite
 npm-debug.log
 .DS_Store
