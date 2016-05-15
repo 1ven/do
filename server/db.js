@@ -6,7 +6,9 @@ const path = require('path');
 const config = require('./config');
 
 const modelsDir = path.join(__dirname, 'models');
-const sequelize = new Sequelize(config.db);
+const sequelize = new Sequelize(config.db, {
+    logging: false
+});
 const models = {};
 
 fs.readdirSync(modelsDir)
