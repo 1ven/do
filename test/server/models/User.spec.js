@@ -11,7 +11,8 @@ chai.use(chaiAsPromised);
 const userData = {
     id: shortid.generate(),
     username: 'testuser',
-    email: 'user@test.com'
+    email: 'user@test.com',
+    password: 123456
 };
 
 const boardData = {
@@ -53,18 +54,23 @@ describe('User', () => {
                 });
         });
 
-        it('should be rejected, when username is not provided', () => {
-            const _userData = _.assign({}, userData);
-
-            delete _userData.username;
+        it('should be rejected, when password is not provided', () => {
+            const _userData = _.omit(userData, 'password');
 
             const promise = User.create(_userData);
-            return assert.isRejected(promise, /Validation error.*is required/);
+            return assert.isRejected(promise, /Validation error.*Password is required/);
+        });
+
+        it('should be rejected, when username is not provided', () => {
+            const _userData = _.omit(userData, 'username');
+
+            const promise = User.create(_userData);
+            return assert.isRejected(promise, /Validation error.*Username is required/);
         });
 
         it('should be rejected, when username is emty string', () => {
             const promise = User.create(_.assign({}, userData, { username: '' }));
-            return assert.isRejected(promise, /Validation error.*is required/);
+            return assert.isRejected(promise, /Validation error.*Username is required/);
         });
 
         it('should be rejected, when username is less than 3 characters length', () => {

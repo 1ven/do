@@ -60,6 +60,23 @@ const User = db.define('user', {
             }
         }
     },
+    password: {
+        type: Sequelize.VIRTUAL,
+        defaultValue: '',
+        set: function (val) {
+            this.setDataValue('password', val);
+        },
+        validate: {
+            notEmpty: {
+                args: true,
+                msg: 'Password is required'
+            },
+            min: {
+                args: 6,
+                msg: 'Password must be at least 6 characters length'
+            }
+        }
+    }
     // hash: {
     //     type: Sequelize.STRING,
     //     allowNull: false
