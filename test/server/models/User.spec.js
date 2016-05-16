@@ -21,7 +21,7 @@ const boardData = {
 
 describe('User', () => {
     describe('create', () => {
-        it('should create user and return created entry', () => {
+        it('should create user', () => {
             const username = 'test user';
             return User.create(userData)
                 .then(user => {

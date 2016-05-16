@@ -19,7 +19,7 @@ const listData = {
 
 describe('Board', () => {
     describe('create', () => {
-        it('should create board and return created entry', () => {
+        it('should create board', () => {
             return Board.create(boardData)
                 .then(board => {
                     const _board = board.toJSON();
@@ -46,7 +46,7 @@ describe('Board', () => {
     });
 
     describe('find', () => {
-        it('should return board with attributes declared in `defaultScope`', () => {
+        it('should return board with attributes declared in `defaultScope` by default', () => {
             return Board.create(boardData)
                 .then(board => {
                     return Board.findById(board.id)
