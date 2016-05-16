@@ -54,6 +54,17 @@ describe('User', () => {
                 });
         });
 
+        it('should not add password in db', () => {
+            return User.create(userData)
+                .then(() => {
+                    return db.query(`SELECT * FROM users WHERE id = '${userData.id}'`);
+                })
+                .then(result => {
+                    const user = result[0][0];
+                    assert.notProperty(user, 'password');
+                });
+        });
+
         it('should be rejected, when password is not provided', () => {
             const _userData = _.omit(userData, 'password');
 
