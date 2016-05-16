@@ -146,7 +146,7 @@ describe('User', () => {
                 });
         });
 
-        it('should should include boards in response, when `.scope("self")` is used', () => {
+        it('should include boards in response, when `.scope("self")` is used', () => {
             const userId = shortid.generate();
             return User.create(_.assign({}, userData, { id: userId }))
                 .then(user => user.createBoard(boardData))

@@ -7,19 +7,28 @@ import Board from 'server/models/Board';
 
 chai.use(chaiAsPromised);
 
+const boardData = {
+    id: shortid.generate(),
+    title: 'test board'
+};
+
+const listData = {
+    id: shortid.generate(),
+    title: 'test list'
+};
+
 describe('Board', () => {
     describe('create', () => {
         it('should create board and return created entry', () => {
-            const title = 'test board';
-            return Board.create({ title })
+            return Board.create(boardData)
                 .then(board => {
                     const _board = board.toJSON();
-                    assert.deepEqual(_board.title, title);
+                    assert.deepEqual(_board.title, boardData.title);
                 });
         });
 
         it('should generate valid shortid', () => {
-            return Board.create({ title: 'test board' })
+            return Board.create(_.assign({}, boardData, { id: undefined }))
                 .then(board => {
                     assert.isTrue(shortid.isValid(board.id));
                 });
@@ -38,36 +47,49 @@ describe('Board', () => {
 
     describe('find', () => {
         it('should return board with attributes declared in `defaultScope`', () => {
-            const title = 'test board';
-            return Board.create({ title })
+            return Board.create(boardData)
                 .then(board => {
                     return Board.findById(board.id)
-                        .then(entry => {
-                            assert.deepEqual(entry.toJSON(), {
-                                id: board.id,
-                                lists: [],
-                                title
-                            });
-                        });
+                })
+                .then(entry => {
+                    assert.deepEqual(entry.toJSON(), {
+                        id: boardData.id,
+                        title: boardData.title,
+                        lists: []
+                    });
+                });
+        });
+
+        it('should include lists in response', () => {
+            return Board.create(boardData)
+                .then(board => board.createList(listData))
+                .then(() => Board.findById(boardData.id))
+                .then(board => {
+                    const _board = board.toJSON();
+                    assert.deepEqual(_board, {
+                        id: boardData.id,
+                        title: boardData.title,
+                        lists: [{
+                            id: listData.id,
+                            title: listData.title,
+                            cards: []
+                        }]
+                    });
                 });
         });
     });
 
-    it('should be associated to list', () => {
-        return Board.create({ id: 1, title: 'test board' })
-            .then(board => board.createList({ id: 1, title: 'test list' }))
-            .then(() => Board.findById(1))
-            .then(board => {
-                const _board = board.toJSON();
-                assert.deepEqual(_board, {
-                    id: '1',
-                    title: 'test board',
-                    lists: [{
-                        id: '1',
-                        title: 'test list',
-                        cards: []
-                    }]
+    describe('createList', () => {
+        it('should create list', () => {
+            return Board.create(boardData)
+                .then(board => board.createList(listData))
+                .then(list => {
+                    const _list = list.toJSON();
+                    assert.equal(_list.id, listData.id);
+                    assert.equal(_list.title, listData.title);
+                    assert.equal(_list.boardId, boardData.id);
+                    assert.lengthOf(_.keys(_list), 5);
                 });
-            });
+        });
     });
 });

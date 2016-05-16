@@ -1,4 +1,5 @@
 import chai, { assert } from 'chai';
+import _ from 'lodash';
 import chaiAsPromised from 'chai-as-promised';
 import shortid from 'shortid';
 
@@ -6,18 +7,23 @@ import Card from 'server/models/Card';
 
 chai.use(chaiAsPromised);
 
+const cardData = {
+    id: shortid.generate(),
+    text: 'test card'
+};
+
 describe('Card', () => {
     describe('create', () => {
         it('should create card', () => {
-            return Card.create({ text: 'test card' })
+            return Card.create(cardData)
                 .then(card => {
                     const _card = card.toJSON();
-                    assert.equal(_card.text, 'test card');
+                    assert.equal(_card.text, cardData.text);
                 });
         });
 
         it('should generate valid shortid', () => {
-            return Card.create({ text: 'test card' })
+            return Card.create(_.assign({}, cardData, { id: undefined }))
                 .then(card => {
                     assert.isTrue(shortid.isValid(card.id));
                 });
@@ -36,16 +42,12 @@ describe('Card', () => {
 
     describe('find', () => {
         it('should return card with attributes declared in `defaultScope` by default', () => {
-            const text = 'test card';
-            return Card.create({ text })
+            return Card.create(cardData)
                 .then(card => {
                     return Card.findById(card.id)
-                        .then(entry => {
-                            assert.deepEqual(entry.toJSON(), {
-                                id: card.id,
-                                text
-                            });
-                        });
+                })
+                .then(entry => {
+                    assert.deepEqual(entry.toJSON(), cardData);
                 });
         });
     });
