@@ -234,4 +234,16 @@ describe('User', () => {
                 })
         });
     });
+
+    describe('update', () => {
+        it('should update user', () => {
+            return User.create(userData)
+                .then(user => {
+                    return user.update({ username: 'testuser2' });
+                })
+                .then(user => {
+                    assert.equal(user.username, 'testuser2');
+                })
+        });
+    });
 });

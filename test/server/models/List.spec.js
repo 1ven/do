@@ -91,4 +91,16 @@ describe('List', () => {
                 });
         });
     });
+
+    describe('update', () => {
+        it('should update list', () => {
+            return List.create(listData)
+                .then(list => {
+                    return list.update({ title: 'test list 2' });
+                })
+                .then(list => {
+                    assert.equal(list.title, 'test list 2');
+                })
+        });
+    });
 });

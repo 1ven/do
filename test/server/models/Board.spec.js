@@ -92,4 +92,16 @@ describe('Board', () => {
                 });
         });
     });
+
+    describe('update', () => {
+        it('should update board', () => {
+            return Board.create(boardData)
+                .then(board => {
+                    return board.update({ title: 'test board 2' });
+                })
+                .then(board => {
+                    assert.equal(board.title, 'test board 2');
+                })
+        });
+    });
 });

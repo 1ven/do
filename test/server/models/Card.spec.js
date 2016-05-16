@@ -1,5 +1,6 @@
 import chai, { assert } from 'chai';
 import _ from 'lodash';
+import db from 'server/db';
 import chaiAsPromised from 'chai-as-promised';
 import shortid from 'shortid';
 
@@ -49,6 +50,18 @@ describe('Card', () => {
                 .then(entry => {
                     assert.deepEqual(entry.toJSON(), cardData);
                 });
+        });
+    });
+
+    describe('update', () => {
+        it('should update card', () => {
+            return Card.create(cardData)
+                .then(card => {
+                    return card.update({ text: 'text 2' });
+                })
+                .then(card => {
+                    assert.equal(card.text, 'text 2');
+                })
         });
     });
 });
