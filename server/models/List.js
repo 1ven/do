@@ -1,19 +1,34 @@
 'use strict';
 
-const _ = require('lodash');
 const db = require('../db');
-const Base = require('./Base');
+const Sequelize = require('sequelize');
+const shortid = require('shortid');
+
 const Card = require('./Card');
 
-const List = _.assign({}, Base, {
-    table: 'lists',
-    children: [Card],
-    mutableFields: ['title'],
-    visibleFields: ['id', 'title'],
-
-    createCard(listId, cardProps) {
-        return this.createChild(listId, cardProps, Card);
+const List = db.define('list', {
+    id: {
+        type: Sequelize.STRING,
+        defaultValue: shortid.generate,
+        primaryKey: true
     },
+    title: {
+        type: Sequelize.STRING,
+        defaultValue: '',
+        validate: {
+            notEmpty: {
+                args: true,
+                msg: 'List title must be not empty'
+            }
+        }
+    }
+}, {
+    defaultScope: {
+        attributes: ['id', 'title'],
+        include: [{
+            model: Card
+        }]
+    }
 });
 
 module.exports = List;

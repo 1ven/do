@@ -1,204 +1,237 @@
 import chai, { assert } from 'chai';
-import chaiAsPromised from 'chai-as-promised';
 import _ from 'lodash';
-import { recreateTables } from '../helpers';
+import chaiAsPromised from 'chai-as-promised';
+import shortid from 'shortid';
 import db from 'server/db';
+
 import User from 'server/models/User';
 
 chai.use(chaiAsPromised);
 
-describe('User model', () => {
-    beforeEach(recreateTables);
+const userData = {
+    id: shortid.generate(),
+    username: 'testuser',
+    email: 'user@test.com',
+    password: 123456,
+    confirmation: 123456
+};
 
-    const props = {
-        username: 'test',
-        email: 'test@mail.com',
-        password: 123456,
-        rePassword: 123456
-    };
+const boardData = {
+    id: shortid.generate(),
+    title: 'test board'
+};
 
-    describe('register', () => {
+describe('User', () => {
+    describe('create', () => {
         it('should create user', () => {
-            return User.register(props)
-                .then(() => {
-                    return db.one('SELECT * FROM users WHERE id = 1');
-                })
+            const username = 'test user';
+            return User.create(userData)
                 .then(user => {
+                    const _user = user.toJSON();
+                    assert.deepEqual(_user.username, userData.username);
+                });
+        });
+
+        it('should generate valid shortid', () => {
+            return User.create(_.assign({}, userData, { id: undefined }))
+                .then(user => {
+                    assert.isTrue(shortid.isValid(user.id));
+                });
+        });
+
+        it('should convert username to lowercase', () => {
+            return User.create(_.assign({}, userData, { username: 'tEsTuSeR' }))
+                .then(user => {
+                    const _user = user.toJSON();
+                    assert.equal(_user.username, 'testuser');
+                });
+        });
+
+        it('should convert email to lowercase', () => {
+            return User.create(_.assign({}, userData, { email: 'teSt@maIl.Com' }))
+                .then(user => {
+                    const _user = user.toJSON();
+                    assert.equal(_user.email, 'test@mail.com');
+                });
+        });
+
+        it('should not add password and confirmation in db', () => {
+            return User.create(userData)
+                .then(() => {
+                    return db.query(`SELECT * FROM users WHERE id = '${userData.id}'`);
+                })
+                .then(result => {
+                    const user = result[0][0];
+                    assert.notProperty(user, 'password');
+                    assert.notProperty(user, 'confirmation');
+                });
+        });
+
+        it('should encrypt password', () => {
+            return User.create(userData)
+                .then(() => {
+                    return db.query(`SELECT * FROM users WHERE id = '${userData.id}'`);
+                })
+                .then(result => {
+                    const user = result[0][0];
                     assert.property(user, 'hash');
                     assert.property(user, 'salt');
-
-                    delete user.hash;
-                    delete user.salt;
-
-                    assert.deepEqual(user, {
-                        id: 1,
-                        username: props.username,
-                        email: props.email
-                    });
                 });
         });
 
-        it('should return created user, only with visible fields', () => {
-            return User.register(props)
+        it('should be rejected, when password is not provided', () => {
+            const _userData = _.omit(userData, 'password');
+
+            const promise = User.create(_userData);
+            return assert.isRejected(promise, /Validation error.*Password is required/);
+        });
+
+        it('should be rejected, when password is less than 6 characters length', () => {
+            const _userData = _.assign({}, userData, { password: 12345 });
+
+            const promise = User.create(_userData);
+            return assert.isRejected(promise, /Validation error.*Password.*at least 6/);
+        });
+
+        it('should be rejected, when confirmation is not provided', () => {
+            const _userData = _.omit(userData, 'confirmation');
+
+            const promise = User.create(_userData);
+            return assert.isRejected(promise, /Validation error.*Password confirmation is required/);
+        });
+
+        it('should be rejected, when confirmation is not matching with password', () => {
+            const _userData = _.assign({}, userData, { confirmation: 12345 });
+
+            const promise = User.create(_userData);
+            return assert.isRejected(promise, /Validation error.*Passwords not match/);
+        });
+
+        it('should be rejected, when username is not provided', () => {
+            const _userData = _.omit(userData, 'username');
+
+            const promise = User.create(_userData);
+            return assert.isRejected(promise, /Validation error.*Username is required/);
+        });
+
+        it('should be rejected, when username is emty string', () => {
+            const promise = User.create(_.assign({}, userData, { username: '' }));
+            return assert.isRejected(promise, /Validation error.*Username is required/);
+        });
+
+        it('should be rejected, when username is less than 3 characters length', () => {
+            const promise = User.create(_.assign({}, userData, { username: 'ab' }));
+            return assert.isRejected(promise, /Validation error.*between 3 and 20/);
+        });
+
+        it('should be rejected, when username is more than 20 characters length', () => {
+            const promise = User.create(_.assign({}, userData, { username: 'veryveryveryveryveryverylongusername' }));
+            return assert.isRejected(promise, /Validation error.*between 3 and 20/);
+        });
+
+        it('should be rejected, when username is contain spaces', () => {
+            const promise = User.create(_.assign({}, userData, { username: 'i am user' }));
+            return assert.isRejected(promise, /Validation error.*not contain spaces/);
+        });
+
+        it('should be rejected, when username is exists', () => {
+            const promise = User.create(userData)
+                .then(() => {
+                    return User.create(_.assign({}, userData, { email: 'user2@test.com' }));
+                });
+            return assert.isRejected(promise, /Validation error.*Username is already in use/);
+        });
+
+        it('should be rejected, when email is not provided', () => {
+            const _userData = _.assign({}, userData);
+
+            delete _userData.email;
+
+            const promise = User.create(_userData);
+            return assert.isRejected(promise, /Validation error.*is required/);
+        });
+
+        it('should be rejected, when email is emty string', () => {
+            const promise = User.create(_.assign({}, userData, { email: '' }));
+            return assert.isRejected(promise, /Validation error.*is required/);
+        });
+
+        it('should be rejected, when email is not valid', () => {
+            const promise = User.create(_.assign({}, userData, { email: 'not valid email' }));
+            return assert.isRejected(promise, /Validation error.*not valid/);
+        });
+
+        it('should be rejected, when email is exists', () => {
+            const promise = User.create(userData)
+                .then(() => {
+                    return User.create(_.assign({}, userData, { username: 'testuser2' }));
+                });
+            return assert.isRejected(promise, /Validation error.*Email is already in use/);
+        });
+    });
+
+    describe('find', () => {
+        it('should return user with attributes declared in `defaultScope` by default', () => {
+            const id = shortid.generate();
+            return User.create(_.assign({}, userData, { id }))
+                .then(() => User.findById(id))
                 .then(user => {
-                    assert.deepEqual(user, {
-                        id: 1,
-                        username: props.username
+                    assert.deepEqual(user.toJSON(), {
+                        username: userData.username,
+                        id
+                    });
+                });
+        });
+
+        it('should return user with attributes declared in `self` scope, when `.scope("self")` is used', () => {
+            return User.create(userData)
+                .then(user => {
+                    return User.scope('self').findById(user.id)
+                })
+                .then(user => {
+                    assert.deepEqual(user.toJSON(), {
+                        id: user.id,
+                        username: userData.username,
+                        email: userData.email,
+                        boards: []
+                    });
+                });
+        });
+
+        it('should include boards in response, when `.scope("self")` is used', () => {
+            const userId = shortid.generate();
+            return User.create(_.assign({}, userData, { id: userId }))
+                .then(user => user.createBoard(boardData))
+                .then(() => User.scope('self').findById(userId))
+                .then(user => {
+                    const _user = user.toJSON();
+                    assert.deepEqual(_user, {
+                        id: userId,
+                        username: userData.username,
+                        email: userData.email,
+                        boards: [{
+                            id: boardData.id,
+                            title: boardData.title,
+                            lists: []
+                        }]
                     });
                 });
         });
     });
 
-    describe('sanitize', () => {
-        it('should convert to lowercase `email` and `username`', () => {
-            const sanitized = User.sanitize(_.assign({}, props, {
-                username: 'tEsT',
-                email: 'tEsT@mail.CoM'
-            }));
-            assert.deepEqual(sanitized, props);
-        });
-    });
-
-    describe('validate', () => {
-        function getMessages(err) {
-            return _.reduce(err.validation, (acc, item) => {
-                return [...acc, item.message];
-            }, []);
-        };
-
-        it('should not be rejected if all props are valid', () => {
-            return User.validate({
-                username: 'johnnnny',
-                email: 'test@mail.com',
-                password: 123456,
-                rePassword: 123456
-            }).catch(err => {
-                assert.deepEqual(err.validation, []);
-            });
-        });
-
-        describe('username', () => {
-            it('should be rejected, when username is not between 3 and 20 characters', () => {
-                return User.validate(_.assign({}, props, {
-                    username: 'ab'
-                })).catch(getMessages)
-                    .then(messages => {
-                        assert.include(messages, 'Must be between 3 and 20 characters long');
-                    });
-            });
-
-            it('should be rejected, when username contains spaces', () => {
-                return User.validate(_.assign({}, props, {
-                    username: 'i am john'
-                })).catch(getMessages)
-                    .then(messages => {
-                        assert.include(messages, 'Must not contain spaces');
-                    });
-
-            });
-
-            it('should be rejected, when username is not provided', () => {
-                return User.validate({}).catch(getMessages)
-                    .then(messages => {
-                        assert.include(messages, 'Username is required');
-                    });
-            });
-
-            it('should be rejected when username is already exists', () => {
-                return db.none(`
-                    INSERT INTO users (username, email, hash, salt)
-                    VALUES ('test', 'test@mail.com', 'hash', 'salt')
-                `).then(() => User.validate({ username: 'test' }))
-                    .catch(getMessages)
-                    .then(messages => {
-                        assert.include(messages, 'Username is already taken');
-                    });
-            });
-        });
-
-        describe('password', () => {
-            it('should be rejected, when password less than 6 characters length', () => {
-                return User.validate(_.assign({}, props, {
-                    password: 1234,
-                    rePassword: 1234
-                })).catch(getMessages)
-                    .then(messages => {
-                        assert.include(messages, 'Must be at least 6 characters long');
-                    });
-
-            });
-
-            it('should be rejected, when password is not provided', () => {
-                return User.validate({}).catch(getMessages)
-                    .then(messages => {
-                        assert.include(messages, 'Password is required');
-                    });
-            });
-        });
-
-        describe('rePassword', () => {
-            it('should be rejected, when given passwords do not match', () => {
-                return User.validate(_.assign({}, props, {
-                    rePassword: 1234
-                })).catch(getMessages)
-                    .then(messages => {
-                        assert.include(messages, 'Passwords not match');
-                    });
-
-            });
-
-            it('should be rejected, when password confirmation is not provided', () => {
-                return User.validate({}).catch(getMessages)
-                    .then(messages => {
-                        assert.include(messages, 'Password confirmation is required');
-                    });
-            });
-        });
-
-        describe('email', () => {
-            it('should be rejected, when email is invalid', () => {
-                return User.validate(_.assign({}, props, {
-                    email: 'not valid email'
-                })).catch(getMessages)
-                    .then(messages => {
-                        assert.include(messages, 'Invalid email');
-                    });
-            });
-
-            it('should be rejected, when email is not provided', () => {
-                return User.validate({}).catch(getMessages)
-                    .then(messages => {
-                        assert.include(messages, 'Email is required');
-                    });
-            });
-
-            it('should be rejected when email is already exists', () => {
-                return db.none(`
-                    INSERT INTO users (username, email, hash, salt)
-                    VALUES ('test', 'test@mail.com', 'hash', 'salt')
-                `).then(() => User.validate({ email: 'test@mail.com' }))
-                    .catch(getMessages)
-                    .then(messages => {
-                        assert.include(messages, 'Email is already taken');
-                    });
-            });
-        });
-    });
-
-    describe('checkAvailability', () => {
-        it('should resolve true, if entry with given prop does not exist', () => {
-            return User.checkAvailability('username', 'test')
-                .then(isValid => assert.isTrue(isValid));
-        });
-
-        it('should resolve false, if entry with given prop exists', () => {
-            return db.none(`
-                INSERT INTO users (username, email, hash, salt)
-                VALUES ('test', 'test@mail.com', 'hash', 'salt')
-            `).then(() => {
-                return User.checkAvailability('username', 'test')
-                    .then(isValid => assert.isNotTrue(isValid));
-            });
+    describe('createBoard', () => {
+        it('should create board', () => {
+            return User.create(userData)
+                .then(user => {
+                    return user.createBoard(boardData);
+                })
+                .then(board => {
+                    const _board = board.toJSON();
+                    assert.equal(_board.id, boardData.id);
+                    assert.equal(_board.title, boardData.title);
+                    assert.equal(_board.userId, userData.id);
+                    assert.lengthOf(_.keys(_board), 5);
+                })
         });
     });
 });
