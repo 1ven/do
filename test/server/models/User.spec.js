@@ -170,6 +170,22 @@ describe('User', () => {
         });
     });
 
+    describe('createBoard', () => {
+        it('should create board', () => {
+            return User.create(userData)
+                .then(user => {
+                    return user.createBoard(boardData);
+                })
+                .then(board => {
+                    const _board = board.toJSON();
+                    assert.equal(_board.id, boardData.id);
+                    assert.equal(_board.title, boardData.title);
+                    assert.equal(_board.userId, userData.id);
+                    assert.lengthOf(_.keys(_board), 5);
+                })
+        });
+    });
+
     describe('find', () => {
         it('should return user with attributes declared in `defaultScope` by default', () => {
             const id = shortid.generate();
@@ -216,22 +232,6 @@ describe('User', () => {
                         }]
                     });
                 });
-        });
-    });
-
-    describe('createBoard', () => {
-        it('should create board', () => {
-            return User.create(userData)
-                .then(user => {
-                    return user.createBoard(boardData);
-                })
-                .then(board => {
-                    const _board = board.toJSON();
-                    assert.equal(_board.id, boardData.id);
-                    assert.equal(_board.title, boardData.title);
-                    assert.equal(_board.userId, userData.id);
-                    assert.lengthOf(_.keys(_board), 5);
-                })
         });
     });
 

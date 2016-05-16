@@ -45,6 +45,20 @@ describe('Board', () => {
         });
     });
 
+    describe('createList', () => {
+        it('should create list', () => {
+            return Board.create(boardData)
+                .then(board => board.createList(listData))
+                .then(list => {
+                    const _list = list.toJSON();
+                    assert.equal(_list.id, listData.id);
+                    assert.equal(_list.title, listData.title);
+                    assert.equal(_list.boardId, boardData.id);
+                    assert.lengthOf(_.keys(_list), 5);
+                });
+        });
+    });
+
     describe('find', () => {
         it('should return board with attributes declared in `defaultScope` by default', () => {
             return Board.create(boardData)
@@ -75,20 +89,6 @@ describe('Board', () => {
                             cards: []
                         }]
                     });
-                });
-        });
-    });
-
-    describe('createList', () => {
-        it('should create list', () => {
-            return Board.create(boardData)
-                .then(board => board.createList(listData))
-                .then(list => {
-                    const _list = list.toJSON();
-                    assert.equal(_list.id, listData.id);
-                    assert.equal(_list.title, listData.title);
-                    assert.equal(_list.boardId, boardData.id);
-                    assert.lengthOf(_.keys(_list), 5);
                 });
         });
     });

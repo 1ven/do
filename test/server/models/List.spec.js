@@ -45,6 +45,20 @@ describe('List', () => {
         });
     });
 
+    describe('createCard', () => {
+        it('should create card', () => {
+            return List.create(listData)
+                .then(list => list.createCard(cardData))
+                .then(card => {
+                    const _card = card.toJSON();
+                    assert.equal(_card.id, cardData.id);
+                    assert.equal(_card.title, cardData.title);
+                    assert.equal(_card.listId, listData.id);
+                    assert.lengthOf(_.keys(_card), 5);
+                });
+        });
+    });
+
     describe('find', () => {
         it('should return list with attributes declared in `defaultScope` by default', () => {
             return List.create(listData)
@@ -74,20 +88,6 @@ describe('List', () => {
                             text: cardData.text
                         }]
                     });
-                });
-        });
-    });
-
-    describe('createCard', () => {
-        it('should create card', () => {
-            return List.create(listData)
-                .then(list => list.createCard(cardData))
-                .then(card => {
-                    const _card = card.toJSON();
-                    assert.equal(_card.id, cardData.id);
-                    assert.equal(_card.title, cardData.title);
-                    assert.equal(_card.listId, listData.id);
-                    assert.lengthOf(_.keys(_card), 5);
                 });
         });
     });
