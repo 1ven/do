@@ -3,6 +3,7 @@
 const db = require('../db');
 const Sequelize = require('sequelize');
 const shortid = require('shortid');
+const crypto = require('crypto');
 
 const Board = require('./Board');
 
@@ -95,20 +96,26 @@ const User = db.define('user', {
                 }
             }
         }
+    },
+    hash: {
+        type: Sequelize.STRING
+    },
+    salt: {
+        type: Sequelize.STRING
     }
-    // hash: {
-    //     type: Sequelize.STRING,
-    //     allowNull: false
-    // },
-    // salt: {
-    //     type: Sequelize.STRING,
-    //     allowNull: false
-    // }
 }, {
     hooks: {
         beforeValidate(user) {
             user.username = user.username.toLowerCase();
             user.email = user.email.toLowerCase();
+        },
+        afterValidate(user) {
+            const password = user.get('password');
+            const salt = Math.random() + '';
+            const hash = encryptPassword(password, salt);
+
+            user.salt = salt;
+            user.hash = hash;
         }
     },
     defaultScope: {
@@ -123,5 +130,9 @@ const User = db.define('user', {
         },
     }
 });
+
+function encryptPassword(password, salt) {
+    return crypto.createHash('md5').update(password + salt).digest('hex');
+};
 
 module.exports = User;

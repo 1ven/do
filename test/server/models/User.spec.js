@@ -55,7 +55,7 @@ describe('User', () => {
                 });
         });
 
-        it('should not add password in db', () => {
+        it('should not add password and confirmation in db', () => {
             return User.create(userData)
                 .then(() => {
                     return db.query(`SELECT * FROM users WHERE id = '${userData.id}'`);
@@ -63,6 +63,19 @@ describe('User', () => {
                 .then(result => {
                     const user = result[0][0];
                     assert.notProperty(user, 'password');
+                    assert.notProperty(user, 'confirmation');
+                });
+        });
+
+        it('should encrypt password', () => {
+            return User.create(userData)
+                .then(() => {
+                    return db.query(`SELECT * FROM users WHERE id = '${userData.id}'`);
+                })
+                .then(result => {
+                    const user = result[0][0];
+                    assert.property(user, 'hash');
+                    assert.property(user, 'salt');
                 });
         });
 
