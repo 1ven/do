@@ -77,6 +77,24 @@ const User = db.define('user', {
                 }
             }
         }
+    },
+    confirmation: {
+        type: Sequelize.VIRTUAL,
+        defaultValue: '',
+        set: function (value) {
+            this.setDataValue('confirmation', value);
+        },
+        validate: {
+            notEmpty: {
+                args: true,
+                msg: 'Password confirmation is required'
+            },
+            isMatching: function (confirmation) {
+                if (confirmation !== this.get('password')) {
+                    throw new Error('Passwords not match');
+                }
+            }
+        }
     }
     // hash: {
     //     type: Sequelize.STRING,

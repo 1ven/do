@@ -12,7 +12,8 @@ const userData = {
     id: shortid.generate(),
     username: 'testuser',
     email: 'user@test.com',
-    password: 123456
+    password: 123456,
+    confirmation: 123456
 };
 
 const boardData = {
@@ -77,6 +78,20 @@ describe('User', () => {
 
             const promise = User.create(_userData);
             return assert.isRejected(promise, /Validation error.*Password.*at least 6/);
+        });
+
+        it('should be rejected, when confirmation is not provided', () => {
+            const _userData = _.omit(userData, 'confirmation');
+
+            const promise = User.create(_userData);
+            return assert.isRejected(promise, /Validation error.*Password confirmation is required/);
+        });
+
+        it('should be rejected, when confirmation is not matching with password', () => {
+            const _userData = _.assign({}, userData, { confirmation: 12345 });
+
+            const promise = User.create(_userData);
+            return assert.isRejected(promise, /Validation error.*Passwords not match/);
         });
 
         it('should be rejected, when username is not provided', () => {
