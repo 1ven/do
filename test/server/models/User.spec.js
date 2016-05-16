@@ -61,6 +61,13 @@ describe('User', () => {
             return assert.isRejected(promise, /Validation error.*Password is required/);
         });
 
+        it('should be rejected, when password is less than 6 characters length', () => {
+            const _userData = _.assign({}, userData, { password: 12345 });
+
+            const promise = User.create(_userData);
+            return assert.isRejected(promise, /Validation error.*Password.*at least 6/);
+        });
+
         it('should be rejected, when username is not provided', () => {
             const _userData = _.omit(userData, 'username');
 
