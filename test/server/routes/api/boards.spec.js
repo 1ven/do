@@ -35,6 +35,47 @@ describe('boards routes', () => {
         }).catch(done);
     });
 
+    it('GET /api/boards should respond with 200 and return all boards', (done) => {
+        setup().then(request => {
+            request
+                .get('/api/boards')
+                .expect(200)
+                .end((err, res) => {
+                    if (err) { return done(err); }
+
+                    const boards = res.body.result;
+                    const expected = boardsData.map(board => _.assign({}, board, { lists: [] }));
+                    assert.deepEqual(boards, expected);
+
+                    done();
+                });
+        }).catch(done);
+    });
+
+    it('POST /api/boards should respond with 201 and return created board', (done) => {
+        setup().then(request => {
+            request
+                .post('/api/boards')
+                .send({
+                    title: 'test board'
+                })
+                .expect(201)
+                .end((err, res) => {
+                    if (err) { return done(err); }
+
+                    const board = res.body.result;
+                    assert.property(board, 'id');
+                    delete board.id;
+                    assert.deepEqual(board, {
+                        title: 'test board',
+                        lists: []
+                    });
+
+                    done();
+                });
+        });
+    });
+
     it('POST /api/boards/:id/lists should respond with 201 and return created list', (done) => {
         setup().then(request => {
             request
