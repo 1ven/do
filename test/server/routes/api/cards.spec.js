@@ -14,7 +14,7 @@ const cardsData = [{
 
 describe('cards routes', () => {
     it('PUT /api/cards/:id should respond with 200 and return updated entry', (done) => {
-        return setup().then(request => {
+        setup().then(request => {
             request
                 .put(`/api/cards/${cardsData[1].id}`)
                 .send({
@@ -27,16 +27,18 @@ describe('cards routes', () => {
                     const card = res.body.result;
 
                     assert.property(card, 'id');
-                    assert.equal(card.text, 'new text');
-                    assert.lengthOf(_.keys(card), 2);
+                    delete card.id;
+                    assert.deepEqual(card, {
+                        text: 'new text'
+                    });
 
                     done();
                 });
-        });
+        }).catch(done);
     });
 
     it('DELETE /api/cards/:id should respond with 200 and return deleted entry id', (done) => {
-        return setup().then(request => {
+        setup().then(request => {
             request
                 .delete(`/api/cards/${cardsData[1].id}`)
                 .expect(200)
@@ -49,7 +51,7 @@ describe('cards routes', () => {
 
                     done();
                 });
-        });
+        }).catch(done);
     });
 });
 
