@@ -182,7 +182,7 @@ describe('User', () => {
                     assert.equal(_board.title, boardData.title);
                     assert.equal(_board.userId, userData.id);
                     assert.lengthOf(_.keys(_board), 5);
-                })
+                });
         });
     });
 
