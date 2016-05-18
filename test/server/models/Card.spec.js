@@ -64,4 +64,9 @@ describe('Card', () => {
                 })
         });
     });
+
+    describe('delete', () => {
+        // TODO: possible use delete with truncate/cascade option
+        it('should delete card, and delete it reference in lists relation table');
+    });
 });

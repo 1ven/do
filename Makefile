@@ -1,5 +1,5 @@
 test-variables = NODE_PATH=. NODE_ENV=test
-test-options = --compilers js:babel-register --recursive -R min
+test-options = --compilers js:babel-register --recursive -R min -g $(if $(GREP),'$(GREP)','')
 server-file = ./server/bin/www
 
 install:
