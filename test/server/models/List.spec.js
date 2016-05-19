@@ -45,7 +45,7 @@ describe('List', () => {
         it('should remove relations', () => {
             return List.drop(_list.id)
                 .then(() => {
-                    return db.query(`SELECT list_id FROM boards_lists WHERE list_id = $1`, [_list.id]);
+                    return db.query(`SELECT board_id FROM boards_lists WHERE list_id = $1`, [_list.id]);
                 })
                 .then(result => {
                     assert.lengthOf(result, 0);
