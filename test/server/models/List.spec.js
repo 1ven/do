@@ -61,9 +61,7 @@ describe('List', () => {
 
         it('should create card', () => {
             return List.createCard(_list.id, cardData).then(card => {
-                assert.property(card, 'id');
-                assert.equal(card.text, 'test card');
-                assert.lengthOf(_.keys(card), 2);
+                assert.deepEqual(card, cardData);
             });
         });
 
