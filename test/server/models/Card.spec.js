@@ -4,18 +4,15 @@ import { recreateTables } from '../helpers';
 import db from 'server/db';
 import Card from 'server/models/Card';
 
-const setup = require('../helpers').setup();
-const _card = setup.data.cards[0];
-
 describe('Card', () => {
-    beforeEach(() => recreateTables().then(setup.create));
+    beforeEach(() => recreateTables().then(setup));
 
     describe('update', () => {
         it('should update card and return updated card', () => {
-            return Card.update(_card.id, { text: 'updated text' })
+            return Card.update('1', { text: 'updated text' })
                 .then(card => {
                     assert.deepEqual(card, {
-                        id: _card.id,
+                        id: '1',
                         text: 'updated text'
                     });
                 });
@@ -24,9 +21,9 @@ describe('Card', () => {
 
     describe('drop', () => {
         it('should drop card entry', () => {
-            return Card.drop(_card.id)
+            return Card.drop('1')
                 .then(() => {
-                    return db.query(`SELECT id FROM cards WHERE id = $1`, [_card.id]);
+                    return db.query(`SELECT id FROM cards WHERE id = '1'`);
                 })
                 .then(result => {
                     assert.lengthOf(result, 0);
@@ -34,20 +31,16 @@ describe('Card', () => {
         });
 
         it('should return dropped card id', () => {
-            return Card.drop(_card.id)
+            return Card.drop('1')
                 .then(result => {
-                    assert.equal(result.id, _card.id);
-                });
-        });
-
-        it('should remove relations', () => {
-            return Card.drop(_card.id)
-                .then(() => {
-                    return db.query(`SELECT card_id FROM lists_cards WHERE card_id = $1`, [_card.id]);
-                })
-                .then(result => {
-                    assert.lengthOf(result, 0);
+                    assert.equal(result.id, '1');
                 });
         });
     });
 });
+
+function setup() {
+    return db.none(`
+        INSERT INTO cards (id, text) VALUES ('1', 'test card 1');
+    `);
+};
