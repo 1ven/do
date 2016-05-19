@@ -8,7 +8,6 @@ import List from 'server/models/List';
 const setup = require('../helpers').setup();
 
 const _list = setup.data.lists[0];
-const _board = setup.data.boards[0];
 
 describe('List', () => {
     beforeEach(() => recreateTables().then(setup.create));
