@@ -15,6 +15,8 @@ describe('tables', () => {
                 .then(prettyColumnsInfo)
                 .then(columns => {
                     assert.equal(columns.id, 'text');
+                    assert.equal(columns.index, 'integer');
+                    assert.equal(columns.created_at, 'timestamp without time zone');
                     assert.equal(columns.username, 'character varying');
                     assert.equal(columns.email, 'text');
                     assert.equal(columns.hash, 'text');
@@ -103,7 +105,7 @@ describe('tables', () => {
             return db.query(`
                 INSERT INTO users (id, username, email, hash, salt)
                 VALUES ('8', 'user1', 'test@mail.com', 'hash', 'salt');
-                INSERT INTO boards VALUES ('4', 'test board');
+                INSERT INTO boards(id, title) VALUES ('4', 'test board');
                 INSERT INTO users_boards VALUES ('8', '4');
                 DELETE FROM boards WHERE id = '4';
             `)
@@ -117,6 +119,8 @@ describe('tables', () => {
                 .then(prettyColumnsInfo)
                 .then(columns => {
                     assert.equal(columns.id, 'text');
+                    assert.equal(columns.index, 'integer');
+                    assert.equal(columns.created_at, 'timestamp without time zone');
                     assert.equal(columns.title, 'text');
                 });
         });
@@ -134,8 +138,8 @@ describe('tables', () => {
 
         it('should not remove `board` entry when board has lists inside', () => {
             const promise = db.query(`
-                INSERT INTO boards VALUES ('4', 'test board');
-                INSERT INTO lists VALUES ('7', 'test list');
+                INSERT INTO boards(id, title) VALUES ('4', 'test board');
+                INSERT INTO lists(id, title) VALUES ('7', 'test list');
                 INSERT INTO boards_lists VALUES ('4', '7');
                 DELETE FROM boards WHERE id = '4';
             `);
@@ -145,8 +149,8 @@ describe('tables', () => {
 
         it('should remove entry from `boards_lists` after corresponding list was removed', () => {
             return db.query(`
-                INSERT INTO boards VALUES ('4', 'test board');
-                INSERT INTO lists VALUES ('7', 'test list');
+                INSERT INTO boards(id, title) VALUES ('4', 'test board');
+                INSERT INTO lists(id, title) VALUES ('7', 'test list');
                 INSERT INTO boards_lists VALUES ('4', '7');
                 DELETE FROM lists WHERE id = '7';
             `)
@@ -167,8 +171,8 @@ describe('tables', () => {
 
         it('should not remove `list` entry when list has cards inside', () => {
             const promise = db.query(`
-                INSERT INTO lists VALUES ('3', 'test list');
-                INSERT INTO cards VALUES ('8', 'test card');
+                INSERT INTO lists(id, title) VALUES ('3', 'test list');
+                INSERT INTO cards(id, text) VALUES ('8', 'test card');
                 INSERT INTO lists_cards VALUES ('3', '8');
                 DELETE FROM lists WHERE id = '3';
             `);
@@ -178,8 +182,8 @@ describe('tables', () => {
 
         it('should remove entry from `lists_cards` after corresponding card was removed', () => {
             return db.query(`
-                INSERT INTO lists VALUES ('3', 'test list');
-                INSERT INTO cards VALUES ('8', 'test card');
+                INSERT INTO lists(id, title) VALUES ('3', 'test list');
+                INSERT INTO cards(id, text) VALUES ('8', 'test card');
                 INSERT INTO lists_cards VALUES ('3', '8');
                 DELETE FROM cards WHERE id = '8';
             `)
@@ -193,6 +197,8 @@ describe('tables', () => {
                 .then(prettyColumnsInfo)
                 .then(columns => {
                     assert.equal(columns.id, 'text');
+                    assert.equal(columns.index, 'integer');
+                    assert.equal(columns.created_at, 'timestamp without time zone');
                     assert.equal(columns.title, 'text');
                 });
         });
@@ -204,6 +210,8 @@ describe('tables', () => {
                 .then(prettyColumnsInfo)
                 .then(columns => {
                     assert.equal(columns.id, 'text');
+                    assert.equal(columns.index, 'integer');
+                    assert.equal(columns.created_at, 'timestamp without time zone');
                     assert.equal(columns.text, 'text');
                 });
         });

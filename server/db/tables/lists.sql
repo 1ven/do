@@ -1,5 +1,7 @@
 CREATE TABLE IF NOT EXISTS lists(
     id text PRIMARY KEY,
+    index serial NOT NULL UNIQUE,
+    created_at timestamp DEFAULT now(),
     title text NOT NULL CHECK (title <> '')
 );
 
