@@ -1,4 +1,5 @@
 const _ = require('lodash');
+const shortid = require('shortid');
 const pgp = require('pg-promise');
 const db = require('../db');
 
@@ -22,8 +23,10 @@ const List = {
     },
 
     createCard(listId, cardData) {
+        const id = shortid.generate();
+
         return db.one(`INSERT INTO cards (id, text) VALUES ($1, $2) RETURNING id, text`,
-        [cardData.id, cardData.text])
+        [id, cardData.text])
             .then(card => {
                 return db.none(`INSERT INTO lists_cards VALUES ($1, $2)`, [listId, card.id])
                     .then(() => card);
