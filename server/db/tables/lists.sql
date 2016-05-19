@@ -1,9 +1,9 @@
 CREATE TABLE IF NOT EXISTS lists(
-    id serial PRIMARY KEY,
+    id text PRIMARY KEY,
     title text NOT NULL CHECK (title <> '')
 );
 
 CREATE TABLE IF NOT EXISTS lists_cards(
-    list_id integer NOT NULL REFERENCES lists ON DELETE RESTRICT,
-    card_id integer PRIMARY KEY REFERENCES cards ON DELETE CASCADE
+    list_id text NOT NULL REFERENCES lists ON DELETE RESTRICT,
+    card_id text PRIMARY KEY REFERENCES cards ON DELETE CASCADE
 );

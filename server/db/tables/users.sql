@@ -1,5 +1,5 @@
 CREATE TABLE IF NOT EXISTS users(
-    id serial PRIMARY KEY,
+    id text PRIMARY KEY,
     username character varying(20) UNIQUE NOT NULL CHECK (
         length(username) > 2 and
         username ~* '^\S*$' and
@@ -14,6 +14,6 @@ CREATE TABLE IF NOT EXISTS users(
 );
 
 CREATE TABLE IF NOT EXISTS users_boards(
-    user_id integer NOT NULL REFERENCES users ON DELETE RESTRICT,
-    board_id integer PRIMARY KEY REFERENCES boards ON DELETE CASCADE
+    user_id text NOT NULL REFERENCES users ON DELETE RESTRICT,
+    board_id text PRIMARY KEY REFERENCES boards ON DELETE CASCADE
 );

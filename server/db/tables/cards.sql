@@ -1,4 +1,4 @@
 CREATE TABLE IF NOT EXISTS cards(
-    id serial PRIMARY KEY,
+    id text PRIMARY KEY,
     text text NOT NULL CHECK (text <> '')
 );
