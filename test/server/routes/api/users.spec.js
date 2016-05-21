@@ -1,5 +1,5 @@
 import { assert } from 'chai';
-import User from 'server/models/User';
+import _ from 'lodash';
 import request from 'supertest';
 import app from 'server/index';
 import { recreateTables, authenticate } from '../../helpers';
