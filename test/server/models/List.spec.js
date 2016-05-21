@@ -5,15 +5,17 @@ import { recreateTables } from '../helpers';
 import db from 'server/db';
 import List from 'server/models/List';
 
+const listId = shortid.generate();
+
 describe('List', () => {
     beforeEach(() => recreateTables().then(setup));
 
     describe('update', () => {
         it('should update list and return updated list', () => {
-            return List.update('1', { title: 'updated title' })
+            return List.update(listId, { title: 'updated title' })
                 .then(list => {
                     assert.deepEqual(list, {
-                        id: '1',
+                        id: listId,
                         title: 'updated title'
                     });
                 });
@@ -22,9 +24,9 @@ describe('List', () => {
 
     describe('drop', () => {
         it('should drop list entry', () => {
-            return List.drop('1')
+            return List.drop(listId)
                 .then(() => {
-                    return db.query(`SELECT id FROM lists WHERE id = '1'`);
+                    return db.query(`SELECT id FROM lists WHERE id = $1`, [listId]);
                 })
                 .then(result => {
                     assert.lengthOf(result, 0);
@@ -32,9 +34,9 @@ describe('List', () => {
         });
 
         it('should return dropped list id', () => {
-            return List.drop('1')
+            return List.drop(listId)
                 .then(result => {
-                    assert.equal(result.id, '1');
+                    assert.equal(result.id, listId);
                 });
         });
     });
@@ -45,22 +47,26 @@ describe('List', () => {
         };
 
         it('should create card', () => {
-            return List.createCard('1', cardData).then(card => {
-                assert.equal(card.text, cardData.text);
+            return List.createCard(listId, cardData).then(card => {
+                assert.property(card, 'id');
+                delete card.id;
+                assert.deepEqual(card, {
+                    text: cardData.text
+                });
             });
         });
 
         it('should generate shortid', () => {
-            return List.createCard('1', cardData).then(card => {
+            return List.createCard(listId, cardData).then(card => {
                 assert.isTrue(shortid.isValid(card.id));
             });
         });
 
         it('should relate card to list', () => {
-            return List.createCard('1', cardData).then(card => {
+            return List.createCard(listId, cardData).then(card => {
                 return db.one(`SELECT list_id FROM lists_cards WHERE card_id = $1`, [card.id]);
             }).then(result => {
-                assert.equal(result.list_id, '1');
+                assert.equal(result.list_id, listId);
             });
         });
     });
@@ -68,6 +74,6 @@ describe('List', () => {
 
 function setup() {
     return db.none(`
-        INSERT INTO lists(id, title) VALUES ('1', 'test list')
-    `);
+        INSERT INTO lists(id, title) VALUES ($1, 'test list')
+    `, [listId]);
 };
