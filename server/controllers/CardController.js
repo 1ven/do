@@ -19,5 +19,3 @@ exports.drop = function (req, res, next) {
             res.status(200).json({ result });
         }, next);
 };
-
-exports.delete = function (req, res, next) {};
