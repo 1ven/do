@@ -1,34 +1,37 @@
-'use strict';
-
-const db = require('../db');
-const Sequelize = require('sequelize');
+const _ = require('lodash');
 const shortid = require('shortid');
+const pgp = require('pg-promise');
+const db = require('../db');
 
-const Card = require('./Card');
+const List = {
+    update(id, data) {
+        const _data = _.pick(data, ['title']);
 
-const List = db.define('list', {
-    id: {
-        type: Sequelize.STRING,
-        defaultValue: shortid.generate,
-        primaryKey: true
+        if (_.isEmpty(_data)) return;
+
+        const props = _.keys(_data).map(k => pgp.as.name(k)).join();
+        const values = _.values(_data);
+
+        return db.one(
+            `UPDATE lists SET ($2^) = ($3:csv) WHERE id = $1 RETURNING id, title`,
+            [id, props, values]
+        );
     },
-    title: {
-        type: Sequelize.STRING,
-        defaultValue: '',
-        validate: {
-            notEmpty: {
-                args: true,
-                msg: 'List title must be not empty'
-            }
-        }
+
+    drop(id) {
+        return db.one(`DELETE FROM lists WHERE id = $1 RETURNING id`, [id]);
+    },
+
+    createCard(listId, cardData) {
+        const id = shortid.generate();
+
+        return db.one(`INSERT INTO cards (id, text) VALUES ($1, $2) RETURNING id, text`,
+        [id, cardData.text])
+            .then(card => {
+                return db.none(`INSERT INTO lists_cards VALUES ($1, $2)`, [listId, card.id])
+                    .then(() => card);
+            });
     }
-}, {
-    defaultScope: {
-        attributes: ['id', 'title'],
-        include: [{
-            model: Card
-        }]
-    }
-});
+};
 
 module.exports = List;

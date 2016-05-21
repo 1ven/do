@@ -1,10 +1,21 @@
 'use strict';
 
-const Sequelize = require('sequelize');
-const config = require('../config');
-
-const sequelize = new Sequelize(config.db, {
-    logging: false
+const bluebird = require('bluebird');
+const pgp = require('pg-promise')({
+    promiseLib: bluebird
 });
+const config = require('../config');
+const sql = require('../utils/sql');
+const fs = require('fs');
+const path = require('path');
 
-module.exports = sequelize;
+const db = pgp(config.db);
+
+db.tx(function() {
+    return this.none(sql('cards.sql'))
+        .then(() => this.none(sql('lists.sql')))
+        .then(() => this.none(sql('boards.sql')))
+        .then(() => this.none(sql('users.sql')));
+}).catch(err => { throw err; });
+
+module.exports = db;

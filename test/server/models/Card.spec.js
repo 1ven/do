@@ -1,72 +1,48 @@
-import chai, { assert } from 'chai';
-import _ from 'lodash';
-import db from 'server/db';
-import chaiAsPromised from 'chai-as-promised';
+import { assert } from 'chai';
 import shortid from 'shortid';
-
+import { recreateTables } from '../helpers';
+import db from 'server/db';
 import Card from 'server/models/Card';
 
-chai.use(chaiAsPromised);
-
-const cardData = {
-    id: shortid.generate(),
-    text: 'test card'
-};
+const cardId = shortid.generate();
 
 describe('Card', () => {
-    describe('create', () => {
-        it('should create card', () => {
-            return Card.create(cardData)
-                .then(card => {
-                    const _card = card.toJSON();
-                    assert.equal(_card.text, cardData.text);
-                });
-        });
-
-        it('should generate valid shortid', () => {
-            return Card.create(_.assign({}, cardData, { id: undefined }))
-                .then(card => {
-                    assert.isTrue(shortid.isValid(card.id));
-                });
-        });
-
-        it('should return error message, when text is not provided', () => {
-            const promise = Card.create();
-            return assert.isRejected(promise, /Validation error.*must be not empty/);
-        });
-
-        it('should return error message, when text is emty string', () => {
-            const promise = Card.create({ text: '' });
-            return assert.isRejected(promise, /Validation error.*must be not empty/);
-        });
-    });
-
-    describe('find', () => {
-        it('should return card with attributes declared in `defaultScope` by default', () => {
-            return Card.create(cardData)
-                .then(card => {
-                    return Card.findById(card.id)
-                })
-                .then(entry => {
-                    assert.deepEqual(entry.toJSON(), cardData);
-                });
-        });
-    });
+    beforeEach(() => recreateTables().then(setup));
 
     describe('update', () => {
-        it('should update card', () => {
-            return Card.create(cardData)
+        it('should update card and return updated card', () => {
+            return Card.update(cardId, { text: 'updated text' })
                 .then(card => {
-                    return card.update({ text: 'text 2' });
-                })
-                .then(card => {
-                    assert.equal(card.text, 'text 2');
-                })
+                    assert.deepEqual(card, {
+                        id: cardId,
+                        text: 'updated text'
+                    });
+                });
         });
     });
 
-    describe('delete', () => {
-        // TODO: possible use delete with truncate/cascade option
-        it('should delete card, and delete it reference in lists relation table');
+    describe('drop', () => {
+        it('should drop card entry', () => {
+            return Card.drop(cardId)
+                .then(() => {
+                    return db.query(`SELECT id FROM cards WHERE id = $1`, [cardId]);
+                })
+                .then(result => {
+                    assert.lengthOf(result, 0);
+                });
+        });
+
+        it('should return dropped card id', () => {
+            return Card.drop(cardId)
+                .then(result => {
+                    assert.equal(result.id, cardId);
+                });
+        });
     });
 });
+
+function setup() {
+    return db.none(`
+        INSERT INTO cards (id, text) VALUES ($1, 'test card 1');
+    `, [cardId]);
+};

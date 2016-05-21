@@ -5,9 +5,9 @@ const path = require('path');
 const express = require('express');
 const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
-const passport = require('./lib/passport');
+/* const passport = require('./lib/passport'); */
 const config = require('./config');
-const routes = require('./routes');
+/* const routes = require('./routes'); */
 const errorHandler = require('./middlewares/').errorHandler;
 
 const app = express();
@@ -32,7 +32,7 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 // app.use(passport.initialize());
 app.use('/static', express.static(path.join(__dirname, 'static')));
-app.use(routes);
+/* app.use(routes); */
 app.use(errorHandler);
 
 app.set('views', path.join(__dirname, 'views'));
