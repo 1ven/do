@@ -7,7 +7,7 @@ exports.signInLocal = function (req, res, next) {
     const username = req.body.username;
     const password = req.body.password;
 
-    User.findByUsername(username)
+    User.findByUsername(username, ['hash', 'salt'])
         .then(user => {
             if (!User.isValidPassword(user.hash, user.salt, password)) {
                 return res.status(400).json({ message: 'Incorrect password' });

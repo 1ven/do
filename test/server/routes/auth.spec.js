@@ -1,0 +1,98 @@
+import { assert } from 'chai';
+import _ from 'lodash';
+import request from 'supertest';
+import app from 'server/index';
+import db from 'server/db';
+import { recreateTables } from '../helpers';
+import User from 'server/models/User';
+
+describe('auth routes', () => {
+    beforeEach(recreateTables);
+
+    it('POST /auth/sign-in/local authenticate user, and return json - { redirectTo: "/" }', (done) => {
+        User.create({
+            username: 'testuser',
+            email: 'testuser@mail.com',
+            password: '123456',
+            confirmation: '123456'
+        }).then(() => {
+            request(app)
+                .post('/auth/sign-in/local')
+                .send({
+                    username: 'testuser',
+                    password: '123456'
+                })
+                .end((err, res) => {
+                    if (err) { return done(err); }
+
+                    const cookies = res.header['set-cookie'];
+
+                    assert.deepEqual(res.body, {
+                        redirectTo: '/'
+                    });
+
+                    assert.lengthOf(cookies.filter(c => {
+                        return !! (
+                            c.match(/access_token/i) &&
+                            c.match(new RegExp(`max-age=${30 * 24 * 60 * 60}`, 'i')) &&
+                            c.match(/httponly/i)
+                        );
+                    }), 1);
+
+                    assert.lengthOf(cookies.filter(c => {
+                        return !! (
+                            c.match(/authenticated=true/i) &&
+                            c.match(new RegExp(`max-age=${30 * 24 * 60 * 60}`, 'i'))
+                        );
+                    }), 1);
+
+                    done();
+                });
+        });
+    });
+
+    it('POST /auth/sign-in/local should respond with 400 and return { message: "Incorrect password" } when password is incorrect', (done) => {
+        User.create({
+            username: 'testuser',
+            email: 'testuser@mail.com',
+            password: '123456',
+            confirmation: '123456'
+        }).then(() => {
+            request(app)
+                .post('/auth/sign-in/local')
+                .send({
+                    username: 'testuser',
+                    password: '1234567'
+                })
+                .expect(400)
+                .end((err, res) => {
+                    if (err) { return done(err); }
+
+                    assert.deepEqual(res.body, {
+                        message: 'Incorrect password'
+                    });
+
+                    done();
+                });
+        });
+    });
+
+    it('POST /auth/sign-in/local should respond with 400 and return { message: "Incorrect username" } when user does not exist', (done) => {
+        request(app)
+            .post('/auth/sign-in/local')
+            .send({
+                username: 'testuser',
+                password: '123456'
+            })
+            .expect(400)
+            .end((err, res) => {
+                if (err) { return done(err); }
+
+                assert.deepEqual(res.body, {
+                    message: 'Incorrect username'
+                });
+
+                done();
+            });
+    });
+});
