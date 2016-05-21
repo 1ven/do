@@ -59,8 +59,8 @@ describe('User', () => {
     describe('sanitize', () => {
         it('should convert to lowercase `email` and `username`', () => {
             const sanitized = User.sanitize(_.assign({}, props, {
-                username: 'tEsT',
-                email: 'tEsT@mail.CoM'
+                username: 'tEsT2',
+                email: 'tEsT2@mail.CoM'
             }));
             assert.deepEqual(sanitized, props);
         });
