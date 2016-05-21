@@ -4,15 +4,17 @@ import { recreateTables } from '../helpers';
 import db from 'server/db';
 import Card from 'server/models/Card';
 
+const cardId = shortid.generate();
+
 describe('Card', () => {
     beforeEach(() => recreateTables().then(setup));
 
     describe('update', () => {
         it('should update card and return updated card', () => {
-            return Card.update('1', { text: 'updated text' })
+            return Card.update(cardId, { text: 'updated text' })
                 .then(card => {
                     assert.deepEqual(card, {
-                        id: '1',
+                        id: cardId,
                         text: 'updated text'
                     });
                 });
@@ -21,9 +23,9 @@ describe('Card', () => {
 
     describe('drop', () => {
         it('should drop card entry', () => {
-            return Card.drop('1')
+            return Card.drop(cardId)
                 .then(() => {
-                    return db.query(`SELECT id FROM cards WHERE id = '1'`);
+                    return db.query(`SELECT id FROM cards WHERE id = $1`, [cardId]);
                 })
                 .then(result => {
                     assert.lengthOf(result, 0);
@@ -31,9 +33,9 @@ describe('Card', () => {
         });
 
         it('should return dropped card id', () => {
-            return Card.drop('1')
+            return Card.drop(cardId)
                 .then(result => {
-                    assert.equal(result.id, '1');
+                    assert.equal(result.id, cardId);
                 });
         });
     });
@@ -41,6 +43,6 @@ describe('Card', () => {
 
 function setup() {
     return db.none(`
-        INSERT INTO cards (id, text) VALUES ('1', 'test card 1');
-    `);
+        INSERT INTO cards (id, text) VALUES ($1, 'test card 1');
+    `, [cardId]);
 };
