@@ -9,7 +9,7 @@ const Board = {
 
         if (_.isEmpty(_data)) return;
 
-        const props = _.keys(_data).map(k => pgp.as.name(k)).join();
+        const props = _.keys(_data).map(pgp.as.name).join();
         const values = _.values(_data);
 
         return db.one(
