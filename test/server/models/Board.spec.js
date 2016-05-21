@@ -87,23 +87,6 @@ describe('Board', () => {
             lists: []
         }];
 
-        function removeCreatedAt(arr) {
-            arr.forEach(ent => {
-                _.keys(ent).forEach(key => {
-                    const value = ent[key];
-
-                    if (value instanceof Array) {
-                        return removeCreatedAt(value);
-                    }
-
-                    if (key === 'created_at') {
-                        delete ent[key];
-                        return;
-                    }
-                });
-            });
-        };
-
         describe('findById', () => {
             it('should return board with nested children', () => {
                 return Board.findById('1')
