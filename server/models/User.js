@@ -1,10 +1,31 @@
 const _ = require('lodash');
+const crypto = require('crypto');
 const shortid = require('shortid');
 const pgp = require('pg-promise');
 const validator = require('../utils/validator');
 const db = require('../db');
 
 const User = {
+    create(props) {
+        const _props = this.sanitize(props);
+        return this.validate(_props)
+            .then(() => {
+                const id = shortid.generate();
+                const salt = Math.random() + '';
+                const hash = this.encryptPassword(_props.password, salt);
+
+                return db.one(`
+                    INSERT INTO users (id, username, email, hash, salt)
+                    VALUES ($1, $2, $3, $4, $5)
+                    RETURNING id, username
+                `, [id, _props.username, _props.email, hash, salt]);
+            });
+    },
+
+    encryptPassword(password, salt) {
+        return crypto.createHash('md5').update(password + salt).digest('hex');
+    },
+
     validate(props) {
         return validator.validate(props, {
             username: [
@@ -65,6 +86,15 @@ const User = {
                 err.validation = errors;
                 throw err;
             }
+        });
+    },
+
+    sanitize(props) {
+        const username = (props.username || '').toLowerCase();
+        const email = (props.email || '').toLowerCase();
+        return _.assign({}, props, {
+            username,
+            email
         });
     },
 

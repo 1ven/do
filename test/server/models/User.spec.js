@@ -8,8 +8,8 @@ import User from 'server/models/User';
 const userId = shortid.generate();
 
 const props = {
-    username: 'test',
-    email: 'test@mail.com',
+    username: 'test2',
+    email: 'test2@mail.com',
     password: 123456,
     confirmation: 123456
 };
@@ -18,7 +18,52 @@ describe('User', () => {
     beforeEach(() => recreateTables().then(setup));
 
     describe('create', () => {
-        
+        it('should create user', () => {
+            return User.create(props)
+                .then(user => {
+                    return db.one('SELECT * FROM users WHERE id = $1', [user.id]);
+                })
+                .then(user => {
+                    assert.property(user, 'id');
+                    assert.property(user, 'hash');
+                    assert.property(user, 'salt');
+                    assert.property(user, 'created_at');
+
+                    assert.isTrue(shortid.isValid(user.id));
+                    assert.match(user.hash, /^[a-f0-9]{32}$/g);
+
+                    assert.deepEqual({
+                        username: user.username,
+                        email: user.email,
+                        index: user.index
+                    }, {
+                        username: props.username,
+                        email: props.email,
+                        index: 2
+                    });
+                });
+        });
+
+        it('should return created user, only with id, username', () => {
+            return User.create(props)
+                .then(user => {
+                    assert.property(user, 'id');
+
+                    assert.deepEqual(_.omit(user, ['id']), {
+                        username: props.username
+                    });
+                });
+        });
+    });
+
+    describe('sanitize', () => {
+        it('should convert to lowercase `email` and `username`', () => {
+            const sanitized = User.sanitize(_.assign({}, props, {
+                username: 'tEsT',
+                email: 'tEsT@mail.CoM'
+            }));
+            assert.deepEqual(sanitized, props);
+        });
     });
 
     describe('validate', () => {
