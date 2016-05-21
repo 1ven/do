@@ -1,6 +1,7 @@
 const router = require('express').Router();
-const AuthController = require('../../controllers/AuthController');
+const SignController = require('../controllers/SignController');
 
-router.post('/local', AuthController.signInLocal);
+router.post('/sign-in/local', SignController.signInLocal);
+router.post('/sign-out', SignController.signOut);
 
-export.default = router;
+module.exports = router;
