@@ -56,29 +56,29 @@ describe('boards routes', () => {
         }).catch(done);
     });
 
-    it('POST /api/boards should respond with 201 and return created board', (done) => {
-        setup().then(request => {
-            request
-                .post('/api/boards')
-                .send({
-                    title: 'test board'
-                })
-                .expect(201)
-                .end((err, res) => {
-                    if (err) { return done(err); }
+    /* it('POST /api/boards should respond with 201 and return created board', (done) => { */
+    /*     setup().then(request => { */
+    /*         request */
+    /*             .post('/api/boards') */
+    /*             .send({ */
+    /*                 title: 'test board' */
+    /*             }) */
+    /*             .expect(201) */
+    /*             .end((err, res) => { */
+    /*                 if (err) { return done(err); } */
 
-                    const board = res.body.result;
+    /*                 const board = res.body.result; */
 
-                    assert.property(board, 'id');
+    /*                 assert.property(board, 'id'); */
 
-                    assert.deepEqual(_.omit(board, ['id']), {
-                        title: 'test board'
-                    });
+    /*                 assert.deepEqual(_.omit(board, ['id']), { */
+    /*                     title: 'test board' */
+    /*                 }); */
 
-                    done();
-                });
-        });
-    });
+    /*                 done(); */
+    /*             }); */
+    /*     }); */
+    /* }); */
 
     it('POST /api/boards/:id/lists should respond with 201 and return created list', (done) => {
         setup().then(request => {
