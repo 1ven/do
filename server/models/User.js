@@ -6,6 +6,12 @@ const validator = require('../utils/validator');
 const db = require('../db');
 
 const User = {
+    findById(id) {
+        return db.one(`
+            SELECT id, username FROM users WHERE id = $1
+        `, [id]);
+    },
+
     create(props) {
         const _props = this.sanitize(props);
         return this.validate(_props)
