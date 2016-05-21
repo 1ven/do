@@ -6,9 +6,11 @@ const validator = require('../utils/validator');
 const db = require('../db');
 
 const User = {
-    findByUsername(username) {
+    findByUsername(username, extraFields) {
+        const extra = extraFields ? `, ${extraFields.join(', ')}`: '';
         return db.one(`
-            SELECT id, username FROM users WHERE username = $1
+            SELECT id, username ${extra}
+            FROM users WHERE username = $1
         `, [username]);
     },
 

@@ -27,6 +27,19 @@ describe('User', () => {
                     });
                 });
         });
+
+        it('should return user with additional fields when, `extraFields` parameter is provided', () => {
+            return User.findByUsername('test', ['hash', 'salt'])
+                .then(user => {
+                    assert.property(user, 'hash');
+                    assert.property(user, 'salt');
+
+                    assert.deepEqual(_.omit(user, ['hash', 'salt']), {
+                        id: userId,
+                        username: 'test'
+                    });
+                });
+        });
     });
 
     describe('create', () => {
