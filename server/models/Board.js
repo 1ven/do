@@ -1,4 +1,5 @@
 const _ = require('lodash');
+const shortid = require('shortid');
 const pgp = require('pg-promise');
 const db = require('../db');
 
@@ -22,13 +23,45 @@ const Board = {
     },
 
     createList(boardId, listData) {
+        const id = shortid.generate();
+
         return db.one(`INSERT INTO lists (id, title) VALUES ($1, $2) RETURNING id, title`,
-        [listData.id, listData.title])
+        [id, listData.title])
             .then(list => {
                 return db.none(`INSERT INTO boards_lists VALUES ($1, $2)`, [boardId, list.id])
                     .then(() => list);
             });
+    },
+
+    findById(id) {
+        return db.one(getFindSql(true), [id]);
+    },
+
+    findAll() {
+        return db.query(getFindSql());
     }
+};
+
+function getFindSql(id) {
+    return `
+        SELECT b.id, b.title,
+            COALESCE (json_agg(l) FILTER (WHERE l.id IS NOT NULL), '[]') AS lists
+        FROM boards AS b
+        LEFT JOIN boards_lists ON (b.id = board_id)
+        LEFT JOIN (
+            SELECT l.id, l.title,
+                COALESCE (json_agg(c) FILTER (WHERE c.id IS NOT NULL), '[]') AS cards
+            FROM lists AS l
+            LEFT JOIN lists_cards ON (l.id = list_id)
+            LEFT JOIN (
+                SELECT id, text from cards
+            ) AS c ON (c.id = card_id)
+            GROUP BY l.id
+        ) AS l ON (l.id = list_id)
+        ${id ? 'WHERE b.id = $1' : ''}
+        GROUP BY b.id
+        ORDER BY b.index
+    `;
 };
 
 module.exports = Board;
