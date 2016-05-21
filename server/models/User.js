@@ -1,9 +1,73 @@
 const _ = require('lodash');
 const shortid = require('shortid');
 const pgp = require('pg-promise');
+const validator = require('../utils/validator');
 const db = require('../db');
 
 const User = {
+    validate(props) {
+        return validator.validate(props, {
+            username: [
+                {
+                    assert: value => !! value,
+                    message: 'Username is required'
+                },
+                {
+                    assert: value => value.length >= 3 && value.length <= 20,
+                    message: 'Must be between 3 and 20 characters long'
+                },
+                {
+                    assert: value => !! value.match(/^\S*$/g),
+                    message: 'Must not contain spaces'
+                },
+                {
+                    assert: value => this.checkAvailability('username', value),
+                    message: 'Username is already taken'
+                }
+            ],
+            password: [
+                {
+                    assert: value => !! value,
+                    message: 'Password is required'
+                },
+                {
+                    assert: value => value.length >= 6,
+                    message: 'Must be at least 6 characters long'
+                }
+            ],
+            confirmation: [
+                {
+                    assert: value => !! value,
+                    message: 'Password confirmation is required'
+                },
+                {
+                    assert: value => value === props.password + '',
+                    message: 'Passwords not match'
+                }
+            ],
+            email: [
+                {
+                    assert: value => !! value,
+                    message: 'Email is required'
+                },
+                {
+                    assert: value => !! value.match(/^[A-Za-z0-9._%-]+@[A-Za-z0-9.-]+[.][A-Za-z]+$/g),
+                    message: 'Invalid email'
+                },
+                {
+                    assert: value => this.checkAvailability('email', value),
+                    message: 'Email is already taken'
+                }
+            ]
+        }).then(errors => {
+            if (errors && errors.length) {
+                const err = new Error('Validation error');
+                err.validation = errors;
+                throw err;
+            }
+        });
+    },
+
     createBoard(userId, boardData) {
         const id = shortid.generate();
 
@@ -13,6 +77,13 @@ const User = {
                 return db.none(`INSERT INTO users_boards VALUES ($1, $2)`, [userId, board.id])
                     .then(() => board);
             });
+    },
+
+    checkAvailability(prop, value) {
+        return db.result(`
+            SELECT id FROM users WHERE $1~ = $2
+        `, [prop, value])
+            .then(result => !result.rowCount);
     }
 };
 
