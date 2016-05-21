@@ -7,7 +7,7 @@ const db = require('../db');
 
 const User = {
     findByUsername(username, extraFields) {
-        const extra = extraFields ? `, ${extraFields.join(', ')}`: '';
+        const extra = extraFields ? (','+ extraFields.map(pgp.as.name).join()): '';
         return db.one(`
             SELECT id, username ${extra}
             FROM users WHERE username = $1
@@ -122,10 +122,10 @@ const User = {
     },
 
     checkAvailability(prop, value) {
-        return db.result(`
-            SELECT id FROM users WHERE $1~ = $2
+        return db.one(`
+            SELECT count(id) FROM users WHERE $1~ = $2
         `, [prop, value])
-            .then(result => !result.rowCount);
+            .then(data => parseInt(data.count));
     }
 };
 
