@@ -6,10 +6,10 @@ const validator = require('../utils/validator');
 const db = require('../db');
 
 const User = {
-    findById(id) {
+    findByUsername(username) {
         return db.one(`
-            SELECT id, username FROM users WHERE id = $1
-        `, [id]);
+            SELECT id, username FROM users WHERE username = $1
+        `, [username]);
     },
 
     create(props) {

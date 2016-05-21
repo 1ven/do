@@ -17,9 +17,9 @@ const props = {
 describe('User', () => {
     beforeEach(() => recreateTables().then(setup));
 
-    describe('findById', () => {
+    describe('findByUsername', () => {
         it('should return user by given id', () => {
-            return User.findById(userId)
+            return User.findByUsername('test')
                 .then(user => {
                     assert.deepEqual(user, {
                         id: userId,
