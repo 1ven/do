@@ -4,25 +4,20 @@ const _ = require('lodash');
 const LocalStrategy = require('passport-local').Strategy;
 
 passport.use(new LocalStrategy((username, password, done) => {
-    User.getOne({ username }, true)
+    User.findByUsername(username)
         .then(user => {
-            if (_.isEmpty(user) || !User.isValidPassword(user.hash, user.salt, password)) {
-                return done(null, false, { message: 'Incorrect username or password' });
+            if (!User.isValidPassword(user.hash, user.salt, password)) {
+                return done(null, false, { message: 'Incorrect password' });
             }
 
             done(null, user);
-        }).catch(done);
+        }).catch(err => {
+            if (err.message.match(/no data returned/i)) {
+                return done(null, false, { message: 'Incorrect username' });
+            }
+
+            done(err);
+        });
 }));
-
-passport.serializeUser((user, done) => {
-    const id  = User.serialize(user);
-    done(null, id);
-});
-
-passport.deserializeUser((id, done) => {
-    User.deserialize(id)
-        .then(user => done(null, user))
-        .catch(done);
-});
 
 module.exports = passport;
