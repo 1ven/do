@@ -32,6 +32,10 @@ const User = {
         return crypto.createHash('md5').update(password + salt).digest('hex');
     },
 
+    isValidPassword(hash, salt, givenPassword) {
+        return hash == this.encryptPassword(givenPassword, salt);
+    },
+
     validate(props) {
         return validator.validate(props, {
             username: [
