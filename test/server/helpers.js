@@ -17,10 +17,22 @@ export function recreateTables() {
 };
 
 export function authenticate() {
-    // authentication is not implemented yet
     const authRequest = request.agent(app);
+    const data = {
+        username: 'test',
+        email: 'test@mail.com',
+        password: 123456,
+        confirmation: 123456
+    };
 
     return new Promise((resolve, reject) => {
-        resolve(authRequest);
+        authRequest
+            .post('/sign-up')
+            .send(data)
+            .end((err, res) => {
+                if (err) { reject(err); }
+
+                resolve(authRequest);
+            });
     });
 };

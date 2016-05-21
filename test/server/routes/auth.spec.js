@@ -3,7 +3,7 @@ import _ from 'lodash';
 import request from 'supertest';
 import app from 'server/index';
 import db from 'server/db';
-import { recreateTables } from '../helpers';
+import { recreateTables, authenticate } from '../helpers';
 import User from 'server/models/User';
 
 describe('auth routes', () => {
@@ -94,5 +94,31 @@ describe('auth routes', () => {
 
                 done();
             });
+    });
+
+    it('POST /auth/sign-out should unauthenticate user and return { redirectTo: "/sign-in" }', (done) => {
+        authenticate().then(request => {
+            request
+                .post('/auth/sign-out')
+                .end((err, res) => {
+                    if (err) { return done(err); }
+
+                    const cookies = res.header['set-cookie'];
+
+                    assert.deepEqual(res.body, {
+                        redirectTo: '/sign-in'
+                    });
+
+                    assert.lengthOf(cookies.filter(c => {
+                        return !! c.match(/access_token=;/i);
+                    }), 1);
+
+                    assert.lengthOf(cookies.filter(c => {
+                        return !! c.match(/authenticated=;/i);
+                    }), 1);
+
+                    done();
+                });
+        });
     });
 });
