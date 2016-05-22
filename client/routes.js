@@ -1,4 +1,5 @@
 import React, { PropTypes } from 'react';
+import cookie from 'js-cookie';
 import { Route, IndexRoute } from 'react-router';
 import App from './components/App';
 import Sign from './components/Sign';
@@ -7,12 +8,10 @@ import BoardPage from './containers/BoardPage';
 import SignInPage from './containers/SignInPage';
 import SignUpPage from './containers/SignUpPage';
 
-const isAuthenticated = true;
-
 export default (
     <Route path="/">
         <Route
-            onEnter={ensureLoggedIn}
+            onEnter={ensureSignedIn}
             component={App}
         >
             <IndexRoute
@@ -24,7 +23,7 @@ export default (
             />
         </Route>
         <Route
-            onEnter={ensureLoggedOut}
+            onEnter={ensureSignedOut}
             component={Sign}
         >
             <Route
@@ -39,14 +38,14 @@ export default (
     </Route>
 );
 
-function ensureLoggedIn(nextState, replace) {
-    if (!isAuthenticated) {
+function ensureSignedIn(nextState, replace) {
+    if (!cookie.get('authenticated')) {
         replace('/sign-in');
     }
 };
 
-function ensureLoggedOut(nextState, replace) {
-    if (isAuthenticated) {
+function ensureSignedOut(nextState, replace) {
+    if (cookie.get('authenticated')) {
         replace('/');
     }
 };
