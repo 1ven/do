@@ -1,4 +1,5 @@
 const jwt = require('jsonwebtoken');
+const _ = require('lodash');
 const sanitize = require('../utils/sanitize');
 const config = require('../config');
 const User = require('../models/User');
@@ -10,13 +11,23 @@ exports.signInLocal = function (req, res, next) {
     User.findByUsername(username, ['hash', 'salt'])
         .then(user => {
             if (!User.isValidPassword(user.hash, user.salt, password)) {
-                return res.status(400).json({ message: 'Incorrect password' });
+                return res.status(400).json({
+                    result: [{
+                        name: 'password',
+                        message: 'Incorrect password'
+                    }]
+                });
             }
 
             authenticate(user, req, res);
         }).catch(err => {
             if (err.message.match(/no data returned/i)) {
-                return res.status(400).json({ message: 'Incorrect username' });
+                return res.status(400).json({
+                    result: [{
+                        name: 'username',
+                        message: 'Incorrect username'
+                    }]
+                });
             }
 
             next(err);
@@ -57,13 +68,14 @@ exports.ensureSignedOut = function (req, res, next) {
 
 function authenticate(user, req, res) {
     const token = jwt.sign(user, config.jwtSecret);
-    const maxAge = 30 * 24 * 60 * 60 * 1000;
+    const options = req.body.remember ? {
+        maxAge: 30 * 24 * 60 * 60 * 1000
+    } : {};
 
-    res.cookie('access_token', token, {
-        httpOnly: true,
-        maxAge
-    });
-    res.cookie('authenticated', true, { maxAge });
+    res.cookie('access_token', token, _.assign({}, options, {
+        httpOnly: true
+    }));
+    res.cookie('authenticated', true, options);
 
     res.json({ redirectTo: '/' });
 };
