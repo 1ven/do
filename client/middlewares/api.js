@@ -17,6 +17,7 @@ function callApi(endpoint, request) {
     return fetch(hostname + endpoint, requestWithHeaders)
         .then(response => response.json().then(body => ({ response, body })))
         .then(({ response, body }) => {
+            // may be not throw an error, when response is not ok. Because it's not exception. Instead of, return object with result and ok properties.
             if (!response.ok)  { return Promise.reject(body); } 
             return body;
         });
@@ -41,7 +42,7 @@ export default store => next => action => {
             if (schema) {
                 return normalize(json.result, schema);
             }
-            return json.result;
+            return json.result || {};
         })
         .then(
             data => {
@@ -58,9 +59,7 @@ export default store => next => action => {
             },
             error => next({
                 type: errorType,
-                payload: {
-                    error: error.message || 'Something bad happened'
-                }
+                payload: error
             })
         );
 };
