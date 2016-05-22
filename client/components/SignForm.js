@@ -20,6 +20,16 @@ class SignForm extends Component {
         this.props.onSubmit(formData);
     }
 
+    displayError(row) {
+        const error = this.props.errors.filter(e => e.name == row.props.name)[0];
+
+        return error ? (
+            <span className="b-sign-form__error">
+                {error.message}
+            </span>
+        ) : false;
+    }
+
     render() {
         const { rows } = this.props;
 
@@ -35,6 +45,7 @@ class SignForm extends Component {
                         key={i}
                     >
                         {row}
+                        {this.displayError(row)}
                     </div>
                 ))}
             </form>
@@ -42,9 +53,14 @@ class SignForm extends Component {
     }
 };
 
+SignForm.defaultProps = {
+    errors: []
+};
+
 SignForm.propTypes = {
     onSubmit: PropTypes.func.isRequired,
-    rows: PropTypes.node.isRequired
+    rows: PropTypes.node.isRequired,
+    errors: PropTypes.array
 };
 
 export default SignForm;

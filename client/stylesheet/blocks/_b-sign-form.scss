@@ -2,8 +2,20 @@
     &__row {
         display: flex;
         margin-bottom: 20px;
+        flex-direction: column;
         &:last-child {
             margin-bottom: 0;
         }
+    }
+    &__error {
+        background-color: $red;
+        box-shadow: 0px 2px 4px 0px rgba(0, 0, 0, 0.3);
+        color: $white;
+        border-radius: 2px;
+        font-size: 12px;
+        margin-top: 8px;
+        padding: 3px 6px;
+        display: block;
+        margin-bottom: -7px;
     }
 }
