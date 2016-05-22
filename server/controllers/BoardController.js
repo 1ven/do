@@ -5,10 +5,10 @@ const User = require('../models/User');
 exports.create = function (req, res, next) {
 };
 
-exports.findAll = function (req, res, next) {
+exports.findAllByUser = function (req, res, next) {
     const userId  = req.user.id;
 
-    return Board.findAll(userId)
+    return Board.findAllByUser(userId)
         .then(boards => {
             res.status(200).json({ result: boards });
         }, next);

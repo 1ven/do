@@ -55,7 +55,7 @@ const Board = {
         `, [id]);
     },
 
-    findAll(userId) {
+    findAllByUser(userId) {
         return db.query(`
             SELECT b.id, b.title,
                 COALESCE (json_agg(l) FILTER (WHERE l.id IS NOT NULL), '[]') AS lists

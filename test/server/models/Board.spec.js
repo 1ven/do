@@ -105,9 +105,9 @@ describe('Board', () => {
             });
         });
 
-        describe('findAll', () => {
+        describe('findAllByUser', () => {
             it('should return all boards with nested children', () => {
-                return Board.findAll(ids.users[0])
+                return Board.findAllByUser(ids.users[0])
                     .then(boards => {
                         assert.deepEqual(boards, [nestedBoards[0]]);
                     });
