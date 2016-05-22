@@ -3,10 +3,11 @@ import SignForm from './SignForm';
 import Btn from './Btn';
 import Checkbox from './Checkbox';
 
-function SignUp({ onSubmit }) {
+function SignUp({ onSubmit, errors }) {
     return (
         <SignForm
             onSubmit={onSubmit}
+            errors={errors}
             rows={[
                 <input className="b-input-a" type="text" placeholder="Username" name="username" />,
                 <input className="b-input-a" type="text" placeholder="Email" name="email" />,
