@@ -5,6 +5,24 @@ const User = require('../models/User');
 exports.create = function (req, res, next) {
 };
 
+exports.findAll = function (req, res, next) {
+    const userId  = req.user.id;
+
+    return Board.findAll(userId)
+        .then(boards => {
+            res.status(200).json({ result: boards });
+        }, next);
+};
+
+exports.findById = function (req, res, next) {
+    const id = req.params.id;
+
+    return Board.findById(id)
+        .then(board => {
+            res.status(200).json({ result: board });
+        }, next);
+};
+
 exports.update = function (req, res, next) {
     const id = req.params.id;
     const props = sanitize(req.body);
@@ -31,21 +49,5 @@ exports.createList = function (req, res, next) {
     return Board.createList(boardId, listProps)
         .then(list => {
             res.status(201).json({ result: list });
-        }, next);
-};
-
-exports.findById = function (req, res, next) {
-    const id = req.params.id;
-
-    return Board.findById(id)
-        .then(board => {
-            res.status(200).json({ result: board });
-        }, next);
-};
-
-exports.findAll = function (req, res, next) {
-    return Board.findAll()
-        .then(boards => {
-            res.status(200).json({ result: boards });
         }, next);
 };

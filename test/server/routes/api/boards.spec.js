@@ -6,6 +6,7 @@ import { recreateTables, authenticate } from '../../helpers';
 
 const boardId = shortid.generate();
 const board2Id = shortid.generate();
+const board3Id = shortid.generate();
 
 describe('boards routes', () => {
     beforeEach(recreateTables);
@@ -32,7 +33,7 @@ describe('boards routes', () => {
         }).catch(done);
     });
 
-    it('GET /api/boards should respond with 200 and return all boards', (done) => {
+    it('GET /api/boards should respond with 200 and return all boards related to user', (done) => {
         setup().then(request => {
             request
                 .get('/api/boards')
@@ -46,8 +47,8 @@ describe('boards routes', () => {
                         title: 'test board 1',
                         lists: []
                     }, {
-                        id: board2Id,
-                        title: 'test board 2',
+                        id: board3Id,
+                        title: 'test board 3',
                         lists: []
                     }]);
 
@@ -147,9 +148,15 @@ describe('boards routes', () => {
 });
 
 function setup() {
-    return db.none(`
-        INSERT INTO boards (id, title)
-        VALUES ($1, 'test board 1'), ($2, 'test board 2')
-    `, [boardId, board2Id])
-        .then(authenticate);
+    return authenticate().then(request => {
+        return db.one(`SELECT id FROM users`)
+            .then(result => {
+                return db.none(`
+                    INSERT INTO boards (id, title)
+                    VALUES ($1, 'test board 1'), ($2, 'test board 2'), ($3, 'test board 3');
+                    INSERT INTO users_boards VALUES ($4, $1), ($4, $3);
+                `, [boardId, board2Id, board3Id, result.id])
+            })
+            .then(() => request);
+    });
 };
