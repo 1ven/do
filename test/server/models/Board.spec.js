@@ -8,6 +8,7 @@ import Board from 'server/models/Board';
 const id = () => shortid.generate();
 
 const ids = {
+    users: [id()],
     boards: [id(), id()],
     lists: [id()],
     cards: [id()]
@@ -106,9 +107,9 @@ describe('Board', () => {
 
         describe('findAll', () => {
             it('should return all boards with nested children', () => {
-                return Board.findAll()
+                return Board.findAll(ids.users[0])
                     .then(boards => {
-                        assert.deepEqual(boards, nestedBoards);
+                        assert.deepEqual(boards, [nestedBoards[0]]);
                     });
             });
         });
@@ -117,10 +118,12 @@ describe('Board', () => {
 
 function setup() {
     return db.none(`
+        INSERT INTO users(id, username, email, hash, salt) VALUES ($5, 'test', 'test@test.com', 'hash', 'salt');
         INSERT INTO boards(id, title) VALUES ($1, 'test board'), ($2, 'test board 2');
+        INSERT INTO users_boards VALUES ($5, $1);
         INSERT INTO lists(id, title) VALUES ($3, 'test list');
         INSERT INTO boards_lists VALUES ($1, $3);
         INSERT INTO cards(id, text) VALUES ($4, 'test card');
         INSERT INTO lists_cards VALUES ($3, $4);
-    `, [ids.boards[0], ids.boards[1], ids.lists[0], ids.cards[0]]);
+    `, [ids.boards[0], ids.boards[1], ids.lists[0], ids.cards[0], ids.users[0]]);
 };

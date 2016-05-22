@@ -34,34 +34,48 @@ const Board = {
     },
 
     findById(id) {
-        return db.one(getFindSql(true), [id]);
+        return db.one(`
+            SELECT b.id, b.title,
+                COALESCE (json_agg(l) FILTER (WHERE l.id IS NOT NULL), '[]') AS lists
+            FROM boards AS b
+            LEFT JOIN boards_lists ON (b.id = board_id)
+            LEFT JOIN (
+                SELECT l.id, l.title,
+                    COALESCE (json_agg(c) FILTER (WHERE c.id IS NOT NULL), '[]') AS cards
+                FROM lists AS l
+                LEFT JOIN lists_cards ON (l.id = list_id)
+                LEFT JOIN (
+                    SELECT id, text from cards
+                ) AS c ON (c.id = card_id)
+                GROUP BY l.id
+            ) AS l ON (l.id = list_id)
+            WHERE b.id = $1
+            GROUP BY b.id
+            ORDER BY b.index
+        `, [id]);
     },
 
-    findAll() {
-        return db.query(getFindSql());
-    }
-};
-
-function getFindSql(id) {
-    return `
-        SELECT b.id, b.title,
-            COALESCE (json_agg(l) FILTER (WHERE l.id IS NOT NULL), '[]') AS lists
-        FROM boards AS b
-        LEFT JOIN boards_lists ON (b.id = board_id)
-        LEFT JOIN (
-            SELECT l.id, l.title,
-                COALESCE (json_agg(c) FILTER (WHERE c.id IS NOT NULL), '[]') AS cards
-            FROM lists AS l
-            LEFT JOIN lists_cards ON (l.id = list_id)
+    findAll(userId) {
+        return db.query(`
+            SELECT b.id, b.title,
+                COALESCE (json_agg(l) FILTER (WHERE l.id IS NOT NULL), '[]') AS lists
+            FROM boards AS b
+            LEFT JOIN boards_lists AS bl ON (b.id = bl.board_id)
             LEFT JOIN (
-                SELECT id, text from cards
-            ) AS c ON (c.id = card_id)
-            GROUP BY l.id
-        ) AS l ON (l.id = list_id)
-        ${id ? 'WHERE b.id = $1' : ''}
-        GROUP BY b.id
-        ORDER BY b.index
-    `;
+                SELECT l.id, l.title,
+                    COALESCE (json_agg(c) FILTER (WHERE c.id IS NOT NULL), '[]') AS cards
+                FROM lists AS l
+                LEFT JOIN lists_cards ON (l.id = list_id)
+                LEFT JOIN (
+                    SELECT id, text from cards
+                ) AS c ON (c.id = card_id)
+                GROUP BY l.id
+            ) AS l ON (l.id = list_id)
+            INNER JOIN users_boards AS ub ON (user_id = $1 AND ub.board_id = b.id)
+            GROUP BY b.id
+            ORDER BY b.index
+        `, [userId]);
+    }
 };
 
 module.exports = Board;
