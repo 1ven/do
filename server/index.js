@@ -11,20 +11,20 @@ const errorHandler = require('./middlewares/').errorHandler;
 
 const app = express();
 
-// if (process.env.NODE_ENV === 'development') {
-//     const webpack = require('webpack');
-//     const webpackDevMiddleware = require('webpack-dev-middleware');
-//     const webpackHotMiddleware = require('webpack-hot-middleware');
-//     const webpackConfig = require('../webpack.config');
+if (process.env.NODE_ENV === 'development') {
+    const webpack = require('webpack');
+    const webpackDevMiddleware = require('webpack-dev-middleware');
+    const webpackHotMiddleware = require('webpack-hot-middleware');
+    const webpackConfig = require('../webpack.config');
 
-//     const compiler = webpack(webpackConfig);
+    const compiler = webpack(webpackConfig);
 
-//     app.use(webpackDevMiddleware(compiler, {
-//         publicPath: webpackConfig.output.publicPath,
-//         noInfo: true
-//     }));
-//     app.use(webpackHotMiddleware(compiler));
-// }
+    app.use(webpackDevMiddleware(compiler, {
+        publicPath: webpackConfig.output.publicPath,
+        noInfo: true
+    }));
+    app.use(webpackHotMiddleware(compiler));
+}
 
 app.use(cookieParser());
 app.use(bodyParser.json());
