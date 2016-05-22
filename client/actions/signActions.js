@@ -1,7 +1,7 @@
 import { CALL_API } from '../middlewares/api';
 import * as types from '../constants/actionTypes';
 
-export function signIn({ username, password }) {
+export function signIn({ username, password, remember }) {
     return {
         [CALL_API]: {
             types: [
@@ -14,8 +14,26 @@ export function signIn({ username, password }) {
                 method: 'post',
                 body: {
                     username,
-                    password
+                    password,
+                    remember
                 }
+            }
+        }
+    };
+};
+
+export function signUp(formData) {
+    return {
+        [CALL_API]: {
+            types: [
+                types.SIGN_UP_REQUEST,
+                types.SIGN_UP_SUCCESS,
+                types.SIGN_UP_ERROR
+            ],
+            endpoint: '/sign-up',
+            request: {
+                method: 'post',
+                body: formData
             }
         }
     };
