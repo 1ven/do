@@ -8,16 +8,22 @@ function mapDispatchToProps(dispatch, ownProps) {
     return {
         onSubmit: function (formData) {
             dispatch(signIn(formData))
-                .then(action => {
-                    if (!action.payload.error) {
-                        browserHistory.push('/');
-                    }
-                });
+                /* .then(action => { */
+                /*     if (!action.payload.error) { */
+                /*         browserHistory.push('/'); */
+                /*     } */
+                /* }); */
         }
     };
 };
 
+function mapStateToProps(state) {
+    return {
+        errors: state.pages.signIn
+    };
+};
+
 export default connect(
-    null,
+    mapStateToProps,
     mapDispatchToProps
 )(SignIn);
