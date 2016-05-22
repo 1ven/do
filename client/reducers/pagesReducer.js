@@ -61,7 +61,31 @@ function boardReducer(state = {
     }
 };
 
+function signUpReducer(state = [], action) {
+    switch (action.type) {
+        case types.SIGN_UP_SUCCESS:
+            return [];
+        case types.SIGN_UP_ERROR:
+            return action.payload.result;
+        default:
+            return state;
+    }
+};
+
+function signInReducer(state = [], action) {
+    switch (action.type) {
+        case types.SIGN_IN_SUCCESS:
+            return [];
+        case types.SIGN_IN_ERROR:
+            return action.payload.result;
+        default:
+            return state;
+    }
+}
+
 export default combineReducers({
     index: indexReducer,
-    board: boardReducer
+    board: boardReducer,
+    signUp: signUpReducer,
+    signIn: signInReducer
 });
