@@ -19,6 +19,7 @@ function callApi(endpoint, request) {
         .then(({ response, body }) => {
             // may be not throw an error, when response is not ok. Because it's not exception. Instead of, return object with result and ok properties.
             if (!response.ok)  { return Promise.reject(body); } 
+            // check if server responded without json(e.x res.sendStatus()), what value body will have, if body will be undefined, accordingly return of this function must be - `return body || {}`
             return body;
         });
 };
@@ -59,7 +60,10 @@ export default store => next => action => {
             },
             error => next({
                 type: errorType,
-                payload: error
+                payload: {
+                    error: true,
+                    result: error.result
+                }
             })
         );
 };
