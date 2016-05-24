@@ -1,22 +1,12 @@
 import React, { PropTypes } from 'react';
 import BoardTile from './BoardTile';
 import InputForm from './InputForm';
-import BottomBox from './BottomBox';
-import Btn from './Btn';
 
 const BoardsList = ({
     boards,
     onBoardTileRemoveClick,
-    onBoardTileEditClick,
-    onAddBoardBtnClick
+    onBoardTileEditClick
 }) => {
-    const addBoardBtn = (
-        <Btn
-            text="Add new board"
-            onClick={onAddBoardBtnClick}
-        />
-    );
-
     return (
         <div className="b-boards-list">
             <div className="b-container">
@@ -35,9 +25,6 @@ const BoardsList = ({
                     )}
                 </div>
             </div>
-            <BottomBox
-                button={addBoardBtn}
-            />
         </div>
     );
 };
@@ -48,8 +35,7 @@ BoardsList.propTypes = {
         title: PropTypes.string.isRequired
     }).isRequired).isRequired,
     onBoardTileRemoveClick: PropTypes.func.isRequired,
-    onBoardTileEditClick: PropTypes.func.isRequired,
-    onAddBoardBtnClick: PropTypes.func.isRequired
+    onBoardTileEditClick: PropTypes.func.isRequired
 };
 
 export default BoardsList;

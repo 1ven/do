@@ -5,6 +5,8 @@ import { getBoards, removeBoard } from '../actions/boardsActions';
 import { showModal } from '../actions/modalActions';
 import BoardsList from '../components/BoardsList.js';
 import Loader from '../components/Loader';
+import BottomBox from '../components/BottomBox';
+import Btn from '../components/Btn';
 import CreateBoardModal from './CreateBoardModal';
 import EditBoardModal from './EditBoardModal';
 
@@ -55,17 +57,30 @@ class IndexPage extends Component {
 
         const isEmpty = boards.length === 0;
 
-        return isFetching || (!lastUpdated && isEmpty) ? (
-            <Loader />
-        ) : isEmpty ? (
-            <div>No result.</div>
-        ) : (
-            <BoardsList
-                boards={boards}
-                onBoardTileRemoveClick={this.handleBoardTileRemoveClick}
-                onBoardTileEditClick={this.handleBoardTileEditClick}
-                onAddBoardBtnClick={this.handleAddBoardBtnClick}
+        const addBoardBtn = (
+            <Btn
+                text="Add new board"
+                onClick={this.handleAddBoardBtnClick}
             />
+        );
+
+        return (
+            <div>
+                {isFetching || (!lastUpdated && isEmpty) ? (
+                    <Loader />
+                ) : isEmpty ? (
+                    <div>No result.</div>
+                ) : (
+                    <BoardsList
+                        boards={boards}
+                        onBoardTileRemoveClick={this.handleBoardTileRemoveClick}
+                        onBoardTileEditClick={this.handleBoardTileEditClick}
+                    />
+                )}
+                <BottomBox
+                    button={addBoardBtn}
+                />
+            </div>
         );
     }
 }
