@@ -65,8 +65,7 @@ module.exports = {
     _getErrorInfo(check) {
         return {
             name: check.name,
-            message: check.message,
-            value: check.value
+            message: check.message
         };
     },
 

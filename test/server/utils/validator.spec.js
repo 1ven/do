@@ -17,7 +17,7 @@ describe('validator', () => {
             assert.deepEqual(result, []);
         });
 
-        it('should return flat array with checks, putting name and value inside `check` object', () => {
+        it('should return flat array with checks, putting name inside `check` object', () => {
             const checksObj = {
                 user: [
                     {
@@ -28,8 +28,8 @@ describe('validator', () => {
             };
             const flatChecks = validator._flattenChecks(props, checksObj);
             assert.deepEqual(flatChecks, [_.assign({}, checksObj.user[0], {
-                value: 'test',
-                name: 'user'
+                name: 'user',
+                value: 'test'
             })]);
         });
     });
@@ -38,7 +38,6 @@ describe('validator', () => {
         it('should return object with error info by given `check`', () => {
             const check = {
                 name: 'user',
-                value: 'test',
                 assert: () => true,
                 message: 'test'
             };
@@ -46,7 +45,6 @@ describe('validator', () => {
             assert.deepEqual(errorInfo, {
                 name: check.name,
                 message: check.message,
-                value: check.value
             });
         });
     });
@@ -55,7 +53,6 @@ describe('validator', () => {
         function getCheck(assert) {
             return {
                 name: 'username',
-                value: 'test',
                 message: 'test message',
                 assert
             };
@@ -63,7 +60,6 @@ describe('validator', () => {
 
         const expectedError = {
             name: 'username',
-            value: 'test',
             message: 'test message'
         };
 
@@ -126,12 +122,10 @@ describe('validator', () => {
             const expectedErrors = [
                 {
                     name: 'username',
-                    value: '',
                     message: 'Username is required'
                 },
                 {
                     name: 'email',
-                    value: '',
                     message: 'Email is required'
                 }
             ];
@@ -140,13 +134,11 @@ describe('validator', () => {
                     assert: value => !! value,
                     message: 'Username is required',
                     name: 'username',
-                    value: ''
                 },
                 {
                     assert: value => !! value,
                     message: 'Email is required',
                     name: 'email',
-                    value: ''
                 }
             ];
             return validator._makeValidation(checks)
@@ -159,7 +151,6 @@ describe('validator', () => {
             const expectedErrors = [
                 {
                     name: 'username',
-                    value: '',
                     message: 'Username is required'
                 }
             ];
@@ -168,13 +159,11 @@ describe('validator', () => {
                     assert: value => !! value,
                     message: 'Username is required',
                     name: 'username',
-                    value: ''
                 },
                 {
                     assert: value => value.length >= 3 && value.length <= 20,
                     message: 'Must be between 3 and 20 characters long',
                     name: 'username',
-                    value: ''
                 }
             ];
             return validator._makeValidation(checks)
