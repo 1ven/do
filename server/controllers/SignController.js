@@ -45,13 +45,13 @@ exports.signUp = function (req, res, next) {
 exports.signOut = function (req, res, next) {
     res.clearCookie('access_token');
     res.clearCookie('authenticated');
-    res.json({ redirectTo: '/sign-in' });
+    res.json({});
 };
 
 exports.ensureSignedIn = function (req, res, next) {
     jwt.verify(req.cookies.access_token, config.jwtSecret, (err, user) => {
         if (err) {
-            return res.json({ redirectTo: '/sign-in' });
+            return res.json({});
         }
 
         req.user = user;
@@ -61,7 +61,7 @@ exports.ensureSignedIn = function (req, res, next) {
 
 exports.ensureSignedOut = function (req, res, next) {
     if (req.cookies.access_token) {
-        return res.json({ redirectTo: '/' });
+        return res.json({});
     }
     next();
 };
@@ -77,5 +77,5 @@ function authenticate(user, req, res) {
     }));
     res.cookie('authenticated', true, options);
 
-    res.json({ redirectTo: '/' });
+    res.json({});
 };
