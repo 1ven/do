@@ -1,37 +1,25 @@
 const jwt = require('jsonwebtoken');
 const _ = require('lodash');
+const validator = require('../utils/validator');
 const sanitize = require('../utils/sanitize');
 const config = require('../config');
 const User = require('../models/User');
 
 exports.signInLocal = function (req, res, next) {
     const username = req.body.username;
-    const password = req.body.password;
 
     User.findByUsername(username, ['hash', 'salt'])
-        .then(user => {
-            if (!User.isValidPassword(user.hash, user.salt, password)) {
-                return res.status(400).json({
-                    result: [{
-                        name: 'password',
-                        message: 'Incorrect password'
-                    }]
-                });
-            }
-
-            authenticate(user, req, res);
-        }).catch(err => {
+        .catch(err => {
             if (err.message.match(/no data returned/i)) {
-                return res.status(400).json({
-                    result: [{
-                        name: 'username',
-                        message: 'Incorrect username'
-                    }]
-                });
+                return {};
             }
-
-            next(err);
-        });
+            throw err;
+        })
+        .then(user => {
+            return validateLocalAuth(req.body, user)
+                .then(() => authenticate(user, req, res));
+        })
+        .catch(next);
 };
 
 exports.signUp = function (req, res, next) {
@@ -78,4 +66,20 @@ function authenticate(user, req, res) {
     res.cookie('authenticated', true, options);
 
     res.json({});
+};
+
+function validateLocalAuth(formData, user) {
+    return validator.validate({
+        username: formData.username,
+        password: formData.password
+    }, {
+        username: [{
+            assert: value => User.isExists('username', value),
+            message: 'Incorrect username'
+        }],
+        password: [{
+            assert: value => User.isValidPassword(user.hash, user.salt, value),
+            message: 'Incorrect password'
+        }]
+    });
 };
