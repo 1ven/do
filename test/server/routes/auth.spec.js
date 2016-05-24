@@ -83,19 +83,16 @@ describe('auth routes', () => {
         request(app)
             .post('/auth/sign-in/local')
             .send({
-                username: 'testuser',
-                password: '123456'
+                username: 'testuser'
             })
             .expect(400)
             .end((err, res) => {
                 if (err) { return done(err); }
 
-                assert.deepEqual(res.body, {
-                    result: [{
-                        name: 'username',
-                        message: 'Incorrect username'
-                    }]
-                });
+                const errors = res.body.result.map((e, acc) => e.message);
+
+                assert.include(errors, 'Incorrect username');
+                assert.include(errors, 'Incorrect password');
 
                 done();
             });
