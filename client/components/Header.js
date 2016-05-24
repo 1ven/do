@@ -1,7 +1,7 @@
 import React, { PropTypes } from 'react';
 import UserBox from './UserBox';
 
-const Header = function ({ user }) {
+const Header = function ({ user, onUserBoxSignOutClick }) {
     return (
         <header className="b-header">
             <div className="b-container">
@@ -10,7 +10,10 @@ const Header = function ({ user }) {
                     </div>
                     <div className="b-header__right">
                         <div className="b-header__item">
-                            <UserBox {...user} />
+                            <UserBox
+                                {...user}
+                                onSignOutClick={onUserBoxSignOutClick}
+                            />
                         </div>
                     </div>
                 </div>

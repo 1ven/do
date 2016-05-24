@@ -3,7 +3,12 @@ import MenuList from './MenuList';
 import Toggle from './Toggle';
 import Icon from './Icon';
 
-const UserBox = function ({ username, role, avatar }) {
+const UserBox = function ({
+    username,
+    role,
+    avatar,
+    onSignOutClick
+}) {
     const wrap = (
         <div className="b-user-box__wrap">
             <div className="b-user-box__icon">
@@ -29,9 +34,10 @@ const UserBox = function ({ username, role, avatar }) {
     const menu = (
         <div className="b-user-box__menu">
             <MenuList
-                items={[
-                    { title: 'Sign out', href: '/sign-out' }
-                ]}
+                items={[{
+                    title: 'Sign out',
+                    onClick: onSignOutClick
+                }]}
             />
         </div>
     );

@@ -1,8 +1,8 @@
 import React, { PropTypes } from 'react';
 import cookie from 'js-cookie';
 import { Route, IndexRoute } from 'react-router';
-import App from './components/App';
 import Sign from './components/Sign';
+import App from './containers/App';
 import IndexPage from './containers/IndexPage';
 import BoardPage from './containers/BoardPage';
 import SignInPage from './containers/SignInPage';

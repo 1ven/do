@@ -38,3 +38,19 @@ export function signUp(formData) {
         }
     };
 };
+
+export function signOut() {
+    return {
+        [CALL_API]: {
+            types: [
+                types.SIGN_OUT_REQUEST,
+                types.SIGN_OUT_SUCCESS,
+                types.SIGN_OUT_ERROR
+            ],
+            endpoint: '/auth/sign-out',
+            request: {
+                method: 'post'
+            }
+        }
+    };
+};
