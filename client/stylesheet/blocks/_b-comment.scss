@@ -1,0 +1,26 @@
+.b-comment {
+    display: flex;
+    align-items: flex-start;
+    &__avatar {
+        width: 38px;
+        height: auto;
+        border-radius: 50%;
+        border: 1px solid $dark-gray;
+        margin-right: 12px;
+    }
+    &__text {
+        margin: 0;
+        font-size: 14px;
+    }
+    &__top {
+        display: flex;
+        margin-bottom: 5px;
+    }
+    &__username, &__date {
+        font-size: 12px;
+        font-weight: 600;
+    }
+    &__date {
+        margin-left: auto;
+    }
+}
