@@ -8,11 +8,11 @@ function mapDispatchToProps(dispatch, ownProps) {
     return {
         onSubmit: function (formData) {
             dispatch(signUp(formData))
-                /* .then(action => { */
-                /*     if (!action.payload.error) { */
-                /*         browserHistory.push('/'); */
-                /*     } */
-                /* }); */
+                .then(action => {
+                    if (!action.payload.error) {
+                        browserHistory.push('/');
+                    }
+                });
         }
     };
 };
