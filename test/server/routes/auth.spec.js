@@ -9,7 +9,7 @@ import User from 'server/models/User';
 describe('auth routes', () => {
     beforeEach(recreateTables);
 
-    it('POST /auth/sign-in/local authenticate user, and return json - { redirectTo: "/" }', (done) => {
+    it('POST /auth/sign-in/local authenticate user, and return json - {}', (done) => {
         User.create({
             username: 'testuser',
             email: 'testuser@mail.com',
@@ -20,16 +20,15 @@ describe('auth routes', () => {
                 .post('/auth/sign-in/local')
                 .send({
                     username: 'testuser',
-                    password: '123456'
+                    password: '123456',
+                    remember: 'on'
                 })
                 .end((err, res) => {
                     if (err) { return done(err); }
 
                     const cookies = res.header['set-cookie'];
 
-                    assert.deepEqual(res.body, {
-                        redirectTo: '/'
-                    });
+                    assert.deepEqual(res.body, {});
 
                     assert.lengthOf(cookies.filter(c => {
                         return !! (
@@ -51,7 +50,7 @@ describe('auth routes', () => {
         });
     });
 
-    it('POST /auth/sign-in/local should respond with 400 and return { message: "Incorrect password" } when password is incorrect', (done) => {
+    it('POST /auth/sign-in/local should respond with 400 and return validation error, when password is incorrect', (done) => {
         User.create({
             username: 'testuser',
             email: 'testuser@mail.com',
@@ -69,7 +68,10 @@ describe('auth routes', () => {
                     if (err) { return done(err); }
 
                     assert.deepEqual(res.body, {
-                        message: 'Incorrect password'
+                        result: [{
+                            name: 'password',
+                            message: 'Incorrect password'
+                        }]
                     });
 
                     done();
@@ -77,7 +79,7 @@ describe('auth routes', () => {
         });
     });
 
-    it('POST /auth/sign-in/local should respond with 400 and return { message: "Incorrect username" } when user does not exist', (done) => {
+    it('POST /auth/sign-in/local should respond with 400 and return validation error, when user does not exist', (done) => {
         request(app)
             .post('/auth/sign-in/local')
             .send({
@@ -89,14 +91,17 @@ describe('auth routes', () => {
                 if (err) { return done(err); }
 
                 assert.deepEqual(res.body, {
-                    message: 'Incorrect username'
+                    result: [{
+                        name: 'username',
+                        message: 'Incorrect username'
+                    }]
                 });
 
                 done();
             });
     });
 
-    it('POST /auth/sign-out should unauthenticate user and return { redirectTo: "/sign-in" }', (done) => {
+    it('POST /auth/sign-out should unauthenticate user and return {}', (done) => {
         authenticate().then(request => {
             request
                 .post('/auth/sign-out')
@@ -105,9 +110,7 @@ describe('auth routes', () => {
 
                     const cookies = res.header['set-cookie'];
 
-                    assert.deepEqual(res.body, {
-                        redirectTo: '/sign-in'
-                    });
+                    assert.deepEqual(res.body, {});
 
                     assert.lengthOf(cookies.filter(c => {
                         return !! c.match(/access_token=;/i);

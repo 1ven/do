@@ -8,14 +8,15 @@ import { recreateTables } from '../helpers';
 describe('index routes', () => {
     beforeEach(recreateTables);
 
-    it('POST /api/users should create user, authenticate it, and return json - { redirectTo: "/" }', (done) => {
+    it('POST /sign-up should create user, authenticate it, and return json - {}', (done) => {
         request(app)
             .post('/sign-up')
             .send({
                 username: 'testuser',
                 email: 'test@test.com',
                 password: '123456',
-                confirmation: '123456'
+                confirmation: '123456',
+                remember: 'on'
             })
             .end((err, res) => {
                 if (err) { return done(err); }
@@ -25,9 +26,7 @@ describe('index routes', () => {
                         const cookies = res.header['set-cookie'];
 
                         assert.equal(result.rowCount, 1);
-                        assert.deepEqual(res.body, {
-                            redirectTo: '/'
-                        });
+                        assert.deepEqual(res.body, {});
 
                         assert.lengthOf(cookies.filter(c => {
                             return !! (
