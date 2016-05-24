@@ -15,6 +15,10 @@ module.exports = {
 
         const checks = this._flattenChecks(props, checksObj);
 
+        return this._makeValidation(checks).then(this._handleErrors);
+    },
+
+    _makeValidation(checks) {
         return Promise.reduce(checks, (acc, check) => {
             const isNameInArray = _.filter(acc, item => item.name === check.name).length === 1;
 
@@ -23,6 +27,14 @@ module.exports = {
             return this._makeCheck(check)
                 .then(error => error ? [...acc, error] : acc);
         }, []);
+    },
+
+    _handleErrors(errors) {
+        if (errors && errors.length) {
+            const err = new Error('Validation error');
+            err.validation = errors;
+            throw err;
+        }
     },
 
     _makeCheck(check) {

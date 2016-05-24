@@ -100,21 +100,58 @@ describe('validator', () => {
         });
     });
 
-    describe('validate', () => {
-        it('should throw error, when passed `props` have wrong type', () => {
-            const fn = () => validator.validate(null, {});
-            assert.throws(fn, /`props` must be.*object/);
+    describe('_handleErrors', () => {
+        it('should throw error with title `Validation error` and property errors when errors array is provided', () => {
+            const errors = [{
+                name: 'username',
+                message: 'Username is required'
+            }];
+            const fn = () => validator._handleErrors(errors);
+            assert.throws(fn, /Validation error/);
         });
 
-        it('should throw error, when passed `checksObj` have wrong type', () => {
-            const fn = () => validator.validate({}, null);
-            assert.throws(fn, /`checksObj` must be.*object/);
+        it('should not throw error when errors array is not provided', () => {
+            const fn = () => validator._handleErrors();
+            assert.doesNotThrow(fn);
         });
 
-        it('should resolve `[]`, when `checksObj = {}`', () => {
-            return validator.validate({}, {})
+        it('should not throw error when provided errors array is empty', () => {
+            const fn = () => validator._handleErrors([]);
+            assert.doesNotThrow(fn);
+        });
+    });
+
+    describe('_makeValidation', () => {
+        it('should resolve array with errors, when checks are not valid', () => {
+            const expectedErrors = [
+                {
+                    name: 'username',
+                    value: '',
+                    message: 'Username is required'
+                },
+                {
+                    name: 'email',
+                    value: '',
+                    message: 'Email is required'
+                }
+            ];
+            const checks = [
+                {
+                    assert: value => !! value,
+                    message: 'Username is required',
+                    name: 'username',
+                    value: ''
+                },
+                {
+                    assert: value => !! value,
+                    message: 'Email is required',
+                    name: 'email',
+                    value: ''
+                }
+            ];
+            return validator._makeValidation(checks)
                 .then(errors => {
-                    assert.deepEqual(errors, []);
+                    assert.deepEqual(errors, expectedErrors);
                 });
         });
 
@@ -126,25 +163,43 @@ describe('validator', () => {
                     message: 'Username is required'
                 }
             ];
-            const props = {
-                username: ''
-            };
-            const checksObj = {
-                username: [
-                    {
-                        assert: value => !! value,
-                        message: 'Username is required'
-                    },
-                    {
-                        assert: value => value.length >= 3 && value.length <= 20,
-                        message: 'Must be between 3 and 20 characters long'
-                    }
-                ]
-            };
-            return validator.validate(props, checksObj)
+            const checks = [
+                {
+                    assert: value => !! value,
+                    message: 'Username is required',
+                    name: 'username',
+                    value: ''
+                },
+                {
+                    assert: value => value.length >= 3 && value.length <= 20,
+                    message: 'Must be between 3 and 20 characters long',
+                    name: 'username',
+                    value: ''
+                }
+            ];
+            return validator._makeValidation(checks)
                 .then(errors => {
                     assert.deepEqual(errors, expectedErrors);
                 });
         });
+    });
+
+    describe('validate', () => {
+        it('should throw error, when passed `props` have wrong type', () => {
+            const fn = () => validator.validate(null, {});
+            assert.throws(fn, /`props` must be.*object/);
+        });
+
+        it('should throw error, when passed `checksObj` have wrong type', () => {
+            const fn = () => validator.validate({}, null);
+            assert.throws(fn, /`checksObj` must be.*object/);
+        });
+
+        /* it('should resolve `[]`, when `checksObj = {}`', () => { */
+        /*     return validator.validate({}, {}) */
+        /*         .then(errors => { */
+        /*             assert.deepEqual(errors, []); */
+        /*         }); */
+        /* }); */
     });
 });

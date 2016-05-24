@@ -92,12 +92,6 @@ const User = {
                     message: 'Email is already taken'
                 }
             ]
-        }).then(errors => {
-            if (errors && errors.length) {
-                const err = new Error('Validation error');
-                err.validation = errors;
-                throw err;
-            }
         });
     },
 
