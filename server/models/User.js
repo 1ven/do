@@ -120,6 +120,14 @@ const User = {
             SELECT id FROM users WHERE $1~ = $2
         `, [prop, value])
             .then(result => !result.rowCount);
+    },
+
+    isExists(prop, value) {
+        return db.one(`
+            SELECT EXISTS (
+                SELECT id FROM users WHERE $1~ = $2
+            )
+        `, [prop, value]).then(result => result.exists);
     }
 };
 
