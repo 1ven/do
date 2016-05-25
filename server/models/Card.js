@@ -31,6 +31,17 @@ const Card = {
             INSERT INTO users_comments VALUES ($1, $3);
             SELECT id, created_at, text FROM comments WHERE id = $3
         `, [userId, cardId, commentId, commentData.text])
+    },
+
+    findComments(cardId) {
+        return db.query(`
+            SELECT c.id, c.created_at, c.text, row_to_json(u) AS user FROM comments AS c
+            LEFT JOIN users_comments AS uc ON (uc.comment_id = c.id)
+            LEFT JOIN (
+                SELECT id, username FROM users
+            ) AS u ON (u.id = uc.user_id)
+            INNER JOIN cards_comments AS cc ON (cc.card_id = $1) AND (cc.comment_id = c.id)
+        `, [cardId]);
     }
 };
 

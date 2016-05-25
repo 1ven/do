@@ -5,7 +5,10 @@ import { recreateTables } from '../helpers';
 import db from 'server/db';
 import Card from 'server/models/Card';
 
+const commentId = shortid.generate();
+const comment2Id = shortid.generate();
 const cardId = shortid.generate();
+const card2Id = shortid.generate();
 const userId = shortid.generate();
 
 describe('Card', () => {
@@ -38,6 +41,30 @@ describe('Card', () => {
             return Card.drop(cardId)
                 .then(result => {
                     assert.equal(result.id, cardId);
+                });
+        });
+    });
+
+    describe('findComments', () => {
+        it('should return comments for particular card', () => {
+            return Card.findComments(card2Id)
+                .then(comments => {
+                    const _comments = comments.map(c => _.omit(c, ['created_at']));
+                    assert.deepEqual(_comments, [{
+                        id: commentId,
+                        text: 'test comment 1',
+                        user: {
+                            id: userId,
+                            username: 'testuser'
+                        }
+                    }, {
+                        id: comment2Id,
+                        text: 'test comment 2',
+                        user: {
+                            id: userId,
+                            username: 'testuser'
+                        }
+                    }]);
                 });
         });
     });
@@ -88,5 +115,12 @@ function setup() {
         INSERT INTO users (id, username, email, hash, salt)
             VALUES ($1, 'testuser', 'testuser@test.com', 'hash', 'salt');
         INSERT INTO cards (id, text) VALUES ($2, 'test card 1');
-    `, [userId, cardId]);
+        INSERT INTO cards (id, text) VALUES ($3, 'test card 2');
+        INSERT INTO comments (id, text) VALUES ($4, 'test comment 1');
+        INSERT INTO comments (id, text) VALUES ($5, 'test comment 2');
+        INSERT INTO cards_comments VALUES ($3, $4);
+        INSERT INTO cards_comments VALUES ($3, $5);
+        INSERT INTO users_comments VALUES ($1, $4);
+        INSERT INTO users_comments VALUES ($1, $5);
+    `, [userId, cardId, card2Id, commentId, comment2Id]);
 };
