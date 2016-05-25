@@ -19,3 +19,23 @@ exports.drop = function (req, res, next) {
             res.status(200).json({ result });
         }, next);
 };
+
+exports.findComments = function (req, res, next) {
+    const cardId = req.params.id;
+
+    return Card.findComments(cardId)
+        .then(comments => {
+            res.status(200).json({ result: comments });
+        }, next);
+};
+
+exports.createComment = function (req, res, next) {
+    const userId = req.user.id;
+    const cardId = req.params.id;
+    const commentData = req.body;
+
+    return Card.createComment(userId, cardId, commentData)
+        .then(comment => {
+            res.status(201).json({ result: comment });
+        }, next);
+};
