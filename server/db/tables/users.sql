@@ -19,3 +19,8 @@ CREATE TABLE IF NOT EXISTS users_boards(
     user_id text NOT NULL REFERENCES users ON DELETE RESTRICT,
     board_id text PRIMARY KEY REFERENCES boards ON DELETE CASCADE
 );
+
+CREATE TABLE IF NOT EXISTS users_comments(
+    user_id text NOT NULL REFERENCES users ON DELETE RESTRICT,
+    comment_id text PRIMARY KEY REFERENCES comments ON DELETE CASCADE
+);

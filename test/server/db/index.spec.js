@@ -159,6 +159,19 @@ describe('tables', () => {
         });
     });
 
+    describe('lists', () => {
+        it('should be created', () => {
+            return selectColumnsInfo('lists')
+                .then(prettyColumnsInfo)
+                .then(columns => {
+                    assert.equal(columns.id, 'text');
+                    assert.equal(columns.index, 'integer');
+                    assert.equal(columns.created_at, 'timestamp without time zone');
+                    assert.equal(columns.title, 'text');
+                });
+        });
+    });
+
     describe('lists_cards', () => {
         it('should be created', () => {
             return selectColumnsInfo('lists_cards')
@@ -191,22 +204,45 @@ describe('tables', () => {
                 .then(result => assert.lengthOf(result, 0));
         });
     });
-    describe('lists', () => {
+
+    describe('cards', () => {
         it('should be created', () => {
-            return selectColumnsInfo('lists')
+            return selectColumnsInfo('cards')
                 .then(prettyColumnsInfo)
                 .then(columns => {
                     assert.equal(columns.id, 'text');
                     assert.equal(columns.index, 'integer');
                     assert.equal(columns.created_at, 'timestamp without time zone');
-                    assert.equal(columns.title, 'text');
+                    assert.equal(columns.text, 'text');
                 });
         });
     });
 
-    describe('cards', () => {
+    describe('cards_comments', () => {
         it('should be created', () => {
-            return selectColumnsInfo('cards')
+            return selectColumnsInfo('cards_comments')
+                .then(prettyColumnsInfo)
+                .then(columns => {
+                    assert.equal(columns.card_id, 'text');
+                    assert.equal(columns.comment_id, 'text');
+                });
+        });
+    });
+
+    describe('users_comments', () => {
+        it('should be created', () => {
+            return selectColumnsInfo('users_comments')
+                .then(prettyColumnsInfo)
+                .then(columns => {
+                    assert.equal(columns.user_id, 'text');
+                    assert.equal(columns.comment_id, 'text');
+                });
+        });
+    });
+
+    describe('comments', () => {
+        it('should be created', () => {
+            return selectColumnsInfo('comments')
                 .then(prettyColumnsInfo)
                 .then(columns => {
                     assert.equal(columns.id, 'text');

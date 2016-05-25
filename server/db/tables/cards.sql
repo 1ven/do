@@ -4,3 +4,8 @@ CREATE TABLE IF NOT EXISTS cards(
     created_at timestamp DEFAULT now(),
     text text NOT NULL CHECK (text <> '')
 );
+
+CREATE TABLE IF NOT EXISTS cards_comments(
+    card_id text NOT NULL REFERENCES cards ON DELETE RESTRICT,
+    comment_id text PRIMARY KEY REFERENCES comments ON DELETE CASCADE
+);
