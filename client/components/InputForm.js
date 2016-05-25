@@ -1,82 +1,72 @@
 import React, { PropTypes, Component } from 'react';
 import ReactDOM from 'react-dom';
-import Icon from './Icon';
+import serialize from 'form-serialize';
+import Btn from './Btn';
+import Input from './Input';
 
 class InputForm extends Component {
     constructor(props) {
         super(props);
 
-        this.handleFormSubmit = this.handleFormSubmit.bind(this);
-        this.handleInputChange = this.handleInputChange.bind(this);
-
-        this.state = {
-            value: this.props.value || ''
-        };
+        this.handleSubmit = this.handleSubmit.bind(this);
     }
 
-    componentDidMount() {
-        if (this.props.autoFocus) {
-            ReactDOM.findDOMNode(this.refs.input).focus();
-        }
-    }
-
-    handleFormSubmit(e) {
+    handleSubmit(e) {
         e.preventDefault();
 
-        const { value } = this.state;
-        const { onSubmit } = this.props;
-
-        if (!value.trim()) { return; }
-
-        onSubmit(value);
-        this.clearInput();
-    }
-
-    clearInput() {
-        this.setState({
-            value: ''
+        const formNode = this.refs.form;
+        const formData = serialize(formNode, {
+            hash: true
         });
-    }
 
-    handleInputChange(e) {
-        this.setState({
-            value: e.target.value
-        });
+        this.props.onSubmit(formData);
     }
 
     render() {
-        const { onCrossClick } = this.props;
-        const cross = onCrossClick ? (
-            <a
-                className="b-input-form__cross"
-                onClick={onCrossClick}
-            >
-                <Icon name="cross" />
-            </a>
-        ) : null;
+        const { data, onCancel } = this.props;
 
         return (
             <form
                 className="b-input-form"
-                onSubmit={this.handleFormSubmit}
+                onSubmit={this.handleSubmit}
+                ref="form"
             >
-                <input
-                    className="b-input-form__input"
-                    onChange={this.handleInputChange}
-                    value={this.state.value}
-                    placeholder={this.props.placeholder}
-                    ref="input"
-                />
-                {cross}
+                <div className="b-input-form__area">
+                    <Input
+                        value={data.text}
+                        focus={true}
+                        name="text"
+                    />
+                </div>
+                <div className="b-input-form__buttons">
+                    <div className="b-input-form__button">
+                        <Btn
+                            modifiers={['sm']}
+                            text="Save"
+                            type="Submit"
+                            tagName="button"
+                        />
+                    </div>
+                    <div className="b-input-form__button">
+                        <Btn
+                            modifiers={['sm', 'red']}
+                            text="Cancel"
+                            onClick={onCancel}
+                        />
+                    </div>
+                </div>
             </form>
         );
     }
 }
 
 InputForm.propTypes = {
+    data: PropTypes.shape({
+        id: PropTypes.number.isRequired,
+        text: PropTypes.string.isRequired
+    }),
     onSubmit: PropTypes.func.isRequired,
-    onCrossClick: PropTypes.func,
-    autoFocus: PropTypes.bool
+    onCancel: PropTypes.func
 };
 
 export default InputForm;

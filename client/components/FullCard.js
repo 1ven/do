@@ -1,12 +1,12 @@
 import React, { PropTypes, Component } from 'react';
-import CardEditForm from './CardEditForm';
+import InputForm from './InputForm';
 import Comments from './Comments';
 
 class FullCard extends Component {
     constructor(props) {
         super(props);
 
-        this.handleCardEditFormSubmit = this.handleCardEditFormSubmit.bind(this);
+        this.handleInputFormSubmit = this.handleInputFormSubmit.bind(this);
 
         this.state = {
             isEditing: false
@@ -25,8 +25,8 @@ class FullCard extends Component {
         });
     }
 
-    handleCardEditFormSubmit(formData) {
-        this.props.onCardEditFormSubmit(formData)
+    handleInputFormSubmit(formData) {
+        this.props.onInputFormSubmit(formData)
             .then(() => this.hideEditForm());
     }
 
@@ -55,9 +55,9 @@ class FullCard extends Component {
             <div className="b-full-card">
                 <div className="b-full-card__text">
                     {isEditing ? (
-                        <CardEditForm
+                        <InputForm
                             data={data}
-                            onSubmit={this.handleCardEditFormSubmit}
+                            onSubmit={this.handleInputFormSubmit}
                             onCancel={() => this.hideEditForm()}
                         />
                     ) : (
@@ -89,7 +89,7 @@ FullCard.propTypes = {
         id: PropTypes.number.isRequired,
         text: PropTypes.string.isRequired
     }),
-    onCardEditFormSubmit: PropTypes.func.isRequired
+    onInputFormSubmit: PropTypes.func.isRequired
 };
 
 export default FullCard;
