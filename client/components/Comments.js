@@ -1,10 +1,14 @@
 import React, { PropTypes } from 'react';
+import SendCommentForm from './SendCommentForm';
 
 const Comments = function ({ comments }) {
     return (
         <div className="b-comments">
-            {comments.map(comment => (
-                <div className="b-comments__item">
+            {comments.map((comment, i) => (
+                <div
+                    className="b-comments__item"
+                    key={i}
+                >
                     <div className="b-comment">
                         <img
                             className="b-comment__avatar"
@@ -26,6 +30,11 @@ const Comments = function ({ comments }) {
                     </div>
                 </div>
             ))}
+            <div className="b-comments__item">
+                <SendCommentForm
+                    onSubmit={value => console.log(value)}
+                />
+            </div>
         </div>
     );
 };

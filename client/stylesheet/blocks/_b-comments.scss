@@ -3,10 +3,10 @@
         padding-bottom: 15px;
         margin-bottom: 15px;
         border-bottom: 1px solid $gray;
-        /* &:last-child { */
-        /*     padding-bottom: 0; */
-        /*     margin-bottom: 0; */
-        /*     border-bottom: 0; */
-        /* } */
+        &:last-child {
+            padding-bottom: 0;
+            margin-bottom: 0;
+            border-bottom: 0;
+        }
     }
 }
