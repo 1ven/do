@@ -10,36 +10,9 @@ const comment2Id = shortid.generate();
 const cardId = shortid.generate();
 const userId = shortid.generate();
 
-describe('Comment', () => {
-    beforeEach(() => recreateTables().then(setup));
-
-    describe('findByIds', () => {
-        it('should return array of comments with associated user', () => {
-            return Comment.findByIds([commentId, comment2Id])
-                .then(comments => {
-                    const dates = comments.filter(c => c.created_at);
-                    assert.lengthOf(dates, comments.length);
-
-                    const _comments = comments.map(c => _.omit(c, ['created_at']));
-                    assert.deepEqual(_comments, [{
-                        id: commentId,
-                        text: 'test comment 1',
-                        user: {
-                            id: userId,
-                            username: 'testuser'
-                        }
-                    }, {
-                        id: comment2Id,
-                        text: 'test comment 2',
-                        user: {
-                            id: userId,
-                            username: 'testuser'
-                        }
-                    }]);
-                });
-        });
-    });
-});
+/* describe('Comment', () => { */
+/*     beforeEach(() => recreateTables().then(setup)); */
+/* }); */
 
 function setup() {
     return db.none(`
