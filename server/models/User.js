@@ -14,6 +14,12 @@ const User = {
         `, [username]);
     },
 
+    findById(userId) {
+        return db.one(`
+            SELECT id, username FROM users WHERE id = $1
+        `, [userId]);
+    },
+
     create(props) {
         const _props = this.sanitize(props);
         return this.validate(_props)

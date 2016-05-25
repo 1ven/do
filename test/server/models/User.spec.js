@@ -264,6 +264,18 @@ describe('User', () => {
             });
         });
     });
+
+    describe('findById', () => {
+        it('should return user by given id', () => {
+            return User.findById(userId)
+                .then(user => {
+                    assert.deepEqual(user, {
+                        id: userId,
+                        username: 'test'
+                    });
+                });
+        });
+    });
 });
 
 function setup() {
