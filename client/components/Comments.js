@@ -40,12 +40,12 @@ const Comments = function ({ comments }) {
 };
 
 Comments.propTypes = {
-    comments: PropTypes.shape({
+    comments: PropTypes.arrayOf(PropTypes.shape({
         username: PropTypes.string.isRequired,
         date: PropTypes.string.isRequired,
         avatar: PropTypes.string.isRequired,
         text: PropTypes.string.isRequired
-    }).isRequired
+    })).isRequired
 };
 
 export default Comments;

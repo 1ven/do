@@ -47,7 +47,7 @@ Cards.defaultProps = {
 
 Cards.propTypes = {
     cards: PropTypes.arrayOf(PropTypes.shape({
-        id: PropTypes.number,
+        id: PropTypes.string,
         text: PropTypes.string
     })),
     onAddCardBtnClick: PropTypes.func.isRequired,

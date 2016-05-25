@@ -57,7 +57,7 @@ class List extends Component {
 
 List.propTypes = {
     data: PropTypes.shape({
-        id: PropTypes.number.isRequired,
+        id: PropTypes.string.isRequired,
         title: PropTypes.string.isRequired,
         cards: PropTypes.array,
     }),

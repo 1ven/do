@@ -26,7 +26,7 @@ function Lists({
 
 Lists.propTypes = {
     lists: PropTypes.arrayOf(PropTypes.shape({
-        id: PropTypes.number,
+        id: PropTypes.string,
         title: PropTypes.string,
         cards: PropTypes.array
     })),

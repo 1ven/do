@@ -13,7 +13,7 @@ function Card({ data, onClick }) {
 
 Card.propTypes = {
     data: PropTypes.shape({
-        id: PropTypes.number.isRequired,
+        id: PropTypes.string.isRequired,
         text: PropTypes.string.isRequired
     }),
     onClick: PropTypes.func.isRequired

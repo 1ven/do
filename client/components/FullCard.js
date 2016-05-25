@@ -86,7 +86,7 @@ class FullCard extends Component {
 
 FullCard.propTypes = {
     data: PropTypes.shape({
-        id: PropTypes.number.isRequired,
+        id: PropTypes.string.isRequired,
         text: PropTypes.string.isRequired
     }),
     onEditCardFormSubmit: PropTypes.func.isRequired

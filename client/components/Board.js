@@ -51,10 +51,10 @@ function Board({
 
 Board.propTypes = {
     data: PropTypes.shape({
-        id: PropTypes.number.isRequired,
+        id: PropTypes.string.isRequired,
         title: PropTypes.string.isRequired,
         lists: PropTypes.arrayOf(
-            PropTypes.number
+            PropTypes.string
         )
     }).isRequired,
     onAddListBtnClick: PropTypes.func.isRequired,
