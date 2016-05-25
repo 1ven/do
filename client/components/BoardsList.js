@@ -1,6 +1,5 @@
 import React, { PropTypes } from 'react';
 import BoardTile from './BoardTile';
-import InputForm from './InputForm';
 
 const BoardsList = ({
     boards,

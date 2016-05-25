@@ -1,5 +1,4 @@
 import React, { Component, PropTypes } from 'react';
-import InputForm from './InputForm';
 
 function Card({ data, onClick }) {
     return (

@@ -12,7 +12,7 @@ function mapStateToProps(state, ownProps) {
 
 function mapDispatchToProps(dispatch, ownProps) {
     return {
-        onInputFormSubmit: function(formData) {
+        onEditCardFormSubmit: function(formData) {
             return dispatch(updateCard(ownProps.id, {
                 text: formData.text
             }));

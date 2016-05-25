@@ -1,5 +1,4 @@
 import React, { PropTypes } from 'react';
-import InputForm from './InputForm';
 import List from './List';
 
 function Lists({

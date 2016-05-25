@@ -4,7 +4,7 @@ import serialize from 'form-serialize';
 import Btn from './Btn';
 import Input from './Input';
 
-class InputForm extends Component {
+class EditCardForm extends Component {
     constructor(props) {
         super(props);
 
@@ -27,19 +27,19 @@ class InputForm extends Component {
 
         return (
             <form
-                className="b-input-form"
+                className="b-edit-card-form"
                 onSubmit={this.handleSubmit}
                 ref="form"
             >
-                <div className="b-input-form__area">
+                <div className="b-edit-card-form__area">
                     <Input
                         value={data.text}
                         focus={true}
                         name="text"
                     />
                 </div>
-                <div className="b-input-form__buttons">
-                    <div className="b-input-form__button">
+                <div className="b-edit-card-form__buttons">
+                    <div className="b-edit-card-form__button">
                         <Btn
                             modifiers={['sm']}
                             text="Save"
@@ -48,7 +48,7 @@ class InputForm extends Component {
                         />
                     </div>
                     {onCancel ? (
-                        <div className="b-input-form__button">
+                        <div className="b-edit-card-form__button">
                             <Btn
                                 modifiers={['sm', 'red']}
                                 text="Cancel"
@@ -62,7 +62,7 @@ class InputForm extends Component {
     }
 }
 
-InputForm.propTypes = {
+EditCardForm.propTypes = {
     data: PropTypes.shape({
         id: PropTypes.number.isRequired,
         text: PropTypes.string.isRequired
@@ -71,4 +71,4 @@ InputForm.propTypes = {
     onCancel: PropTypes.func
 };
 
-export default InputForm;
+export default EditCardForm;
