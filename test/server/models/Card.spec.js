@@ -54,11 +54,7 @@ describe('Card', () => {
                     assert.property(comment, 'created_at');
 
                     assert.deepEqual(_.omit(comment, ['id', 'created_at']), {
-                        text: commentData.text,
-                        user: {
-                            id: userId,
-                            username: 'testuser'
-                        }
+                        text: commentData.text
                     });
                 });
         });
