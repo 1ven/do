@@ -47,13 +47,15 @@ class InputForm extends Component {
                             tagName="button"
                         />
                     </div>
-                    <div className="b-input-form__button">
-                        <Btn
-                            modifiers={['sm', 'red']}
-                            text="Cancel"
-                            onClick={onCancel}
-                        />
-                    </div>
+                    {onCancel ? (
+                        <div className="b-input-form__button">
+                            <Btn
+                                modifiers={['sm', 'red']}
+                                text="Cancel"
+                                onClick={onCancel}
+                            />
+                        </div>
+                    ) : false}
                 </div>
             </form>
         );
