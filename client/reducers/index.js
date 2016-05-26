@@ -5,6 +5,7 @@ import pagesReducer from './pagesReducer';
 import editFormReducer from './editFormReducer';
 import modalReducer from './modalReducer';
 import notificationsReducer from './notificationsReducer';
+import userReducer from './userReducer';
 
 const rootReducer = combineReducers({
     entities: entitiesReducer,
@@ -12,7 +13,8 @@ const rootReducer = combineReducers({
     pages: pagesReducer,
     editForm: editFormReducer,
     modal: modalReducer,
-    notifications: notificationsReducer
+    notifications: notificationsReducer,
+    user: userReducer
 });
 
 export default rootReducer;

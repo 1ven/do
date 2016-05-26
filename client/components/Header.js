@@ -1,7 +1,7 @@
 import React, { PropTypes } from 'react';
-import UserBox from './UserBox';
+import UserBoxContainer from '../containers/UserBoxContainer';
 
-const Header = function ({ user, onUserBoxSignOutClick }) {
+function Header() {
     return (
         <header className="b-header">
             <div className="b-container">
@@ -10,24 +10,13 @@ const Header = function ({ user, onUserBoxSignOutClick }) {
                     </div>
                     <div className="b-header__right">
                         <div className="b-header__item">
-                            <UserBox
-                                {...user}
-                                onSignOutClick={onUserBoxSignOutClick}
-                            />
+                            <UserBoxContainer />
                         </div>
                     </div>
                 </div>
             </div>
         </header>
     );
-};
-
-Header.propTypes = {
-    user: PropTypes.shape({
-        avatar: PropTypes.string,
-        username: PropTypes.string.isRequired,
-        role: PropTypes.string.isRequired
-    }).isRequired
 };
 
 export default Header;

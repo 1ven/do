@@ -53,11 +53,12 @@ const UserBox = function ({
 };
 
 UserBox.defaultProps = {
-    avatar: 'http://placehold.it/38x38'
+    avatar: 'http://placehold.it/38x38',
+    role: 'user'
 };
 
 UserBox.propTypes = {
-    avatar: PropTypes.string,
+    avatar: PropTypes.string.isRequired,
     username: PropTypes.string.isRequired,
     role: PropTypes.string.isRequired,
 };

@@ -13,7 +13,8 @@ export default function entities(state = {}, action) {
     return {
         boards: boardsReducer(state.boards, action),
         lists: listsReducer(state.lists, action),
-        cards: state.cards || {}
+        cards: state.cards || {},
+        users: state.users || {}
     }
 };
 
