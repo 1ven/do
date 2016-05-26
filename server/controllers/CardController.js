@@ -20,12 +20,12 @@ exports.drop = function (req, res, next) {
         }, next);
 };
 
-exports.findComments = function (req, res, next) {
+exports.findById = function (req, res, next) {
     const cardId = req.params.id;
 
-    return Card.findComments(cardId)
-        .then(comments => {
-            res.status(200).json({ result: comments });
+    return Card.findById(cardId)
+        .then(card => {
+            res.status(200).json({ result: card });
         }, next);
 };
 
