@@ -1,6 +1,9 @@
 import React, { PropTypes, Component } from 'react';
+import assign from 'lodash/assign';
+import map from 'lodash/map';
 import { connect } from 'react-redux'
 import { updateCard, getCard } from '../actions/cardsActions';
+import { createComment } from '../actions/commentsActions';
 import { hideModal } from '../actions/modalActions';
 import FullCard from '../components/FullCard';
 
@@ -10,31 +13,50 @@ class FullCardContainer extends Component {
     }
 
     render() {
-        const { card, onEditCardFormSubmit } = this.props;
+        const {
+            card,
+            onEditCardFormSubmit,
+            onSendCommentSubmit
+        } = this.props;
         return (
             <FullCard
                 card={card}
                 onEditCardFormSubmit={onEditCardFormSubmit}
+                onSendCommentSubmit={onSendCommentSubmit}
             />
         );
     }
 };
 
 function mapStateToProps(state, ownProps) {
+    const { cards, comments, users } = state.entities;
+    const card = cards[ownProps.id];;
+
     return {
-        card: state.entities.cards[ownProps.id]
+        card: assign({}, card, {
+            comments: map(card.comments, id => {
+                const comment = comments[id];
+                return assign({}, comment, {
+                    user: users[comment.user]
+                });
+            })
+        })
     };
 };
 
 function mapDispatchToProps(dispatch, ownProps) {
+    const cardId = ownProps.id;
     return {
         onEditCardFormSubmit: function(formData) {
-            return dispatch(updateCard(ownProps.id, {
+            return dispatch(updateCard(cardId, {
                 text: formData.text
             }));
         },
+        onSendCommentSubmit: function (formData) {
+            return dispatch(createComment(cardId, formData.text));
+        },
         loadCard: function () {
-            return dispatch(getCard(ownProps.id));
+            return dispatch(getCard(cardId));
         }
     };
 };

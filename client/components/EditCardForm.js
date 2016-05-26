@@ -43,7 +43,7 @@ function EditCardForm({ data, onCancel, onSubmit}) {
 
 EditCardForm.propTypes = {
     data: PropTypes.shape({
-        id: PropTypes.number.isRequired,
+        id: PropTypes.string.isRequired,
         text: PropTypes.string.isRequired
     }),
     onSubmit: PropTypes.func.isRequired,

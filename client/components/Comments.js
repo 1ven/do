@@ -1,7 +1,8 @@
 import React, { PropTypes } from 'react';
+import moment from 'moment';
 import SendCommentForm from './SendCommentForm';
 
-const Comments = function ({ comments }) {
+const Comments = function ({ comments, onSendCommentSubmit }) {
     return (
         <div className="b-comments">
             {comments.map((comment, i) => (
@@ -12,15 +13,15 @@ const Comments = function ({ comments }) {
                     <div className="b-comment">
                         <img
                             className="b-comment__avatar"
-                            src={comment.avatar}
+                            src={comment.user.avatar}
                         />
                         <div className="b-comment__content">
                             <div className="b-comment__top">
                                 <span className="b-comment__username">
-                                    {comment.username}
+                                    {comment.user.username}
                                 </span>
                                 <time className="b-comment__date">
-                                    {comment.date}
+                                    {moment.unix(comment.created_at).format('H:m - DD MMM Y')}
                                 </time>
                             </div>
                             <p className="b-comment__text">
@@ -32,7 +33,7 @@ const Comments = function ({ comments }) {
             ))}
             <div className="b-comments__item">
                 <SendCommentForm
-                    onSubmit={value => console.log(value)}
+                    onSubmit={onSendCommentSubmit}
                 />
             </div>
         </div>
@@ -45,11 +46,14 @@ Comments.defaultProps = {
 
 Comments.propTypes = {
     comments: PropTypes.arrayOf(PropTypes.shape({
-        username: PropTypes.string.isRequired,
-        date: PropTypes.string.isRequired,
-        avatar: PropTypes.string.isRequired,
+        user: PropTypes.shape({
+            username: PropTypes.string.isRequired,
+            avatar: PropTypes.string.isRequired
+        }),
+        created_at: PropTypes.number.isRequired,
         text: PropTypes.string.isRequired
-    }))
+    })),
+    onSendCommentSubmit: PropTypes.func.isRequired
 };
 
 export default Comments;

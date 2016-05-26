@@ -32,7 +32,7 @@ class FullCard extends Component {
 
     render() {
         const { isEditing } = this.state;
-        const { card } = this.props;
+        const { card, onSendCommentSubmit } = this.props;
 
         return (
             <div className="b-full-card">
@@ -60,6 +60,7 @@ class FullCard extends Component {
                 <div className="b-full-card__comments">
                     <Comments
                         comments={card.comments}
+                        onSendCommentSubmit={onSendCommentSubmit}
                     />
                 </div>
             </div>
@@ -70,9 +71,11 @@ class FullCard extends Component {
 FullCard.propTypes = {
     card: PropTypes.shape({
         id: PropTypes.string.isRequired,
-        text: PropTypes.string.isRequired
+        text: PropTypes.string.isRequired,
+        comments: PropTypes.array
     }),
-    onEditCardFormSubmit: PropTypes.func.isRequired
+    onEditCardFormSubmit: PropTypes.func.isRequired,
+    onSendCommentSubmit: PropTypes.func.isRequired
 };
 
 export default FullCard;

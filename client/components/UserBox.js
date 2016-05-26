@@ -53,7 +53,6 @@ const UserBox = function ({
 };
 
 UserBox.defaultProps = {
-    avatar: 'http://placehold.it/38x38',
     role: 'user'
 };
 
