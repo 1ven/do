@@ -16,7 +16,7 @@ describe('tables', () => {
                 .then(columns => {
                     assert.equal(columns.id, 'text');
                     assert.equal(columns.index, 'integer');
-                    assert.equal(columns.created_at, 'timestamp without time zone');
+                    assert.equal(columns.created_at, 'integer');
                     assert.equal(columns.username, 'character varying');
                     assert.equal(columns.email, 'text');
                     assert.equal(columns.hash, 'text');
@@ -120,7 +120,7 @@ describe('tables', () => {
                 .then(columns => {
                     assert.equal(columns.id, 'text');
                     assert.equal(columns.index, 'integer');
-                    assert.equal(columns.created_at, 'timestamp without time zone');
+                    assert.equal(columns.created_at, 'integer');
                     assert.equal(columns.title, 'text');
                 });
         });
@@ -166,7 +166,7 @@ describe('tables', () => {
                 .then(columns => {
                     assert.equal(columns.id, 'text');
                     assert.equal(columns.index, 'integer');
-                    assert.equal(columns.created_at, 'timestamp without time zone');
+                    assert.equal(columns.created_at, 'integer');
                     assert.equal(columns.title, 'text');
                 });
         });
@@ -212,7 +212,7 @@ describe('tables', () => {
                 .then(columns => {
                     assert.equal(columns.id, 'text');
                     assert.equal(columns.index, 'integer');
-                    assert.equal(columns.created_at, 'timestamp without time zone');
+                    assert.equal(columns.created_at, 'integer');
                     assert.equal(columns.text, 'text');
                 });
         });
@@ -247,7 +247,7 @@ describe('tables', () => {
                 .then(columns => {
                     assert.equal(columns.id, 'text');
                     assert.equal(columns.index, 'integer');
-                    assert.equal(columns.created_at, 'timestamp without time zone');
+                    assert.equal(columns.created_at, 'integer');
                     assert.equal(columns.text, 'text');
                 });
         });
