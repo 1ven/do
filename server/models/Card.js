@@ -33,14 +33,21 @@ const Card = {
         `, [userId, cardId, commentId, commentData.text])
     },
 
-    findComments(cardId) {
-        return db.query(`
-            SELECT c.id, c.created_at, c.text, row_to_json(u) AS user FROM comments AS c
-            LEFT JOIN users_comments AS uc ON (uc.comment_id = c.id)
+    findById(cardId) {
+        return db.one(`
+            SELECT cr.id, cr.text,
+                COALESCE (json_agg(cm) FILTER (WHERE cm.id IS NOT NULL), '[]') AS comments
+            FROM cards as cr
+            LEFT JOIN cards_comments AS cc ON (cr.id = cc.card_id)
             LEFT JOIN (
-                SELECT id, username FROM users
-            ) AS u ON (u.id = uc.user_id)
-            INNER JOIN cards_comments AS cc ON (cc.card_id = $1) AND (cc.comment_id = c.id)
+                SELECT cm.id, cm.created_at, cm.text, row_to_json(u) AS user FROM comments AS cm
+                LEFT JOIN users_comments AS uc ON (uc.comment_id = cm.id)
+                LEFT JOIN (
+                    SELECT id, username FROM users
+                ) AS u ON (u.id = uc.user_id)
+            ) AS cm ON (cm.id = cc.comment_id)
+            WHERE cr.id = $1
+            GROUP BY cr.id
         `, [cardId]);
     }
 };

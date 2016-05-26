@@ -45,26 +45,34 @@ describe('Card', () => {
         });
     });
 
-    describe('findComments', () => {
-        it('should return comments for particular card', () => {
-            return Card.findComments(card2Id)
-                .then(comments => {
-                    const _comments = comments.map(c => _.omit(c, ['created_at']));
-                    assert.deepEqual(_comments, [{
-                        id: commentId,
-                        text: 'test comment 1',
-                        user: {
-                            id: userId,
-                            username: 'testuser'
-                        }
-                    }, {
-                        id: comment2Id,
-                        text: 'test comment 2',
-                        user: {
-                            id: userId,
-                            username: 'testuser'
-                        }
-                    }]);
+    describe('findById', () => {
+        it('should return card with all relations', () => {
+            return Card.findById(card2Id)
+                .then(card => {
+                    assert.property(card, 'id');
+
+                    const _card = _.assign({}, card, {
+                        comments: card.comments.map(c => _.omit(c, ['created_at']))
+                    });
+
+                    assert.deepEqual(_.omit(_card, ['id']), {
+                        text: 'test card 2',
+                        comments: [{
+                            id: commentId,
+                            text: 'test comment 1',
+                            user: {
+                                id: userId,
+                                username: 'testuser'
+                            }
+                        }, {
+                            id: comment2Id,
+                            text: 'test comment 2',
+                            user: {
+                                id: userId,
+                                username: 'testuser'
+                            }
+                        }]
+                    });
                 });
         });
     });
