@@ -90,7 +90,7 @@ class BoardTile extends Component {
 
 BoardTile.propTypes = {
     data: PropTypes.shape({
-        id: PropTypes.number.isRequired,
+        id: PropTypes.string.isRequired,
         title: PropTypes.string.isRequired,
         listsLength: PropTypes.number.isRequired,
         cardsLength: PropTypes.number.isRequired

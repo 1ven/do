@@ -30,7 +30,7 @@ const BoardsList = ({
 
 BoardsList.propTypes = {
     boards: PropTypes.arrayOf(PropTypes.shape({
-        id: PropTypes.number.isRequired,
+        id: PropTypes.string.isRequired,
         title: PropTypes.string.isRequired
     }).isRequired).isRequired,
     onBoardTileRemoveClick: PropTypes.func.isRequired,
