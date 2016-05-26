@@ -269,7 +269,8 @@ describe('User', () => {
         it('should return user by given id', () => {
             return User.findById(userId)
                 .then(user => {
-                    assert.deepEqual(user, {
+                    assert.property(user, 'avatar');
+                    assert.deepEqual(_.omit(user, ['avatar']), {
                         id: userId,
                         username: 'test'
                     });

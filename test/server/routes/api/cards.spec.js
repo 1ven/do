@@ -64,9 +64,15 @@ describe('cards routes', () => {
                     const card = res.body.result;
 
                     assert.property(card, 'id');
+                    assert.property(card.comments[0], 'created_at');
+                    assert.property(card.comments[1], 'created_at');
+                    assert.property(card.comments[0].user, 'avatar');
+                    assert.property(card.comments[1].user, 'avatar');
 
                     const _card = _.assign({}, card, {
-                        comments: card.comments.map(c => _.omit(c, ['created_at']))
+                        comments: card.comments.map(comment => _.omit(_.assign({}, comment, {
+                            user: _.omit(comment.user, ['avatar'])
+                        }), ['created_at']))
                     });
 
                     assert.deepEqual(_.omit(_card, ['id']), {
