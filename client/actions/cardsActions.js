@@ -55,3 +55,20 @@ export function updateCard(id, props) {
         }
     };
 };
+
+export function getCard(id) {
+    return {
+        [CALL_API]: {
+            types: [
+                types.CARD_GET_REQUEST,
+                types.CARD_GET_SUCCESS,
+                types.CARD_GET_ERROR
+            ],
+            endpoint: `/api/cards/${id}`,
+            schema: CARD,
+            request: {
+                method: 'get'
+            }
+        }
+    };
+};
