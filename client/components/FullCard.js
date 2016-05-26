@@ -32,38 +32,21 @@ class FullCard extends Component {
 
     render() {
         const { isEditing } = this.state;
-        const { data } = this.props;
-
-        const comments = [{
-            username: 'Aiven',
-            avatar: 'http://placehold.it/100x100/ffffff/000000',
-            date: '10/10/2016',
-            text: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas vel bibendum est. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Aenean malesuada, quam non aliquam pretium, est est finibus nisl'
-        }, {
-            username: 'Aiven',
-            avatar: 'http://placehold.it/100x100/ffffff/000000',
-            date: '10/10/2016',
-            text: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas vel bibendum est. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Aenean malesuada, quam non aliquam pretium, est est finibus nisl'
-        }, {
-            username: 'Aiven',
-            avatar: 'http://placehold.it/100x100/ffffff/000000',
-            date: '10/10/2016',
-            text: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas vel bibendum est. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Aenean malesuada, quam non aliquam pretium, est est finibus nisl'
-        }];
+        const { card } = this.props;
 
         return (
             <div className="b-full-card">
                 <div className="b-full-card__text">
                     {isEditing ? (
                         <EditCardForm
-                            data={data}
+                            data={card}
                             onSubmit={this.handleEditCardFormSubmit}
                             onCancel={() => this.hideEditForm()}
                         />
                     ) : (
                         <div className="b-card-text">
                             <div className="b-card-text__text">
-                                {data.text}
+                                {card.text}
                             </div>
                             <a
                                 className="b-card-text__edit"
@@ -76,7 +59,7 @@ class FullCard extends Component {
                 </div>
                 <div className="b-full-card__comments">
                     <Comments
-                        comments={comments}
+                        comments={card.comments}
                     />
                 </div>
             </div>
@@ -85,7 +68,7 @@ class FullCard extends Component {
 };
 
 FullCard.propTypes = {
-    data: PropTypes.shape({
+    card: PropTypes.shape({
         id: PropTypes.string.isRequired,
         text: PropTypes.string.isRequired
     }),

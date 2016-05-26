@@ -53,31 +53,40 @@ describe('cards routes', () => {
         }).catch(done);
     });
 
-    it('GET /api/cards/:id/comments should respond 200 and return comments for specific card', (done) => {
+    it('GET /api/cards/:id should respond 200 and return card with all relations', (done) => {
         setup().then(request => {
             request
-                .get(`/api/cards/${cardId}/comments`)
+                .get(`/api/cards/${cardId}`)
                 .expect(200)
                 .end((err, res) => {
                     if (err) { return done(err); }
 
-                    const comments = res.body.result.map(c => _.omit(c, ['created_at']));
+                    const card = res.body.result;
 
-                    assert.deepEqual(comments, [{
-                        id: commentId,
-                        text: 'test comment 1',
-                        user: {
-                            id: userId,
-                            username: 'testuser'
-                        }
-                    }, {
-                        id: comment2Id,
-                        text: 'test comment 2',
-                        user: {
-                            id: userId,
-                            username: 'testuser'
-                        }
-                    }]);
+                    assert.property(card, 'id');
+
+                    const _card = _.assign({}, card, {
+                        comments: card.comments.map(c => _.omit(c, ['created_at']))
+                    });
+
+                    assert.deepEqual(_.omit(_card, ['id']), {
+                        text: 'test card 1',
+                        comments: [{
+                            id: commentId,
+                            text: 'test comment 1',
+                            user: {
+                                id: userId,
+                                username: 'testuser'
+                            }
+                        }, {
+                            id: comment2Id,
+                            text: 'test comment 2',
+                            user: {
+                                id: userId,
+                                username: 'testuser'
+                            }
+                        }]
+                    });
 
                     done();
                 });

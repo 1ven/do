@@ -14,7 +14,8 @@ export default function entities(state = {}, action) {
         boards: boardsReducer(state.boards, action),
         lists: listsReducer(state.lists, action),
         cards: state.cards || {},
-        users: state.users || {}
+        users: state.users || {},
+        comments: state.comments || {}
     }
 };
 
