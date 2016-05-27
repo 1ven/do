@@ -72,3 +72,13 @@ export function getCard(id) {
         }
     };
 };
+
+export function addCommentId(cardId, commentId) {
+    return {
+        type: types.CARDS_ADD_COMMENT_ID,
+        payload: {
+            cardId,
+            commentId
+        }
+    };
+};

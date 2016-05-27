@@ -2,7 +2,7 @@ import React, { PropTypes, Component } from 'react';
 import assign from 'lodash/assign';
 import map from 'lodash/map';
 import { connect } from 'react-redux'
-import { updateCard, getCard } from '../actions/cardsActions';
+import { updateCard, getCard, addCommentId } from '../actions/cardsActions';
 import { createComment } from '../actions/commentsActions';
 import { hideModal } from '../actions/modalActions';
 import FullCard from '../components/FullCard';
@@ -53,7 +53,12 @@ function mapDispatchToProps(dispatch, ownProps) {
             }));
         },
         onSendCommentSubmit: function (formData) {
-            return dispatch(createComment(cardId, formData.text));
+            return dispatch(createComment(cardId, formData.text))
+                .then(action => {;
+                    if (!action.payload.error) {
+                        dispatch(addCommentId(cardId, action.payload.result));
+                    }
+                });
         },
         loadCard: function () {
             return dispatch(getCard(cardId));

@@ -13,10 +13,30 @@ export default function entities(state = {}, action) {
     return {
         boards: boardsReducer(state.boards, action),
         lists: listsReducer(state.lists, action),
-        cards: state.cards || {},
+        cards: cardsReducer(state.cards, action),
         users: state.users || {},
         comments: state.comments || {}
     }
+};
+
+function cardsReducer(state = {}, action) {
+    const payload = action.payload;
+
+    switch (action.type) {
+        case types.CARDS_ADD_COMMENT_ID: {
+            const { cardId, commentId } = payload;
+            const comments = state[cardId].comments || [];
+
+            return merge({}, state, {
+                [cardId]: {
+                    comments: [...comments, commentId]
+                }
+            });
+        }
+        default:
+            return state;
+    }
+
 };
 
 function boardsReducer(state = {}, action) {
