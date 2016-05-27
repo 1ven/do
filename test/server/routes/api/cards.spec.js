@@ -114,8 +114,14 @@ describe('cards routes', () => {
 
                     assert.property(comment, 'id');
                     assert.property(comment, 'created_at');
-                    assert.deepEqual(_.omit(comment, ['id', 'created_at']), {
+                    assert.deepEqual(_.omit(comment, ['id', 'created_at', 'user']), {
                         text: 'test comment'
+                    });
+
+                    assert.property(comment.user, 'avatar');
+                    assert.property(comment.user, 'id');
+                    assert.deepEqual(_.omit(comment.user, ['avatar', 'id']), {
+                        username: 'test'
                     });
 
                     done();
