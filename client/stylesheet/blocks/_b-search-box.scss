@@ -1,0 +1,83 @@
+.b-search-box {
+    position: relative;
+    &__results {
+        position: absolute;
+        top: 0;
+        left: 0;
+        background-color: #fff;
+        border-radius: 2px;
+        padding: 9px 13px;
+        width: 100%;
+        margin-top: 40px;
+        box-shadow: $shadow;
+    }
+    &__group {
+        & + .b-search-box__group {
+            margin-top: 8px;
+        }
+    }
+    &__group-title {
+        display: block;
+        border-bottom: 1px solid $black;
+        padding-bottom: 4px;
+    }
+    &__group-items {
+        display: flex;
+        flex-direction: column;
+        line-height: 1.5;
+        margin-top: 3px;
+    }
+    &__group-link {
+        overflow: hidden;
+        text-overflow: ellipsis;
+        text-decoration: none;
+        font-size: 14px;
+        color: $black;
+    }
+    &__form {
+        position: relative;
+    }
+    &__input {
+        height: 30px;
+        border-radius: 2px;
+        background-color: rgba($white, .1);
+        border: 0;
+        transition: background-color .1s ease-out;
+        font-size: 12px;
+        width: 200px;
+        padding: 0 12px;
+        color: $white;
+        @include placeholder {
+            color: $white;
+        }
+        &:focus {
+            background-color: $white;
+            transition-duration: .3s;
+            color: $black;
+            @include placeholder {
+                color: $black;
+            }
+            & + .b-search-box__submit {
+                path {
+                    fill: $black;
+                }
+            }
+        }
+    }
+    &__submit {
+        background-color: transparent;
+        border: 0;
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        right: 10px;
+        margin: auto 0;
+        padding: 0;
+        width: 14px;
+        cursor: pointer;
+        outline: 0;
+        path {
+            fill: $white;
+        }
+    }
+}
