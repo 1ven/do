@@ -7,12 +7,12 @@
     background-color: $white;
     line-height: 1.35;
     cursor: pointer;
-    // transition: all .2s ease-out;
-    // &:hover {
-    //     box-shadow: $shadow-hover;
-    // }
-    // &:active {
-    //     transform: scale(.98);
-    //     box-shadow: $shadow-active;
-    // }
+    transition: all .2s ease-out;
+    &:hover {
+        background-color: darken($white, 1)
+    }
+    &:active {
+        transform: scale(.98);
+        box-shadow: $shadow-active;
+    }
 }
