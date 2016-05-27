@@ -16,7 +16,8 @@ db.tx(function() {
         .then(() => this.none(sql('cards.sql')))
         .then(() => this.none(sql('lists.sql')))
         .then(() => this.none(sql('boards.sql')))
-        .then(() => this.none(sql('users.sql')));
+        .then(() => this.none(sql('users.sql')))
+        .then(() => this.none(sql('views.sql')));
 }).catch(err => { throw err; });
 
 module.exports = db;
