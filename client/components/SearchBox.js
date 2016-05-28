@@ -34,24 +34,19 @@ class SearchBox extends Component {
 
     highlight(text) {
         const { value } = this.state;
-        const i = text.toLowerCase().indexOf(value);
 
-        if (i === -1 || !value.length) return text;
+        if (!value.length) { return text; }
 
-        const before = text.slice(0, i);
-        const after = text.slice(i + value.length);
-        const highlighted = text.slice(i, i + value.length);
+        const words = value.replace(/[^A-Za-z0-9\s]/g).split(' ').filter(i => i.length);
 
-        return (
-            <span>
-                {before}
-                <span className="b-search-box__highlight">
-                    {highlighted}
-                </span>
-                {after}
-            </span>
+        const wrappedText = text.replace(
+            new RegExp(`(${words.join('|')})`, 'gi'),
+            '<span class="b-search-box__highlight">$&</span>'
         );
 
+        return <span
+            dangerouslySetInnerHTML={{ __html: wrappedText }}
+        />;
     }
 
     render() {
