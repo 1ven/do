@@ -35,7 +35,7 @@ function Header() {
                 <div className="b-header__wrap">
                     <div className="b-header__left">
                         <SearchBox
-                            onSubmit={value => console.log(value)}
+                            onChange={value => console.log(value)}
                             results={results}
                         />
                     </div>
