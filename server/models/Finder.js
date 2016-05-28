@@ -25,7 +25,7 @@ const Finder = {
 };
 
 function createTsquery(query) {
-    const words = query.split(' ');
+    const words = query.split(' ').filter(i => i.length);
     return words.reduce((acc, word, i) => {
         return acc + word + ':*' + (i !== words.length - 1 ? '&' : '');
     }, '');
