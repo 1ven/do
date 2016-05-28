@@ -16,8 +16,8 @@ const Finder = {
         const tsquery = createTsquery(query);
 
         return db.query(`
-            SELECT id, content, type FROM (
-                SELECT id, content, type, to_tsvector(content) AS c FROM search
+            SELECT id, content, type, link FROM (
+                SELECT id, content, type, link, to_tsvector(content) AS c FROM search
             ) AS s
             WHERE s.c @@ to_tsquery($1)
         `, [tsquery]);

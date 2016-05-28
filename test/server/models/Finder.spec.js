@@ -18,15 +18,18 @@ describe('Finder', () => {
                 assert.isTrue(exists(result, [{
                     id: '1',
                     content: 'Nature',
-                    type: 'boards'
+                    type: 'Boards',
+                    link: '/boards/1'
                 }, {
                     id: '1',
                     content: 'Wild nature',
-                    type: 'lists'
+                    type: 'Lists',
+                    link: '/boards/1/lists/1'
                 }, {
                     id: '1',
                     content: 'This text about wild life and nature',
-                    type: 'cards'
+                    type: 'Cards',
+                    link: '/boards/1/lists/1/cards/1'
                 }]));
             });
         });
@@ -36,11 +39,13 @@ describe('Finder', () => {
                 assert.isTrue(exists(result, [{
                     id: '3',
                     content: 'Wonderful life',
-                    type: 'lists'
+                    type: 'Lists',
+                    link: '/boards/2/lists/3'
                 }, {
                     id: '2',
                     content: 'What a wonderful life',
-                    type: 'cards'
+                    type: 'Cards',
+                    link: '/boards/2/lists/2/cards/2'
                 }]));
             });
         });
@@ -50,11 +55,13 @@ describe('Finder', () => {
                 assert.isTrue(exists(result, [{
                     id: '2',
                     content: 'About life',
-                    type: 'lists'
+                    type: 'Lists',
+                    link: '/boards/2/lists/2'
                 }, {
                     id: '1',
                     content: 'This text about wild life and nature',
-                    type: 'cards'
+                    type: 'Cards',
+                    link: '/boards/1/lists/1/cards/1'
                 }]));
             });
         });
@@ -80,10 +87,12 @@ function exists(result, expected) {
 function setup() {
     return db.none(`
         INSERT INTO boards(id, title)
-        VALUES ('1', 'Nature'), ('2', 'Life');
+            VALUES ('1', 'Nature'), ('2', 'Life');
         INSERT INTO lists(id, title)
-        VALUES ('1', 'Wild nature'), ('2', 'About life'), ('3', 'Wonderful life');
+            VALUES ('1', 'Wild nature'), ('2', 'About life'), ('3', 'Wonderful life');
+        INSERT INTO boards_lists VALUES ('1', '1'), ('2', '2'), ('2', '3');
         INSERT INTO cards(id, text)
-        VALUES ('1', 'This text about wild life and nature'), ('2', 'What a wonderful life')
+            VALUES ('1', 'This text about wild life and nature'), ('2', 'What a wonderful life');
+        INSERT INTO lists_cards VALUES ('1', '1'), ('2', '2')
     `);
 }
