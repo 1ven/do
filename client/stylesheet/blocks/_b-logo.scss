@@ -1,0 +1,10 @@
+.b-logo {
+    text-decoration: none;
+    font-family: 'Lobster', sans-serif;
+    font-size: 24px;
+    color: rgba($white, .9);
+    transition: color .2s ease-out;
+    &:hover {
+        color: $white;
+    }
+}

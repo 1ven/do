@@ -8,7 +8,22 @@
         align-items: center;
         height: 100%;
     }
+    &__middle {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        top: 0;
+        left: 0;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        z-index: 1; 
+    }
     &__right {
         margin-left: auto;
+    }
+    &__left, &__right {
+        position: relative;
+        z-index: 2;
     }
 }
