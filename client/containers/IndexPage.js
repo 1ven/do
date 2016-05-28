@@ -2,7 +2,6 @@ import React, { PropTypes, Component } from 'react';
 import _ from 'lodash';
 import { connect } from 'react-redux'
 import { getBoards, removeBoard } from '../actions/boardsActions';
-import { showModal } from '../actions/modalActions';
 import BoardsList from '../components/BoardsList.js';
 import Loader from '../components/Loader';
 import BottomBox from '../components/BottomBox';
@@ -16,9 +15,14 @@ class IndexPage extends Component {
     constructor(props) {
         super(props);
 
+        this.state = {
+            modal: null
+        };
+
         this.handleAddBoardBtnClick = this.handleAddBoardBtnClick.bind(this);
         this.handleBoardTileEditClick = this.handleBoardTileEditClick.bind(this);
         this.handleBoardTileRemoveClick = this.handleBoardTileRemoveClick.bind(this);
+        this.hideModal = this.hideModal.bind(this);
     }
 
     componentWillMount() {
@@ -30,17 +34,26 @@ class IndexPage extends Component {
     }
 
     handleAddBoardBtnClick() {
-        this.props.dispatch(showModal(
-            'Create board',
-            <CreateBoardModal />
-        ));
+        this.setState({
+            modal: {
+                name: 'createBoard'
+            }
+        });
     }
 
     handleBoardTileEditClick(board) {
-        this.props.dispatch(showModal(
-            'Edit board',
-            <EditBoardModal board={board} />
-        ));
+        this.setState({
+            modal: {
+                name: 'editBoard',
+                data: board
+            }
+        });
+    }
+
+    hideModal() {
+        this.setState({
+            modal: null
+        });
     }
 
     handleBoardTileRemoveClick(id) {
@@ -54,6 +67,7 @@ class IndexPage extends Component {
             lastUpdated,
             dispatch
         } = this.props;
+        const { modal } = this.state;
 
         const isEmpty = boards.length === 0;
 
@@ -80,6 +94,18 @@ class IndexPage extends Component {
                 <BottomBox
                     button={addBoardBtn}
                 />
+                <div>
+                    {modal && modal.name === 'createBoard' ? (
+                        <CreateBoardModal
+                            hideModal={this.hideModal}
+                        />
+                    ) : modal && modal.name === 'editBoard' ? (
+                        <EditBoardModal
+                            hideModal={this.hideModal}
+                            board={modal.data}
+                        />
+                    ) : null}
+                </div>
             </div>
         );
     }

@@ -1,8 +1,8 @@
 import React, { PropTypes, Component } from 'react';
 import { connect } from 'react-redux'
 import { createBoard } from '../actions/boardsActions';
-import { hideModal } from '../actions/modalActions';
 import ModalForm from '../components/ModalForm';
+import Modal from '../components/Modal';
 import Input from '../components/Input';
 
 class CreateBoardModal extends Component {
@@ -11,27 +11,32 @@ class CreateBoardModal extends Component {
     }
 
     render() {
-        const { onSubmit, onCancelClick } = this.props;
+        const { onSubmit, hideModal } = this.props;
 
         return (
-            <ModalForm
-                rows={[
-                    <Input
-                        name="title"
-                        placeholder="Title"
-                        focus={true}
-                    />
-                ]}
-                onSubmit={onSubmit}
-                onCancelClick={onCancelClick}
-            />
+            <Modal
+                title="Create board"
+                hideModal={hideModal}
+            >
+                <ModalForm
+                    rows={[
+                        <Input
+                            name="title"
+                            placeholder="Title"
+                            focus={true}
+                        />
+                    ]}
+                    onSubmit={onSubmit}
+                    onCancelClick={hideModal}
+                />
+            </Modal>
         );
     }
 };
 
 CreateBoardModal.propTypes = {
     onSubmit: PropTypes.func.isRequired,
-    onCancelClick: PropTypes.func.isRequired,
+    hideModal: PropTypes.func.isRequired,
 };
 
 function mapDispatchToProps(dispatch, ownProps) {
@@ -40,12 +45,9 @@ function mapDispatchToProps(dispatch, ownProps) {
             dispatch(createBoard(formData.title))
                 .then(action => {
                     if (!action.payload.error) {
-                        dispatch(hideModal());
+                        ownProps.hideModal();
                     }
                 });
-        },
-        onCancelClick: function () {
-            dispatch(hideModal());
         }
     };
 };

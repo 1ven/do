@@ -3,7 +3,6 @@ import _ from 'lodash';
 import { connect } from 'react-redux';
 import { getBoard } from '../actions/boardsActions';
 import { createList } from '../actions/listsActions';
-import { showModal } from '../actions/modalActions';
 import Board from '../components/Board';
 import Loader from '../components/Loader';
 import CreateListModal from './CreateListModal';
@@ -13,8 +12,13 @@ class BoardPage extends Component {
     constructor(props) {
         super(props);
 
+        this.state = {
+            modal: null
+        };
+
         this.handleAddListBtnClick = this.handleAddListBtnClick.bind(this);
         this.handleEditBoardClick = this.handleEditBoardClick.bind(this);
+        this.hideModal = this.hideModal.bind(this);
     }
 
     componentWillMount() {
@@ -33,21 +37,26 @@ class BoardPage extends Component {
     }
 
     handleAddListBtnClick() {
-        const { dispatch, board } = this.props;
-
-        dispatch(showModal(
-            'Create list',
-            <CreateListModal boardId={board.id} />
-        ));
+        this.setState({
+            modal: {
+                name: 'createList'
+            }
+        });
     }
 
     handleEditBoardClick() {
-        const { board, dispatch } = this.props;
+        const { board } = this.props;
 
-        dispatch(showModal(
-            'Edit board',
-            <EditBoardModal board={board} />
-        ));
+        this.setState({
+            modal: {
+                name: 'editBoard',
+                data: board
+            }
+        });
+    }
+
+    hideModal() {
+        this.setState({ modal: null });
     }
 
     render() {
@@ -56,18 +65,34 @@ class BoardPage extends Component {
             isFetching,
             lastUpdated
         } = this.props;
+        const { modal } = this.state;
 
-        return isFetching || (!lastUpdated && !board) ? (
-            <Loader />
-        ) : !board ? (
-            <div>Board not found</div>
-        ) : (
-            <Board
-                data={board}
-                onAddListBtnClick={this.handleAddListBtnClick}
-                onEditBoardClick={this.handleEditBoardClick}
-            />
-        );
+        return (
+            <div>
+                {isFetching || (!lastUpdated && !board) ? (
+                    <Loader />
+                ) : !board ? (
+                    <div>Board not found</div>
+                ) : (
+                    <Board
+                        data={board}
+                        onAddListBtnClick={this.handleAddListBtnClick}
+                        onEditBoardClick={this.handleEditBoardClick}
+                    />
+                )}
+                {modal && modal.name === 'editBoard' ? (
+                    <EditBoardModal
+                        board={modal.data}
+                        hideModal={this.hideModal}
+                    />
+                ) : modal && modal.name === 'createList' ? (
+                    <CreateListModal
+                        boardId={board.id}
+                        hideModal={this.hideModal}
+                    />
+                ) : null}
+            </div>
+        );;
     }
 };
 

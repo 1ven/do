@@ -4,10 +4,10 @@ import map from 'lodash/map';
 import { connect } from 'react-redux'
 import { updateCard, getCard, addCommentId } from '../actions/cardsActions';
 import { createComment } from '../actions/commentsActions';
-import { hideModal } from '../actions/modalActions';
 import FullCard from '../components/FullCard';
+import Modal from '../components/Modal';
 
-class FullCardContainer extends Component {
+class FullCardModal extends Component {
     componentWillMount() {
         this.props.loadCard();
     }
@@ -15,15 +15,21 @@ class FullCardContainer extends Component {
     render() {
         const {
             card,
+            hideModal,
             onEditCardFormSubmit,
             onSendCommentSubmit
         } = this.props;
         return (
-            <FullCard
-                card={card}
-                onEditCardFormSubmit={onEditCardFormSubmit}
-                onSendCommentSubmit={onSendCommentSubmit}
-            />
+            <Modal
+                title="Card"
+                hideModal={hideModal}
+            >
+                <FullCard
+                    card={card}
+                    onEditCardFormSubmit={onEditCardFormSubmit}
+                    onSendCommentSubmit={onSendCommentSubmit}
+                />
+            </Modal>
         );
     }
 };
@@ -66,7 +72,16 @@ function mapDispatchToProps(dispatch, ownProps) {
     };
 };
 
+FullCardModal.propTypes = {
+    onEditCardFormSubmit: PropTypes.func.isRequired,
+    onSendCommentSubmit: PropTypes.func.isRequired,
+    loadCard: PropTypes.func.isRequired,
+    hideModal: PropTypes.func.isRequired,
+    card: PropTypes.object.isRequired,
+    id: PropTypes.string.isRequired
+};
+
 export default connect(
     mapStateToProps,
     mapDispatchToProps
-)(FullCardContainer);
+)(FullCardModal);

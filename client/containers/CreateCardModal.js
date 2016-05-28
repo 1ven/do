@@ -1,12 +1,12 @@
 import React, { PropTypes, Component } from 'react';
 import { connect } from 'react-redux'
-import { createList } from '../actions/listsActions';
-import { addListId } from '../actions/boardsActions';
+import { addCardId } from '../actions/listsActions';
+import { createCard } from '../actions/cardsActions';
 import ModalForm from '../components/ModalForm';
 import Modal from '../components/Modal';
 import Input from '../components/Input';
 
-class CreateListModal extends Component {
+class CreateCardModal extends Component {
     constructor(props) {
         super(props);
     }
@@ -16,14 +16,14 @@ class CreateListModal extends Component {
 
         return (
             <Modal
-                title="Edit list"
+                title="Create card"
                 hideModal={hideModal}
             >
                 <ModalForm
                     rows={[
                         <Input
-                            name="title"
-                            placeholder="Title"
+                            name="text"
+                            placeholder="Text"
                             focus={true}
                         />
                     ]}
@@ -31,33 +31,33 @@ class CreateListModal extends Component {
                     onCancelClick={hideModal}
                 />
             </Modal>
-        );
+        )
     }
 };
 
-CreateListModal.propTypes = {
-    boardId: PropTypes.string.isRequired,
-    onSubmit: PropTypes.func.isRequired,
-    hideModal: PropTypes.func.isRequired,
-};
-
 function mapDispatchToProps(dispatch, ownProps) {
-    const { boardId } = ownProps;
-
     return {
         onSubmit: function (formData) {
-            dispatch(createList(boardId, formData.title))
+            const { listId } = ownProps;
+
+            dispatch(createCard(listId, formData.text))
                 .then(action => {
-                    if (!action.payload.error) {
-                        dispatch(addListId(boardId, action.payload.result))
+                    if (!action.error) {
+                        dispatch(addCardId(listId, action.payload.result));
                         ownProps.hideModal();
                     }
                 });
         }
-    };
+    }
+}
+
+CreateCardModal.propTypes = {
+    onSubmit: PropTypes.func.isRequired,
+    hideModal: PropTypes.func.isRequired,
+    listId: PropTypes.string.isRequired
 };
 
 export default connect(
     null,
     mapDispatchToProps
-)(CreateListModal);
+)(CreateCardModal);

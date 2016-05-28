@@ -47,7 +47,7 @@ class List extends Component {
                 <div className="b-list__body">
                     <CardsContainer
                         listId={id}
-                        cards={cards}
+                        cardsIds={cards}
                     />
                 </div>
             </div>

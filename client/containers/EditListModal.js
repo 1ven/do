@@ -1,8 +1,8 @@
 import React, { PropTypes, Component } from 'react';
 import { connect } from 'react-redux'
 import { updateList } from '../actions/listsActions';
-import { hideModal } from '../actions/modalActions';
 import ModalForm from '../components/ModalForm';
+import Modal from '../components/Modal';
 import Input from '../components/Input';
 
 class EditListModal extends Component {
@@ -11,21 +11,26 @@ class EditListModal extends Component {
     }
 
     render() {
-        const { list, onSubmit, onCancelClick } = this.props;
+        const { list, onSubmit, hideModal } = this.props;
 
         return (
-            <ModalForm
-                rows={[
-                    <Input
-                        name="title"
-                        placeholder="Title"
-                        value={list.title}
-                        focus={true}
-                    />
-                ]}
-                onSubmit={onSubmit}
-                onCancelClick={onCancelClick}
-            />
+            <Modal
+                title="Edit list"
+                hideModal={hideModal}
+            >
+                <ModalForm
+                    rows={[
+                        <Input
+                            name="title"
+                            placeholder="Title"
+                            value={list.title}
+                            focus={true}
+                        />
+                    ]}
+                    onSubmit={onSubmit}
+                    onCancelClick={hideModal}
+                />
+            </Modal>
         );
     }
 };
@@ -33,7 +38,7 @@ class EditListModal extends Component {
 EditListModal.propTypes = {
     list: PropTypes.object.isRequired,
     onSubmit: PropTypes.func.isRequired,
-    onCancelClick: PropTypes.func.isRequired
+    hideModal: PropTypes.func.isRequired
 };
 
 function mapDispatchToProps(dispatch, ownProps) {
@@ -42,12 +47,9 @@ function mapDispatchToProps(dispatch, ownProps) {
             dispatch(updateList(ownProps.list.id, formData))
                 .then(action => {
                     if (!action.payload.error) {
-                        dispatch(hideModal());
+                        ownProps.hideModal();
                     }
                 });
-        },
-        onCancelClick: function () {
-            dispatch(hideModal());
         }
     };
 };

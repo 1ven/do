@@ -1,11 +1,19 @@
 import React, { PropTypes } from 'react';
+import assign from 'lodash/assign';
 import Icon from './Icon';
 
 const Modal = function ({
     title,
-    content,
-    onCloseClick
+    children,
+    hideModal,
+    closeProps,
+    closeTagName
 }) {
+    const closeNode = React.createElement(closeTagName, assign({}, closeProps, {
+        className: 'b-modal-box__close',
+        onClick: hideModal
+    }), <Icon name="cross" />);
+
     return (
         <div className="b-modal">
             <div className="b-modal__box">
@@ -14,15 +22,10 @@ const Modal = function ({
                         <span className="b-modal-box__title"> 
                             {title}
                         </span>
-                        <a
-                            className="b-modal-box__close"
-                            onClick={onCloseClick}
-                        >
-                            <Icon name="cross" />
-                        </a>
+                        {closeNode}
                     </div>
                     <div className="b-modal-box__content">
-                        {content}
+                        {children}
                     </div>
                 </div>
             </div>
@@ -30,10 +33,16 @@ const Modal = function ({
     );
 };
 
+Modal.defaultProps = {
+    closeTagName: 'a'
+};
+
 Modal.propTypes = {
     title: PropTypes.string.isRequired,
-    content: PropTypes.node.isRequired,
-    onCloseClick: PropTypes.func.isRequired
+    children: PropTypes.node.isRequired,
+    hideModal: PropTypes.func.isRequired,
+    closeTagName: PropTypes.string,
+    closeProps: PropTypes.object
 };
 
 export default Modal;
