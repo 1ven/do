@@ -1,4 +1,5 @@
 import React, { PropTypes, Component } from 'react';
+import { Link } from 'react-router';
 import Icon from './Icon';
 
 class SearchBox extends Component {
@@ -81,12 +82,12 @@ class SearchBox extends Component {
                                             className="b-search-box__item"
                                             key={i}
                                         >
-                                            <a
+                                            <Link
                                                 className="b-search-box__group-link"
-                                                href={item.link}
+                                                to={item.link}
                                             >
                                                 {this.highlight(item.title)}
-                                            </a>
+                                            </Link>
                                         </div>
                                     ))}
                                 </div>

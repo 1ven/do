@@ -4,12 +4,13 @@ import { connect } from 'react-redux';
 import SearchBox from '../components/SearchBox';
 import { search } from '../actions/searchActions';
 
+// TODO: may be move this func to reducer
 function prettyResults(results) {
     return results.reduce((acc, result) => {
         const isTypeInAcc = acc.filter(group => group.type === result.type).length === 1;
         const resultItem = {
             title: result.content,
-            href: ''
+            link: result.link
         };
 
         if (!isTypeInAcc) {
