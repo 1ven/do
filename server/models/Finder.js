@@ -1,12 +1,16 @@
 const _ = require('lodash');
+const Promise = require('bluebird');
 const pgp = require('pg-promise');
 const db = require('../db');
 
 const Finder = {
     find(query) {
-        console.log(query);
         if (typeof query !== 'string') {
             throw new TypeError('`query` must be a string');
+        }
+
+        if (!query.length) {
+            return Promise.resolve([]);
         }
 
         const tsquery = createTsquery(query);
