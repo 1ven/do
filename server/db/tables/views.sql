@@ -23,7 +23,7 @@ SELECT
     c.id,
     c.text AS content,
     'Cards' AS type,
-    '/boards/' || bl.board_id || '/lists/' || bl.list_id || '/cards/' || c.id AS link
+    '/boards/' || bl.board_id || '/cards/' || c.id AS link
 FROM cards AS c
 LEFT JOIN lists_cards AS lc ON (lc.card_id = c.id)
 LEFT JOIN boards_lists AS bl ON (bl.list_id = lc.list_id)
