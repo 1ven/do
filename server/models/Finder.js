@@ -4,6 +4,7 @@ const db = require('../db');
 
 const Finder = {
     find(query) {
+        console.log(query);
         if (typeof query !== 'string') {
             throw new TypeError('`query` must be a string');
         }
