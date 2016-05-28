@@ -1,32 +1,7 @@
 import React, { PropTypes } from 'react';
 import SearchBox from './SearchBox';
 import UserBoxContainer from '../containers/UserBoxContainer';
-
-const results = [{
-    type: 'Boards',
-    items: [{
-        title: 'Programming',
-        href: ''
-    }, {
-        title: 'Programmist',
-        href: ''
-    }, {
-        title: 'Programmable',
-        href: ''
-    }]
-}, {
-    type: 'Lists',
-    items: [{
-        title: 'Work',
-        href: ''
-    }, {
-        title: 'Working',
-        href: ''
-    }, {
-        title: 'Worker',
-        href: ''
-    }]
-}];
+import SearchBoxContainer from '../containers/SearchBoxContainer';
 
 function Header() {
     return (
@@ -34,10 +9,7 @@ function Header() {
             <div className="b-container">
                 <div className="b-header__wrap">
                     <div className="b-header__left">
-                        <SearchBox
-                            onChange={value => console.log(value)}
-                            results={results}
-                        />
+                        <SearchBoxContainer />
                     </div>
                     <div className="b-header__right">
                         <div className="b-header__item">

@@ -6,6 +6,7 @@ import editFormReducer from './editFormReducer';
 import modalReducer from './modalReducer';
 import notificationsReducer from './notificationsReducer';
 import userReducer from './userReducer';
+import searchReducer from './searchReducer';
 
 const rootReducer = combineReducers({
     entities: entitiesReducer,
@@ -14,7 +15,8 @@ const rootReducer = combineReducers({
     editForm: editFormReducer,
     modal: modalReducer,
     notifications: notificationsReducer,
-    user: userReducer
+    user: userReducer,
+    search: searchReducer
 });
 
 export default rootReducer;
