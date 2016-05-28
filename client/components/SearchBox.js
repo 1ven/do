@@ -7,18 +7,29 @@ class SearchBox extends Component {
         super(props);
 
         this.state = {
-            value: ''
+            value: '',
+            isVisible: false
         };
 
         this.handleInputChange = this.handleInputChange.bind(this);
+        this.handleItemClick = this.handleItemClick.bind(this);
     }
 
     handleInputChange(e) {
         const { value } = e.target;
 
-        this.setState({ value });
+        this.setState({
+            isVisible: true,
+            value
+        });
 
         this.props.onChange(value);
+    }
+
+    handleItemClick() {
+        this.setState({
+            isVisible: false
+        });
     }
 
     highlight(text) {
@@ -45,6 +56,7 @@ class SearchBox extends Component {
 
     render() {
         const { onSubmit, results } = this.props;
+        const { isVisible } = this.state;
         return (
             <div className="b-search-box">
                 <form
@@ -66,7 +78,7 @@ class SearchBox extends Component {
                         <Icon name="magnifier" />
                     </button>
                 </form>
-                {results.length ? (
+                {results.length && isVisible ? (
                     <div className="b-search-box__results">
                         {results.map((result, i) => (
                             <div
@@ -84,6 +96,7 @@ class SearchBox extends Component {
                                         >
                                             <Link
                                                 className="b-search-box__group-link"
+                                                onClick={this.handleItemClick}
                                                 to={item.link}
                                             >
                                                 {this.highlight(item.title)}
