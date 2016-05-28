@@ -11,7 +11,6 @@ class Cards extends Component {
         const {
             cards,
             onCardRemoveClick,
-            onCardClick,
             onAddCardBtnClick
         } = this.props;
 
@@ -25,7 +24,7 @@ class Cards extends Component {
                         <Card
                             data={card}
                             onRemoveClick={onCardRemoveClick}
-                            onClick={onCardClick}
+                            href={card.href}
                         />
                     </div>
                 )}
@@ -51,8 +50,7 @@ Cards.propTypes = {
         text: PropTypes.string
     })),
     onAddCardBtnClick: PropTypes.func.isRequired,
-    onCardRemoveClick: PropTypes.func.isRequired,
-    onCardClick: PropTypes.func.isRequired
+    onCardRemoveClick: PropTypes.func.isRequired
 };
 
 export default Cards;

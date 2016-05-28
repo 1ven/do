@@ -31,7 +31,7 @@ class BoardPage extends Component {
     }
 
     componentWillReceiveProps(nextProps) {
-        if (this.props.params.id !== nextProps.params.id) {
+        if (this.props.params.boardId !== nextProps.params.boardId) {
             loadBoard(nextProps);
         }
     }
@@ -63,7 +63,8 @@ class BoardPage extends Component {
         const {
             board,
             isFetching,
-            lastUpdated
+            lastUpdated,
+            children
         } = this.props;
         const { modal } = this.state;
 
@@ -91,8 +92,9 @@ class BoardPage extends Component {
                         hideModal={this.hideModal}
                     />
                 ) : null}
+                {children}
             </div>
-        );;
+        );
     }
 };
 
@@ -100,17 +102,18 @@ BoardPage.propTypes = {
     board: PropTypes.object,
     isFetching: PropTypes.bool.isRequired,
     lastUpdated: PropTypes.number,
-    dispatch: PropTypes.func.isRequired
+    dispatch: PropTypes.func.isRequired,
+    children: PropTypes.node
 };
 
 function loadBoard(props) {
-    const { dispatch, params: { id } } = props;
-    dispatch(getBoard(id));
+    const { dispatch, params: { boardId } } = props;
+    dispatch(getBoard(boardId));
 };
 
 function mapStateToProps(state, ownProps) {
     const { isFetching, lastUpdated } = state.pages.board;
-    const board = state.entities.boards[ownProps.params.id];
+    const board = state.entities.boards[ownProps.params.boardId];
 
     return {
         board,

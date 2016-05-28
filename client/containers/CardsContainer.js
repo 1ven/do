@@ -69,18 +69,19 @@ class CardsContainer extends Component {
 CardsContainer.propTypes = {
     cards: PropTypes.array.isRequired,
     listId: PropTypes.string.isRequired,
+    boardId: PropTypes.string.isRequired,
     dispatch: PropTypes.func.isRequired
 };
 
 function mapStateToProps(state, ownProps) {
     const { cards } = state.entities;
     const cardsIds = ownProps.cardsIds || [];
-    const { editForm } = state;
+    const { boardId } = ownProps;
 
     return {
-        cards: cardsIds.map(id => {
-            return assign({}, cards[id], {
-                isEditing: editForm.id === id
+        cards: cardsIds.map(cardId => {
+            return assign({}, cards[cardId], {
+                href: `/boards/${boardId}/cards/${cardId}`
             });
         })
     };

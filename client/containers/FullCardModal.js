@@ -1,4 +1,5 @@
 import React, { PropTypes, Component } from 'react';
+import { browserHistory } from 'react-router';
 import assign from 'lodash/assign';
 import map from 'lodash/map';
 import { connect } from 'react-redux'
@@ -10,6 +11,13 @@ import Modal from '../components/Modal';
 class FullCardModal extends Component {
     componentWillMount() {
         this.props.loadCard();
+
+        this.hideModal = this.hideModal.bind(this);
+    }
+
+    hideModal() {
+        const { boardId } = this.props.params;
+        browserHistory.push(`/boards/${boardId}`);
     }
 
     render() {
@@ -19,10 +27,11 @@ class FullCardModal extends Component {
             onEditCardFormSubmit,
             onSendCommentSubmit
         } = this.props;
-        return (
+
+        return card ? (
             <Modal
                 title="Card"
-                hideModal={hideModal}
+                hideModal={this.hideModal}
             >
                 <FullCard
                     card={card}
@@ -30,28 +39,30 @@ class FullCardModal extends Component {
                     onSendCommentSubmit={onSendCommentSubmit}
                 />
             </Modal>
-        );
+        ) : null;
     }
 };
 
 function mapStateToProps(state, ownProps) {
     const { cards, comments, users } = state.entities;
-    const card = cards[ownProps.id];;
+    const _card = cards[ownProps.params.cardId];;
+
+    const card = _card ? assign({}, _card, {
+        comments: map(_card.comments, id => {
+            const comment = comments[id];
+            return assign({}, comment, {
+                user: users[comment.user]
+            });
+        })
+    }) : null;
 
     return {
-        card: assign({}, card, {
-            comments: map(card.comments, id => {
-                const comment = comments[id];
-                return assign({}, comment, {
-                    user: users[comment.user]
-                });
-            })
-        })
+        card
     };
 };
 
 function mapDispatchToProps(dispatch, ownProps) {
-    const cardId = ownProps.id;
+    const cardId = ownProps.params.cardId;
     return {
         onEditCardFormSubmit: function(formData) {
             return dispatch(updateCard(cardId, {
@@ -76,9 +87,10 @@ FullCardModal.propTypes = {
     onEditCardFormSubmit: PropTypes.func.isRequired,
     onSendCommentSubmit: PropTypes.func.isRequired,
     loadCard: PropTypes.func.isRequired,
-    hideModal: PropTypes.func.isRequired,
-    card: PropTypes.object.isRequired,
-    id: PropTypes.string.isRequired
+    card: PropTypes.object,
+    params: PropTypes.shape({
+        id: PropTypes.string
+    }).isRequired
 };
 
 export default connect(

@@ -5,15 +5,8 @@ import Icon from './Icon';
 const Modal = function ({
     title,
     children,
-    hideModal,
-    closeProps,
-    closeTagName
+    hideModal
 }) {
-    const closeNode = React.createElement(closeTagName, assign({}, closeProps, {
-        className: 'b-modal-box__close',
-        onClick: hideModal
-    }), <Icon name="cross" />);
-
     return (
         <div className="b-modal">
             <div className="b-modal__box">
@@ -22,7 +15,12 @@ const Modal = function ({
                         <span className="b-modal-box__title"> 
                             {title}
                         </span>
-                        {closeNode}
+                        <a
+                            className="b-modal-box__close"
+                            onClick={hideModal}
+                        >
+                            <Icon name="cross" />
+                        </a>
                     </div>
                     <div className="b-modal-box__content">
                         {children}
@@ -33,16 +31,10 @@ const Modal = function ({
     );
 };
 
-Modal.defaultProps = {
-    closeTagName: 'a'
-};
-
 Modal.propTypes = {
     title: PropTypes.string.isRequired,
     children: PropTypes.node.isRequired,
-    hideModal: PropTypes.func.isRequired,
-    closeTagName: PropTypes.string,
-    closeProps: PropTypes.object
+    hideModal: PropTypes.func.isRequired
 };
 
 export default Modal;

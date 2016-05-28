@@ -4,7 +4,8 @@ import List from './List';
 function Lists({
     lists = [],
     onListRemoveClick,
-    onListEditClick
+    onListEditClick,
+    boardId
 }) {
     return (
         <div className="b-lists">
@@ -17,6 +18,7 @@ function Lists({
                         data={list}
                         onRemoveClick={onListRemoveClick}
                         onEditClick={onListEditClick}
+                        boardId={boardId}
                     />
                 </div>
             ))}
@@ -31,7 +33,8 @@ Lists.propTypes = {
         cards: PropTypes.array
     })),
     onListRemoveClick: PropTypes.func.isRequired,
-    onListEditClick: PropTypes.func.isRequired
+    onListEditClick: PropTypes.func.isRequired,
+    boardId: PropTypes.string.isRequired
 };
 
 export default Lists;

@@ -7,6 +7,7 @@ import IndexPage from './containers/IndexPage';
 import BoardPage from './containers/BoardPage';
 import SignInPage from './containers/SignInPage';
 import SignUpPage from './containers/SignUpPage';
+import FullCardModal from './containers/FullCardModal';
 
 export default (
     <Route path="/">
@@ -18,9 +19,14 @@ export default (
                 component={IndexPage}
             />
             <Route
-                path="boards/:id"
+                path="boards/:boardId"
                 component={BoardPage}
-            />
+            >
+                <Route
+                    path="cards/:cardId"
+                    component={FullCardModal}
+                />
+            </Route>
         </Route>
         <Route
             onEnter={ensureSignedOut}

@@ -1,13 +1,14 @@
 import React, { Component, PropTypes } from 'react';
+import { Link } from 'react-router';
 
-function Card({ data, onClick }) {
+function Card({ data, href }) {
     return (
-        <div
+        <Link
             className="b-card"
-            onClick={() => onClick(data.id)}
+            to={href}
         >
             {data.text}
-        </div>
+        </Link>
     );
 };
 
@@ -16,7 +17,7 @@ Card.propTypes = {
         id: PropTypes.string.isRequired,
         text: PropTypes.string.isRequired
     }),
-    onClick: PropTypes.func.isRequired
+    href: PropTypes.string.isRequired
 };
 
 export default Card;
