@@ -1,0 +1,29 @@
+.b-activity {
+    &__title {
+        color: $white;
+    }
+    &__items {
+        margin-top: 10px;
+    }
+    &__item {
+        margin-bottom: 8px;
+        padding-bottom: 8px;
+    }
+    &__item-text {
+        color: rgba($white, .8);
+        font-size: 14px;
+    }
+    &__entry {
+        color: $white;
+        text-decoration: none;
+        border-bottom: 1px solid rgba($white, .4);
+        transition: border-color .1s ease-out;
+        &:hover {
+            border-color: transparent;
+        }
+    }
+    &__date {
+        font-size: 12px;
+        color: $white;
+    }
+}

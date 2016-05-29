@@ -12,14 +12,19 @@ describe('Activity', () => {
 
     describe('create', () => {
         it('should create activity and return created entry', () => {
-            return Activity.create(cardId, 'cards', 'create')
+            return db.none('INSERT INTO cards(id, text) VALUES ($1, $2)', [cardId, 'test card'])
+                .then(() => Activity.create(cardId, 'cards', 'created'))
                 .then(entry => {
                     assert.property(entry, 'id');
                     assert.property(entry, 'created_at');
                     assert.deepEqual(_.omit(entry, ['id', 'created_at']), {
-                        entry_id: cardId,
-                        entry_table: 'cards',
-                        action: 'create'
+                        action: 'created',
+                        table: 'cards',
+                        entry: {
+                            id: cardId,
+                            text: 'test card',
+                            link: `/boards/${boardId}/cards/${cardId}`
+                        }
                     });
                 });
         });
