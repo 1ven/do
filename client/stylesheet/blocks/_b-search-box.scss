@@ -59,6 +59,7 @@
             }
             & + .b-search-box__submit {
                 path {
+                    transition-duration: .3s;
                     fill: $black;
                 }
             }
@@ -78,6 +79,7 @@
         outline: 0;
         path {
             fill: $white;
+            transition: fill .1s ease-out;
         }
     }
     &__highlight {
