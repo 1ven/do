@@ -37,7 +37,7 @@ class SearchBox extends Component {
 
         if (!value.length) { return text; }
 
-        const words = value.replace(/[^A-Za-z0-9\s]/g).split(' ').filter(i => i.length);
+        const words = value.replace(/[^A-Za-z0-9\s]/g, '').split(' ').filter(i => i.length);
 
         const wrappedText = text.replace(
             new RegExp(`(${words.join('|')})`, 'gi'),
