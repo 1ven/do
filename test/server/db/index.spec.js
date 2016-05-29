@@ -253,6 +253,20 @@ describe('tables', () => {
                 });
         });
     });
+
+    describe('activity', () => {
+        it('should be created', () => {
+            return selectColumnsInfo('activity')
+                .then(prettyColumnsInfo)
+                .then(columns => {
+                    assert.equal(columns.id, 'integer');
+                    assert.equal(columns.action, 'text');
+                    assert.equal(columns.created_at, 'integer');
+                    assert.equal(columns.entry_id, 'text');
+                    assert.equal(columns.entry_table, 'text');
+                });
+        });
+    });
 });
 
 function prettyColumnsInfo(data) {

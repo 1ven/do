@@ -12,7 +12,8 @@ const path = require('path');
 const db = pgp(config.db);
 
 db.tx(function() {
-    return this.none(sql('comments.sql'))
+    return this.none(sql('activity.sql'))
+        .then(() => this.none(sql('comments.sql')))
         .then(() => this.none(sql('cards.sql')))
         .then(() => this.none(sql('lists.sql')))
         .then(() => this.none(sql('boards.sql')))
