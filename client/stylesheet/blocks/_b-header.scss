@@ -1,12 +1,16 @@
 .b-header {
     background-color: $header_bg;
     height: $header-height;
-    position: relative;
+    position: fixed;
+    width: 100%;
+    top: 0;
+    left: 0;
     z-index: 2;
     &__wrap {
         display: flex;
         align-items: center;
         height: 100%;
+        margin: 0 -10px;
     }
     &__middle {
         position: absolute;
@@ -25,5 +29,10 @@
     &__left, &__right {
         position: relative;
         z-index: 2;
+        display: flex;
+        align-items: center;
+    }
+    &__item {
+        padding: 0 10px;
     }
 }

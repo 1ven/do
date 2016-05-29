@@ -1,0 +1,63 @@
+.b-menu {
+    @include no-select();
+    &__link {
+        width: 26px;
+    }
+    &__body {
+        display: flex;
+        flex-direction: column;
+        background-color: darken($header-bg, 3);
+        position: fixed;
+        top: $header-height;
+        left: 0;
+        width: 380px;
+        height: calc(100% - 60px);
+        padding-top: 30px;
+        padding-right: 20px;
+        padding-left: calc((100% - #{$container-max-width} + #{$container-x-padding} * 2) / 2);
+    }
+    &__item {
+        margin-bottom: 14px;
+    }
+    &__item-link {
+        color: rgba($white, .8);
+        font-size: 20px;
+        text-decoration: none;
+        font-size: 23px;
+        font-weight: 300;
+        position: relative;
+        &:before {
+            content: attr(data-title);
+            position: absolute;
+            top: 0px;
+            left: 0px;
+            color: $white;
+            display: inline-block;
+            width: 100%;
+            clip: rect(0px 0px 100px 0px);
+            zoom: 1;
+            transition: clip 0.4s cubic-bezier(0.645, 0.045, 0.355, 1);
+        }
+        &:hover {
+            &:before {
+                clip: rect(0px 200px 100px 0px);
+            }
+        }
+    }
+    &__boards {
+        flex: 1;
+        overflow-y: auto;
+    }
+    &__board {
+        background-color: $light;
+        border-radius: 2px;
+        box-shadow: $shadow;
+        color: $black;
+        text-decoration: none;
+        margin-bottom: 10px;
+        display: flex;
+        align-items: center;
+        height: 30px;
+        padding: 0 10px;
+    }
+}

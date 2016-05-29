@@ -1,6 +1,6 @@
 import React, { PropTypes } from 'react';
 import { Link } from 'react-router';
-import SearchBox from './SearchBox';
+import Menu from './Menu';
 import UserBoxContainer from '../containers/UserBoxContainer';
 import SearchBoxContainer from '../containers/SearchBoxContainer';
 
@@ -10,7 +10,12 @@ function Header() {
             <div className="b-container">
                 <div className="b-header__wrap">
                     <div className="b-header__left">
-                        <SearchBoxContainer />
+                        <div className="b-header__item">
+                            <Menu />
+                        </div>
+                        <div className="b-header__item">
+                            <SearchBoxContainer />
+                        </div>
                     </div>
                     <div className="b-header__middle">
                         <Link

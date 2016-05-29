@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg width="26px" height="15px" viewBox="0 0 26 15" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 3.7.2 (28276) - http://www.bohemiancoding.com/sketch -->
+    <title>menu</title>
+    <desc>Created with Sketch.</desc>
+    <defs></defs>
+    <g id="Symbols" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="header" transform="translate(-100.000000, -23.000000)" fill="#FFFFFF">
+            <g id="menu">
+                <g transform="translate(100.000000, 23.000000)">
+                    <path d="M25.1875,1.36363636 L0.8125,1.36363636 C0.364,1.36363636 0,1.05818182 0,0.681818182 C0,0.305454545 0.364,0 0.8125,0 L25.1875,0 C25.636,0 26,0.305454545 26,0.681818182 C26,1.05818182 25.636,1.36363636 25.1875,1.36363636 L25.1875,1.36363636 Z" id="Shape"></path>
+                    <path d="M25.1875,8.18181818 L0.8125,8.18181818 C0.364,8.18181818 0,7.87636364 0,7.5 C0,7.12363636 0.364,6.81818182 0.8125,6.81818182 L25.1875,6.81818182 C25.636,6.81818182 26,7.12363636 26,7.5 C26,7.87636364 25.636,8.18181818 25.1875,8.18181818 L25.1875,8.18181818 Z" id="Shape"></path>
+                    <path d="M25.1875,15 L0.8125,15 C0.364,15 0,14.6945455 0,14.3181818 C0,13.9418182 0.364,13.6363636 0.8125,13.6363636 L25.1875,13.6363636 C25.636,13.6363636 26,13.9418182 26,14.3181818 C26,14.6945455 25.636,15 25.1875,15 L25.1875,15 Z" id="Shape"></path>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>
