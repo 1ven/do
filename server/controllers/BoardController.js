@@ -5,7 +5,7 @@ const User = require('../models/User');
 exports.create = function (req, res, next) {
     const userId = req.user.id;
     const boardProps = sanitize(req.body);
-    
+
     return User.createBoard(userId, boardProps)
         .then(board => {
             res.status(201).json({ result: board });
