@@ -28,7 +28,8 @@ describe('cards routes', () => {
 
                     const card = res.body.result;
 
-                    assert.deepEqual(card, {
+                    assert.property(card, 'activity');
+                    assert.deepEqual(_.omit(card, ['activity']), {
                         id: card2Id,
                         text: 'new text',
                         link: '/boards/' + boardId + '/cards/' + card2Id

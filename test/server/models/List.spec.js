@@ -16,9 +16,20 @@ describe('List', () => {
             return List.update(listId, { title: 'updated title' })
                 .then(list => {
                     assert.property(list, 'link');
+                    assert.property(list.activity, 'created_at');
+                    delete list.activity.created_at;
                     assert.deepEqual(_.omit(list, ['link']), {
                         id: listId,
-                        title: 'updated title'
+                        title: 'updated title',
+                        activity: {
+                            id: 1,
+                            action: 'Updated',
+                            type: 'list',
+                            entry: {
+                                title: 'updated title',
+                                link: '/boards/' + boardId + '/lists/' + listId
+                            }
+                        }
                     });
                 });
         });
@@ -51,9 +62,20 @@ describe('List', () => {
         it('should create card', () => {
             return List.createCard(listId, cardData).then(card => {
                 assert.property(card, 'id');
+                assert.property(card.activity, 'created_at');
+                delete card.activity.created_at;
                 assert.deepEqual(_.omit(card, ['id']), {
                     text: cardData.text,
-                    link: '/boards/' + boardId + '/cards/' + card.id
+                    link: '/boards/' + boardId + '/cards/' + card.id,
+                    activity: {
+                        id: 1,
+                        action: 'Created',
+                        type: 'card',
+                        entry: {
+                            title: cardData.text,
+                            link: '/boards/' + boardId + '/cards/' + card.id
+                        }
+                    }
                 });
             });
         });

@@ -22,7 +22,6 @@ describe('boards routes', () => {
                     const board = res.body.result;
 
                     assert.property(board, 'id');
-
                     assert.deepEqual(_.omit(board, ['id']), {
                         title: 'test board 1',
                         link: '/boards/' + boardId,
@@ -72,9 +71,10 @@ describe('boards routes', () => {
                     if (err) { return done(err); }
 
                     const board = res.body.result;
-                    assert.property(board, 'id');
 
-                    assert.deepEqual(_.omit(board, ['id']), {
+                    assert.property(board, 'id');
+                    assert.property(board, 'activity');
+                    assert.deepEqual(_.omit(board, ['id', 'activity']), {
                         title: 'test board',
                         link: '/boards/' + board.id
                     });
@@ -102,8 +102,8 @@ describe('boards routes', () => {
                     const list = res.body.result;
 
                     assert.property(list, 'id');
-
-                    assert.deepEqual(_.omit(list, ['id']), {
+                    assert.property(list, 'activity');
+                    assert.deepEqual(_.omit(list, ['id', 'activity']), {
                         title: 'test list',
                         link: '/boards/' + boardId + '/lists/' + list.id
                     });
@@ -127,8 +127,8 @@ describe('boards routes', () => {
                     const board = res.body.result;
 
                     assert.property(board, 'link');
-
-                    assert.deepEqual(_.omit(board, ['link']), {
+                    assert.property(board, 'activity');
+                    assert.deepEqual(_.omit(board, ['link', 'activity']), {
                         id: boardId,
                         title: 'new title'
                     });

@@ -2,6 +2,7 @@ const _ = require('lodash');
 const shortid = require('shortid');
 const pgp = require('pg-promise');
 const db = require('../db');
+const Activity = require('./Activity');
 
 const Card = {
     update(id, data) {
@@ -12,10 +13,15 @@ const Card = {
         const props = _.keys(_data).map(k => pgp.as.name(k)).join();
         const values = _.values(_data);
 
-        return db.one(
-            `UPDATE cards SET ($2^) = ($3:csv) WHERE id = $1 RETURNING id, text, link`,
-            [id, props, values]
-        );
+        return db.one(`
+            UPDATE cards SET ($2^) = ($3:csv) WHERE id = $1 RETURNING id, text, link
+        `, [id, props, values])
+            .then(card => {
+                return Activity.create(card.id, 'cards', 'Updated')
+                    .then(activity => {
+                        return _.assign({}, card, { activity });
+                    });
+            });
     },
 
     drop(id) {

@@ -4,6 +4,7 @@ const shortid = require('shortid');
 const pgp = require('pg-promise');
 const validator = require('../utils/validator');
 const db = require('../db');
+const Activity = require('./Activity');
 
 const User = {
     findByUsername(username, extraFields) {
@@ -118,7 +119,10 @@ const User = {
         `, [id, boardData.title])
             .then(board => {
                 return db.none(`INSERT INTO users_boards VALUES ($1, $2)`, [userId, board.id])
-                    .then(() => board);
+                    .then(() => Activity.create(id, 'boards', 'Created'))
+                    .then(activity => {
+                        return _.assign({}, board, { activity });
+                    });
             });
     },
 

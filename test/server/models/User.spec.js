@@ -245,9 +245,20 @@ describe('User', () => {
         it('should create board', () => {
             return User.createBoard(userId, boardData).then(board => {
                 assert.property(board, 'id');
+                assert.property(board.activity, 'created_at');
+                delete board.activity.created_at;
                 assert.deepEqual(_.omit(board, ['id']), {
                     title: boardData.title,
-                    link: '/boards/' + board.id
+                    link: '/boards/' + board.id,
+                    activity: {
+                        id: 1,
+                        type: 'board',
+                        action: 'Created',
+                        entry: {
+                            title: boardData.title,
+                            link: '/boards/' + board.id
+                        }
+                    }
                 });
             });
         });

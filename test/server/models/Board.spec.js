@@ -22,9 +22,20 @@ describe('Board', () => {
             return Board.update(ids.boards[0], { title: 'updated title' })
                 .then(board => {
                     assert.property(board, 'link');
+                    assert.property(board.activity, 'created_at');
+                    delete board.activity.created_at;
                     assert.deepEqual(_.omit(board, ['link']), {
                         id: ids.boards[0],
-                        title: 'updated title'
+                        title: 'updated title',
+                        activity: {
+                            id: 1,
+                            action: 'Updated',
+                            type: 'board',
+                            entry: {
+                                title: 'updated title',
+                                link: '/boards/' + ids.boards[0]
+                            }
+                        }
                     });
                 });
         });
@@ -57,9 +68,20 @@ describe('Board', () => {
         it('should create list', () => {
             return Board.createList(ids.boards[0], listData).then(list => {
                 assert.property(list, 'id');
+                assert.property(list.activity, 'created_at');
+                delete list.activity.created_at;
                 assert.deepEqual(_.omit(list, ['id']), {
                     title: listData.title,
-                    link: '/boards/' + ids.boards[0] + '/lists/' + list.id
+                    link: '/boards/' + ids.boards[0] + '/lists/' + list.id,
+                    activity: {
+                        id: 1,
+                        action: 'Created',
+                        type: 'list',
+                        entry: {
+                            title: listData.title,
+                            link: '/boards/' + ids.boards[0] + '/lists/' + list.id
+                        }
+                    }
                 });
             });
         });

@@ -2,6 +2,7 @@ const _ = require('lodash');
 const shortid = require('shortid');
 const pgp = require('pg-promise');
 const db = require('../db');
+const Activity = require('./Activity');
 
 const Board = {
     update(id, data) {
@@ -14,7 +15,13 @@ const Board = {
 
         return db.one(`
             UPDATE boards SET ($2^) = ($3:csv) WHERE id = $1 RETURNING id, title, link
-        `, [id, props, values]);
+        `, [id, props, values])
+            .then(board => {
+                return Activity.create(id, 'boards', 'Updated')
+                    .then(activity => {
+                        return _.assign({}, board, { activity });
+                    });
+            });
     },
 
     drop(id) {
@@ -32,7 +39,13 @@ const Board = {
                 return db.one(`
                     INSERT INTO boards_lists VALUES ($1, $2);
                     SELECT id, title, link FROM lists WHERE id = $2
-                `, [boardId, list.id])
+                `, [boardId, list.id]);
+            })
+            .then(list => {
+                return Activity.create(list.id, 'lists', 'Created')
+                    .then(activity => {
+                        return _.assign({}, list, { activity });
+                    });
             });
     },
 

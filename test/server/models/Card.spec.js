@@ -20,10 +20,21 @@ describe('Card', () => {
         it('should update card and return updated card', () => {
             return Card.update(cardId, { text: 'updated text' })
                 .then(card => {
+                    assert.property(card.activity, 'created_at');
+                    delete card.activity.created_at;
                     assert.deepEqual(card, {
                         id: cardId,
                         text: 'updated text',
-                        link: '/boards/' + boardId + '/cards/' + cardId
+                        link: '/boards/' + boardId + '/cards/' + cardId,
+                        activity: {
+                            id: 1,
+                            action: 'Updated',
+                            type: 'card',
+                            entry: {
+                                title: 'updated text',
+                                link: '/boards/' + boardId + '/cards/' + cardId
+                            }
+                        }
                     });
                 });
         });
