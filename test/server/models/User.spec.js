@@ -245,8 +245,10 @@ describe('User', () => {
         it('should create board', () => {
             return User.createBoard(userId, boardData).then(board => {
                 assert.property(board, 'id');
-                delete board.id;
-                assert.deepEqual(board, boardData);
+                assert.deepEqual(_.omit(board, ['id']), {
+                    title: boardData.title,
+                    link: '/boards/' + board.id
+                });
             });
         });
 

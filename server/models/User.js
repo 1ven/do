@@ -113,8 +113,9 @@ const User = {
     createBoard(userId, boardData) {
         const id = shortid.generate();
 
-        return db.one(`INSERT INTO boards (id, title) VALUES ($1, $2) RETURNING id, title`,
-        [id, boardData.title])
+        return db.one(`
+            INSERT INTO boards (id, title) VALUES ($1, $2) RETURNING id, title, link
+        `, [id, boardData.title])
             .then(board => {
                 return db.none(`INSERT INTO users_boards VALUES ($1, $2)`, [userId, board.id])
                     .then(() => board);

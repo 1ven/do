@@ -12,10 +12,9 @@ const Board = {
         const props = _.keys(_data).map(k => pgp.as.name(k)).join();
         const values = _.values(_data);
 
-        return db.one(
-            `UPDATE boards SET ($2^) = ($3:csv) WHERE id = $1 RETURNING id, title`,
-            [id, props, values]
-        );
+        return db.one(`
+            UPDATE boards SET ($2^) = ($3:csv) WHERE id = $1 RETURNING id, title, link
+        `, [id, props, values]);
     },
 
     drop(id) {
@@ -23,29 +22,33 @@ const Board = {
     },
 
     createList(boardId, listData) {
-        const id = shortid.generate();
+        const listId = shortid.generate();
 
-        return db.one(`INSERT INTO lists (id, title) VALUES ($1, $2) RETURNING id, title`,
-        [id, listData.title])
+        return db.one(`
+            INSERT INTO lists (id, title) VALUES ($1, $2)
+            RETURNING id
+        `, [listId, listData.title])
             .then(list => {
-                return db.none(`INSERT INTO boards_lists VALUES ($1, $2)`, [boardId, list.id])
-                    .then(() => list);
+                return db.one(`
+                    INSERT INTO boards_lists VALUES ($1, $2);
+                    SELECT id, title, link FROM lists WHERE id = $2
+                `, [boardId, list.id])
             });
     },
 
     findById(id) {
         return db.one(`
-            SELECT b.id, b.title,
+            SELECT b.id, b.title, b.link,
                 COALESCE (json_agg(l) FILTER (WHERE l.id IS NOT NULL), '[]') AS lists
             FROM boards AS b
             LEFT JOIN boards_lists ON (b.id = board_id)
             LEFT JOIN (
-                SELECT l.id, l.title,
+                SELECT l.id, l.title, l.link,
                     COALESCE (json_agg(c) FILTER (WHERE c.id IS NOT NULL), '[]') AS cards
                 FROM lists AS l
                 LEFT JOIN lists_cards ON (l.id = list_id)
                 LEFT JOIN (
-                    SELECT id, text from cards
+                    SELECT id, text, link from cards
                 ) AS c ON (c.id = card_id)
                 GROUP BY l.id
             ) AS l ON (l.id = list_id)
@@ -57,17 +60,17 @@ const Board = {
 
     findAllByUser(userId) {
         return db.query(`
-            SELECT b.id, b.title,
+            SELECT b.id, b.title, b.link,
                 COALESCE (json_agg(l) FILTER (WHERE l.id IS NOT NULL), '[]') AS lists
             FROM boards AS b
             LEFT JOIN boards_lists AS bl ON (b.id = bl.board_id)
             LEFT JOIN (
-                SELECT l.id, l.title,
+                SELECT l.id, l.title, l.link,
                     COALESCE (json_agg(c) FILTER (WHERE c.id IS NOT NULL), '[]') AS cards
                 FROM lists AS l
                 LEFT JOIN lists_cards ON (l.id = list_id)
                 LEFT JOIN (
-                    SELECT id, text from cards
+                    SELECT id, text, link from cards
                 ) AS c ON (c.id = card_id)
                 GROUP BY l.id
             ) AS l ON (l.id = list_id)

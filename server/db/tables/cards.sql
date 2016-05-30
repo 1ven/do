@@ -2,7 +2,10 @@ CREATE TABLE IF NOT EXISTS cards(
     id text PRIMARY KEY,
     index serial NOT NULL UNIQUE,
     created_at integer DEFAULT extract(epoch from now()),
-    text text NOT NULL CHECK (text <> '')
+    text text NOT NULL CHECK (text <> ''),
+    link text UNIQUE CHECK (
+        link ~* '\/boards\/.*\/cards\/.*'
+    )
 );
 
 CREATE TABLE IF NOT EXISTS cards_comments(

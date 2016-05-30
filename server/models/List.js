@@ -13,7 +13,7 @@ const List = {
         const values = _.values(_data);
 
         return db.one(
-            `UPDATE lists SET ($2^) = ($3:csv) WHERE id = $1 RETURNING id, title`,
+            `UPDATE lists SET ($2^) = ($3:csv) WHERE id = $1 RETURNING id, title, link`,
             [id, props, values]
         );
     },
@@ -25,11 +25,14 @@ const List = {
     createCard(listId, cardData) {
         const id = shortid.generate();
 
-        return db.one(`INSERT INTO cards (id, text) VALUES ($1, $2) RETURNING id, text`,
-        [id, cardData.text])
+        return db.one(`
+            INSERT INTO cards (id, text) VALUES ($1, $2) RETURNING id
+        `, [id, cardData.text])
             .then(card => {
-                return db.none(`INSERT INTO lists_cards VALUES ($1, $2)`, [listId, card.id])
-                    .then(() => card);
+                return db.one(`
+                    INSERT INTO lists_cards VALUES ($1, $2);
+                    SELECT id, text, link FROM cards WHERE id = $2
+                `, [listId, card.id])
             });
     }
 };

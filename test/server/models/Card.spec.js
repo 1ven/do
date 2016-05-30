@@ -5,6 +5,8 @@ import { recreateTables } from '../helpers';
 import db from 'server/db';
 import Card from 'server/models/Card';
 
+const boardId = shortid.generate();
+const listId = shortid.generate();
 const commentId = shortid.generate();
 const comment2Id = shortid.generate();
 const cardId = shortid.generate();
@@ -20,7 +22,8 @@ describe('Card', () => {
                 .then(card => {
                     assert.deepEqual(card, {
                         id: cardId,
-                        text: 'updated text'
+                        text: 'updated text',
+                        link: '/boards/' + boardId + '/cards/' + cardId
                     });
                 });
         });
@@ -49,7 +52,6 @@ describe('Card', () => {
         it('should return card with all relations', () => {
             return Card.findById(card2Id)
                 .then(card => {
-                    assert.property(card, 'id');
                     assert.property(card.comments[0], 'created_at');
                     assert.property(card.comments[1], 'created_at');
                     assert.property(card.comments[0].user, 'avatar');
@@ -61,8 +63,10 @@ describe('Card', () => {
                         }), ['created_at']))
                     });
 
-                    assert.deepEqual(_.omit(_card, ['id']), {
+                    assert.deepEqual(_card, {
+                        id: card2Id,
                         text: 'test card 2',
+                        link: '/boards/' + boardId + '/cards/' + card2Id,
                         comments: [{
                             id: commentId,
                             text: 'test comment 1',
@@ -133,13 +137,18 @@ function setup() {
     return db.none(`
         INSERT INTO users (id, username, email, hash, salt)
             VALUES ($1, 'testuser', 'testuser@test.com', 'hash', 'salt');
+        INSERT INTO boards (id, title) VALUES ($6, 'test board');
+        INSERT INTO lists (id, title) VALUES ($7, 'test list');
+        INSERT INTO boards_lists VALUES ($6, $7);
         INSERT INTO cards (id, text) VALUES ($2, 'test card 1');
         INSERT INTO cards (id, text) VALUES ($3, 'test card 2');
+        INSERT INTO lists_cards VALUES ($7, $2);
+        INSERT INTO lists_cards VALUES ($7, $3);
         INSERT INTO comments (id, text) VALUES ($4, 'test comment 1');
         INSERT INTO comments (id, text) VALUES ($5, 'test comment 2');
         INSERT INTO cards_comments VALUES ($3, $4);
         INSERT INTO cards_comments VALUES ($3, $5);
         INSERT INTO users_comments VALUES ($1, $4);
         INSERT INTO users_comments VALUES ($1, $5);
-    `, [userId, cardId, card2Id, commentId, comment2Id]);
+    `, [userId, cardId, card2Id, commentId, comment2Id, boardId, listId]);
 };

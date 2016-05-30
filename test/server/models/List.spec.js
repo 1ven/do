@@ -5,6 +5,7 @@ import { recreateTables } from '../helpers';
 import db from 'server/db';
 import List from 'server/models/List';
 
+const boardId = shortid.generate();
 const listId = shortid.generate();
 
 describe('List', () => {
@@ -14,7 +15,8 @@ describe('List', () => {
         it('should update list and return updated list', () => {
             return List.update(listId, { title: 'updated title' })
                 .then(list => {
-                    assert.deepEqual(list, {
+                    assert.property(list, 'link');
+                    assert.deepEqual(_.omit(list, ['link']), {
                         id: listId,
                         title: 'updated title'
                     });
@@ -49,9 +51,9 @@ describe('List', () => {
         it('should create card', () => {
             return List.createCard(listId, cardData).then(card => {
                 assert.property(card, 'id');
-                delete card.id;
-                assert.deepEqual(card, {
-                    text: cardData.text
+                assert.deepEqual(_.omit(card, ['id']), {
+                    text: cardData.text,
+                    link: '/boards/' + boardId + '/cards/' + card.id
                 });
             });
         });
@@ -74,6 +76,8 @@ describe('List', () => {
 
 function setup() {
     return db.none(`
-        INSERT INTO lists(id, title) VALUES ($1, 'test list')
-    `, [listId]);
+        INSERT INTO boards(id, title) VALUES ($1, 'test board');
+        INSERT INTO lists(id, title) VALUES ($2, 'test list');
+        INSERT INTO boards_lists VALUES ($1, $2)
+    `, [boardId, listId]);
 };

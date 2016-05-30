@@ -4,6 +4,7 @@ import shortid from 'shortid';
 import db from 'server/db';
 import { recreateTables, authenticate } from '../../helpers';
 
+const boardId = shortid.generate();
 const listId = shortid.generate();
 
 describe('lists routes', () => {
@@ -25,7 +26,8 @@ describe('lists routes', () => {
                     assert.property(card, 'id');
 
                     assert.deepEqual(_.omit(card, ['id']), {
-                        text: 'test card'
+                        text: 'test card',
+                        link: '/boards/' + boardId + '/cards/' + card.id
                     });
 
                     done();
@@ -46,9 +48,9 @@ describe('lists routes', () => {
 
                     const list = res.body.result;
 
-                    assert.property(list, 'id');
-
-                    assert.deepEqual(_.omit(list, ['id']), {
+                    assert.property(list, 'link');
+                    assert.deepEqual(_.omit(list, ['link']), {
+                        id: listId,
                         title: 'new title'
                     });
 
@@ -76,6 +78,10 @@ describe('lists routes', () => {
 });
 
 function setup() {
-    return db.none(`INSERT INTO lists (id, title) VALUES($1, 'test list')`, [listId])
+    return db.none(`
+        INSERT INTO boards (id, title) VALUES($1, 'test board');
+        INSERT INTO lists (id, title) VALUES($2, 'test list');
+        INSERT INTO boards_lists VALUES ($1, $2);
+    `, [boardId, listId])
         .then(authenticate);
 };

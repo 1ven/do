@@ -21,7 +21,8 @@ describe('Board', () => {
         it('should update board and return updated board', () => {
             return Board.update(ids.boards[0], { title: 'updated title' })
                 .then(board => {
-                    assert.deepEqual(board, {
+                    assert.property(board, 'link');
+                    assert.deepEqual(_.omit(board, ['link']), {
                         id: ids.boards[0],
                         title: 'updated title'
                     });
@@ -56,9 +57,9 @@ describe('Board', () => {
         it('should create list', () => {
             return Board.createList(ids.boards[0], listData).then(list => {
                 assert.property(list, 'id');
-                delete list.id;
-                assert.deepEqual(list, {
-                    title: listData.title
+                assert.deepEqual(_.omit(list, ['id']), {
+                    title: listData.title,
+                    link: '/boards/' + ids.boards[0] + '/lists/' + list.id
                 });
             });
         });
@@ -82,17 +83,21 @@ describe('Board', () => {
         const nestedBoards = [{
             id: ids.boards[0],
             title: 'test board',
+            link: '/boards/' + ids.boards[0],
             lists: [{
                 id: ids.lists[0],
                 title: 'test list',
+                link: '/boards/' + ids.boards[0] + '/lists/' + ids.lists[0],
                 cards: [{
                     id: ids.cards[0],
-                    text: 'test card'
+                    text: 'test card',
+                    link: '/boards/' + ids.boards[0] + '/cards/' + ids.cards[0]
                 }]
             }]
         }, {
             id: ids.boards[1],
             title: 'test board 2',
+            link: '/boards/' + ids.boards[1],
             lists: []
         }];
 

@@ -13,7 +13,7 @@ const Card = {
         const values = _.values(_data);
 
         return db.one(
-            `UPDATE cards SET ($2^) = ($3:csv) WHERE id = $1 RETURNING id, text`,
+            `UPDATE cards SET ($2^) = ($3:csv) WHERE id = $1 RETURNING id, text, link`,
             [id, props, values]
         );
     },
@@ -40,7 +40,7 @@ const Card = {
 
     findById(cardId) {
         return db.one(`
-            SELECT cr.id, cr.text,
+            SELECT cr.id, cr.text, cr.link,
                 COALESCE (json_agg(cm) FILTER (WHERE cm.id IS NOT NULL), '[]') AS comments
             FROM cards as cr
             LEFT JOIN cards_comments AS cc ON (cr.id = cc.card_id)

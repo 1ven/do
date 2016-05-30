@@ -123,6 +123,7 @@ describe('tables', () => {
                     assert.equal(columns.index, 'integer');
                     assert.equal(columns.created_at, 'integer');
                     assert.equal(columns.title, 'text');
+                    assert.equal(columns.link, 'text');
                 });
         });
     });
@@ -169,6 +170,7 @@ describe('tables', () => {
                     assert.equal(columns.index, 'integer');
                     assert.equal(columns.created_at, 'integer');
                     assert.equal(columns.title, 'text');
+                    assert.equal(columns.link, 'text');
                 });
         });
     });
@@ -215,6 +217,7 @@ describe('tables', () => {
                     assert.equal(columns.index, 'integer');
                     assert.equal(columns.created_at, 'integer');
                     assert.equal(columns.text, 'text');
+                    assert.equal(columns.link, 'text');
                 });
         });
     });

@@ -25,6 +25,7 @@ describe('boards routes', () => {
 
                     assert.deepEqual(_.omit(board, ['id']), {
                         title: 'test board 1',
+                        link: '/boards/' + boardId,
                         lists: []
                     });
 
@@ -45,10 +46,12 @@ describe('boards routes', () => {
                     assert.deepEqual(boards, [{
                         id: boardId,
                         title: 'test board 1',
+                        link: '/boards/' + boardId,
                         lists: []
                     }, {
                         id: board3Id,
                         title: 'test board 3',
+                        link: '/boards/' + board3Id,
                         lists: []
                     }]);
 
@@ -72,7 +75,8 @@ describe('boards routes', () => {
                     assert.property(board, 'id');
 
                     assert.deepEqual(_.omit(board, ['id']), {
-                        title: 'test board'
+                        title: 'test board',
+                        link: '/boards/' + board.id
                     });
 
                     db.one('SELECT EXISTS(SELECT board_id FROM users_boards WHERE board_id = $1)', [board.id])
@@ -100,7 +104,8 @@ describe('boards routes', () => {
                     assert.property(list, 'id');
 
                     assert.deepEqual(_.omit(list, ['id']), {
-                        title: 'test list'
+                        title: 'test list',
+                        link: '/boards/' + boardId + '/lists/' + list.id
                     });
 
                     done();
@@ -121,9 +126,10 @@ describe('boards routes', () => {
 
                     const board = res.body.result;
 
-                    assert.property(board, 'id');
+                    assert.property(board, 'link');
 
-                    assert.deepEqual(_.omit(board, ['id']), {
+                    assert.deepEqual(_.omit(board, ['link']), {
+                        id: boardId,
                         title: 'new title'
                     });
 
