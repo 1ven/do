@@ -43,14 +43,13 @@ class ListsContainer extends Component {
 
     render() {
         const { modal } = this.state;
-        const { lists, boardId } = this.props;
+        const { lists } = this.props;
         return (
             <div>
                 <Lists
                     onListRemoveClick={this.handleListRemoveClick}
                     onListEditClick={this.handleEditListClick}
                     lists={lists}
-                    boardId={boardId}
                 />
                 {modal && modal.name === 'editList' ? (
                     <EditListModal
@@ -64,7 +63,6 @@ class ListsContainer extends Component {
 };
 
 ListsContainer.propTypes = {
-    boardId: PropTypes.string.isRequired,
     lists: PropTypes.array.isRequired,
     dispatch: PropTypes.func.isRequired
 };

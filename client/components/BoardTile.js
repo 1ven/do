@@ -25,7 +25,7 @@ class BoardTile extends Component {
     render() {
         const {
             data: {
-                id,
+                link,
                 title,
                 listsLength,
                 cardsLength
@@ -77,7 +77,7 @@ class BoardTile extends Component {
                     <div className="b-board-tile__right">
                         <Link
                             className="b-board-tile__more"
-                            to={`/boards/${id}`}
+                            to={link}
                         >
                             More
                         </Link>
@@ -92,6 +92,7 @@ BoardTile.propTypes = {
     data: PropTypes.shape({
         id: PropTypes.string.isRequired,
         title: PropTypes.string.isRequired,
+        link: PropTypes.string.isRequired,
         listsLength: PropTypes.number.isRequired,
         cardsLength: PropTypes.number.isRequired
     }),

@@ -29,10 +29,7 @@ const BoardsList = ({
 };
 
 BoardsList.propTypes = {
-    boards: PropTypes.arrayOf(PropTypes.shape({
-        id: PropTypes.string.isRequired,
-        title: PropTypes.string.isRequired
-    }).isRequired).isRequired,
+    boards: PropTypes.array.isRequired,
     onBoardTileRemoveClick: PropTypes.func.isRequired,
     onBoardTileEditClick: PropTypes.func.isRequired
 };

@@ -69,19 +69,17 @@ class CardsContainer extends Component {
 CardsContainer.propTypes = {
     cards: PropTypes.array.isRequired,
     listId: PropTypes.string.isRequired,
-    boardId: PropTypes.string.isRequired,
     dispatch: PropTypes.func.isRequired
 };
 
 function mapStateToProps(state, ownProps) {
     const { cards } = state.entities;
     const cardsIds = ownProps.cardsIds || [];
-    const { boardId } = ownProps;
 
     return {
         cards: cardsIds.map(cardId => {
             return assign({}, cards[cardId], {
-                href: `/boards/${boardId}/cards/${cardId}`
+                href: cards[cardId].link
             });
         })
     };

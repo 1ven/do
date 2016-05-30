@@ -23,7 +23,6 @@ class List extends Component {
 
     render() {
         const { id, title, cards } = this.props.data;
-        const { boardId } = this.props;
 
         const menu = (
             <MenuList
@@ -49,7 +48,6 @@ class List extends Component {
                     <CardsContainer
                         listId={id}
                         cardsIds={cards}
-                        boardId={boardId}
                     />
                 </div>
             </div>
@@ -64,8 +62,7 @@ List.propTypes = {
         cards: PropTypes.array,
     }),
     onRemoveClick: PropTypes.func.isRequired,
-    onEditClick: PropTypes.func.isRequired,
-    boardId: PropTypes.string.isRequired
+    onEditClick: PropTypes.func.isRequired
 };
 
 export default List;
