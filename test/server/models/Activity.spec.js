@@ -1,4 +1,5 @@
 import { assert } from 'chai';
+import Promise from 'bluebird';
 import _ from 'lodash';
 import db from 'server/db';
 import shortid from 'shortid';
@@ -36,8 +37,8 @@ describe('Activity', () => {
                 assert.lengthOf(activity, 15);
                 assert.property(activity[0], 'created_at');
                 assert.deepEqual(_.omit(activity[0], ['created_at']), {
-                    id: 1,
-                    action: 'Created',
+                    id: 20,
+                    action: 'Updated',
                     type: 'card',
                     entry: {
                         title: 'test card',
@@ -59,7 +60,7 @@ describe('Activity', () => {
                 assert.property(transformed, 'created_at');
                 assert.deepEqual(_.omit(transformed, ['created_at']), {
                     id: 1,
-                    action: 'Created',
+                    action: 'Updated',
                     type: 'card',
                     entry: {
                         title: 'test card',
@@ -78,26 +79,15 @@ function setup() {
         INSERT INTO boards_lists VALUES ($1, $2);
         INSERT INTO cards (id, text) VALUES ($3, 'test card');
         INSERT INTO lists_cards VALUES ($2, $3);
-        INSERT INTO activity (entry_id, entry_table, action) VALUES
-            ($3, 'cards', 'Created'),
-            ($3, 'cards', 'Updated'),
-            ($3, 'cards', 'Updated'),
-            ($3, 'cards', 'Updated'),
-            ($3, 'cards', 'Updated'),
-            ($3, 'cards', 'Updated'),
-            ($3, 'cards', 'Updated'),
-            ($3, 'cards', 'Updated'),
-            ($3, 'cards', 'Updated'),
-            ($3, 'cards', 'Updated'),
-            ($3, 'cards', 'Updated'),
-            ($3, 'cards', 'Updated'),
-            ($3, 'cards', 'Updated'),
-            ($3, 'cards', 'Updated'),
-            ($3, 'cards', 'Updated'),
-            ($3, 'cards', 'Updated'),
-            ($3, 'cards', 'Updated'),
-            ($3, 'cards', 'Updated'),
-            ($3, 'cards', 'Updated'),
-            ($3, 'cards', 'Updated')
-    `, [boardId, listId, cardId]);
+    `, [boardId, listId, cardId]).then(() => {
+        return Promise.each(_.range(20), (item, i) => {
+            return new Promise((resolve, reject) => {
+                const now = Math.floor(Date.now() / 1000 + i);
+                db.none(`
+                    INSERT INTO activity (created_at, entry_id, entry_table, action)
+                    VALUES ($1, $2, 'cards', 'Updated')
+                `, [now, cardId]).then(resolve, reject);
+            });
+        });
+    });
 }

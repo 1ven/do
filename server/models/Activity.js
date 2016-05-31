@@ -15,7 +15,9 @@ const Activity = {
     findLast() {
         return db.query(`
             SELECT id, created_at, entry_id, entry_table, action
-            FROM activity AS a LIMIT 15
+            FROM activity AS a
+            ORDER BY created_at DESC
+            LIMIT 15
         `).then(activity => {
             return Promise.map(activity, this._transformActivityItem);
         });
