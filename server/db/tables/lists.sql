@@ -5,7 +5,8 @@ CREATE TABLE IF NOT EXISTS lists(
     title text NOT NULL CHECK (title <> ''),
     link text UNIQUE CHECK (
         link ~* '\/boards\/.*\/lists\/.*'
-    )
+    ),
+    archived boolean DEFAULT false
 );
 
 CREATE TABLE IF NOT EXISTS lists_cards(

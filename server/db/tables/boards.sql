@@ -5,7 +5,8 @@ CREATE TABLE IF NOT EXISTS boards(
     title text NOT NULL CHECK (title <> ''),
     link text NOT NULL UNIQUE CHECK (
         link ~* '\/boards\/.*'
-    )
+    ),
+    archived boolean DEFAULT false
 );
 
 CREATE OR REPLACE FUNCTION boards_insert_link() RETURNS trigger AS $$
