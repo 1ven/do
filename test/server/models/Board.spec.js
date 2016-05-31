@@ -141,6 +141,29 @@ describe('Board', () => {
             });
         });
     });
+
+    describe('archive', () => {
+        const boardId = ids.boards[0];
+
+        it('should set `archive` flag to true', () => {
+            return Board.archive(boardId)
+                .then(() => {
+                    return db.one(`SELECT archived FROM boards WHERE id = $1`, [boardId]);
+                })
+                .then(result => {
+                    assert.isTrue(result.archived);
+                });
+        });
+
+        it('should return archived entry id', () => {
+            return Board.archive(boardId)
+                .then(result => {
+                    assert.deepEqual(result, {
+                        id: boardId
+                    });
+                });
+        });
+    });
 });
 
 function setup() {

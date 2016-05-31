@@ -94,6 +94,27 @@ describe('List', () => {
             });
         });
     });
+
+    describe('archive', () => {
+        it('should set `archive` flag to true', () => {
+            return List.archive(listId)
+                .then(() => {
+                    return db.one(`SELECT archived FROM lists WHERE id = $1`, [listId]);
+                })
+                .then(result => {
+                    assert.isTrue(result.archived);
+                });
+        });
+
+        it('should return archived entry id', () => {
+            return List.archive(listId)
+                .then(result => {
+                    assert.deepEqual(result, {
+                        id: listId
+                    });
+                });
+        });
+    });
 });
 
 function setup() {

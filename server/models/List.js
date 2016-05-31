@@ -46,6 +46,12 @@ const List = {
                         return _.assign({}, card, { activity });
                     });
             });
+    },
+
+    archive(listId) {
+        return db.one(`
+            UPDATE lists SET (archived) = (true) WHERE id = $1 RETURNING id
+        `, [listId]);
     }
 };
 

@@ -60,6 +60,12 @@ const Card = {
             WHERE cr.id = $1
             GROUP BY cr.id
         `, [cardId]);
+    },
+
+    archive(cardId) {
+        return db.one(`
+            UPDATE cards SET (archived) = (true) WHERE id = $1 RETURNING id
+        `, [cardId]);
     }
 };
 
