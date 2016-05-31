@@ -15,7 +15,8 @@ export default function entities(state = {}, action) {
         lists: listsReducer(state.lists, action),
         cards: cardsReducer(state.cards, action),
         users: state.users || {},
-        comments: state.comments || {}
+        comments: state.comments || {},
+        activity: state.activity || {}
     }
 };
 

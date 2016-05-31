@@ -1,5 +1,5 @@
 import React, { Component, PropTypes } from 'react';
-import Activity from './Activity';
+import ActivityContainer from '../containers/ActivityContainer';
 import Icon from './Icon';
 import Toggle from './Toggle';
 
@@ -121,7 +121,7 @@ function Menu() {
                 </div>
             </div>
             <div className="b-menu__activity">
-                <Activity items={activity} />
+                <ActivityContainer />
             </div>
         </div>
     );

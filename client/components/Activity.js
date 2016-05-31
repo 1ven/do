@@ -1,4 +1,5 @@
 import React, { Component, PropTypes } from 'react';
+import { Link } from 'react-router';
 
 function Activity({ items }) {
     return (
@@ -15,12 +16,12 @@ function Activity({ items }) {
                         <div className="b-activity__item-text">
                             {item.action}
                             &nbsp;
-                            <a
+                            <Link
                                 className="b-activity__entry"
-                                href={item.entry.link}
+                                to={item.entry.link}
                             >
                                 {item.entry.title}
-                            </a>
+                            </Link>
                             &nbsp;
                             {item.type}
                         </div>
