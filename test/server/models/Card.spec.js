@@ -142,6 +142,27 @@ describe('Card', () => {
             });
         });
     });
+
+    describe('archive', () => {
+        it('should set `archive` flag to true', () => {
+            return Card.archive(cardId)
+                .then(() => {
+                    return db.one(`SELECT archived FROM cards WHERE id = $1`, [cardId]);
+                })
+                .then(result => {
+                    assert.isTrue(result.archived);
+                });
+        });
+
+        it('should return archived entry id', () => {
+            return Card.archive(cardId)
+                .then(result => {
+                    assert.deepEqual(result, {
+                        id: cardId
+                    });
+                });
+        });
+    });
 });
 
 function setup() {
