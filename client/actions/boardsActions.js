@@ -107,3 +107,39 @@ export function updateBoard(id, props) {
         }
     };
 };
+
+export function incListsLength(boardId) {
+    return {
+        type: types.BOARDS_INC_LISTS_LENGTH,
+        payload: {
+            boardId
+        }
+    };
+};
+
+export function decListsLength(boardId) {
+    return {
+        type: types.BOARDS_DEC_LISTS_LENGTH,
+        payload: {
+            boardId
+        }
+    };
+};
+
+export function incCardsLength(boardId) {
+    return {
+        type: types.BOARDS_INC_CARDS_LENGTH,
+        payload: {
+            boardId
+        }
+    };
+};
+
+export function decCardsLength(boardId) {
+    return {
+        type: types.BOARDS_DEC_CARDS_LENGTH,
+        payload: {
+            boardId
+        }
+    };
+};

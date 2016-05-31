@@ -12,7 +12,7 @@ class List extends Component {
     }
 
     handleRemoveClick() {
-        const { onRemoveClick, id } = this.props;
+        const { onRemoveClick, data: { id } } = this.props;
         onRemoveClick(id);
     }
 

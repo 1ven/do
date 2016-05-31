@@ -64,6 +64,46 @@ function boardsReducer(state = {}, action) {
                 })
             });
         }
+        case types.BOARDS_INC_LISTS_LENGTH: {
+            const { boardId } = payload;
+            const board = state[boardId];
+
+            return assign({}, state, {
+                [payload.boardId]: assign({}, board, {
+                    lists_length: board.lists_length + 1
+                })
+            });
+        }
+        case types.BOARDS_DEC_LISTS_LENGTH: {
+            const { boardId } = payload;
+            const board = state[boardId];
+
+            return assign({}, state, {
+                [payload.boardId]: assign({}, board, {
+                    lists_length: board.lists_length - 1
+                })
+            });
+        }
+        case types.BOARDS_INC_CARDS_LENGTH: {
+            const { boardId } = payload;
+            const board = state[boardId];
+
+            return assign({}, board, {
+                [payload.boardId]: assign({}, board, {
+                    cards_length: board.cards_length + 1
+                })
+            });
+        }
+        case types.BOARDS_DEC_CARDS_LENGTH: {
+            const { boardId } = payload;
+            const board = state[boardId];
+
+            return assign({}, board, {
+                [payload.boardId]: assign({}, board, {
+                    cards_length: board.cards_length - 1
+                })
+            });
+        }
         default:
             return state;
     }
