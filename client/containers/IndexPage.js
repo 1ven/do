@@ -26,7 +26,9 @@ class IndexPage extends Component {
     }
 
     componentWillMount() {
-        if (!this.props.boards.length) { this.props.dispatch(getBoards()); }
+        if (!this.props.lastUpdated) {
+            this.props.dispatch(getBoards());
+        }
     }
 
     shouldComponentUpdate(nextProps) {
@@ -122,32 +124,11 @@ function mapStateToProps(state) {
     const { boards, lists } = state.entities;
     const { ids, isFetching, lastUpdated } = state.pages.index;
 
-    const items = ids.map(id => {
-        const board = boards[id];
-        const stats = getBoardStats(board, state);
-
-        return _.assign({}, board, stats);
-    }, []);
-
     return {
-        boards: items,
+        boards: ids.map(id => boards[id]),
         isFetching,
         lastUpdated
     };
-};
-
-function getBoardStats(board, state) {
-    const { lists } = state.entities;
-    const listsIds = board.lists || [];
-
-    const listsLength = listsIds.length;
-    const cardsLength = listsIds.reduce((acc, listId) => {
-        const list = lists[listId];
-        const cardsIds = list.cards || [];
-        return acc + cardsIds.length;
-    }, 0);
-
-    return { listsLength, cardsLength };
 };
 
 export default connect(

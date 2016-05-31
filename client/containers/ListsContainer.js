@@ -2,7 +2,7 @@ import React, { PropTypes, Component } from 'react';
 import { connect } from 'react-redux';
 import Lists from '../components/Lists';
 import { removeList } from '../actions/listsActions';
-import { removeListId } from '../actions/boardsActions';
+import { removeListId, decListsLength } from '../actions/boardsActions';
 import EditListModal from './EditListModal';
 
 class ListsContainer extends Component {
@@ -31,12 +31,13 @@ class ListsContainer extends Component {
         });
     }
 
-    handleListRemoveClick(id) {
+    handleListRemoveClick(listId) {
         const { dispatch, boardId } = this.props;
-        dispatch(removeList(id))
+        dispatch(removeList(listId))
             .then(action => {
                 if (!action.payload.error) {
-                    dispatch(removeListId(ownProps.boardId, id));
+                    dispatch(removeListId(boardId, listId));
+                    dispatch(decListsLength(boardId));
                 }
             });
     }
@@ -64,6 +65,7 @@ class ListsContainer extends Component {
 
 ListsContainer.propTypes = {
     lists: PropTypes.array.isRequired,
+    boardId: PropTypes.string.isRequired,
     dispatch: PropTypes.func.isRequired
 };
 

@@ -2,6 +2,7 @@ import React, { PropTypes, Component } from 'react';
 import { connect } from 'react-redux'
 import { addCardId } from '../actions/listsActions';
 import { createCard } from '../actions/cardsActions';
+import { incCardsLength } from '../actions/boardsActions';
 import ModalForm from '../components/ModalForm';
 import Modal from '../components/Modal';
 import Input from '../components/Input';
@@ -43,7 +44,9 @@ function mapDispatchToProps(dispatch, ownProps) {
             dispatch(createCard(listId, formData.text))
                 .then(action => {
                     if (!action.error) {
-                        dispatch(addCardId(listId, action.payload.result));
+                        const cardId = action.payload.result;
+                        dispatch(addCardId(listId, cardId));
+                        /* dispatch(incCardsLength(boardId)); */
                         ownProps.hideModal();
                     }
                 });

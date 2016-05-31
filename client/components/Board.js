@@ -38,6 +38,7 @@ function Board({
                     </div>
                     <div className="b-board__lists">
                         <ListsContainer
+                            boardId={data.id}
                             lists={data.lists}
                         />
                     </div>

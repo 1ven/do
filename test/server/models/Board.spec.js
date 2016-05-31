@@ -102,32 +102,25 @@ describe('Board', () => {
     });
 
     describe('find', () => {
-        const nestedBoards = [{
-            id: ids.boards[0],
-            title: 'test board',
-            link: '/boards/' + ids.boards[0],
-            lists: [{
-                id: ids.lists[0],
-                title: 'test list',
-                link: '/boards/' + ids.boards[0] + '/lists/' + ids.lists[0],
-                cards: [{
-                    id: ids.cards[0],
-                    text: 'test card',
-                    link: '/boards/' + ids.boards[0] + '/cards/' + ids.cards[0]
-                }]
-            }]
-        }, {
-            id: ids.boards[1],
-            title: 'test board 2',
-            link: '/boards/' + ids.boards[1],
-            lists: []
-        }];
-
         describe('findById', () => {
             it('should return board with nested children', () => {
                 return Board.findById(ids.boards[0])
                     .then(board => {
-                        assert.deepEqual(board, nestedBoards[0]);
+                        assert.deepEqual(board, {
+                            id: ids.boards[0],
+                            title: 'test board',
+                            link: '/boards/' + ids.boards[0],
+                            lists: [{
+                                id: ids.lists[0],
+                                title: 'test list',
+                                link: '/boards/' + ids.boards[0] + '/lists/' + ids.lists[0],
+                                cards: [{
+                                    id: ids.cards[0],
+                                    text: 'test card',
+                                    link: '/boards/' + ids.boards[0] + '/cards/' + ids.cards[0]
+                                }]
+                            }]
+                        });
                     });
             });
         });
@@ -136,7 +129,13 @@ describe('Board', () => {
             it('should return all boards with nested children', () => {
                 return Board.findAllByUser(ids.users[0])
                     .then(boards => {
-                        assert.deepEqual(boards, [nestedBoards[0]]);
+                        assert.deepEqual(boards, [{
+                            id: ids.boards[0],
+                            title: 'test board',
+                            link: '/boards/' + ids.boards[0],
+                            lists_length: 1,
+                            cards_length: 1
+                        }]);
                     });
             });
         });

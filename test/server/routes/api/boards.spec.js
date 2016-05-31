@@ -21,8 +21,8 @@ describe('boards routes', () => {
 
                     const board = res.body.result;
 
-                    assert.property(board, 'id');
-                    assert.deepEqual(_.omit(board, ['id']), {
+                    assert.deepEqual(board, {
+                        id: boardId,
                         title: 'test board 1',
                         link: '/boards/' + boardId,
                         lists: []
@@ -46,12 +46,14 @@ describe('boards routes', () => {
                         id: boardId,
                         title: 'test board 1',
                         link: '/boards/' + boardId,
-                        lists: []
+                        lists_length: 0,
+                        cards_length: 0
                     }, {
                         id: board3Id,
                         title: 'test board 3',
                         link: '/boards/' + board3Id,
-                        lists: []
+                        lists_length: 0,
+                        cards_length: 0
                     }]);
 
                     done();

@@ -1,7 +1,7 @@
 import React, { PropTypes, Component } from 'react';
 import { connect } from 'react-redux'
 import { createList } from '../actions/listsActions';
-import { addListId } from '../actions/boardsActions';
+import { addListId, incListsLength } from '../actions/boardsActions';
 import ModalForm from '../components/ModalForm';
 import Modal from '../components/Modal';
 import Input from '../components/Input';
@@ -49,7 +49,8 @@ function mapDispatchToProps(dispatch, ownProps) {
             dispatch(createList(boardId, formData.title))
                 .then(action => {
                     if (!action.payload.error) {
-                        dispatch(addListId(boardId, action.payload.result))
+                        dispatch(addListId(boardId, action.payload.result));
+                        dispatch(incListsLength(boardId));
                         ownProps.hideModal();
                     }
                 });
