@@ -91,6 +91,12 @@ const Board = {
             GROUP BY b.id
             ORDER BY b.index
         `, [userId]);
+    },
+
+    archive(boardId) {
+        return db.one(`
+            UPDATE boards SET (archived) = (true) WHERE id = $1 RETURNING id
+        `, [boardId]);
     }
 };
 
