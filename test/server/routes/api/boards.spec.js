@@ -45,11 +45,15 @@ describe('boards routes', () => {
                     assert.deepEqual(boards, [{
                         id: boardId,
                         title: 'test board 1',
-                        link: '/boards/' + boardId
+                        link: '/boards/' + boardId,
+                        lists_length: '0',
+                        cards_length: '0'
                     }, {
                         id: board3Id,
                         title: 'test board 3',
-                        link: '/boards/' + board3Id
+                        link: '/boards/' + board3Id,
+                        lists_length: '0',
+                        cards_length: '0'
                     }]);
 
                     done();

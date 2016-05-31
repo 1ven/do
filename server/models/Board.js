@@ -73,7 +73,14 @@ const Board = {
 
     findAllByUser(userId) {
         return db.query(`
-            SELECT b.id, b.title, b.link FROM boards AS b
+            SELECT b.id, b.title, b.link, (
+                SELECT count(list_id) FROM boards_lists
+                WHERE board_id = b.id
+            ) AS lists_length, (
+                SELECT count(card_id) FROM lists_cards AS lc
+                JOIN boards_lists AS bl ON (bl.board_id = b.id) AND (bl.list_id = lc.list_id)
+            ) AS cards_length
+            FROM boards AS b
             INNER JOIN users_boards AS ub ON (user_id = $1 AND ub.board_id = b.id)
             GROUP BY b.id
             ORDER BY b.index
