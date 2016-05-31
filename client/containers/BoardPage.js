@@ -23,7 +23,9 @@ class BoardPage extends Component {
 
     componentWillMount() {
         // caching
-        if (!this.props.board) { loadBoard(this.props); }
+        if (!this.props.lastUpdated) {
+            loadBoard(this.props);
+        }
     }
 
     shouldComponentUpdate(nextProps) {
@@ -70,7 +72,7 @@ class BoardPage extends Component {
 
         return (
             <div>
-                {isFetching || (!lastUpdated && !board) ? (
+                {isFetching || !lastUpdated ? (
                     <Loader />
                 ) : !board ? (
                     <div>Board not found</div>
