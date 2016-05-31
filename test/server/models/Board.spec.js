@@ -133,8 +133,8 @@ describe('Board', () => {
                             id: ids.boards[0],
                             title: 'test board',
                             link: '/boards/' + ids.boards[0],
-                            lists_length: '1',
-                            cards_length: '1'
+                            lists_length: 1,
+                            cards_length: 1
                         }]);
                     });
             });

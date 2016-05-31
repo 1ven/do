@@ -74,10 +74,10 @@ const Board = {
     findAllByUser(userId) {
         return db.query(`
             SELECT b.id, b.title, b.link, (
-                SELECT count(list_id) FROM boards_lists
+                SELECT count(list_id)::integer FROM boards_lists
                 WHERE board_id = b.id
             ) AS lists_length, (
-                SELECT count(card_id) FROM lists_cards AS lc
+                SELECT count(card_id)::integer FROM lists_cards AS lc
                 JOIN boards_lists AS bl ON (bl.board_id = b.id) AND (bl.list_id = lc.list_id)
             ) AS cards_length
             FROM boards AS b
