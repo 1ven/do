@@ -56,14 +56,17 @@ const Board = {
             FROM boards AS b
             LEFT JOIN boards_lists ON (b.id = board_id)
             LEFT JOIN (
-                SELECT l.id, l.title, l.link,
+                SELECT l.id, l.title, l.link, bl.board_id,
                     COALESCE (json_agg(c) FILTER (WHERE c.id IS NOT NULL), '[]') AS cards
                 FROM lists AS l
-                LEFT JOIN lists_cards ON (l.id = list_id)
+                LEFT JOIN boards_lists AS bl ON (l.id = bl.list_id)
+                LEFT JOIN lists_cards AS lc ON (l.id = lc.list_id)
                 LEFT JOIN (
-                    SELECT id, text, link from cards
-                ) AS c ON (c.id = card_id)
-                GROUP BY l.id
+                    SELECT id, text, link, bl.board_id, bl.list_id FROM cards AS c
+                    LEFT JOIN lists_cards AS lc ON (lc.card_id = c.id)
+                    LEFT JOIN boards_lists AS bl ON (bl.list_id = lc.list_id)
+                ) AS c ON (c.id = lc.card_id)
+                GROUP BY l.id, bl.board_id
             ) AS l ON (l.id = list_id)
             WHERE b.id = $1
             GROUP BY b.id

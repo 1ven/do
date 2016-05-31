@@ -114,10 +114,13 @@ describe('Board', () => {
                                 id: ids.lists[0],
                                 title: 'test list',
                                 link: '/boards/' + ids.boards[0] + '/lists/' + ids.lists[0],
+                                board_id: ids.boards[0],
                                 cards: [{
                                     id: ids.cards[0],
                                     text: 'test card',
-                                    link: '/boards/' + ids.boards[0] + '/cards/' + ids.cards[0]
+                                    link: '/boards/' + ids.boards[0] + '/cards/' + ids.cards[0],
+                                    board_id: ids.boards[0],
+                                    list_id: ids.lists[0]
                                 }]
                             }]
                         });
