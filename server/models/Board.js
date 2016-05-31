@@ -73,20 +73,7 @@ const Board = {
 
     findAllByUser(userId) {
         return db.query(`
-            SELECT b.id, b.title, b.link,
-                COALESCE (json_agg(l) FILTER (WHERE l.id IS NOT NULL), '[]') AS lists
-            FROM boards AS b
-            LEFT JOIN boards_lists AS bl ON (b.id = bl.board_id)
-            LEFT JOIN (
-                SELECT l.id, l.title, l.link,
-                    COALESCE (json_agg(c) FILTER (WHERE c.id IS NOT NULL), '[]') AS cards
-                FROM lists AS l
-                LEFT JOIN lists_cards ON (l.id = list_id)
-                LEFT JOIN (
-                    SELECT id, text, link from cards
-                ) AS c ON (c.id = card_id)
-                GROUP BY l.id
-            ) AS l ON (l.id = list_id)
+            SELECT b.id, b.title, b.link FROM boards AS b
             INNER JOIN users_boards AS ub ON (user_id = $1 AND ub.board_id = b.id)
             GROUP BY b.id
             ORDER BY b.index

@@ -136,7 +136,8 @@ describe('Board', () => {
             it('should return all boards with nested children', () => {
                 return Board.findAllByUser(ids.users[0])
                     .then(boards => {
-                        assert.deepEqual(boards, [nestedBoards[0]]);
+                        const board = _.omit(nestedBoards[0], ['lists']);
+                        assert.deepEqual(boards, [board]);
                     });
             });
         });
