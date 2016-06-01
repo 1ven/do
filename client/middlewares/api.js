@@ -33,10 +33,21 @@ export default store => next => action => {
         return next(action);
     }
 
-    const { types, endpoint, schema, request } = options;
-    const [ requestType, successType, errorType ] = types;
+    const {
+        types,
+        endpoint,
+        schema,
+        request,
+        requestPayload
+    } = options;
 
-    next({ type: requestType });
+    const [
+        requestType,
+        successType,
+        errorType
+    ] = types;
+
+    next({ type: requestType, payload: requestPayload });
 
     return callApi(endpoint, request)
         .then(json => {
