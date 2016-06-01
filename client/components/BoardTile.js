@@ -27,8 +27,8 @@ class BoardTile extends Component {
             data: {
                 link,
                 title,
-                lists_length,
-                cards_length
+                listsLength,
+                cardsLength
             },
             onRemoveClick
         } = this.props;
@@ -61,7 +61,7 @@ class BoardTile extends Component {
                                     iconWidth="15"
                                     iconName="list"
                                 >
-                                    {lists_length}
+                                    {listsLength}
                                 </IconItem>
                             </div>
                             <div className="b-board-tile__icon-item">
@@ -69,7 +69,7 @@ class BoardTile extends Component {
                                     iconWidth="14"
                                     iconName="card"
                                 >
-                                    {cards_length}
+                                    {cardsLength}
                                 </IconItem>
                             </div>
                         </div>
@@ -93,8 +93,8 @@ BoardTile.propTypes = {
         id: PropTypes.string.isRequired,
         title: PropTypes.string.isRequired,
         link: PropTypes.string.isRequired,
-        lists_length: PropTypes.number.isRequired,
-        cards_length: PropTypes.number.isRequired
+        listsLength: PropTypes.number.isRequired,
+        cardsLength: PropTypes.number.isRequired
     }),
     onRemoveClick: PropTypes.func.isRequired
 };

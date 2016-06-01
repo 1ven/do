@@ -70,7 +70,7 @@ function boardsReducer(state = {}, action) {
 
             return assign({}, state, {
                 [payload.boardId]: assign({}, board, {
-                    lists_length: board.lists_length + 1
+                    listsLength: board.listsLength + 1
                 })
             });
         }
@@ -80,7 +80,7 @@ function boardsReducer(state = {}, action) {
 
             return assign({}, state, {
                 [payload.boardId]: assign({}, board, {
-                    lists_length: board.lists_length - 1
+                    listsLength: board.listsLength - 1
                 })
             });
         }
@@ -90,7 +90,7 @@ function boardsReducer(state = {}, action) {
 
             return assign({}, board, {
                 [payload.boardId]: assign({}, board, {
-                    cards_length: board.cards_length + 1
+                    cardsLength: board.cardsLength + 1
                 })
             });
         }
@@ -100,7 +100,7 @@ function boardsReducer(state = {}, action) {
 
             return assign({}, board, {
                 [payload.boardId]: assign({}, board, {
-                    cards_length: board.cards_length - 1
+                    cardsLength: board.cardsLength - 1
                 })
             });
         }
