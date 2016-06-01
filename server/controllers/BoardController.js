@@ -60,3 +60,13 @@ exports.createList = function (req, res, next) {
             res.status(201).json({ result: list });
         }, next);
 };
+
+exports.markAsStarred = function (req, res, next) {
+    const userId = req.user.id;
+    const boardId = req.params.id;
+
+    return Board.markAsStarred(userId, boardId)
+        .then(board => {
+            res.status(200).json({ result: board });
+        }, next);
+};
