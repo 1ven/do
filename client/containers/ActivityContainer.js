@@ -37,7 +37,6 @@ ActivityContainer.propTypes = {
 function mapStateToProps(state) {
     const { activity } = state.entities;
 
-    // TODO Wrong sorting on server
     const items = isEmpty(activity) ? null : values(activity)
         .sort((a, b) => b.created_at - a.created_at)
         .filter((item, i) => i < 15)
