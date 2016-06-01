@@ -17,26 +17,23 @@ describe('Card', () => {
     beforeEach(() => recreateTables().then(setup));
 
     describe('update', () => {
-        it('should update card and return updated card', () => {
+        it('should update card and return updated card with id, activity and updated fields', () => {
             return Card.update(userId, cardId, { text: 'updated text' })
                 .then(card => {
-                    const link = '/boards/' + boardId + '/cards/' + cardId;
                     const text = 'updated text';
 
                     assert.property(card.activity, 'created_at');
                     delete card.activity.created_at;
                     assert.deepEqual(card, {
                         id: cardId,
-                        board_id: boardId,
                         text,
-                        link,
                         activity: {
                             id: 1,
                             action: 'Updated',
                             type: 'card',
                             entry: {
                                 title: text,
-                                link
+                                link: '/boards/' + boardId + '/cards/' + cardId
                             }
                         }
                     });

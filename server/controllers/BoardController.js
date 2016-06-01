@@ -34,8 +34,9 @@ exports.update = function (req, res, next) {
     const userId = req.user.id;
     const boardId = req.params.id;
     const props = sanitize(req.body);
+    const activityAction = req.query.activityAction;
 
-    return Board.update(userId, boardId, props)
+    return Board.update(userId, boardId, props, activityAction)
         .then(board => {
             res.status(200).json({ result: board });
         }, next);

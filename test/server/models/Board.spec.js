@@ -15,13 +15,12 @@ describe('Board', () => {
     beforeEach(() => recreateTables().then(setup));
 
     describe('update', () => {
-        it('should update board and return updated board', () => {
+        it('should update board and return updated board with id, activity and updated fields', () => {
             return Board.update(userId, boardId, { title: 'updated title' })
                 .then(board => {
-                    assert.property(board, 'link');
                     assert.property(board.activity, 'created_at');
                     delete board.activity.created_at;
-                    assert.deepEqual(_.omit(board, ['link']), {
+                    assert.deepEqual(board, {
                         id: boardId,
                         title: 'updated title',
                         activity: {

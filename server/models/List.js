@@ -14,7 +14,7 @@ const List = {
         const values = _.values(_data);
 
         return db.one(`
-            UPDATE lists SET ($2^) = ($3:csv) WHERE id = $1 RETURNING id, title, link
+            UPDATE lists SET ($2^) = ($3:csv) WHERE id = $1 RETURNING id, $2^
         `, [listId, props, values])
             .then(list => {
                 return Activity.create(userId, listId, 'lists', 'Updated')

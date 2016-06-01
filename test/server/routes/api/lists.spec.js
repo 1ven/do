@@ -49,9 +49,8 @@ describe('lists routes', () => {
 
                     const list = res.body.result;
 
-                    assert.property(list, 'link');
                     assert.property(list, 'activity');
-                    assert.deepEqual(_.omit(list, ['link', 'activity']), {
+                    assert.deepEqual(_.omit(list, ['activity']), {
                         id: listId,
                         title: 'new title'
                     });

@@ -5,7 +5,7 @@ const db = require('../db');
 const Activity = require('./Activity');
 
 const Board = {
-    update(userId, boardId, data) {
+    update(userId, boardId, data, activityAction) {
         const _data = _.pick(data, ['title']);
 
         if (_.isEmpty(_data)) return;
@@ -14,10 +14,10 @@ const Board = {
         const values = _.values(_data);
 
         return db.one(`
-            UPDATE boards SET ($2^) = ($3:csv) WHERE id = $1 RETURNING id, title, link
+            UPDATE boards SET ($2^) = ($3:csv) WHERE id = $1 RETURNING id, $2^
         `, [boardId, props, values])
             .then(board => {
-                return Activity.create(userId, boardId, 'boards', 'Updated')
+                return Activity.create(userId, boardId, 'boards', activityAction || 'Updated')
                     .then(activity => {
                         return _.assign({}, board, { activity });
                     });

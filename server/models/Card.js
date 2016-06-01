@@ -14,11 +14,7 @@ const Card = {
         const values = _.values(_data);
 
         return db.one(`
-            UPDATE cards SET ($2^) = ($3:csv) WHERE id = $1;
-            SELECT id, text, link, bl.board_id FROM cards AS c
-            LEFT JOIN lists_cards AS lc ON (lc.card_id = c.id)
-            LEFT JOIN boards_lists AS bl ON (bl.list_id = lc.list_id)
-            WHERE id = $1;
+            UPDATE cards SET ($2^) = ($3:csv) WHERE id = $1 RETURNING id, $2^;
         `, [cardId, props, values])
             .then(card => {
                 return Activity.create(userId, cardId, 'cards', 'Updated')

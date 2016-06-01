@@ -13,13 +13,12 @@ describe('List', () => {
     beforeEach(() => recreateTables().then(setup));
 
     describe('update', () => {
-        it('should update list and return updated list', () => {
+        it('should update list and return updated list with id, activity and updated fields', () => {
             return List.update(userId, listId, { title: 'updated title' })
                 .then(list => {
-                    assert.property(list, 'link');
                     assert.property(list.activity, 'created_at');
                     delete list.activity.created_at;
-                    assert.deepEqual(_.omit(list, ['link']), {
+                    assert.deepEqual(list, {
                         id: listId,
                         title: 'updated title',
                         activity: {
