@@ -159,6 +159,36 @@ describe('Board', () => {
                 });
         });
     });
+
+    describe('markAsStarred', () => {
+        it('should mark board as `starred` and return updated board', () => {
+            return Board.markAsStarred(userId, boardId)
+                .then(board => {
+                    assert.deepEqual(board, {
+                        id: boardId,
+                        title: 'test board',
+                        link: '/boards/' + boardId,
+                        lists_length: 1,
+                        cards_length: 1,
+                        starred: true
+                    });
+                });
+        });
+
+        it('should add corresponding activity', () => {
+            return Board.markAsStarred(userId, boardId)
+                .then(() => {
+                    return db.one(`
+                        SELECT EXISTS (
+                            SELECT FROM activity WHERE entry_id = $1 AND action = 'Starred'
+                        )
+                    `, [boardId]);
+                })
+                .then(result => {
+                    assert.isTrue(result.exists);
+                });
+        });
+    });
 });
 
 function setup() {

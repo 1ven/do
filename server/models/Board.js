@@ -39,10 +39,10 @@ const Board = {
                 return db.one(`
                     INSERT INTO boards_lists VALUES ($1, $2);
                     SELECT id, title, link FROM lists WHERE id = $2
-                `, [boardId, list.id]);
+                `, [boardId, listId]);
             })
             .then(list => {
-                return Activity.create(userId, list.id, 'lists', 'Created')
+                return Activity.create(userId, listId, 'lists', 'Created')
                     .then(activity => {
                         return _.assign({}, list, { activity });
                     });
@@ -91,6 +91,27 @@ const Board = {
         return db.one(`
             UPDATE boards SET (archived) = (true) WHERE id = $1 RETURNING id
         `, [boardId]);
+    },
+
+    markAsStarred(userId, boardId) {
+        return db.one(`
+            UPDATE boards SET (starred) = (true) WHERE id = $1;
+            SELECT b.id, b.title, b.link, b.starred, (
+                SELECT count(list_id)::integer FROM boards_lists
+                WHERE board_id = b.id
+            ) AS lists_length, (
+                SELECT count(card_id)::integer FROM lists_cards AS lc
+                JOIN boards_lists AS bl ON (bl.board_id = b.id) AND (bl.list_id = lc.list_id)
+            ) AS cards_length
+            FROM boards AS b
+            WHERE b.id = $1
+            GROUP BY b.id
+            ORDER BY b.index
+        `, [boardId])
+            .then(board => {
+                return Activity.create(userId, boardId, 'boards', 'Starred')
+                    .then(() => board);
+            });
     }
 };
 
