@@ -29,6 +29,7 @@ export function getBoard(id) {
             ],
             endpoint: '/api/boards/' + id,
             schema: BOARD,
+            requestPayload: { id },
             request: {
                 method: 'get',
             }

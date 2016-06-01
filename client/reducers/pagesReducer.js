@@ -38,23 +38,26 @@ function indexReducer(state = {
     }
 };
 
-function boardReducer(state = {
-    isFetching: false,
-    lastUpdated: undefined
-}, action) {
+function boardReducer(state = {}, action) {
     switch (action.type) {
         case types.BOARDS_GET_REQUEST:
             return assign({}, state, {
-                isFetching: true
+                [action.payload.id]: {
+                    isFetching: true
+                }
             });
         case types.BOARDS_GET_SUCCESS:
             return assign({}, state, {
-                isFetching: false,
-                lastUpdated: action.payload.receivedAt
+                [action.payload.result]: {
+                    isFetching: false,
+                    lastUpdated: action.payload.receivedAt
+                }
             });
         case types.BOARDS_GET_ERROR:
             return assign({}, state, {
-                isFetching: false
+                [action.payload.result]: {
+                    isFetching: false
+                }
             });
         default:
             return state;

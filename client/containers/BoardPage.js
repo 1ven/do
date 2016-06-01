@@ -102,7 +102,7 @@ class BoardPage extends Component {
 
 BoardPage.propTypes = {
     board: PropTypes.object,
-    isFetching: PropTypes.bool.isRequired,
+    isFetching: PropTypes.bool,
     lastUpdated: PropTypes.number,
     dispatch: PropTypes.func.isRequired,
     children: PropTypes.node
@@ -114,8 +114,9 @@ function loadBoard(props) {
 };
 
 function mapStateToProps(state, ownProps) {
-    const { isFetching, lastUpdated } = state.pages.board;
-    const board = state.entities.boards[ownProps.params.boardId];
+    const boardId = ownProps.params.boardId;
+    const { isFetching, lastUpdated } = state.pages.board[boardId] || {};
+    const board = state.entities.boards[boardId];
 
     return {
         board,
