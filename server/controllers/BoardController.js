@@ -65,7 +65,17 @@ exports.markAsStarred = function (req, res, next) {
     const userId = req.user.id;
     const boardId = req.params.id;
 
-    return Board.markAsStarred(userId, boardId)
+    return Board.toggleStarred(userId, boardId, true)
+        .then(board => {
+            res.status(200).json({ result: board });
+        }, next);
+};
+
+exports.markAsUnstarred = function (req, res, next) {
+    const userId = req.user.id;
+    const boardId = req.params.id;
+
+    return Board.toggleStarred(userId, boardId, false)
         .then(board => {
             res.status(200).json({ result: board });
         }, next);

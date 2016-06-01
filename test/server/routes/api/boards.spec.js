@@ -98,6 +98,41 @@ describe('boards routes', () => {
         });
     });
 
+    it('POST /api/boards/:id/unstar should respond with 200 and return updated board', (done) => {
+        setup().then(request => {
+            request
+                .post(`/api/boards/${boardId}/unstar`)
+                .expect(200)
+                .end((err, res) => {
+                    if (err) { return done(err); }
+
+                    const board = res.body.result;
+
+                    delete board.activity.created_at;
+
+                    assert.deepEqual(board, {
+                        id: boardId,
+                        title: 'test board 1',
+                        link: '/boards/' + boardId,
+                        lists_length: 0,
+                        cards_length: 0,
+                        starred: false,
+                        activity: {
+                            id: 1,
+                            action: 'Unstarred',
+                            type: 'board',
+                            entry: {
+                                title: 'test board 1',
+                                link: '/boards/' + boardId
+                            }
+                        }
+                    });
+
+                    done();
+                });
+        });
+    });
+
     it('POST /api/boards should respond with 201 and return created board', (done) => {
         setup().then(request => {
             request

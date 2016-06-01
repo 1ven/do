@@ -160,9 +160,9 @@ describe('Board', () => {
         });
     });
 
-    describe('markAsStarred', () => {
+    describe('toggleStarred', () => {
         it('should mark board as `starred` and return updated board', () => {
-            return Board.markAsStarred(userId, boardId)
+            return Board.toggleStarred(userId, boardId, true)
                 .then(board => {
                     delete board.activity.created_at;
                     assert.deepEqual(board, {

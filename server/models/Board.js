@@ -93,9 +93,11 @@ const Board = {
         `, [boardId]);
     },
 
-    markAsStarred(userId, boardId) {
+    toggleStarred(userId, boardId, starred) {
+        const action = starred ? 'Starred' : 'Unstarred';
+
         return db.one(`
-            UPDATE boards SET (starred) = (true) WHERE id = $1;
+            UPDATE boards SET (starred) = ($2) WHERE id = $1;
             SELECT b.id, b.title, b.link, b.starred, (
                 SELECT count(list_id)::integer FROM boards_lists
                 WHERE board_id = b.id
@@ -107,9 +109,9 @@ const Board = {
             WHERE b.id = $1
             GROUP BY b.id
             ORDER BY b.index
-        `, [boardId])
+        `, [boardId, starred])
             .then(board => {
-                return Activity.create(userId, boardId, 'boards', 'Starred')
+                return Activity.create(userId, boardId, 'boards', action)
                     .then(activity => {
                         return _.assign({}, board, { activity });
                     });

@@ -8,5 +8,6 @@ router.put('/:id', BoardController.update);
 router.delete('/:id', BoardController.drop);
 router.post('/:id/lists', BoardController.createList);
 router.post('/:id/star', BoardController.markAsStarred);
+router.post('/:id/unstar', BoardController.markAsUnstarred);
 
 module.exports = router;
