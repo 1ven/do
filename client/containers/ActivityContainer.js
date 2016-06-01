@@ -38,11 +38,11 @@ function mapStateToProps(state) {
     const { activity } = state.entities;
 
     const items = isEmpty(activity) ? null : values(activity)
-        .sort((a, b) => b.created_at - a.created_at)
+        .sort((a, b) => b.createdAt - a.createdAt)
         .filter((item, i) => i < 15)
         .map(item => {
-            const date = moment.unix(item.created_at).format('D MMM [at] HH:mm');
-            return assign({}, omit(item, ['created_at']), { date });
+            const date = moment.unix(item.createdAt).format('D MMM [at] HH:mm');
+            return assign({}, omit(item, ['createdAt']), { date });
         });
 
     return { items };
