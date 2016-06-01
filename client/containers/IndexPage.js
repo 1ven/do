@@ -123,11 +123,15 @@ IndexPage.propTypes = {
 function mapStateToProps(state) {
     const { boards, lists } = state.entities;
     const { ids, isFetching, lastUpdated } = state.pages.index;
+    const items = ids.map(id => boards[id]);
 
     return {
         groups: [{
+            title: 'Starred boards',
+            boards: items.filter(b => b.starred)
+        }, {
             title: 'My boards',
-            boards: ids.map(id => boards[id])
+            boards: items
         }],
         isFetching,
         lastUpdated
