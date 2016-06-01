@@ -45,8 +45,10 @@ function mapDispatchToProps(dispatch, ownProps) {
                 .then(action => {
                     if (!action.error) {
                         const cardId = action.payload.result;
+                        const { boardId } = action.payload.entities.cards[cardId];
+
                         dispatch(addCardId(listId, cardId));
-                        /* dispatch(incCardsLength(boardId)); */
+                        dispatch(incCardsLength(boardId));
                         ownProps.hideModal();
                     }
                 });

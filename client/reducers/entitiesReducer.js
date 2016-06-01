@@ -88,7 +88,7 @@ function boardsReducer(state = {}, action) {
             const { boardId } = payload;
             const board = state[boardId];
 
-            return assign({}, board, {
+            return assign({}, state, {
                 [payload.boardId]: assign({}, board, {
                     cardsLength: board.cardsLength + 1
                 })
@@ -98,7 +98,7 @@ function boardsReducer(state = {}, action) {
             const { boardId } = payload;
             const board = state[boardId];
 
-            return assign({}, board, {
+            return assign({}, state, {
                 [payload.boardId]: assign({}, board, {
                     cardsLength: board.cardsLength - 1
                 })
