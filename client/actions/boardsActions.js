@@ -71,6 +71,25 @@ export function removeBoard(id) {
     };
 };
 
+export function updateBoard(id, props, activityAction) {
+    const queryParams = activityAction ? '?activityAction=' + activityAction : '';
+    return {
+        [CALL_API]: {
+            types: [
+                types.BOARDS_UPDATE_REQUEST,
+                types.BOARDS_UPDATE_SUCCESS,
+                types.BOARDS_UPDATE_ERROR
+            ],
+            endpoint: `/api/boards/${id}${queryParams}`,
+            schema: BOARD,
+            request: {
+                method: 'put',
+                body: props
+            }
+        }
+    };
+};
+
 export function addListId(boardId, listId) {
     return {
         type: types.BOARDS_ADD_LIST_ID,
@@ -87,24 +106,6 @@ export function removeListId(boardId, listId) {
         payload: {
             boardId,
             listId
-        }
-    };
-};
-
-export function updateBoard(id, props) {
-    return {
-        [CALL_API]: {
-            types: [
-                types.BOARDS_UPDATE_REQUEST,
-                types.BOARDS_UPDATE_SUCCESS,
-                types.BOARDS_UPDATE_ERROR
-            ],
-            endpoint: `/api/boards/${id}`,
-            schema: BOARD,
-            request: {
-                method: 'put',
-                body: props
-            }
         }
     };
 };

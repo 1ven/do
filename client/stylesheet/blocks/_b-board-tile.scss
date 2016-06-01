@@ -15,6 +15,17 @@
     }
     &__right {
         margin-left: auto;
+        display: flex;
+    }
+    &__toggle-starred {
+        width: 13px;
+        display: block;
+    }
+    &__right-item {
+        margin-right: 10px;
+        &:last-child {
+            margin-right: 0;
+        }
     }
     &__more {
         font-size: 14px;

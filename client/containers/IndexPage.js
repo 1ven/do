@@ -1,7 +1,7 @@
 import React, { PropTypes, Component } from 'react';
 import _ from 'lodash';
 import { connect } from 'react-redux'
-import { getBoards, removeBoard } from '../actions/boardsActions';
+import { getBoards, removeBoard, updateBoard } from '../actions/boardsActions';
 import BoardsList from '../components/BoardsList.js';
 import Loader from '../components/Loader';
 import BottomBox from '../components/BottomBox';
@@ -22,6 +22,7 @@ class IndexPage extends Component {
         this.handleAddBoardBtnClick = this.handleAddBoardBtnClick.bind(this);
         this.handleBoardTileEditClick = this.handleBoardTileEditClick.bind(this);
         this.handleBoardTileRemoveClick = this.handleBoardTileRemoveClick.bind(this);
+        this.handleBoardTileToggleStarredClick = this.handleBoardTileToggleStarredClick.bind(this);
         this.hideModal = this.hideModal.bind(this);
     }
 
@@ -52,14 +53,20 @@ class IndexPage extends Component {
         });
     }
 
+    handleBoardTileRemoveClick(id) {
+        this.props.dispatch(removeBoard(id));
+    }
+
+    handleBoardTileToggleStarredClick(id, starred) {
+        this.props.dispatch(
+            updateBoard(id, { starred: !starred }, starred ? 'Unstarred' : 'Starred')
+        );
+    }
+
     hideModal() {
         this.setState({
             modal: null
         });
-    }
-
-    handleBoardTileRemoveClick(id) {
-        this.props.dispatch(removeBoard(id));
     }
 
     render() {
@@ -91,6 +98,7 @@ class IndexPage extends Component {
                         groups={groups}
                         onBoardTileRemoveClick={this.handleBoardTileRemoveClick}
                         onBoardTileEditClick={this.handleBoardTileEditClick}
+                        onBoardTileToggleStarredClick={this.handleBoardTileToggleStarredClick}
                     />
                 )}
                 <BottomBox

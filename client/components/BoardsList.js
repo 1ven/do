@@ -4,7 +4,8 @@ import BoardTile from './BoardTile';
 const BoardsList = ({
     groups,
     onBoardTileRemoveClick,
-    onBoardTileEditClick
+    onBoardTileEditClick,
+    onBoardTileToggleStarredClick
 }) => {
     return (
         <div className="b-boards-list">
@@ -34,6 +35,7 @@ const BoardsList = ({
                                             data={board}
                                             onRemoveClick={onBoardTileRemoveClick}
                                             onEditClick={onBoardTileEditClick}
+                                            onToggleStarredClick={onBoardTileToggleStarredClick}
                                         />
                                     </div>
                                 )
@@ -54,7 +56,8 @@ BoardsList.propTypes = {
         })
     ).isRequired,
     onBoardTileRemoveClick: PropTypes.func.isRequired,
-    onBoardTileEditClick: PropTypes.func.isRequired
+    onBoardTileEditClick: PropTypes.func.isRequired,
+    onBoardTileToggleStarredClick: PropTypes.func.isRequired
 };
 
 export default BoardsList;
