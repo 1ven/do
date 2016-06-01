@@ -5,6 +5,7 @@ import { recreateTables } from '../helpers';
 import db from 'server/db';
 import List from 'server/models/List';
 
+const userId = shortid.generate();
 const boardId = shortid.generate();
 const listId = shortid.generate();
 
@@ -13,7 +14,7 @@ describe('List', () => {
 
     describe('update', () => {
         it('should update list and return updated list', () => {
-            return List.update(listId, { title: 'updated title' })
+            return List.update(userId, listId, { title: 'updated title' })
                 .then(list => {
                     assert.property(list, 'link');
                     assert.property(list.activity, 'created_at');
@@ -60,7 +61,7 @@ describe('List', () => {
         };
 
         it('should create card', () => {
-            return List.createCard(listId, cardData).then(card => {
+            return List.createCard(userId, listId, cardData).then(card => {
                 const link = '/boards/' + boardId + '/cards/' + card.id;
 
                 assert.property(card, 'id');
@@ -84,13 +85,13 @@ describe('List', () => {
         });
 
         it('should generate shortid', () => {
-            return List.createCard(listId, cardData).then(card => {
+            return List.createCard(userId, listId, cardData).then(card => {
                 assert.isTrue(shortid.isValid(card.id));
             });
         });
 
         it('should relate card to list', () => {
-            return List.createCard(listId, cardData).then(card => {
+            return List.createCard(userId, listId, cardData).then(card => {
                 return db.one(`SELECT list_id FROM lists_cards WHERE card_id = $1`, [card.id]);
             }).then(result => {
                 assert.equal(result.list_id, listId);
@@ -122,8 +123,10 @@ describe('List', () => {
 
 function setup() {
     return db.none(`
+        INSERT INTO users(id, username, email, hash, salt)
+        VALUES ($3, 'test', 'test@test.com', 'hash', 'salt');
         INSERT INTO boards(id, title) VALUES ($1, 'test board');
         INSERT INTO lists(id, title) VALUES ($2, 'test list');
         INSERT INTO boards_lists VALUES ($1, $2)
-    `, [boardId, listId]);
+    `, [boardId, listId, userId]);
 };

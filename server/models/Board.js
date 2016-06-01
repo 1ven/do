@@ -5,7 +5,7 @@ const db = require('../db');
 const Activity = require('./Activity');
 
 const Board = {
-    update(id, data) {
+    update(userId, boardId, data) {
         const _data = _.pick(data, ['title']);
 
         if (_.isEmpty(_data)) return;
@@ -15,9 +15,9 @@ const Board = {
 
         return db.one(`
             UPDATE boards SET ($2^) = ($3:csv) WHERE id = $1 RETURNING id, title, link
-        `, [id, props, values])
+        `, [boardId, props, values])
             .then(board => {
-                return Activity.create(id, 'boards', 'Updated')
+                return Activity.create(userId, boardId, 'boards', 'Updated')
                     .then(activity => {
                         return _.assign({}, board, { activity });
                     });
@@ -28,7 +28,7 @@ const Board = {
         return db.one(`DELETE FROM boards WHERE id = $1 RETURNING id`, [id]);
     },
 
-    createList(boardId, listData) {
+    createList(userId, boardId, listData) {
         const listId = shortid.generate();
 
         return db.one(`
@@ -42,7 +42,7 @@ const Board = {
                 `, [boardId, list.id]);
             })
             .then(list => {
-                return Activity.create(list.id, 'lists', 'Created')
+                return Activity.create(userId, list.id, 'lists', 'Created')
                     .then(activity => {
                         return _.assign({}, list, { activity });
                     });

@@ -2,10 +2,11 @@ const sanitize = require('../utils/sanitize');
 const Card = require('../models/Card');
 
 exports.update = function (req, res, next) {
-    const id = req.params.id;
+    const userId = req.user.id;
+    const cardId = req.params.id;
     const props = sanitize(req.body);
 
-    return Card.update(id, props)
+    return Card.update(userId, cardId, props)
         .then(card => {
             res.status(200).json({ result: card });
         }, next);

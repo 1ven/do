@@ -5,27 +5,24 @@ import { recreateTables } from '../helpers';
 import db from 'server/db';
 import Board from 'server/models/Board';
 
-const id = () => shortid.generate();
-
-const ids = {
-    users: [id()],
-    boards: [id(), id()],
-    lists: [id()],
-    cards: [id()]
-};
+const boardId = shortid.generate();
+const board2Id = shortid.generate();
+const userId = shortid.generate();
+const listId = shortid.generate();
+const cardId = shortid.generate();
 
 describe('Board', () => {
     beforeEach(() => recreateTables().then(setup));
 
     describe('update', () => {
         it('should update board and return updated board', () => {
-            return Board.update(ids.boards[0], { title: 'updated title' })
+            return Board.update(userId, boardId, { title: 'updated title' })
                 .then(board => {
                     assert.property(board, 'link');
                     assert.property(board.activity, 'created_at');
                     delete board.activity.created_at;
                     assert.deepEqual(_.omit(board, ['link']), {
-                        id: ids.boards[0],
+                        id: boardId,
                         title: 'updated title',
                         activity: {
                             id: 1,
@@ -33,7 +30,7 @@ describe('Board', () => {
                             type: 'board',
                             entry: {
                                 title: 'updated title',
-                                link: '/boards/' + ids.boards[0]
+                                link: '/boards/' + boardId
                             }
                         }
                     });
@@ -43,7 +40,7 @@ describe('Board', () => {
 
     describe('drop', () => {
         it('should drop board entry', () => {
-            return Board.drop(ids.boards[1])
+            return Board.drop(board2Id)
                 .then(() => {
                     return db.query(`SELECT id FROM boards WHERE id = '2'`);
                 })
@@ -53,9 +50,9 @@ describe('Board', () => {
         });
 
         it('should return dropped board id', () => {
-            return Board.drop(ids.boards[1])
+            return Board.drop(board2Id)
                 .then(result => {
-                    assert.equal(result.id, ids.boards[1]);
+                    assert.equal(result.id, board2Id);
                 });
         });
     });
@@ -66,20 +63,20 @@ describe('Board', () => {
         };
 
         it('should create list', () => {
-            return Board.createList(ids.boards[0], listData).then(list => {
+            return Board.createList(userId, boardId, listData).then(list => {
                 assert.property(list, 'id');
                 assert.property(list.activity, 'created_at');
                 delete list.activity.created_at;
                 assert.deepEqual(_.omit(list, ['id']), {
                     title: listData.title,
-                    link: '/boards/' + ids.boards[0] + '/lists/' + list.id,
+                    link: '/boards/' + boardId + '/lists/' + list.id,
                     activity: {
                         id: 1,
                         action: 'Created',
                         type: 'list',
                         entry: {
                             title: listData.title,
-                            link: '/boards/' + ids.boards[0] + '/lists/' + list.id
+                            link: '/boards/' + boardId + '/lists/' + list.id
                         }
                     }
                 });
@@ -87,15 +84,15 @@ describe('Board', () => {
         });
 
         it('should relate list to board', () => {
-            return Board.createList(ids.boards[0], listData).then(list => {
+            return Board.createList(userId, boardId, listData).then(list => {
                 return db.one('SELECT board_id FROM boards_lists WHERE list_id = $1', [list.id]);
             }).then(result => {
-                assert.equal(result.board_id, ids.boards[0]);
+                assert.equal(result.board_id, boardId);
             });
         });
 
         it('should generate shortid', () => {
-            return Board.createList(ids.boards[0], listData).then(list => {
+            return Board.createList(userId, boardId, listData).then(list => {
                 assert.isTrue(shortid.isValid(list.id));
             });
         });
@@ -104,20 +101,20 @@ describe('Board', () => {
     describe('find', () => {
         describe('findById', () => {
             it('should return board with nested children', () => {
-                return Board.findById(ids.boards[0])
+                return Board.findById(boardId)
                     .then(board => {
                         assert.deepEqual(board, {
-                            id: ids.boards[0],
+                            id: boardId,
                             title: 'test board',
-                            link: '/boards/' + ids.boards[0],
+                            link: '/boards/' + boardId,
                             lists: [{
-                                id: ids.lists[0],
+                                id: listId,
                                 title: 'test list',
-                                link: '/boards/' + ids.boards[0] + '/lists/' + ids.lists[0],
+                                link: '/boards/' + boardId + '/lists/' + listId,
                                 cards: [{
-                                    id: ids.cards[0],
+                                    id: cardId,
                                     text: 'test card',
-                                    link: '/boards/' + ids.boards[0] + '/cards/' + ids.cards[0]
+                                    link: '/boards/' + boardId + '/cards/' + cardId
                                 }]
                             }]
                         });
@@ -127,12 +124,12 @@ describe('Board', () => {
 
         describe('findAllByUser', () => {
             it('should return all boards with nested children', () => {
-                return Board.findAllByUser(ids.users[0])
+                return Board.findAllByUser(userId)
                     .then(boards => {
                         assert.deepEqual(boards, [{
-                            id: ids.boards[0],
+                            id: boardId,
                             title: 'test board',
-                            link: '/boards/' + ids.boards[0],
+                            link: '/boards/' + boardId,
                             lists_length: 1,
                             cards_length: 1
                         }]);
@@ -142,8 +139,6 @@ describe('Board', () => {
     });
 
     describe('archive', () => {
-        const boardId = ids.boards[0];
-
         it('should set `archive` flag to true', () => {
             return Board.archive(boardId)
                 .then(() => {
@@ -167,12 +162,13 @@ describe('Board', () => {
 
 function setup() {
     return db.none(`
-        INSERT INTO users(id, username, email, hash, salt) VALUES ($5, 'test', 'test@test.com', 'hash', 'salt');
+        INSERT INTO users(id, username, email, hash, salt)
+        VALUES ($5, 'test', 'test@test.com', 'hash', 'salt');
         INSERT INTO boards(id, title) VALUES ($1, 'test board'), ($2, 'test board 2');
         INSERT INTO users_boards VALUES ($5, $1);
         INSERT INTO lists(id, title) VALUES ($3, 'test list');
         INSERT INTO boards_lists VALUES ($1, $3);
         INSERT INTO cards(id, text) VALUES ($4, 'test card');
         INSERT INTO lists_cards VALUES ($3, $4);
-    `, [ids.boards[0], ids.boards[1], ids.lists[0], ids.cards[0], ids.users[0]]);
+    `, [boardId, board2Id, listId, cardId, userId]);
 };

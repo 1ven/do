@@ -119,7 +119,7 @@ const User = {
         `, [id, boardData.title])
             .then(board => {
                 return db.none(`INSERT INTO users_boards VALUES ($1, $2)`, [userId, board.id])
-                    .then(() => Activity.create(id, 'boards', 'Created'))
+                    .then(() => Activity.create(userId, id, 'boards', 'Created'))
                     .then(activity => {
                         return _.assign({}, board, { activity });
                     });

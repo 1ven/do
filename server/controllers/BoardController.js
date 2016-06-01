@@ -31,10 +31,11 @@ exports.findById = function (req, res, next) {
 };
 
 exports.update = function (req, res, next) {
-    const id = req.params.id;
+    const userId = req.user.id;
+    const boardId = req.params.id;
     const props = sanitize(req.body);
 
-    return Board.update(id, props)
+    return Board.update(userId, boardId, props)
         .then(board => {
             res.status(200).json({ result: board });
         }, next);
@@ -50,10 +51,11 @@ exports.drop = function (req, res, next) {
 };
 
 exports.createList = function (req, res, next) {
+    const userId = req.user.id;
     const boardId = req.params.id;
     const listProps = sanitize(req.body);
 
-    return Board.createList(boardId, listProps)
+    return Board.createList(userId, boardId, listProps)
         .then(list => {
             res.status(201).json({ result: list });
         }, next);

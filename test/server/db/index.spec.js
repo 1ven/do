@@ -266,6 +266,7 @@ describe('tables', () => {
                 .then(prettyColumnsInfo)
                 .then(columns => {
                     assert.equal(columns.id, 'integer');
+                    assert.equal(columns.user_id, 'text');
                     assert.equal(columns.action, 'text');
                     assert.equal(columns.created_at, 'integer');
                     assert.equal(columns.entry_id, 'text');

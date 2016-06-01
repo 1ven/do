@@ -5,7 +5,7 @@ const db = require('../db');
 const Activity = require('./Activity');
 
 const Card = {
-    update(id, data) {
+    update(userId, cardId, data) {
         const _data = _.pick(data, ['text']);
 
         if (_.isEmpty(_data)) return;
@@ -19,9 +19,9 @@ const Card = {
             LEFT JOIN lists_cards AS lc ON (lc.card_id = c.id)
             LEFT JOIN boards_lists AS bl ON (bl.list_id = lc.list_id)
             WHERE id = $1;
-        `, [id, props, values])
+        `, [cardId, props, values])
             .then(card => {
-                return Activity.create(card.id, 'cards', 'Updated')
+                return Activity.create(userId, cardId, 'cards', 'Updated')
                     .then(activity => {
                         return _.assign({}, card, { activity });
                     });

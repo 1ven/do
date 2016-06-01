@@ -18,7 +18,7 @@ describe('Card', () => {
 
     describe('update', () => {
         it('should update card and return updated card', () => {
-            return Card.update(cardId, { text: 'updated text' })
+            return Card.update(userId, cardId, { text: 'updated text' })
                 .then(card => {
                     const link = '/boards/' + boardId + '/cards/' + cardId;
                     const text = 'updated text';
