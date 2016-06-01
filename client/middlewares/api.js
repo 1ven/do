@@ -97,7 +97,7 @@ function camelizeBody(body) {
             return item;
         });
     } else if (isPlainObject(result)) {
-        return mapKeys(result, (value, key) => {
+        result = mapKeys(result, (value, key) => {
             return inflect.camelize(key, false);
         });
     }
