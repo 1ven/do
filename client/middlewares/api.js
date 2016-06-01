@@ -1,7 +1,11 @@
 import assign from 'lodash/assign';
+import mapKeys from 'lodash/mapKeys';
+import isPlainObject from 'lodash/isPlainObject';
 import { normalize } from 'normalizr';
 import { headers } from '../constants/config';
 import 'isomorphic-fetch';
+
+const inflect = require('i')();
 
 function callApi(endpoint, request) {
     const hostname = process.env.NODE_ENV === 'test' ? 'http://localhost' : '';
@@ -20,7 +24,8 @@ function callApi(endpoint, request) {
             // may be not throw an error, when response is not ok. Because it's not exception. Instead of, return object with result and ok properties.
             if (!response.ok)  { return Promise.reject(body); } 
             // check if server responded without json(e.x res.sendStatus()), what value body will have, if body will be undefined, accordingly return of this function must be - `return body || {}`
-            return body;
+
+            return camelizeBody(body);
         });
 };
 
@@ -77,4 +82,25 @@ export default store => next => action => {
                 }
             })
         );
+};
+
+function camelizeBody(body) {
+    let { result } = body;
+
+    if (result instanceof Array) {
+        result = result.map((item) => {
+            if (isPlainObject(item)) {
+                return mapKeys(item, (value, key) => {
+                    return inflect.camelize(key, false);
+                });
+            }
+            return item;
+        });
+    } else if (isPlainObject(result)) {
+        return mapKeys(result, (value, key) => {
+            return inflect.camelize(key, false);
+        });
+    }
+
+    return assign({}, body, { result });
 };
