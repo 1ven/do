@@ -158,32 +158,6 @@ describe('Board', () => {
                 });
         });
     });
-
-    describe('toggleStarred', () => {
-        it('should mark board as `starred` and return updated board', () => {
-            return Board.toggleStarred(userId, boardId, true)
-                .then(board => {
-                    delete board.activity.created_at;
-                    assert.deepEqual(board, {
-                        id: boardId,
-                        title: 'test board',
-                        link: '/boards/' + boardId,
-                        lists_length: 1,
-                        cards_length: 1,
-                        starred: true,
-                        activity: {
-                            id: 1,
-                            action: 'Starred',
-                            type: 'board',
-                            entry: {
-                                title: 'test board',
-                                link: '/boards/' + boardId
-                            }
-                        }
-                    });
-                });
-        });
-    });
 });
 
 function setup() {

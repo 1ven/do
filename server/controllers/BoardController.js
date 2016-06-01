@@ -61,23 +61,3 @@ exports.createList = function (req, res, next) {
             res.status(201).json({ result: list });
         }, next);
 };
-
-exports.markAsStarred = function (req, res, next) {
-    const userId = req.user.id;
-    const boardId = req.params.id;
-
-    return Board.toggleStarred(userId, boardId, true)
-        .then(board => {
-            res.status(200).json({ result: board });
-        }, next);
-};
-
-exports.markAsUnstarred = function (req, res, next) {
-    const userId = req.user.id;
-    const boardId = req.params.id;
-
-    return Board.toggleStarred(userId, boardId, false)
-        .then(board => {
-            res.status(200).json({ result: board });
-        }, next);
-};
