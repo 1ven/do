@@ -73,7 +73,7 @@ const Board = {
 
     findAllByUser(userId) {
         return db.query(`
-            SELECT b.id, b.title, b.link, (
+            SELECT b.id, b.title, b.link, b.starred, (
                 SELECT count(list_id)::integer FROM boards_lists
                 WHERE board_id = b.id
             ) AS lists_length, (

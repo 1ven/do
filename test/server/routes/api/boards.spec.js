@@ -46,12 +46,14 @@ describe('boards routes', () => {
                         id: boardId,
                         title: 'test board 1',
                         link: '/boards/' + boardId,
+                        starred: false,
                         lists_length: 0,
                         cards_length: 0
                     }, {
                         id: board3Id,
                         title: 'test board 3',
                         link: '/boards/' + board3Id,
+                        starred: false,
                         lists_length: 0,
                         cards_length: 0
                     }]);

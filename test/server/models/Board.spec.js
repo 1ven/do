@@ -131,7 +131,8 @@ describe('Board', () => {
                             title: 'test board',
                             link: '/boards/' + boardId,
                             lists_length: 1,
-                            cards_length: 1
+                            cards_length: 1,
+                            starred: false
                         }]);
                     });
             });
