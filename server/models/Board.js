@@ -110,7 +110,9 @@ const Board = {
         `, [boardId])
             .then(board => {
                 return Activity.create(userId, boardId, 'boards', 'Starred')
-                    .then(() => board);
+                    .then(activity => {
+                        return _.assign({}, board, { activity });
+                    });
             });
     }
 };
