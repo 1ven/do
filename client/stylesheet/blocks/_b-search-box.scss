@@ -10,6 +10,8 @@
         width: 100%;
         margin-top: 40px;
         box-shadow: $shadow;
+        max-height: 300px;
+        overflow-y: auto;
     }
     &__group {
         & + .b-search-box__group {
