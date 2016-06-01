@@ -12,6 +12,7 @@
     "babel-polyfill": "^6.7.4",
     "bluebird": "^3.3.4",
     "body-parser": "^1.15.0",
+    "camelcase-keys-deep": "^0.1.0",
     "cookie-parser": "^1.4.1",
     "crypto": "0.0.3",
     "ejs": "^2.4.1",

@@ -1,6 +1,5 @@
 import assign from 'lodash/assign';
-import mapKeys from 'lodash/mapKeys';
-import isPlainObject from 'lodash/isPlainObject';
+import camelcaseKeysDeep from 'camelcase-keys-deep';
 import { normalize } from 'normalizr';
 import { headers } from '../constants/config';
 import 'isomorphic-fetch';
@@ -25,7 +24,7 @@ function callApi(endpoint, request) {
             if (!response.ok)  { return Promise.reject(body); } 
             // check if server responded without json(e.x res.sendStatus()), what value body will have, if body will be undefined, accordingly return of this function must be - `return body || {}`
 
-            return camelizeBody(body);
+            return camelcaseKeysDeep(body);
         });
 };
 
@@ -82,25 +81,4 @@ export default store => next => action => {
                 }
             })
         );
-};
-
-function camelizeBody(body) {
-    let { result } = body;
-
-    if (result instanceof Array) {
-        result = result.map((item) => {
-            if (isPlainObject(item)) {
-                return mapKeys(item, (value, key) => {
-                    return inflect.camelize(key, false);
-                });
-            }
-            return item;
-        });
-    } else if (isPlainObject(result)) {
-        result = mapKeys(result, (value, key) => {
-            return inflect.camelize(key, false);
-        });
-    }
-
-    return assign({}, body, { result });
 };
