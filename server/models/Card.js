@@ -14,7 +14,11 @@ const Card = {
         const values = _.values(_data);
 
         return db.one(`
-            UPDATE cards SET ($2^) = ($3:csv) WHERE id = $1 RETURNING id, text, link
+            UPDATE cards SET ($2^) = ($3:csv) WHERE id = $1;
+            SELECT id, text, link, bl.board_id FROM cards AS c
+            LEFT JOIN lists_cards AS lc ON (lc.card_id = c.id)
+            LEFT JOIN boards_lists AS bl ON (bl.list_id = lc.list_id)
+            WHERE id = $1;
         `, [id, props, values])
             .then(card => {
                 return Activity.create(card.id, 'cards', 'Updated')
@@ -25,7 +29,15 @@ const Card = {
     },
 
     drop(id) {
-        return db.one(`DELETE FROM cards WHERE id = $1 RETURNING id`, [id]);
+        return db.one(`
+            SELECT id, bl.board_id FROM cards AS c
+            LEFT JOIN lists_cards AS lc ON (lc.card_id = c.id)
+            LEFT JOIN boards_lists AS bl ON (bl.list_id = lc.list_id)
+            WHERE id = $1;
+        `, [id]).then(result => {
+            return db.none('DELETE FROM cards WHERE id = $1;', [id])
+                .then(() => result);
+        });
     },
 
     createComment(userId, cardId, commentData) {
@@ -46,9 +58,11 @@ const Card = {
 
     findById(cardId) {
         return db.one(`
-            SELECT cr.id, cr.text, cr.link,
+            SELECT cr.id, cr.text, cr.link, bl.board_id,
                 COALESCE (json_agg(cm) FILTER (WHERE cm.id IS NOT NULL), '[]') AS comments
             FROM cards as cr
+            LEFT JOIN lists_cards AS lc ON (lc.card_id = cr.id)
+            LEFT JOIN boards_lists AS bl ON (bl.list_id = lc.list_id)
             LEFT JOIN cards_comments AS cc ON (cr.id = cc.card_id)
             LEFT JOIN (
                 SELECT cm.id, cm.created_at, cm.text, row_to_json(u) AS user FROM comments AS cm
@@ -58,7 +72,7 @@ const Card = {
                 ) AS u ON (u.id = uc.user_id)
             ) AS cm ON (cm.id = cc.comment_id)
             WHERE cr.id = $1
-            GROUP BY cr.id
+            GROUP BY cr.id, bl.board_id
         `, [cardId]);
     },
 

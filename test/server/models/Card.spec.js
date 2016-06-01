@@ -20,19 +20,23 @@ describe('Card', () => {
         it('should update card and return updated card', () => {
             return Card.update(cardId, { text: 'updated text' })
                 .then(card => {
+                    const link = '/boards/' + boardId + '/cards/' + cardId;
+                    const text = 'updated text';
+
                     assert.property(card.activity, 'created_at');
                     delete card.activity.created_at;
                     assert.deepEqual(card, {
                         id: cardId,
-                        text: 'updated text',
-                        link: '/boards/' + boardId + '/cards/' + cardId,
+                        board_id: boardId,
+                        text,
+                        link,
                         activity: {
                             id: 1,
                             action: 'Updated',
                             type: 'card',
                             entry: {
-                                title: 'updated text',
-                                link: '/boards/' + boardId + '/cards/' + cardId
+                                title: text,
+                                link
                             }
                         }
                     });
@@ -51,10 +55,14 @@ describe('Card', () => {
                 });
         });
 
-        it('should return dropped card id', () => {
+        it('should return dropped card id and board id which card belongs', () => {
             return Card.drop(cardId)
                 .then(result => {
                     assert.equal(result.id, cardId);
+                    assert.deepEqual(result, {
+                        id: cardId,
+                        board_id: boardId
+                    });
                 });
         });
     });
@@ -78,6 +86,7 @@ describe('Card', () => {
                         id: card2Id,
                         text: 'test card 2',
                         link: '/boards/' + boardId + '/cards/' + card2Id,
+                        board_id: boardId,
                         comments: [{
                             id: commentId,
                             text: 'test comment 1',

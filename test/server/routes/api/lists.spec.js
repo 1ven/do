@@ -27,7 +27,8 @@ describe('lists routes', () => {
                     assert.property(card, 'activity');
                     assert.deepEqual(_.omit(card, ['id', 'activity']), {
                         text: 'test card',
-                        link: '/boards/' + boardId + '/cards/' + card.id
+                        link: '/boards/' + boardId + '/cards/' + card.id,
+                        board_id: boardId
                     });
 
                     done();

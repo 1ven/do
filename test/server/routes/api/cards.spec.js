@@ -31,6 +31,7 @@ describe('cards routes', () => {
                     assert.property(card, 'activity');
                     assert.deepEqual(_.omit(card, ['activity']), {
                         id: card2Id,
+                        board_id: boardId,
                         text: 'new text',
                         link: '/boards/' + boardId + '/cards/' + card2Id
                     });
@@ -48,9 +49,10 @@ describe('cards routes', () => {
                 .end((err, res) => {
                     if (err) { return done(err); }
 
-                    const id = res.body.result.id;
-
-                    assert.equal(id, card2Id);
+                    assert.deepEqual(res.body.result, {
+                        id: card2Id,
+                        board_id: boardId
+                    });
 
                     done();
                 });
@@ -82,6 +84,7 @@ describe('cards routes', () => {
                         id: cardId,
                         text: 'test card 1',
                         link: '/boards/' + boardId + '/cards/' + cardId,
+                        board_id: boardId,
                         comments: [{
                             id: commentId,
                             text: 'test comment 1',

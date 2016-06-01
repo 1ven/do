@@ -61,19 +61,22 @@ describe('List', () => {
 
         it('should create card', () => {
             return List.createCard(listId, cardData).then(card => {
+                const link = '/boards/' + boardId + '/cards/' + card.id;
+
                 assert.property(card, 'id');
                 assert.property(card.activity, 'created_at');
                 delete card.activity.created_at;
                 assert.deepEqual(_.omit(card, ['id']), {
                     text: cardData.text,
-                    link: '/boards/' + boardId + '/cards/' + card.id,
+                    board_id: boardId,
+                    link, 
                     activity: {
                         id: 1,
                         action: 'Created',
                         type: 'card',
                         entry: {
                             title: cardData.text,
-                            link: '/boards/' + boardId + '/cards/' + card.id
+                            link
                         }
                     }
                 });
