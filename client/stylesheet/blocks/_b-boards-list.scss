@@ -10,4 +10,13 @@
         width: 25%;
         padding: 10px;
     }
+    &__group-title {
+        color: #fff;
+        margin-bottom: 20px;
+        font-size: 20px;
+        display: block;
+    }
+    &__count {
+        font-size: 10px;
+    }
 }

@@ -64,14 +64,14 @@ class IndexPage extends Component {
 
     render() {
         const {
-            boards,
+            groups,
             isFetching,
             lastUpdated,
             dispatch
         } = this.props;
         const { modal } = this.state;
 
-        const isEmpty = boards.length === 0;
+        const isEmpty = groups.length === 0;
 
         const addBoardBtn = (
             <Btn
@@ -88,7 +88,7 @@ class IndexPage extends Component {
                     <div>No result.</div>
                 ) : (
                     <BoardsList
-                        boards={boards}
+                        groups={groups}
                         onBoardTileRemoveClick={this.handleBoardTileRemoveClick}
                         onBoardTileEditClick={this.handleBoardTileEditClick}
                     />
@@ -114,7 +114,7 @@ class IndexPage extends Component {
 }
 
 IndexPage.propTypes = {
-    boards: PropTypes.array.isRequired,
+    groups: PropTypes.array.isRequired,
     dispatch: PropTypes.func.isRequired,
     isFetching: PropTypes.bool.isRequired,
     lastUpdated: PropTypes.number
@@ -125,7 +125,10 @@ function mapStateToProps(state) {
     const { ids, isFetching, lastUpdated } = state.pages.index;
 
     return {
-        boards: ids.map(id => boards[id]),
+        groups: [{
+            title: 'My boards',
+            boards: ids.map(id => boards[id])
+        }],
         isFetching,
         lastUpdated
     };
