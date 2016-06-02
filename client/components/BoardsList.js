@@ -1,5 +1,7 @@
 import React, { PropTypes } from 'react';
 import BoardTile from './BoardTile';
+import Icon from './Icon';
+import Toggle from './Toggle';
 
 const BoardsList = ({
     groups,
@@ -15,32 +17,45 @@ const BoardsList = ({
                         className="b-boards-list__group"
                         key={i}
                     >
-                        <span className="b-boards-list__group-title">
-                            {group.title}
-                            &nbsp;
-                            <span className="b-boards-list__count">
-                                ({group.boards.length})
-                            </span>
-                        </span>
-                        <div className="b-boards-list__items">
-                            {!group.boards.length ? (
-                                <div>Boards not found</div>
-                            ) : (
-                                group.boards.map((board, i) =>
-                                    <div
-                                        className="b-boards-list__item"
-                                        key={i}
-                                    >
-                                        <BoardTile
-                                            data={board}
-                                            onRemoveClick={onBoardTileRemoveClick}
-                                            onEditClick={onBoardTileEditClick}
-                                            onToggleStarredClick={onBoardTileToggleStarredClick}
-                                        />
+                        <Toggle
+                            link={
+                                <div className="b-boards-list__top">
+                                    <span className="b-boards-list__group-title">
+                                        {group.title}
+                                        &nbsp;
+                                        <span className="b-boards-list__count">
+                                            ({group.boards.length})
+                                        </span>
+                                    </span>
+                                    <span className="b-boards-list__line" />
+                                    <div className="b-boards-list__toggle-icon">
+                                        <Icon name="chevron-down" />
                                     </div>
-                                )
-                            )}
-                        </div>
+                                </div>
+                            }
+                            content={
+                                <div className="b-boards-list__items">
+                                    {!group.boards.length ? (
+                                        <div>Boards not found</div>
+                                    ) : (
+                                        group.boards.map((board, i) =>
+                                            <div
+                                                className="b-boards-list__item"
+                                                key={i}
+                                            >
+                                                <BoardTile
+                                                    data={board}
+                                                    onRemoveClick={onBoardTileRemoveClick}
+                                                    onEditClick={onBoardTileEditClick}
+                                                    onToggleStarredClick={onBoardTileToggleStarredClick}
+                                                />
+                                            </div>
+                                        )
+                                    )}
+                                </div>
+                            }
+                            isActive={true}
+                        />
                     </div>
                 ))}
             </div>

@@ -7,7 +7,7 @@ class Toggle extends Component {
         this.handleLinkClick = this.handleLinkClick.bind(this);
 
         this.state = {
-            isActive: false
+            isActive: props.isActive
         };
     }
 
@@ -41,9 +41,14 @@ class Toggle extends Component {
     }
 }
 
+Toggle.defaultProps = {
+    isActive: false
+};
+
 Toggle.propTypes = {
     link: PropTypes.node.isRequired,
-    content: PropTypes.node.isRequired
+    content: PropTypes.node.isRequired,
+    isActive: PropTypes.bool
 };
 
 export default Toggle;
