@@ -1,7 +1,7 @@
 import React, { PropTypes, Component } from 'react';
 import { connect } from 'react-redux'
 import { updateList } from '../actions/listsActions';
-import ModalForm from '../components/ModalForm';
+import FormBox from '../components/FormBox';
 import Modal from '../components/Modal';
 import Input from '../components/Input';
 
@@ -18,7 +18,7 @@ class EditListModal extends Component {
                 title="Edit list"
                 hideModal={hideModal}
             >
-                <ModalForm
+                <FormBox
                     rows={[
                         <Input
                             name="title"

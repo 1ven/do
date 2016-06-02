@@ -1,37 +1,62 @@
 import React, { PropTypes, Component } from 'react';
 import { connect } from 'react-redux'
 import { createBoard } from '../actions/boardsActions';
-import ModalForm from '../components/ModalForm';
+import FormBox from '../components/FormBox';
 import Modal from '../components/Modal';
-import Input from '../components/Input';
+import InputBox from '../components/InputBox';
 
 class CreateBoardModal extends Component {
     constructor(props) {
         super(props);
+
+        this.state = {
+            errors: []
+        };
+
+        this.handleSubmit = this.handleSubmit.bind(this);
+    }
+
+    handleSubmit(formData) {
+        const { hideModal, dispatch } = this.props;
+
+        dispatch(createBoard(formData.title))
+            .then(action => {
+                if (!action.payload.error) {
+                    return hideModal();
+                }
+                this.setState({
+                    errors: action.payload.result
+                });
+            });
+    }
+
+    getError(name) {
+        const error = this.state.errors.filter(e => e.name == name)[0];
+        return error ? error.message : null;
     }
 
     render() {
-        const { onSubmit, hideModal } = this.props;
+        const { hideModal } = this.props;
+        const { errors } = this.state;
 
         return (
             <Modal
                 title="Create board"
                 hideModal={hideModal}
             >
-                <ModalForm
+                <FormBox
                     rows={[
-                        <div>
-                            <span className="b-modal-form__row-title">
-                                Title
-                            </span>
-                            <Input
-                                name="title"
-                                placeholder="Enter board title"
-                                focus={true}
-                            />
-                        </div>
+                        <InputBox
+                            title="Title"
+                            inputProps={{
+                                name: "title",
+                                placeholder: "Enter board title",
+                                focus: {true}
+                            }}
+                            error={this.getError('title')}
+                        />
                     ]}
-                    onSubmit={onSubmit}
+                    onSubmit={this.handleSubmit}
                     onCancelClick={hideModal}
                 />
             </Modal>
@@ -40,24 +65,8 @@ class CreateBoardModal extends Component {
 };
 
 CreateBoardModal.propTypes = {
-    onSubmit: PropTypes.func.isRequired,
+    dispatch: PropTypes.func.isRequired,
     hideModal: PropTypes.func.isRequired,
 };
 
-function mapDispatchToProps(dispatch, ownProps) {
-    return {
-        onSubmit: function (formData) {
-            dispatch(createBoard(formData.title))
-                .then(action => {
-                    if (!action.payload.error) {
-                        ownProps.hideModal();
-                    }
-                });
-        }
-    };
-};
-
-export default connect(
-    null,
-    mapDispatchToProps
-)(CreateBoardModal);
+export default connect()(CreateBoardModal);

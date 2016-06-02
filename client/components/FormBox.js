@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom';
 import serialize from 'form-serialize';
 import Btn from './Btn';
 
-class ModalForm extends Component {
+class FormBox extends Component {
     constructor(props) {
         super(props);
 
@@ -30,28 +30,28 @@ class ModalForm extends Component {
         return (
             <form
                 ref="form"
-                className="b-modal-form"
+                className="b-form-box"
                 onSubmit={this.handleSubmit}
             >
-                <div className="b-modal-form__rows">
+                <div className="b-form-box__rows">
                     {rows.map((row, i) => (
                         <label
-                            className="b-modal-form__row"
+                            className="b-form-box__row"
                             key={i}
                         >
                             {row}
                         </label>
                     ))}
                 </div>
-                <div className="b-modal-form__buttons">
-                    <div className="b-modal-form__button">
+                <div className="b-form-box__buttons">
+                    <div className="b-form-box__button">
                         <Btn
                             text="Cancel"
                             onClick={onCancelClick}
                             modifiers={['red', 'md']}
                         />
                     </div>
-                    <div className="b-modal-form__button">
+                    <div className="b-form-box__button">
                         <Btn
                             text="Submit"
                             tagName="button"
@@ -65,10 +65,10 @@ class ModalForm extends Component {
     }
 };
 
-ModalForm.propTypes = {
+FormBox.propTypes = {
     rows: PropTypes.arrayOf(PropTypes.node).isRequired,
     onSubmit: PropTypes.func.isRequired,
     onCancelClick: PropTypes.func.isRequired
 };
 
-export default ModalForm;
+export default FormBox;

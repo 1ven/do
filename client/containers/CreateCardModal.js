@@ -3,7 +3,7 @@ import { connect } from 'react-redux'
 import { addCardId } from '../actions/listsActions';
 import { createCard } from '../actions/cardsActions';
 import { incCardsLength } from '../actions/boardsActions';
-import ModalForm from '../components/ModalForm';
+import FormBox from '../components/FormBox';
 import Modal from '../components/Modal';
 import Input from '../components/Input';
 
@@ -20,7 +20,7 @@ class CreateCardModal extends Component {
                 title="Create card"
                 hideModal={hideModal}
             >
-                <ModalForm
+                <FormBox
                     rows={[
                         <Input
                             name="text"

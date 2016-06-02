@@ -5,7 +5,6 @@ import Cards from '../components/Cards';
 import { removeCard } from '../actions/cardsActions';
 import { removeCardId } from '../actions/listsActions';
 import { showEditForm, hideEditForm } from '../actions/editFormActions';
-import ModalForm from '../components/ModalForm';
 import Input from '../components/Input';
 import FullCardModal from './FullCardModal';
 import CreateCardModal from './CreateCardModal';

@@ -1,7 +1,7 @@
 import React, { PropTypes, Component } from 'react';
 import { connect } from 'react-redux'
 import { updateBoard } from '../actions/boardsActions';
-import ModalForm from '../components/ModalForm';
+import FormBox from '../components/FormBox';
 import Modal from '../components/Modal';
 import Input from '../components/Input';
 
@@ -14,7 +14,7 @@ class EditBoardModal extends Component {
                 title="Edit board"
                 hideModal={hideModal}
             >
-                <ModalForm
+                <FormBox
                     rows={[
                         <Input
                             name="title"

@@ -2,7 +2,7 @@ import React, { PropTypes, Component } from 'react';
 import { connect } from 'react-redux'
 import { createList } from '../actions/listsActions';
 import { addListId, incListsLength } from '../actions/boardsActions';
-import ModalForm from '../components/ModalForm';
+import FormBox from '../components/FormBox';
 import Modal from '../components/Modal';
 import Input from '../components/Input';
 
@@ -19,7 +19,7 @@ class CreateListModal extends Component {
                 title="Edit list"
                 hideModal={hideModal}
             >
-                <ModalForm
+                <FormBox
                     rows={[
                         <Input
                             name="title"
