@@ -97,47 +97,6 @@ describe('Board', () => {
         });
     });
 
-    describe('createList', () => {
-        const listData = {
-            title: 'test list'
-        };
-
-        it('should create list', () => {
-            return Board.createList(userId, boardId, listData).then(list => {
-                assert.property(list, 'id');
-                assert.property(list.activity, 'created_at');
-                delete list.activity.created_at;
-                assert.deepEqual(_.omit(list, ['id']), {
-                    title: listData.title,
-                    link: '/boards/' + boardId + '/lists/' + list.id,
-                    activity: {
-                        id: 1,
-                        action: 'Created',
-                        type: 'list',
-                        entry: {
-                            title: listData.title,
-                            link: '/boards/' + boardId + '/lists/' + list.id
-                        }
-                    }
-                });
-            });
-        });
-
-        it('should relate list to board', () => {
-            return Board.createList(userId, boardId, listData).then(list => {
-                return db.one('SELECT board_id FROM boards_lists WHERE list_id = $1', [list.id]);
-            }).then(result => {
-                assert.equal(result.board_id, boardId);
-            });
-        });
-
-        it('should generate shortid', () => {
-            return Board.createList(userId, boardId, listData).then(list => {
-                assert.isTrue(shortid.isValid(list.id));
-            });
-        });
-    });
-
     describe('find', () => {
         describe('findById', () => {
             it('should return board with nested children', () => {

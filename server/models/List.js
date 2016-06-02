@@ -5,6 +5,27 @@ const db = require('../db');
 const Activity = require('./Activity');
 
 const List = {
+    create(userId, boardId, listData) {
+        const listId = shortid.generate();
+
+        return db.one(`
+            INSERT INTO lists (id, title) VALUES ($1, $2)
+            RETURNING id
+        `, [listId, listData.title])
+            .then(list => {
+                return db.one(`
+                    INSERT INTO boards_lists VALUES ($1, $2);
+                    SELECT id, title, link FROM lists WHERE id = $2
+                `, [boardId, listId]);
+            })
+            .then(list => {
+                return Activity.create(userId, listId, 'lists', 'Created')
+                    .then(activity => {
+                        return _.assign({}, list, { activity });
+                    });
+            });
+    },
+
     update(userId, listId, data) {
         const _data = _.pick(data, ['title']);
 
@@ -26,29 +47,6 @@ const List = {
 
     drop(id) {
         return db.one(`DELETE FROM lists WHERE id = $1 RETURNING id`, [id]);
-    },
-
-    createCard(userId, listId, cardData) {
-        const cardId = shortid.generate();
-
-        return db.one(`
-            INSERT INTO cards (id, text) VALUES ($1, $2) RETURNING id
-        `, [cardId, cardData.text])
-            .then(card => {
-                return db.one(`
-                    INSERT INTO lists_cards VALUES ($1, $2);
-                    SELECT id, text, link, bl.board_id FROM cards AS c
-                    LEFT JOIN lists_cards AS lc ON (lc.card_id = c.id) 
-                    LEFT JOIN boards_lists AS bl ON (bl.list_id = lc.list_id)
-                    WHERE id = $2
-                `, [listId, cardId]);
-            })
-            .then(card => {
-                return Activity.create(userId, cardId, 'cards', 'Created')
-                    .then(activity => {
-                        return _.assign({}, card, { activity });
-                    });
-            });
     },
 
     archive(listId) {

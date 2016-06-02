@@ -55,27 +55,6 @@ const Board = {
         });
     },
 
-    createList(userId, boardId, listData) {
-        const listId = shortid.generate();
-
-        return db.one(`
-            INSERT INTO lists (id, title) VALUES ($1, $2)
-            RETURNING id
-        `, [listId, listData.title])
-            .then(list => {
-                return db.one(`
-                    INSERT INTO boards_lists VALUES ($1, $2);
-                    SELECT id, title, link FROM lists WHERE id = $2
-                `, [boardId, listId]);
-            })
-            .then(list => {
-                return Activity.create(userId, listId, 'lists', 'Created')
-                    .then(activity => {
-                        return _.assign({}, list, { activity });
-                    });
-            });
-    },
-
     findById(id) {
         return db.one(`
             SELECT b.id, b.title, b.link,

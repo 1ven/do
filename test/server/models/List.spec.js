@@ -12,6 +12,49 @@ const listId = shortid.generate();
 describe('List', () => {
     beforeEach(() => recreateTables().then(setup));
 
+    describe('create', () => {
+        const listData = {
+            title: 'test list'
+        };
+
+        it('should create list', () => {
+            return List.create(userId, boardId, listData).then(list => {
+                assert.property(list, 'id');
+                assert.property(list.activity, 'created_at');
+
+                delete list.activity.created_at;
+
+                assert.deepEqual(_.omit(list, ['id']), {
+                    title: listData.title,
+                    link: '/boards/' + boardId + '/lists/' + list.id,
+                    activity: {
+                        id: 1,
+                        action: 'Created',
+                        type: 'list',
+                        entry: {
+                            title: listData.title,
+                            link: '/boards/' + boardId + '/lists/' + list.id
+                        }
+                    }
+                });
+            });
+        });
+
+        it('should relate list to board', () => {
+            return List.create(userId, boardId, listData).then(list => {
+                return db.one('SELECT board_id FROM boards_lists WHERE list_id = $1', [list.id]);
+            }).then(result => {
+                assert.equal(result.board_id, boardId);
+            });
+        });
+
+        it('should generate shortid', () => {
+            return List.create(userId, boardId, listData).then(list => {
+                assert.isTrue(shortid.isValid(list.id));
+            });
+        });
+    });
+
     describe('update', () => {
         it('should update list and return updated list with id, activity and updated fields', () => {
             return List.update(userId, listId, { title: 'updated title' })
@@ -51,50 +94,6 @@ describe('List', () => {
                 .then(result => {
                     assert.equal(result.id, listId);
                 });
-        });
-    });
-
-    describe('createCard', () => {
-        const cardData = {
-            text: 'test card'
-        };
-
-        it('should create card', () => {
-            return List.createCard(userId, listId, cardData).then(card => {
-                const link = '/boards/' + boardId + '/cards/' + card.id;
-
-                assert.property(card, 'id');
-                assert.property(card.activity, 'created_at');
-                delete card.activity.created_at;
-                assert.deepEqual(_.omit(card, ['id']), {
-                    text: cardData.text,
-                    board_id: boardId,
-                    link, 
-                    activity: {
-                        id: 1,
-                        action: 'Created',
-                        type: 'card',
-                        entry: {
-                            title: cardData.text,
-                            link
-                        }
-                    }
-                });
-            });
-        });
-
-        it('should generate shortid', () => {
-            return List.createCard(userId, listId, cardData).then(card => {
-                assert.isTrue(shortid.isValid(card.id));
-            });
-        });
-
-        it('should relate card to list', () => {
-            return List.createCard(userId, listId, cardData).then(card => {
-                return db.one(`SELECT list_id FROM lists_cards WHERE card_id = $1`, [card.id]);
-            }).then(result => {
-                assert.equal(result.list_id, listId);
-            });
         });
     });
 

@@ -1,6 +1,17 @@
 const sanitize = require('../utils/sanitize');
 const Card = require('../models/Card');
 
+exports.create = function (req, res, next) {
+    const userId = req.user.id;
+    const listId = req.params.id;
+    const cardProps = sanitize(req.body);
+
+    return Card.create(userId, listId, cardProps)
+        .then(card => {
+            res.status(201).json({ result: card });
+        }, next);
+};
+
 exports.update = function (req, res, next) {
     const userId = req.user.id;
     const cardId = req.params.id;
@@ -27,16 +38,5 @@ exports.findById = function (req, res, next) {
     return Card.findById(cardId)
         .then(card => {
             res.status(200).json({ result: card });
-        }, next);
-};
-
-exports.createComment = function (req, res, next) {
-    const userId = req.user.id;
-    const cardId = req.params.id;
-    const commentData = req.body;
-
-    return Card.createComment(userId, cardId, commentData)
-        .then(comment => {
-            res.status(201).json({ result: comment });
         }, next);
 };

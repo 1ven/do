@@ -16,6 +16,50 @@ const userId = shortid.generate();
 describe('Card', () => {
     beforeEach(() => recreateTables().then(setup));
 
+    describe('create', () => {
+        const cardData = {
+            text: 'test card'
+        };
+
+        it('should create card', () => {
+            return Card.create(userId, listId, cardData).then(card => {
+                const link = '/boards/' + boardId + '/cards/' + card.id;
+
+                assert.property(card, 'id');
+                assert.property(card.activity, 'created_at');
+                delete card.activity.created_at;
+                assert.deepEqual(_.omit(card, ['id']), {
+                    text: cardData.text,
+                    board_id: boardId,
+                    link, 
+                    activity: {
+                        id: 1,
+                        action: 'Created',
+                        type: 'card',
+                        entry: {
+                            title: cardData.text,
+                            link
+                        }
+                    }
+                });
+            });
+        });
+
+        it('should generate shortid', () => {
+            return Card.create(userId, listId, cardData).then(card => {
+                assert.isTrue(shortid.isValid(card.id));
+            });
+        });
+
+        it('should relate card to list', () => {
+            return Card.create(userId, listId, cardData).then(card => {
+                return db.one(`SELECT list_id FROM lists_cards WHERE card_id = $1`, [card.id]);
+            }).then(result => {
+                assert.equal(result.list_id, listId);
+            });
+        });
+    });
+
     describe('update', () => {
         it('should update card and return updated card with id, activity and updated fields', () => {
             return Card.update(userId, cardId, { text: 'updated text' })
@@ -101,51 +145,6 @@ describe('Card', () => {
                         }]
                     });
                 });
-        });
-    });
-
-    describe('createComment', () => {
-        const commentData = {
-            text: 'test comment'
-        };
-
-        it('should create comment', () => {
-            return Card.createComment(userId, cardId, commentData)
-                .then(comment => {
-                    assert.property(comment, 'id');
-                    assert.property(comment, 'created_at');
-                    assert.deepEqual(_.omit(comment, ['id', 'created_at', 'user']), {
-                        text: commentData.text
-                    });
-
-                    assert.property(comment.user, 'avatar');
-                    assert.deepEqual(_.omit(comment.user, ['avatar']), {
-                        id: userId,
-                        username: 'testuser'
-                    });
-                });
-        });
-
-        it('should generate shortid', () => {
-            return Card.createComment(userId, cardId, commentData).then(comment => {
-                assert.isTrue(shortid.isValid(comment.id));
-            });
-        });
-
-        it('should relate comment to card', () => {
-            return Card.createComment(userId, cardId, commentData).then(comment => {
-                return db.one(`SELECT card_id FROM cards_comments WHERE comment_id = $1`, [comment.id]);
-            }).then(result => {
-                assert.equal(result.card_id, cardId);
-            });
-        });
-
-        it('should relate comment to user', () => {
-            return Card.createComment(userId, cardId, commentData).then(comment => {
-                return db.one(`SELECT user_id FROM users_comments WHERE comment_id = $1`, [comment.id]);
-            }).then(result => {
-                assert.equal(result.user_id, userId);
-            });
         });
     });
 
