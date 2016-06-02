@@ -20,11 +20,16 @@ class CreateBoardModal extends Component {
             >
                 <ModalForm
                     rows={[
-                        <Input
-                            name="title"
-                            placeholder="Title"
-                            focus={true}
-                        />
+                        <div>
+                            <span className="b-modal-form__row-title">
+                                Title
+                            </span>
+                            <Input
+                                name="title"
+                                placeholder="Enter board title"
+                                focus={true}
+                            />
+                        </div>
                     ]}
                     onSubmit={onSubmit}
                     onCancelClick={hideModal}

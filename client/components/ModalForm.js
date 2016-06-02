@@ -48,7 +48,7 @@ class ModalForm extends Component {
                         <Btn
                             text="Cancel"
                             onClick={onCancelClick}
-                            modifiers={['red']}
+                            modifiers={['red', 'md']}
                         />
                     </div>
                     <div className="b-modal-form__button">
@@ -56,6 +56,7 @@ class ModalForm extends Component {
                             text="Submit"
                             tagName="button"
                             nodeAttrs={{ type: 'submit' }}
+                            modifiers={['md']}
                         />
                     </div>
                 </div>
