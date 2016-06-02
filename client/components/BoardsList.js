@@ -36,7 +36,9 @@ const BoardsList = ({
                             content={
                                 <div className="b-boards-list__items">
                                     {!group.boards.length ? (
-                                        <div>Boards not found</div>
+                                        <div className="b-boards-list__not-found">
+                                            Boards not found
+                                        </div>
                                     ) : (
                                         group.boards.map((board, i) =>
                                             <div

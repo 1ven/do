@@ -89,7 +89,7 @@ class IndexPage extends Component {
 
         return (
             <div>
-                {isFetching || (!lastUpdated && isEmpty) ? (
+                {isFetching || !lastUpdated ? (
                     <Loader />
                 ) : isEmpty ? (
                     <div>No result.</div>
