@@ -35,6 +35,8 @@ const UserBox = function ({
         <div className="b-user-box__menu">
             <MenuList
                 items={[{
+                    title: 'Settings'
+                }, {
                     title: 'Sign out',
                     onClick: onSignOutClick
                 }]}
