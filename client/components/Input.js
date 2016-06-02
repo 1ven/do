@@ -31,16 +31,14 @@ class Input extends Component {
         const { value } = this.state;
 
         return (
-            <div className="b-input">
-                <input
-                    {...this.props}
-                    className="b-input__node"
-                    type="text"
-                    ref="input"
-                    value={value}
-                    onChange={this.handleChange}
-                />
-            </div>
+            <input
+                {...this.props}
+                className="b-input"
+                type="text"
+                ref="input"
+                value={value}
+                onChange={this.handleChange}
+            />
         );
     }
 }

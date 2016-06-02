@@ -1,32 +1,20 @@
 .b-input {
-    &__node {
-        display: block;
-        width: 100%;
-        height: 34px;
-        font-size: 12px;
-        border: 0;
-        border-bottom: 1px solid darken($gray, 10%);
+    display: block;
+    width: 100%;
+    height: 34px;
+    font-size: 12px;
+    border: 0;
+    border-bottom: 1px solid darken($gray, 10%);
+    transition: all .2s ease-out;
+    @include placeholder() {
+        color: lighten($black, 60%);
+        opacity: 1 !important;
         transition: all .2s ease-out;
-        @include placeholder() {
-            color: lighten($black, 60%);
-            opacity: 1 !important;
-            transition: all .2s ease-out;
-        }
-        &:focus {
-            border-color: darken($gray, 25%);
-            @include placeholder() {
-                color: lighten($black, 30%);
-            }
-        }
     }
-    &_error {
-        .b-input {
-            &__node {
-                border-color: $red;
-                &:focus {
-                    border-color: darken($red, 15%)
-                }
-            }
+    &:focus {
+        border-color: darken($gray, 25%);
+        @include placeholder() {
+            color: lighten($black, 30%);
         }
     }
 }
