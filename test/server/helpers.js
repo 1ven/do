@@ -38,3 +38,9 @@ export function authenticate() {
             });
     });
 };
+
+export function getValidationMessages(err) {
+    return _.reduce(err.validation, (acc, item) => {
+        return [...acc, item.message];
+    }, []);
+};

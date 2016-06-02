@@ -1,7 +1,7 @@
 import { assert } from 'chai';
 import _ from 'lodash';
 import shortid from 'shortid';
-import { recreateTables } from '../helpers';
+import { recreateTables, getValidationMessages } from '../helpers';
 import db from 'server/db';
 import User from 'server/models/User';
 
@@ -92,12 +92,6 @@ describe('User', () => {
     });
 
     describe('validate', () => {
-        function getMessages(err) {
-            return _.reduce(err.validation, (acc, item) => {
-                return [...acc, item.message];
-            }, []);
-        };
-
         it('should not be rejected if all props are valid', () => {
             return User.validate({
                 username: 'johnnnny',
@@ -113,7 +107,7 @@ describe('User', () => {
             it('should be rejected, when username is not between 3 and 20 characters', () => {
                 return User.validate(_.assign({}, props, {
                     username: 'ab'
-                })).catch(getMessages)
+                })).catch(getValidationMessages)
                     .then(messages => {
                         assert.include(messages, 'Must be between 3 and 20 characters long');
                     });
@@ -122,7 +116,7 @@ describe('User', () => {
             it('should be rejected, when username contains spaces', () => {
                 return User.validate(_.assign({}, props, {
                     username: 'i am john'
-                })).catch(getMessages)
+                })).catch(getValidationMessages)
                     .then(messages => {
                         assert.include(messages, 'Must not contain spaces');
                     });
@@ -130,7 +124,7 @@ describe('User', () => {
             });
 
             it('should be rejected, when username is not provided', () => {
-                return User.validate({}).catch(getMessages)
+                return User.validate({}).catch(getValidationMessages)
                     .then(messages => {
                         assert.include(messages, 'Username is required');
                     });
@@ -142,7 +136,7 @@ describe('User', () => {
                     INSERT INTO users (id, username, email, hash, salt)
                     VALUES ($1, 'someuser', 'someuser@mail.com', 'hash', 'salt')
                 `, [id]).then(() => User.validate({ username: 'someuser' }))
-                    .catch(getMessages)
+                    .catch(getValidationMessages)
                     .then(messages => {
                         assert.include(messages, 'Username is already taken');
                     });
@@ -154,7 +148,7 @@ describe('User', () => {
                 return User.validate(_.assign({}, props, {
                     password: 1234,
                     confirmation: 1234
-                })).catch(getMessages)
+                })).catch(getValidationMessages)
                     .then(messages => {
                         assert.include(messages, 'Must be at least 6 characters long');
                     });
@@ -162,7 +156,7 @@ describe('User', () => {
             });
 
             it('should be rejected, when password is not provided', () => {
-                return User.validate({}).catch(getMessages)
+                return User.validate({}).catch(getValidationMessages)
                     .then(messages => {
                         assert.include(messages, 'Password is required');
                     });
@@ -173,7 +167,7 @@ describe('User', () => {
             it('should be rejected, when given passwords do not match', () => {
                 return User.validate(_.assign({}, props, {
                     confirmation: 1234
-                })).catch(getMessages)
+                })).catch(getValidationMessages)
                     .then(messages => {
                         assert.include(messages, 'Passwords not match');
                     });
@@ -181,7 +175,7 @@ describe('User', () => {
             });
 
             it('should be rejected, when password confirmation is not provided', () => {
-                return User.validate({}).catch(getMessages)
+                return User.validate({}).catch(getValidationMessages)
                     .then(messages => {
                         assert.include(messages, 'Password confirmation is required');
                     });
@@ -192,14 +186,14 @@ describe('User', () => {
             it('should be rejected, when email is invalid', () => {
                 return User.validate(_.assign({}, props, {
                     email: 'not valid email'
-                })).catch(getMessages)
+                })).catch(getValidationMessages)
                     .then(messages => {
                         assert.include(messages, 'Invalid email');
                     });
             });
 
             it('should be rejected, when email is not provided', () => {
-                return User.validate({}).catch(getMessages)
+                return User.validate({}).catch(getValidationMessages)
                     .then(messages => {
                         assert.include(messages, 'Email is required');
                     });
@@ -211,7 +205,7 @@ describe('User', () => {
                     INSERT INTO users (id, username, email, hash, salt)
                     VALUES ($1, 'someuser', 'someuser@mail.com', 'hash', 'salt')
                 `, [id]).then(() => User.validate({ email: 'someuser@mail.com' }))
-                    .catch(getMessages)
+                    .catch(getValidationMessages)
                     .then(messages => {
                         assert.include(messages, 'Email is already taken');
                     });
@@ -233,47 +227,6 @@ describe('User', () => {
             `, [id]).then(() => {
                 return User.checkAvailability('username', 'someuser')
                     .then(isValid => assert.isNotTrue(isValid));
-            });
-        });
-    });
-
-    describe('createBoard', () => {
-        const boardData = {
-            title: 'test board'
-        };
-
-        it('should create board', () => {
-            return User.createBoard(userId, boardData).then(board => {
-                assert.property(board, 'id');
-                assert.property(board.activity, 'created_at');
-                delete board.activity.created_at;
-                assert.deepEqual(_.omit(board, ['id']), {
-                    title: boardData.title,
-                    link: '/boards/' + board.id,
-                    activity: {
-                        id: 1,
-                        type: 'board',
-                        action: 'Created',
-                        entry: {
-                            title: boardData.title,
-                            link: '/boards/' + board.id
-                        }
-                    }
-                });
-            });
-        });
-
-        it('should relate board to user', () => {
-            return User.createBoard(userId, boardData).then(board => {
-                return db.one('SELECT user_id FROM users_boards WHERE board_id = $1', [board.id]);
-            }).then(result => {
-                assert.equal(result.user_id, userId);
-            });
-        });
-
-        it('should generate shortid', () => {
-            return User.createBoard(userId, boardData).then(board => {
-                assert.isTrue(shortid.isValid(board.id));
             });
         });
     });

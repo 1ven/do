@@ -2,6 +2,7 @@ const _ = require('lodash');
 const shortid = require('shortid');
 const pgp = require('pg-promise');
 const db = require('../db');
+const validator = require('../utils/validator');
 const Activity = require('./Activity');
 
 const Board = {
@@ -26,6 +27,32 @@ const Board = {
 
     drop(id) {
         return db.one(`DELETE FROM boards WHERE id = $1 RETURNING id`, [id]);
+    },
+
+    validate(props) {
+        return validator.validate(props, {
+            title: [{
+                assert: value => !! value,
+                message: 'Title is required'
+            }]
+        });
+    },
+
+    create(userId, props) {
+        const id = shortid.generate();
+
+        return this.validate(props).then(() => {
+            return db.one(`
+                INSERT INTO boards (id, title) VALUES ($1, $2) RETURNING id, title, link
+            `, [id, props.title])
+                .then(board => {
+                    return db.none(`INSERT INTO users_boards VALUES ($1, $2)`, [userId, board.id])
+                        .then(() => Activity.create(userId, id, 'boards', 'Created'))
+                        .then(activity => {
+                            return _.assign({}, board, { activity });
+                        });
+                });
+        });
     },
 
     createList(userId, boardId, listData) {

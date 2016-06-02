@@ -1,7 +1,7 @@
 import { assert } from 'chai';
 import _ from 'lodash';
 import shortid from 'shortid';
-import { recreateTables } from '../helpers';
+import { recreateTables, getValidationMessages } from '../helpers';
 import db from 'server/db';
 import Board from 'server/models/Board';
 
@@ -13,6 +13,47 @@ const cardId = shortid.generate();
 
 describe('Board', () => {
     beforeEach(() => recreateTables().then(setup));
+
+    describe('create', () => {
+        const boardData = {
+            title: 'test board'
+        };
+
+        it('should create board', () => {
+            return Board.create(userId, boardData).then(board => {
+                assert.property(board, 'id');
+                assert.property(board.activity, 'created_at');
+                delete board.activity.created_at;
+                assert.deepEqual(_.omit(board, ['id']), {
+                    title: boardData.title,
+                    link: '/boards/' + board.id,
+                    activity: {
+                        id: 1,
+                        type: 'board',
+                        action: 'Created',
+                        entry: {
+                            title: boardData.title,
+                            link: '/boards/' + board.id
+                        }
+                    }
+                });
+            });
+        });
+
+        it('should relate board to user', () => {
+            return Board.create(userId, boardData).then(board => {
+                return db.one('SELECT user_id FROM users_boards WHERE board_id = $1', [board.id]);
+            }).then(result => {
+                assert.equal(result.user_id, userId);
+            });
+        });
+
+        it('should generate shortid', () => {
+            return Board.create(userId, boardData).then(board => {
+                assert.isTrue(shortid.isValid(board.id));
+            });
+        });
+    });
 
     describe('update', () => {
         it('should update board and return updated board with id, activity and updated fields', () => {
@@ -156,6 +197,24 @@ describe('Board', () => {
                         id: boardId
                     });
                 });
+        });
+    });
+
+    describe('validate', () => {
+        it('should not be rejected if all props are valid', () => {
+            return Board.validate({ title: 'test board' })
+                .catch(err => {
+                    assert.deepEqual(err.validation, []);
+                });
+        });
+
+        describe('title', () => {
+            it('should be rejected if title is not provided', () => {
+                return Board.validate({}).catch(getValidationMessages)
+                    .then(messages => {
+                        assert.include(messages, 'Title is required');
+                    });
+            });
         });
     });
 });
