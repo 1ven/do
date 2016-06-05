@@ -1,16 +1,29 @@
 import React, { PropTypes } from 'react';
 import Input from './Input';
 
-function InputBox({ title, error, inputProps }) {
+function InputBox({
+    title,
+    name,
+    value,
+    error,
+    placeholder
+}) {
     return (
         <div className="b-input-box">
-            <span className="b-input-box__title">
+            <label
+                className="b-input-box__title"
+                htmlFor={name}
+            >
                 {title}
-            </span>
+            </label>
             {error ? (
                 <span className="b-input-box__error">{error}</span>
             ) : false}
-            <Input {...inputProps} />
+            <Input
+                value={value}
+                name={name}
+                placeholder={placeholder}
+            />
         </div>
     );
 };
@@ -18,7 +31,8 @@ function InputBox({ title, error, inputProps }) {
 InputBox.propTypes = {
     title: PropTypes.string.isRequired,
     error: PropTypes.string,
-    inputProps: PropTypes.object.isRequired
+    name: PropTypes.string.isRequired,
+    placeholder: PropTypes.string
 };
 
 export default InputBox;

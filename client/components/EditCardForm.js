@@ -5,7 +5,7 @@ import Btn from './Btn';
 import Input from './Input';
 import Form from './Form';
 
-function EditCardForm({ data, onCancel, onSubmit}) {
+function EditCardForm({ data, onCancel, onSubmit }) {
     return (
         <Form
             className="b-edit-card-form"

@@ -5,64 +5,42 @@ import { createCard } from '../actions/cardsActions';
 import { incCardsLength } from '../actions/boardsActions';
 import FormBox from '../components/FormBox';
 import Modal from '../components/Modal';
-import Input from '../components/Input';
+import InputBox from '../components/InputBox';
 
-class CreateCardModal extends Component {
-    constructor(props) {
-        super(props);
-    }
+function CreateCardModal({ hideModal, dispatch, listId }) {
+    function handleSuccess(payload) {
+        const cardId = payload.result;
+        const { boardId } = payload.entities.cards[cardId];
+        dispatch(addCardId(listId, cardId));
+        dispatch(incCardsLength(boardId));
+        hideModal();
+    };
 
-    render() {
-        const { onSubmit, hideModal } = this.props;
-
-        return (
-            <Modal
-                title="Create card"
-                hideModal={hideModal}
-            >
-                <FormBox
-                    rows={[
-                        <Input
-                            name="text"
-                            placeholder="Text"
-                            focus={true}
-                        />
-                    ]}
-                    onSubmit={onSubmit}
-                    onCancelClick={hideModal}
-                />
-            </Modal>
-        )
-    }
+    return (
+        <Modal
+            title="Create card"
+            hideModal={hideModal}
+        >
+            <FormBox
+                request={({ text }) => dispatch(createCard(listId, text))}
+                onCancelClick={hideModal}
+                onSuccess={handleSuccess}
+                rows={[
+                    <InputBox
+                        name="text"
+                        title="Text"
+                        placeholder="Enter card text"
+                    />
+                ]}
+            />
+        </Modal>
+    );
 };
 
-function mapDispatchToProps(dispatch, ownProps) {
-    return {
-        onSubmit: function (formData) {
-            const { listId } = ownProps;
-
-            dispatch(createCard(listId, formData.text))
-                .then(action => {
-                    if (!action.error) {
-                        const cardId = action.payload.result;
-                        const { boardId } = action.payload.entities.cards[cardId];
-
-                        dispatch(addCardId(listId, cardId));
-                        dispatch(incCardsLength(boardId));
-                        ownProps.hideModal();
-                    }
-                });
-        }
-    }
-}
-
 CreateCardModal.propTypes = {
-    onSubmit: PropTypes.func.isRequired,
     hideModal: PropTypes.func.isRequired,
+    dispatch: PropTypes.func.isRequired,
     listId: PropTypes.string.isRequired
 };
 
-export default connect(
-    null,
-    mapDispatchToProps
-)(CreateCardModal);
+export default connect()(CreateCardModal);

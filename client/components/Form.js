@@ -1,5 +1,4 @@
 import React, { PropTypes, Component } from 'react';
-import ReactDOM from 'react-dom';
 import serialize from 'form-serialize';
 
 class Form extends Component {
@@ -12,8 +11,7 @@ class Form extends Component {
     handleSubmit(e) {
         e.preventDefault();
 
-        const form = ReactDOM.findDOMNode(this.refs.form);
-        const formData = serialize(form, {
+        const formData = serialize(this.form, {
             hash: true
         });
 
@@ -26,7 +24,7 @@ class Form extends Component {
             <form
                 className={className}
                 onSubmit={this.handleSubmit}
-                ref="form"
+                ref={form => this.form = form}
             >
                 {children}
             </form>

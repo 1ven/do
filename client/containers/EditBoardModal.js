@@ -3,32 +3,29 @@ import { connect } from 'react-redux'
 import { updateBoard } from '../actions/boardsActions';
 import FormBox from '../components/FormBox';
 import Modal from '../components/Modal';
-import Input from '../components/Input';
+import InputBox from '../components/InputBox';
 
-class EditBoardModal extends Component {
-    render() {
-        const { board, onSubmit, hideModal } = this.props;
-
-        return (
-            <Modal
-                title="Edit board"
-                hideModal={hideModal}
-            >
-                <FormBox
-                    rows={[
-                        <Input
-                            name="title"
-                            placeholder="Title"
-                            value={board.title}
-                            focus={true}
-                        />
-                    ]}
-                    onSubmit={onSubmit}
-                    onCancelClick={hideModal}
-                />
-            </Modal>
-        );
-    }
+function EditBoardModal({ hideModal, dispatch, board }) {
+    return (
+        <Modal
+            title="Edit board"
+            hideModal={hideModal}
+        >
+            <FormBox
+                request={formData => dispatch(updateBoard(board.id, formData))}
+                onCancelClick={hideModal}
+                onSuccess={hideModal}
+                rows={[
+                    <InputBox
+                        name="title"
+                        title="Title"
+                        placeholder="Enter board title"
+                        value={board.title}
+                    />
+                ]}
+            />
+        </Modal>
+    );
 };
 
 // TODO: may be get `board` from entities by given id(from `ownProps.boardId`) instead of `ownProps.board`.
@@ -36,25 +33,10 @@ class EditBoardModal extends Component {
 // Because data from props may be stale. In entities data always will be fresh.
 // But specifically in this case it's not necessary.
 
-function mapDispatchToProps(dispatch, ownProps) {
-    return {
-        onSubmit: function (formData) {
-            dispatch(updateBoard(ownProps.board.id, formData))
-                .then(action => {
-                    if (!action.payload.error) {
-                        ownProps.hideModal();
-                    }
-                });
-        }
-    };
-};
-
 EditBoardModal.propTypes = {
     board: PropTypes.object.isRequired,
-    onSubmit: PropTypes.func.isRequired,
+    hideModal: PropTypes.func.isRequired,
+    dispatch: PropTypes.func.isRequired,
 };
 
-export default connect(
-    null,
-    mapDispatchToProps
-)(EditBoardModal);
+export default connect()(EditBoardModal);

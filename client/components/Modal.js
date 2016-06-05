@@ -1,6 +1,7 @@
 import React, { PropTypes } from 'react';
 import assign from 'lodash/assign';
 import Icon from './Icon';
+import Btn from './Btn';
 
 const Modal = function ({
     title,
@@ -34,7 +35,7 @@ const Modal = function ({
 Modal.propTypes = {
     title: PropTypes.string.isRequired,
     children: PropTypes.node.isRequired,
-    hideModal: PropTypes.func.isRequired
+    hideModal: PropTypes.func.isRequired,
 };
 
 export default Modal;
