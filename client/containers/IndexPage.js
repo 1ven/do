@@ -1,5 +1,5 @@
 import React, { PropTypes, Component } from 'react';
-import _ from 'lodash';
+import assign from 'lodash/assign';
 import { connect } from 'react-redux'
 import { getBoards, removeBoard, updateBoard } from '../actions/boardsActions';
 import BoardsList from '../components/BoardsList.js';
@@ -131,7 +131,15 @@ IndexPage.propTypes = {
 function mapStateToProps(state) {
     const { boards, lists } = state.entities;
     const { ids, isFetching, lastUpdated } = state.pages.index;
-    const items = ids.map(id => boards[id]);
+    const items = ids.map(id => {
+        const board = boards[id];
+        const { cardsLength, listsLength, starred } = board;
+        return assign({}, board, {
+            cardsLength: cardsLength || 0,
+            listsLength: listsLength || 0,
+            starred: starred || false
+        });
+    });
 
     return {
         groups: [{
