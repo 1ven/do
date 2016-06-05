@@ -1,15 +1,16 @@
 CREATE OR REPLACE VIEW search AS
 
-SELECT
+(SELECT
     id,
     title AS content,
     'Boards' AS type,
     '/boards/' || id AS link
 FROM boards
+LIMIT 5)
 
 UNION
 
-SELECT
+(SELECT
     c.id,
     c.text AS content,
     'Cards' AS type,
@@ -17,3 +18,4 @@ SELECT
 FROM cards AS c
 LEFT JOIN lists_cards AS lc ON (lc.card_id = c.id)
 LEFT JOIN boards_lists AS bl ON (bl.list_id = lc.list_id)
+LIMIT 5)
