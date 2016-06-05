@@ -22,14 +22,9 @@ describe('Finder', () => {
                     link: '/boards/1'
                 }, {
                     id: '1',
-                    content: 'Wild nature',
-                    type: 'Lists',
-                    link: '/boards/1/lists/1'
-                }, {
-                    id: '1',
                     content: 'This text about wild life and nature',
                     type: 'Cards',
-                    link: '/boards/1/lists/1/cards/1'
+                    link: '/boards/1/cards/1'
                 }]));
             });
         });
@@ -37,15 +32,10 @@ describe('Finder', () => {
         it('should return result matching `wo` query', () => {
             return Finder.find('wo').then(result => {
                 assert.isTrue(exists(result, [{
-                    id: '3',
-                    content: 'Wonderful life',
-                    type: 'Lists',
-                    link: '/boards/2/lists/3'
-                }, {
                     id: '2',
                     content: 'What a wonderful life',
                     type: 'Cards',
-                    link: '/boards/2/lists/2/cards/2'
+                    link: '/boards/2/cards/2'
                 }]));
             });
         });
@@ -53,15 +43,10 @@ describe('Finder', () => {
         it('should return result matching `ab lif` query', () => {
             return Finder.find('ab lif').then(result => {
                 assert.isTrue(exists(result, [{
-                    id: '2',
-                    content: 'About life',
-                    type: 'Lists',
-                    link: '/boards/2/lists/2'
-                }, {
                     id: '1',
                     content: 'This text about wild life and nature',
                     type: 'Cards',
-                    link: '/boards/1/lists/1/cards/1'
+                    link: '/boards/1/cards/1'
                 }]));
             });
         });
@@ -74,7 +59,8 @@ function exists(result, expected) {
             return (
                 i.id === obj.id &&
                 i.content === obj.content &&
-                i.type === obj.type
+                i.type === obj.type &&
+                i.link === obj.link
             );
         }).length === 1;
 

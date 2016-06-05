@@ -10,16 +10,6 @@ FROM boards
 UNION
 
 SELECT
-    l.id,
-    l.title AS content,
-    'Lists' AS type,
-    '/boards/' || bl.board_id || '/lists/' || l.id AS link
-FROM lists AS l
-LEFT JOIN boards_lists AS bl ON (bl.list_id = l.id)
-
-UNION
-
-SELECT
     c.id,
     c.text AS content,
     'Cards' AS type,
