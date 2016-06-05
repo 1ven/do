@@ -9,20 +9,20 @@ const Board = {
     update(userId, boardId, data, activityAction) {
         const _data = _.pick(data, ['title', 'starred']);
 
-        if (_.isEmpty(_data)) return;
-
         const props = _.keys(_data).map(k => pgp.as.name(k)).join();
         const values = _.values(_data);
 
-        return db.one(`
-            UPDATE boards SET ($2^) = ($3:csv) WHERE id = $1 RETURNING id, $2^
-        `, [boardId, props, values])
-            .then(board => {
-                return Activity.create(userId, boardId, 'boards', activityAction || 'Updated')
-                    .then(activity => {
-                        return _.assign({}, board, { activity });
-                    });
-            });
+        return this.validate(_data).then(() => {
+            return db.one(`
+                UPDATE boards SET ($2^) = ($3:csv) WHERE id = $1 RETURNING id, $2^
+            `, [boardId, props, values])
+                .then(board => {
+                    return Activity.create(userId, boardId, 'boards', activityAction || 'Updated')
+                        .then(activity => {
+                            return _.assign({}, board, { activity });
+                        });
+                });
+        });
     },
 
     drop(id) {
