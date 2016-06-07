@@ -1,4 +1,4 @@
-import { Schema, arrayOf } from 'normalizr';
+import { Schema } from 'normalizr';
 
 const activitySchema = new Schema('activity');
 

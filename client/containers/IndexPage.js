@@ -1,9 +1,8 @@
 import React, { PropTypes, Component } from 'react';
 import assign from 'lodash/assign';
-import { connect } from 'react-redux'
+import { connect } from 'react-redux';
 import { getActivity } from '../actions/activityActions';
 import { getBoards, removeBoard, updateBoard } from '../actions/boardsActions';
-import { createNotificationWithTimeout } from '../actions/notificationsActions';
 import BoardsList from '../components/BoardsList.js';
 import Loader from '../components/Loader';
 import BottomBox from '../components/BottomBox';
@@ -13,151 +12,150 @@ import CreateBoardModal from './CreateBoardModal';
 import EditBoardModal from './EditBoardModal';
 
 class IndexPage extends Component {
-    constructor(props) {
-        super(props);
+  constructor(props) {
+    super(props);
 
-        this.state = {
-            modal: null
-        };
+    this.state = {
+      modal: null,
+    };
 
-        this.handleAddBoardBtnClick = this.handleAddBoardBtnClick.bind(this);
-        this.handleBoardTileEditClick = this.handleBoardTileEditClick.bind(this);
-        this.handleBoardTileRemoveClick = this.handleBoardTileRemoveClick.bind(this);
-        this.handleBoardTileToggleStarredClick = this.handleBoardTileToggleStarredClick.bind(this);
-        this.hideModal = this.hideModal.bind(this);
+    this.handleAddBoardBtnClick = this.handleAddBoardBtnClick.bind(this);
+    this.handleBoardTileEditClick = this.handleBoardTileEditClick.bind(this);
+    this.handleBoardTileRemoveClick = this.handleBoardTileRemoveClick.bind(this);
+    this.handleBoardTileToggleStarredClick = this.handleBoardTileToggleStarredClick.bind(this);
+    this.hideModal = this.hideModal.bind(this);
+  }
+
+  componentWillMount() {
+    if (!this.props.lastUpdated) {
+      this.props.dispatch(getBoards());
+      this.props.dispatch(getActivity());
     }
+  }
 
-    componentWillMount() {
-        if (!this.props.lastUpdated) {
-            this.props.dispatch(getBoards());
-            this.props.dispatch(getActivity());
-        }
-    }
+  shouldComponentUpdate(nextProps) {
+    return !(!this.props.isFetching && !this.props.lastUpdated && nextProps.isFetching);
+  }
 
-    shouldComponentUpdate(nextProps) {
-        return !(!this.props.isFetching && !this.props.lastUpdated && nextProps.isFetching);
-    }
+  handleAddBoardBtnClick() {
+    this.setState({
+      modal: {
+        name: 'createBoard',
+      },
+    });
+  }
 
-    handleAddBoardBtnClick() {
-        this.setState({
-            modal: {
-                name: 'createBoard'
-            }
-        });
-    }
+  handleBoardTileEditClick(board) {
+    this.setState({
+      modal: {
+        name: 'editBoard',
+        data: board,
+      },
+    });
+  }
 
-    handleBoardTileEditClick(board) {
-        this.setState({
-            modal: {
-                name: 'editBoard',
-                data: board
-            }
-        });
-    }
+  handleBoardTileRemoveClick(id) {
+    this.props.dispatch(removeBoard(id));
+  }
 
-    handleBoardTileRemoveClick(id) {
-        this.props.dispatch(removeBoard(id));
-    }
+  handleBoardTileToggleStarredClick(id, starred) {
+    this.props.dispatch(
+      updateBoard(id, { starred: !starred }, starred ? 'Unstarred' : 'Starred')
+    );
+  }
 
-    handleBoardTileToggleStarredClick(id, starred) {
-        this.props.dispatch(
-            updateBoard(id, { starred: !starred }, starred ? 'Unstarred' : 'Starred')
-        );
-    }
+  hideModal() {
+    this.setState({
+      modal: null,
+    });
+  }
 
-    hideModal() {
-        this.setState({
-            modal: null
-        });
-    }
+  render() {
+    const {
+      groups,
+      isFetching,
+      lastUpdated,
+    } = this.props;
+    const { modal } = this.state;
 
-    render() {
-        const {
-            groups,
-            isFetching,
-            lastUpdated,
-            dispatch
-        } = this.props;
-        const { modal } = this.state;
+    const isEmpty = groups.length === 0;
 
-        const isEmpty = groups.length === 0;
+    const addBoardBtn = (
+      <Btn
+        text="Add new board"
+        onClick={this.handleAddBoardBtnClick}
+      />
+    );
 
-        const addBoardBtn = (
-            <Btn
-                text="Add new board"
-                onClick={this.handleAddBoardBtnClick}
+    return (
+      <div>
+        {isFetching || !lastUpdated ? (
+          <Loader />
+          ) : isEmpty ? (
+            <div>No result.</div>
+          ) : (
+            <BoardsList
+              groups={groups}
+              onBoardTileRemoveClick={this.handleBoardTileRemoveClick}
+              onBoardTileEditClick={this.handleBoardTileEditClick}
+              onBoardTileToggleStarredClick={this.handleBoardTileToggleStarredClick}
             />
-        );
-
-        return (
-            <div>
-                {isFetching || !lastUpdated ? (
-                    <Loader />
-                ) : isEmpty ? (
-                    <div>No result.</div>
-                ) : (
-                    <BoardsList
-                        groups={groups}
-                        onBoardTileRemoveClick={this.handleBoardTileRemoveClick}
-                        onBoardTileEditClick={this.handleBoardTileEditClick}
-                        onBoardTileToggleStarredClick={this.handleBoardTileToggleStarredClick}
-                    />
-                )}
-                <BottomBox
-                    button={addBoardBtn}
+        )}
+        <BottomBox
+          button={addBoardBtn}
+        />
+        <div>
+          <Animate name="a-fade-in">
+            {modal && modal.name === 'createBoard' ? (
+              <CreateBoardModal
+                hideModal={this.hideModal}
+              />
+              ) : modal && modal.name === 'editBoard' ? (
+                <EditBoardModal
+                  hideModal={this.hideModal}
+                  board={modal.data}
                 />
-                <div>
-                    <Animate name="a-fade-in">
-                        {modal && modal.name === 'createBoard' ? (
-                            <CreateBoardModal
-                                hideModal={this.hideModal}
-                            />
-                        ) : modal && modal.name === 'editBoard' ? (
-                            <EditBoardModal
-                                hideModal={this.hideModal}
-                                board={modal.data}
-                            />
-                        ) : null}
-                    </Animate>
-                </div>
-            </div>
-        );
-    }
+            ) : null}
+          </Animate>
+        </div>
+      </div>
+    );
+  }
 }
 
 IndexPage.propTypes = {
-    groups: PropTypes.array.isRequired,
-    dispatch: PropTypes.func.isRequired,
-    isFetching: PropTypes.bool.isRequired,
-    lastUpdated: PropTypes.number
+  groups: PropTypes.array.isRequired,
+  dispatch: PropTypes.func.isRequired,
+  isFetching: PropTypes.bool.isRequired,
+  lastUpdated: PropTypes.number,
 };
 
 function mapStateToProps(state) {
-    const { boards, lists } = state.entities;
-    const { ids, isFetching, lastUpdated } = state.pages.index;
-    const items = ids.map(id => {
-        const board = boards[id];
-        const { cardsLength, listsLength, starred } = board;
-        return assign({}, board, {
-            cardsLength: cardsLength || 0,
-            listsLength: listsLength || 0,
-            starred: starred || false
-        });
+  const { boards } = state.entities;
+  const { ids, isFetching, lastUpdated } = state.pages.index;
+  const items = ids.map(id => {
+    const board = boards[id];
+    const { cardsLength, listsLength, starred } = board;
+    return assign({}, board, {
+      cardsLength: cardsLength || 0,
+      listsLength: listsLength || 0,
+      starred: starred || false,
     });
+  });
 
-    return {
-        groups: [{
-            title: 'Starred boards',
-            boards: items.filter(b => b.starred)
-        }, {
-            title: 'My boards',
-            boards: items
-        }],
-        isFetching,
-        lastUpdated
-    };
-};
+  return {
+    groups: [{
+      title: 'Starred boards',
+      boards: items.filter(b => b.starred),
+    }, {
+      title: 'My boards',
+      boards: items,
+    }],
+    isFetching,
+    lastUpdated,
+  };
+}
 
 export default connect(
-    mapStateToProps
+  mapStateToProps
 )(IndexPage);

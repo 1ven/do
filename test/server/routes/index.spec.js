@@ -6,45 +6,45 @@ import db from 'server/db';
 import { recreateTables } from '../helpers';
 
 describe('index routes', () => {
-    beforeEach(recreateTables);
+  beforeEach(recreateTables);
 
-    it('POST /sign-up should create user, authenticate it, and return json - {}', (done) => {
-        request(app)
-            .post('/sign-up')
-            .send({
-                username: 'testuser',
-                email: 'test@test.com',
-                password: '123456',
-                confirmation: '123456',
-                remember: 'on'
-            })
-            .end((err, res) => {
-                if (err) { return done(err); }
+  it('POST /sign-up should create user, authenticate it, and return json - {}', (done) => {
+    request(app)
+      .post('/sign-up')
+      .send({
+        username: 'testuser',
+        email: 'test@test.com',
+        password: '123456',
+        confirmation: '123456',
+        remember: 'on',
+      })
+      .end((err, res) => {
+        if (err) { return done(err); }
 
-                db.result('SELECT id FROM users WHERE username = $1', ['testuser'])
-                    .then(result => {
-                        const cookies = res.header['set-cookie'];
+        db.result('SELECT id FROM users WHERE username = $1', ['testuser'])
+          .then(result => {
+            const cookies = res.header['set-cookie'];
 
-                        assert.equal(result.rowCount, 1);
-                        assert.deepEqual(res.body, {});
+            assert.equal(result.rowCount, 1);
+            assert.deepEqual(res.body, {});
 
-                        assert.lengthOf(cookies.filter(c => {
-                            return !! (
-                                c.match(/access_token/i) &&
-                                c.match(new RegExp(`max-age=${30 * 24 * 60 * 60}`, 'i')) &&
-                                c.match(/httponly/i)
-                            );
-                        }), 1);
+            assert.lengthOf(cookies.filter(c => {
+              return !! (
+                c.match(/access_token/i) &&
+                c.match(new RegExp(`max-age=${30 * 24 * 60 * 60}`, 'i')) &&
+                c.match(/httponly/i)
+              );
+            }), 1);
 
-                        assert.lengthOf(cookies.filter(c => {
-                            return !! (
-                                c.match(/authenticated=true/i) &&
-                                c.match(new RegExp(`max-age=${30 * 24 * 60 * 60}`, 'i'))
-                            );
-                        }), 1);
+            assert.lengthOf(cookies.filter(c => {
+              return !! (
+                c.match(/authenticated=true/i) &&
+                c.match(new RegExp(`max-age=${30 * 24 * 60 * 60}`, 'i'))
+              );
+            }), 1);
 
-                        done();
-                    }, done);
-            });
-    });
+            done();
+          }, done);
+      });
+  });
 });

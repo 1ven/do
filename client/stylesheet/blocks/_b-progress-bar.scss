@@ -1,11 +1,11 @@
 .b-progress-bar {
-    position: fixed;
-    top: 0;
-    left: 0;
-    height: 2px;
-    background-color: $turquoise;
-    box-shadow: 0 0 10px $turquoise, 0 0 1px $turquoise;
-    z-index: 10;
-    width: 30%;
-    transition: all .2s ease-out;
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 2px;
+  background-color: $turquoise;
+  box-shadow: 0 0 10px $turquoise, 0 0 1px $turquoise;
+  z-index: 10;
+  width: 30%;
+  transition: all .2s ease-out;
 }

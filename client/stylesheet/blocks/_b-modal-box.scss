@@ -1,19 +1,19 @@
 .b-modal-box {
-    background-color: $white;
-    border-radius: 2px;
-    box-shadow: $shadow;
-    &__top {
-        height: 54px;
-        display: flex;
-        align-items: center;
-        padding: 0 21px;
-        border-bottom: 1px solid $gray;
-    }
-    &__title {
-        font-size: 18px;
-    }
-    &__close {
-        width: 16px;
-        margin-left: auto;
-    }
+  background-color: $white;
+  border-radius: 2px;
+  box-shadow: $shadow;
+  &__top {
+    height: 54px;
+    display: flex;
+    align-items: center;
+    padding: 0 21px;
+    border-bottom: 1px solid $gray;
+  }
+  &__title {
+    font-size: 18px;
+  }
+  &__close {
+    width: 16px;
+    margin-left: auto;
+  }
 }

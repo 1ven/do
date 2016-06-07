@@ -1,19 +1,19 @@
 .b-notifications {
-    position: fixed;
-    bottom: 0;
-    left: $container-x-padding;
-    z-index: 1;
-    padding-bottom: 15px;
-    display: flex;
-    flex-direction: column;
-    width: 270px;
-    @media (min-width: $container-max-width) {
-        left: calc((100% - #{$container-max-width} + #{$container-x-padding} * 2) / 2);
+  position: fixed;
+  bottom: 0;
+  left: $container-x-padding;
+  z-index: 1;
+  padding-bottom: 15px;
+  display: flex;
+  flex-direction: column;
+  width: 270px;
+  @media (min-width: $container-max-width) {
+    left: calc((100% - #{$container-max-width} + #{$container-x-padding} * 2) / 2);
+  }
+  &__item {
+    margin-top: 15px;
+    &:first-child {
+      margin-top: 0;
     }
-    &__item {
-        margin-top: 15px;
-        &:first-child {
-            margin-top: 0;
-        }
-    }
+  }
 }

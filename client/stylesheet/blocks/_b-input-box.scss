@@ -1,25 +1,25 @@
 .b-input-box {
-    &__title {
-        display: block;
-        font-size: 10px;
-        text-transform: uppercase;
-        font-weight: 600;
+  &__title {
+    display: block;
+    font-size: 10px;
+    text-transform: uppercase;
+    font-weight: 600;
+  }
+  &__error {
+    font-size: 11px;
+    position: absolute;
+    top: 0;
+    right: 0;
+    background-color: $red;
+    color: #fff;
+    padding: 2px 4px;
+    border-radius: 2px;
+    & + .b-input {
+      border-color: $red;
+      @include placeholder() {
+        color: $red;
+        opacity: 1 !important;
+      }
     }
-    &__error {
-        font-size: 11px;
-        position: absolute;
-        top: 0;
-        right: 0;
-        background-color: $red;
-        color: #fff;
-        padding: 2px 4px;
-        border-radius: 2px;
-        & + .b-input {
-            border-color: $red;
-            @include placeholder() {
-                color: $red;
-                opacity: 1 !important;
-            }
-        }
-    }
+  }
 }

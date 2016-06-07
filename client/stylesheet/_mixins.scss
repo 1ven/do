@@ -1,80 +1,80 @@
 @mixin no-select() {
-    -webkit-user-select: none;
-    -moz-user-select: none;
-    -o-user-select: none;
-    -ms-user-select: none;
-    user-select: none;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -o-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
 }
 
 @mixin align() {
-    top: 0;
-    left: 0;
-    bottom: 0;
-    right: 0;
-    margin: auto;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  margin: auto;
 }
 
 @mixin h-align() {
-    left: 0;
-    right: 0;
-    margin: auto;
+  left: 0;
+  right: 0;
+  margin: auto;
 }
 
 @mixin v-align() {
-    top: 0;
-    bottom: 0;
-    margin: auto;
+  top: 0;
+  bottom: 0;
+  margin: auto;
 }
 
 @mixin v-out() {
-    font-size: 0;
-    &:before {
-        content: '';
-        height: 100%;
-        display: inline-block;
-        vertical-align: middle;
-    }
+  font-size: 0;
+  &:before {
+    content: '';
+    height: 100%;
+    display: inline-block;
+    vertical-align: middle;
+  }
 }
 
 @mixin v-in() {
-    font-size: $rootFontSize;
-    width: 100%;
-    display: inline-block;
-    vertical-align: middle;
+  font-size: $rootFontSize;
+  width: 100%;
+  display: inline-block;
+  vertical-align: middle;
 }
 
 @mixin placeholder() {
-    &::-webkit-input-placeholder {
-        @content;
-    }
-    &::-moz-placeholder {
-        @content;
-    }
-    &:-moz-placeholder {
-        @content;
-    }
-    &:-ms-input-placeholder {
-        @content;
-    }
+  &::-webkit-input-placeholder {
+    @content;
+  }
+  &::-moz-placeholder {
+    @content;
+  }
+  &:-moz-placeholder {
+    @content;
+  }
+  &:-ms-input-placeholder {
+    @content;
+  }
 }
 
 @mixin selection($bg, $color) {
-    ::selection {
-        background: $bg;
-        color: $color;
-    }
-    ::-moz-selection {
-        background: $bg;
-        color: $color;
-    }
+  ::selection {
+    background: $bg;
+    color: $color;
+  }
+  ::-moz-selection {
+    background: $bg;
+    color: $color;
+  }
 }
 
 @mixin clearfix() {
-    &:after {
-        content: '';
-        clear: both;
-        display: block;
-        visibility: hidden;
-        height: 0;
-    }
+  &:after {
+    content: '';
+    clear: both;
+    display: block;
+    visibility: hidden;
+    height: 0;
+  }
 }

@@ -1,53 +1,53 @@
 .b-btn {
-    border: 0;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background-color: $turquoise;
-    color: $white;
-    border-radius: 2px;
-    cursor: pointer;
-    height: 40px;
-    padding: 0 16px;
-    transition: background-color .2s ease-out;
-    box-shadow: $shadow;
-    text-decoration: none;
-    outline: 0;
-    @include no-select();
+  border: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: $turquoise;
+  color: $white;
+  border-radius: 2px;
+  cursor: pointer;
+  height: 40px;
+  padding: 0 16px;
+  transition: background-color .2s ease-out;
+  box-shadow: $shadow;
+  text-decoration: none;
+  outline: 0;
+  @include no-select();
+  &:hover {
+    background-color: darken($turquoise, 5%);
+  }
+  &:active {
+    background-color: darken($turquoise, 10%);
+  }
+  &_red {
+    background-color: $red;
     &:hover {
-        background-color: darken($turquoise, 5%);
+      background-color: darken($red, 5%);
     }
     &:active {
-        background-color: darken($turquoise, 10%);
+      background-color: darken($red, 10%);
     }
-    &_red {
-        background-color: $red;
-        &:hover {
-            background-color: darken($red, 5%);
-        }
-        &:active {
-            background-color: darken($red, 10%);
-        }
+  }
+  &_blue {
+    background-color: $blue;
+    &:hover {
+      background-color: darken($blue, 5%);
     }
-    &_blue {
-        background-color: $blue;
-        &:hover {
-            background-color: darken($blue, 5%);
-        }
-        &:active {
-            background-color: darken($blue, 10%);
-        }
+    &:active {
+      background-color: darken($blue, 10%);
     }
-    &_full-width {
-        width: 100%;
-    }
-    &_sm {
-        height: 26px;
-        font-size: 12px;
-    }
-    &_md {
-        font-size: 14px;
-        height: 34px;
-        padding: 0 13px;
-    }
+  }
+  &_full-width {
+    width: 100%;
+  }
+  &_sm {
+    height: 26px;
+    font-size: 12px;
+  }
+  &_md {
+    font-size: 14px;
+    height: 34px;
+    padding: 0 13px;
+  }
 }

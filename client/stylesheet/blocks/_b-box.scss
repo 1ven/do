@@ -1,17 +1,17 @@
 .b-box {
+  height: 100%;
+  text-align: center;
+  &:before {
+    content: '';
     height: 100%;
-    text-align: center;
-    &:before {
-        content: '';
-        height: 100%;
-        display: inline-block;
-        vertical-align: middle;
-    }
-    &__middle {
-        width: 100%;
-        max-width: 500px;
-        text-align: left;
-        display: inline-block;
-        vertical-align: middle;
-    }
+    display: inline-block;
+    vertical-align: middle;
+  }
+  &__middle {
+    width: 100%;
+    max-width: 500px;
+    text-align: left;
+    display: inline-block;
+    vertical-align: middle;
+  }
 }

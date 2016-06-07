@@ -1,14 +1,14 @@
 .b-input-a {
-    border: 0;
-    height: 47px;
-    border-radius: 2px;
-    box-shadow: $shadow;
-    display: flex;
-    width: 100%;
-    padding: 0 15px;
-    font-size: 17px;
-    color: $black;
-    @include placeholder() {
-        font-weight: 300;
-    }
+  border: 0;
+  height: 47px;
+  border-radius: 2px;
+  box-shadow: $shadow;
+  display: flex;
+  width: 100%;
+  padding: 0 15px;
+  font-size: 17px;
+  color: $black;
+  @include placeholder() {
+    font-weight: 300;
+  }
 }

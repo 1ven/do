@@ -1,25 +1,25 @@
 .b-tile {
-    display: block;
-    width: 100%;
-    height: 100%;
-    border-radius: 3px;
-    background-color: $dark;
-    padding: 8px;
-    color: $white;
-    &__top-left {
-        float: left;
+  display: block;
+  width: 100%;
+  height: 100%;
+  border-radius: 3px;
+  background-color: $dark;
+  padding: 8px;
+  color: $white;
+  &__top-left {
+    float: left;
+  }
+  &__top-right {
+    float: right;
+  }
+  &__top {
+    margin-bottom: 8px;
+    &:after {
+      content: '';
+      display: block;
+      visibility: hidden;
+      height: 0;
+      clear: both;
     }
-    &__top-right {
-        float: right;
-    }
-    &__top {
-        margin-bottom: 8px;
-        &:after {
-            content: '';
-            display: block;
-            visibility: hidden;
-            height: 0;
-            clear: both;
-        }
-    }
+  }
 }

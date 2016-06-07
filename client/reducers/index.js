@@ -8,13 +8,13 @@ import userReducer from './userReducer';
 import searchReducer from './searchReducer';
 
 const rootReducer = combineReducers({
-    entities: entitiesReducer,
-    routing: routerReducer,
-    pages: pagesReducer,
-    editForm: editFormReducer,
-    notifications: notificationsReducer,
-    user: userReducer,
-    search: searchReducer
+  entities: entitiesReducer,
+  routing: routerReducer,
+  pages: pagesReducer,
+  editForm: editFormReducer,
+  notifications: notificationsReducer,
+  user: userReducer,
+  search: searchReducer,
 });
 
 export default rootReducer;

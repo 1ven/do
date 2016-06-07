@@ -1,18 +1,18 @@
 .b-form {
-    &__row {
-        display: block;
-        margin-bottom: 10px;
-        &:last-child {
-            margin-bottom: 0;
-        }
+  &__row {
+    display: block;
+    margin-bottom: 10px;
+    &:last-child {
+      margin-bottom: 0;
     }
-    // &__error-message {
-    //     font-size: 12px;
-    //     color: $white;
-    //     background-color: $red;
-    //     border-radius: 2px;
-    //     display: block;
-    //     margin-top: 6px;
-    //     padding: 3px 6px;
-    // }
+  }
+  // &__error-message {
+  //     font-size: 12px;
+  //     color: $white;
+  //     background-color: $red;
+  //     border-radius: 2px;
+  //     display: block;
+  //     margin-top: 6px;
+  //     padding: 3px 6px;
+  // }
 }

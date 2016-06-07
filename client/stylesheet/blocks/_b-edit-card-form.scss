@@ -1,14 +1,14 @@
 .b-edit-card-form {
-    &__area {
-        margin-bottom: 10px;
+  &__area {
+    margin-bottom: 10px;
+  }
+  &__buttons {
+    display: flex;
+  }
+  &__button {
+    margin-right: 10px;
+    &:last-child {
+      margin-right: 0;
     }
-    &__buttons {
-        display: flex;
-    }
-    &__button {
-        margin-right: 10px;
-        &:last-child {
-            margin-right: 0;
-        }
-    }
+  }
 }

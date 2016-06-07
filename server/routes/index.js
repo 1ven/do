@@ -9,9 +9,9 @@ router.use('/auth', auth);
 router.post('/sign-up', SignController.ensureSignedOut, SignController.signUp);
 
 router.get('*', (req, res) => {
-    res.render('index', {
-        bundle: '/static/js/bundle.js'
-    });
+  res.render('index', {
+    bundle: '/static/js/bundle.js',
+  });
 });
 
 module.exports = router;

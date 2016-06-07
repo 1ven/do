@@ -1,57 +1,57 @@
 $avatar-size: 38px;
 
 .b-user-box {
-    position: relative;
-    @include no-select();
-    &__username, &__role {
-        display: block;
-        color: $white;
+  position: relative;
+  @include no-select();
+  &__username, &__role {
+    display: block;
+    color: $white;
+  }
+  &__username {
+    font-size: 15px;
+    line-height: 1;
+  }
+  &__role {
+    font-size: 11px;
+    font-weight: 300;
+  }
+  &__avatar {
+    border: 1px solid $white;
+    border-radius: 50%;
+    width: $avatar-size;
+    height: $avatar-size;
+  }
+  &__wrap {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+  }
+  &__icon {
+    width: 10px;
+    path {
+      fill: #fff;
     }
-    &__username {
-        font-size: 15px;
-        line-height: 1;
-    }
-    &__role {
-        font-size: 11px;
-        font-weight: 300;
-    }
-    &__avatar {
-        border: 1px solid $white;
-        border-radius: 50%;
-        width: $avatar-size;
-        height: $avatar-size;
-    }
-    &__wrap {
-        display: flex;
-        align-items: center;
-        cursor: pointer;
-    }
-    &__icon {
-        width: 10px;
-        path {
-            fill: #fff;
+  }
+  &__left {
+    margin-left: 11px;
+    text-align: right;
+  }
+  &__right {
+    width: $avatar-size;
+    margin-left: 11px;
+  }
+  &__menu {
+    position: absolute;
+    margin-top: 15px;
+    right: 0;
+  }
+  .b-toggle {
+    &_active {
+      .b-user-box {
+        &__icon {
+          transform: rotate(180deg);
         }
+      }
     }
-    &__left {
-        margin-left: 11px;
-        text-align: right;
-    }
-    &__right {
-        width: $avatar-size;
-        margin-left: 11px;
-    }
-    &__menu {
-        position: absolute;
-        margin-top: 15px;
-        right: 0;
-    }
-    .b-toggle {
-        &_active {
-            .b-user-box {
-                &__icon {
-                    transform: rotate(180deg);
-                }
-            }
-        }
-    }
+  }
 }

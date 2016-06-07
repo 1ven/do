@@ -2,45 +2,51 @@ import React, { PropTypes, Component } from 'react';
 import ReactDOM from 'react-dom';
 
 class Input extends Component {
-    constructor(props) {
-        super(props);
+  constructor(props) {
+    super(props);
 
-        this.handleChange = this.handleChange.bind(this);
+    this.handleChange = this.handleChange.bind(this);
 
-        this.state = {
-            value: props.value || ''
-        };
-    }
+    this.state = {
+      value: props.value || '',
+    };
+  }
 
-    componentDidMount() {
-        const { focus } = this.props;
+  componentDidMount() {
+    const { focus } = this.props;
 
-        focus && ReactDOM.findDOMNode(this.refs.input).focus();
-    }
+    if (focus) ReactDOM.findDOMNode(this.refs.input).focus();
+  }
 
-    handleChange(e) {
-        const value = e.target.value;
-        const { onChange } = this.props;
+  handleChange(e) {
+    const value = e.target.value;
+    const { onChange } = this.props;
 
-        this.setState({ value });
+    this.setState({ value });
 
-        onChange && onChange(e);
-    }
+    if (onChange) onChange(e);
+  }
 
-    render() {
-        const { value } = this.state;
+  render() {
+    const { value } = this.state;
 
-        return (
-            <input
-                {...this.props}
-                className="b-input"
-                type="text"
-                ref="input"
-                value={value}
-                onChange={this.handleChange}
-            />
-        );
-    }
+    return (
+      <input
+        {...this.props}
+        className="b-input"
+        type="text"
+        ref="input"
+        value={value}
+        onChange={this.handleChange}
+      />
+    );
+  }
 }
+
+Input.propTypes = {
+  onChange: PropTypes.func.isRequired,
+  value: PropTypes.string,
+  focus: PropTypes.bool,
+};
 
 export default Input;

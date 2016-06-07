@@ -1,31 +1,31 @@
 .b-board {
-    margin-top: 24px;
-    padding-bottom: 128px;
-    &__top {
-        display: flex;
-        align-items: center;
-        margin-bottom: 45px;
+  margin-top: 24px;
+  padding-bottom: 128px;
+  &__top {
+    display: flex;
+    align-items: center;
+    margin-bottom: 45px;
+  }
+  &__info {
+    display: flex;
+    flex-direction: column;
+  }
+  &__edit {
+    margin-left: auto;
+    width: 20px;
+    path {
+      fill: $white;
     }
-    &__info {
-        display: flex;
-        flex-direction: column;
-    }
-    &__edit {
-        margin-left: auto;
-        width: 20px;
-        path {
-            fill: $white;
-        }
-    }
-    &__title, &__description {
-        color: $white;
-        font-weight: 300;
-    }
-    &__title {
-        font-size: 36px;
-        margin-bottom: 6px;
-    }
-    &__description {
-        font-size: 20px;
-    }
+  }
+  &__title, &__description {
+    color: $white;
+    font-weight: 300;
+  }
+  &__title {
+    font-size: 36px;
+    margin-bottom: 6px;
+  }
+  &__description {
+    font-size: 20px;
+  }
 }

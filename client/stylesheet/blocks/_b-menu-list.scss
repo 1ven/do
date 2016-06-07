@@ -1,31 +1,31 @@
 .b-menu-list {
-    box-shadow: $shadow;
-    background-color: $white;
-    border-radius: 2px;
-    padding: 13px;
-    &__item {
-        line-height: 1;
-        margin-bottom: 8px;
-        &:last-child {
-            margin-bottom: 0;
-        }
+  box-shadow: $shadow;
+  background-color: $white;
+  border-radius: 2px;
+  padding: 13px;
+  &__item {
+    line-height: 1;
+    margin-bottom: 8px;
+    &:last-child {
+      margin-bottom: 0;
     }
-    &__link {
-        color: $black;
-        text-decoration: none;
-        transition: opacity .2s ease-out;
-        white-space: nowrap;
-        &:hover {
-            opacity: .8;
-        }
+  }
+  &__link {
+    color: $black;
+    text-decoration: none;
+    transition: opacity .2s ease-out;
+    white-space: nowrap;
+    &:hover {
+      opacity: .8;
     }
-    &_sm {
-        font-size: 14px;
-        padding: 9px;
-        .b-menu-list {
-            &__item:not(:last-child) {
-                margin-bottom: 7px;
-            }
-        }
+  }
+  &_sm {
+    font-size: 14px;
+    padding: 9px;
+    .b-menu-list {
+      &__item:not(:last-child) {
+        margin-bottom: 7px;
+      }
     }
+  }
 }

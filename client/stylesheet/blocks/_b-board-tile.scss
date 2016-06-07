@@ -1,47 +1,47 @@
 .b-board-tile {
-    background-color: $light;
-    border-radius: 2px;
-    box-shadow: $shadow;
-    height: 120px;
-    padding: 10px 16px;
+  background-color: $light;
+  border-radius: 2px;
+  box-shadow: $shadow;
+  height: 120px;
+  padding: 10px 16px;
+  display: flex;
+  flex-direction: column;
+  &__bottom {
+    margin-top: auto;
+  }
+  &__top, &__bottom {
+    align-items: center;
     display: flex;
-    flex-direction: column;
-    &__bottom {
-        margin-top: auto;
+  }
+  &__right {
+    margin-left: auto;
+    display: flex;
+  }
+  &__toggle-starred {
+    width: 13px;
+    display: block;
+  }
+  &__right-item {
+    margin-right: 10px;
+    &:last-child {
+      margin-right: 0;
     }
-    &__top, &__bottom {
-        align-items: center;
-        display: flex;
+  }
+  &__more {
+    font-size: 14px;
+    color: $black;
+    text-decoration: none;
+    &:hover {
+      text-decoration: underline;
     }
-    &__right {
-        margin-left: auto;
-        display: flex;
+  }
+  &__board-info {
+    display: flex;
+  }
+  &__icon-item {
+    margin-right: 15px;
+    &:last-child {
+      margin-right: 0;
     }
-    &__toggle-starred {
-        width: 13px;
-        display: block;
-    }
-    &__right-item {
-        margin-right: 10px;
-        &:last-child {
-            margin-right: 0;
-        }
-    }
-    &__more {
-        font-size: 14px;
-        color: $black;
-        text-decoration: none;
-        &:hover {
-            text-decoration: underline;
-        }
-    }
-    &__board-info {
-        display: flex;
-    }
-    &__icon-item {
-        margin-right: 15px;
-        &:last-child {
-            margin-right: 0;
-        }
-    }
+  }
 }
