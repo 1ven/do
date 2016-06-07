@@ -1,0 +1,37 @@
+.a-fade-in-down {
+    &-enter {
+        opacity: 0.01;
+        transform: translateY(-10px);
+        &-active {
+            opacity: 1;
+            transition: all .15s linear;
+            transform: translateY(0);
+        }
+    }
+    &-leave {
+        opacity: 1;
+        transform: translateY(0);
+        &-active {
+            opacity: 0.01;
+            transform: translateY(-10px);
+            transition: all .15s linear;
+        }
+    }
+}
+
+.a-fade-in {
+    &-enter {
+        opacity: 0.01;
+        &-active {
+            opacity: 1;
+            transition: opacity .15s linear;
+        }
+    }
+    &-leave {
+        opacity: 1;
+        &-active {
+            opacity: 0.01;
+            transition: opacity .15s linear;
+        }
+    }
+}
