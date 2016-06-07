@@ -1,15 +1,16 @@
 import React, { PropTypes, Component } from 'react';
 import assign from 'lodash/assign';
 import { connect } from 'react-redux'
+import { getActivity } from '../actions/activityActions';
 import { getBoards, removeBoard, updateBoard } from '../actions/boardsActions';
+import { createNotificationWithTimeout } from '../actions/notificationsActions';
 import BoardsList from '../components/BoardsList.js';
 import Loader from '../components/Loader';
 import BottomBox from '../components/BottomBox';
 import Btn from '../components/Btn';
+import Animate from '../components/Animate';
 import CreateBoardModal from './CreateBoardModal';
 import EditBoardModal from './EditBoardModal';
-
-import { createNotificationWithTimeout } from '../actions/notificationsActions';
 
 class IndexPage extends Component {
     constructor(props) {
@@ -29,6 +30,7 @@ class IndexPage extends Component {
     componentWillMount() {
         if (!this.props.lastUpdated) {
             this.props.dispatch(getBoards());
+            this.props.dispatch(getActivity());
         }
     }
 
@@ -105,16 +107,18 @@ class IndexPage extends Component {
                     button={addBoardBtn}
                 />
                 <div>
-                    {modal && modal.name === 'createBoard' ? (
-                        <CreateBoardModal
-                            hideModal={this.hideModal}
-                        />
-                    ) : modal && modal.name === 'editBoard' ? (
-                        <EditBoardModal
-                            hideModal={this.hideModal}
-                            board={modal.data}
-                        />
-                    ) : null}
+                    <Animate name="a-fade-in">
+                        {modal && modal.name === 'createBoard' ? (
+                            <CreateBoardModal
+                                hideModal={this.hideModal}
+                            />
+                        ) : modal && modal.name === 'editBoard' ? (
+                            <EditBoardModal
+                                hideModal={this.hideModal}
+                                board={modal.data}
+                            />
+                        ) : null}
+                    </Animate>
                 </div>
             </div>
         );
