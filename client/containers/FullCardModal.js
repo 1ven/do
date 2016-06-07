@@ -1,6 +1,5 @@
 import React, { PropTypes, Component } from 'react';
 import { browserHistory } from 'react-router';
-import assign from 'lodash/assign';
 import map from 'lodash/map';
 import { connect } from 'react-redux';
 import { updateCard, getCard, addCommentId } from '../actions/cardsActions';
@@ -46,14 +45,16 @@ function mapStateToProps(state, ownProps) {
   const { cards, comments, users } = state.entities;
   let card = cards[ownProps.params.cardId];
 
-  card = card ? assign({}, card, {
+  card = card ? {
+    ...card,
     comments: map(card.comments, id => {
       const comment = comments[id];
-      return assign({}, comment, {
+      return {
+        ...comment,
         user: users[comment.user],
-      });
+      };
     }),
-  }) : null;
+  } : null;
 
   return {
     card,

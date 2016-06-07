@@ -1,5 +1,4 @@
 import React, { Component, PropTypes } from 'react';
-import assign from 'lodash/assign';
 import isEmpty from 'lodash/isEmpty';
 import omit from 'lodash/omit';
 import values from 'lodash/values';
@@ -9,10 +8,6 @@ import { getActivity } from '../actions/activityActions';
 import Activity from '../components/Activity';
 
 class ActivityContainer extends Component {
-  constructor(props) {
-    super(props);
-  }
-
   componentWillMount() {
     if (!this.props.items) {
       this.props.dispatch(getActivity());
@@ -43,7 +38,10 @@ function mapStateToProps(state) {
     .filter((item, i) => i < 15)
     .map(item => {
       const date = moment.unix(item.createdAt).format('D MMM [at] HH:mm');
-      return assign({}, omit(item, ['createdAt']), { date });
+      return {
+        ...omit(item, ['createdAt']),
+        date,
+      };
     });
 
   return { items };

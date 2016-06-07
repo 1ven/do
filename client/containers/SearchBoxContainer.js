@@ -1,4 +1,3 @@
-import assign from 'lodash/assign';
 import { connect } from 'react-redux';
 import SearchBox from '../components/SearchBox';
 import { search } from '../actions/searchActions';
@@ -21,9 +20,10 @@ function prettyResults(results) {
 
     return acc.map(group => {
       if (group.type === result.type) {
-        return assign({}, group, {
+        return {
+          ...group,
           items: [...group.items, resultItem],
-        });
+        };
       }
       return group;
     });

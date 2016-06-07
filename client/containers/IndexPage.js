@@ -1,5 +1,4 @@
 import React, { PropTypes, Component } from 'react';
-import assign from 'lodash/assign';
 import { connect } from 'react-redux';
 import { getActivity } from '../actions/activityActions';
 import { getBoards, removeBoard, updateBoard } from '../actions/boardsActions';
@@ -136,11 +135,12 @@ function mapStateToProps(state) {
   const items = ids.map(id => {
     const board = boards[id];
     const { cardsLength, listsLength, starred } = board;
-    return assign({}, board, {
+    return {
+      ...board,
       cardsLength: cardsLength || 0,
       listsLength: listsLength || 0,
       starred: starred || false,
-    });
+    };
   });
 
   return {

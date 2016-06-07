@@ -1,4 +1,3 @@
-import assign from 'lodash/assign';
 import camelcaseKeysDeep from 'camelcase-keys-deep';
 import { normalize } from 'normalizr';
 import { headers } from '../constants/config';
@@ -11,24 +10,26 @@ function callApi(endpoint, request) {
     request.body = JSON.stringify(request.body);
   }
 
-  const requestWithHeaders = assign({}, { headers }, request, {
+  const requestWithHeaders = {
+    ...{ headers },
+    ...request,
     credentials: 'same-origin',
-  });
+  };
 
   return fetch(hostname + endpoint, requestWithHeaders)
-  .then(response => response.json().then(body => ({ response, body })))
-  .then(({ response, body }) => {
-    // may be not throw an error, when response is not ok.
-    // Because it's not exception. Instead of, return object with result and ok properties.
-    if (!response.ok) {
-      return Promise.reject(body);
-    }
-    // check if server responded without json(e.x res.sendStatus()),
-    // what value body will have, if body will be undefined, accordingly
-    // return of this function must be - `return body || {}`
+    .then(response => response.json().then(body => ({ response, body })))
+    .then(({ response, body }) => {
+      // may be not throw an error, when response is not ok.
+      // Because it's not exception. Instead of, return object with result and ok properties.
+      if (!response.ok) {
+        return Promise.reject(body);
+      }
+      // check if server responded without json(e.x res.sendStatus()),
+      // what value body will have, if body will be undefined, accordingly
+      // return of this function must be - `return body || {}`
 
-    return camelcaseKeysDeep(body);
-  });
+      return camelcaseKeysDeep(body);
+    });
 }
 
 export const CALL_API = Symbol();
@@ -71,9 +72,10 @@ export default store => next => action => {
 
         return next({
           type: successType,
-          payload: assign({}, data, {
+          payload: {
+            ...data,
             receivedAt: Date.now(),
-          }),
+          },
         });
       },
       error => next({

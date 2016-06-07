@@ -1,6 +1,5 @@
 import merge from 'lodash/merge';
 import without from 'lodash/without';
-import assign from 'lodash/assign';
 import * as types from '../constants/actionTypes';
 
 function cardsReducer(state = {}, action) {
@@ -11,11 +10,12 @@ function cardsReducer(state = {}, action) {
       const { cardId, commentId } = payload;
       const comments = state[cardId].comments || [];
 
-      return merge({}, state, {
+      return {
+        ...state,
         [cardId]: {
           comments: [...comments, commentId],
         },
-      });
+      };
     }
     default:
       return state;
@@ -30,61 +30,72 @@ function boardsReducer(state = {}, action) {
       const { boardId, listId } = payload;
       const lists = state[boardId].lists || [];
 
-      return merge({}, state, {
+      return {
+        ...state,
         [boardId]: {
-          lists: [...lists, listId],
+          lists: [...lists, listId]
         },
-      });
+      };
     }
     case types.BOARDS_REMOVE_LIST_ID: {
       const { boardId, listId } = payload;
       const lists = state[boardId].lists || [];
 
-      return assign({}, state, {
-        [boardId]: assign({}, state[boardId], {
-          lists: without(lists, listId),
-        }),
-      });
+      return {
+        ...state,
+        [boardId]: {
+          ...state[boardId],
+          lists: without(lists, listId)
+        },
+      };
     }
     case types.BOARDS_INC_LISTS_LENGTH: {
       const { boardId } = payload;
       const board = state[boardId];
 
-      return assign({}, state, {
-        [payload.boardId]: assign({}, board, {
+      return {
+        ...state,
+        [boardId]: {
+          ...board,
           listsLength: board.listsLength + 1,
-        }),
-      });
+        },
+      };
     }
     case types.BOARDS_DEC_LISTS_LENGTH: {
       const { boardId } = payload;
       const board = state[boardId];
 
-      return assign({}, state, {
-        [payload.boardId]: assign({}, board, {
+      return {
+        ...state,
+        [boardId]: {
+          ...board,
           listsLength: board.listsLength - 1,
-        }),
-      });
+        },
+      };
     }
     case types.BOARDS_INC_CARDS_LENGTH: {
       const { boardId } = payload;
       const board = state[boardId];
 
-      return assign({}, state, {
-        [payload.boardId]: assign({}, board, {
+      return {
+        ...state,
+        [boardId]: {
+          ...board,
           cardsLength: board.cardsLength + 1,
-        }),
-      });
+        },
+      };
     }
     case types.BOARDS_DEC_CARDS_LENGTH: {
       const { boardId } = payload;
       const board = state[boardId];
 
-      return assign({}, state, {
-        [payload.boardId]: assign({}, board, {
-          cardsLength: board.cardsLength - 1,
-        }),
-      });
+      return {
+        ...state,
+        [boardId]: {
+          ...board,
+          cardsLength: board.cardsLength -1,
+        },
+      };
     }
     default:
       return state;
@@ -100,21 +111,24 @@ function listsReducer(state = {}, action) {
       const { listId, cardId } = payload;
       const cards = state[listId].cards || [];
 
-      return merge({}, state, {
+      return {
+        ...state,
         [listId]: {
           cards: [...cards, cardId],
         },
-      });
+      };
     }
     case types.LISTS_REMOVE_CARD_ID: {
       const { listId, cardId } = payload;
       const cards = state[listId].cards || [];
 
-      return assign({}, state, {
-        [listId]: assign({}, state[listId], {
+      return {
+        ...state,
+        [listId]: {
+          ...state[listId],
           cards: without(cards, cardId),
-        }),
-      });
+        },
+      };
     }
     default:
       return state;
