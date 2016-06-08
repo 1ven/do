@@ -23,14 +23,6 @@ function Menu() {
         <div className="b-menu__item">
           <a
             className="b-menu__item-link"
-            data-title="Settings"
-          >
-            Settings
-          </a>
-        </div>
-        <div className="b-menu__item">
-          <a
-            className="b-menu__item-link"
             data-title="Sign out"
           >
             Sign out

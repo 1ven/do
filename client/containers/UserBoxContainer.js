@@ -21,7 +21,8 @@ class UserBoxContainer extends Component {
       isFetching,
       lastUpdated,
       user,
-      signOut,
+      onSignOutClick,
+      onIndexClick,
     } = this.props;
 
     return isFetching || (!lastUpdated && !user) ? (
@@ -31,7 +32,8 @@ class UserBoxContainer extends Component {
     ) : (
       <UserBox
         {...user}
-        onSignOutClick={signOut}
+        onSignOutClick={onSignOutClick}
+        onIndexClick={onIndexClick}
       />
     );
   }
@@ -41,7 +43,8 @@ UserBoxContainer.propTypes = {
   loadUser: PropTypes.func.isRequired,
   isFetching: PropTypes.bool.isRequired,
   lastUpdated: PropTypes.number,
-  signOut: PropTypes.func.isRequired,
+  onSignOutClick: PropTypes.func.isRequired,
+  onIndexClick: PropTypes.func.isRequired,
   user: PropTypes.shape({
     username: PropTypes.string,
     role: PropTypes.string,
@@ -60,13 +63,16 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
   return {
-    signOut() {
+    onSignOutClick() {
       dispatch(signOut())
         .then(action => {
           if (!action.payload.error) {
             browserHistory.push('/sign-in');
           }
         });
+    },
+    onIndexClick() {
+      browserHistory.push('/');
     },
     loadUser() {
       dispatch(getUser());

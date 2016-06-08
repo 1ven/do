@@ -8,6 +8,7 @@ function UserBox({
   role,
   avatar,
   onSignOutClick,
+  onIndexClick,
 }) {
   const wrap = (
     <div className="b-user-box__wrap">
@@ -36,7 +37,8 @@ function UserBox({
     <div className="b-user-box__menu">
       <MenuList
         items={[{
-          title: 'Settings',
+          title: 'Main page',
+          onClick: onIndexClick,
         }, {
           title: 'Sign out',
           onClick: onSignOutClick,
@@ -64,6 +66,7 @@ UserBox.propTypes = {
   username: PropTypes.string.isRequired,
   role: PropTypes.string.isRequired,
   onSignOutClick: PropTypes.func.isRequired,
+  onIndexClick: PropTypes.func.isRequired,
 };
 
 export default UserBox;
