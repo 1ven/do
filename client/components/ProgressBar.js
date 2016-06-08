@@ -1,19 +1,22 @@
 import React, { PropTypes } from 'react';
 
-function ProgressBar({ progress }) {
+function ProgressBar({ value }) {
   return (
     <span
       className="b-progress-bar"
       style={{
-        width: `${progress}%`,
-        opacity: progress === 100 ? 0 : 1,
+        width: `${value}%`,
+        opacity: value === 100 || value === 0 ? 0 : 1,
+        transition: value === 100 ? 'opacity 1s' : 'width .2s',
       }}
     />
   );
 }
 
+
+
 ProgressBar.propTypes = {
-  progress: PropTypes.number.isRequired,
+  value: PropTypes.number.isRequired,
 };
 
 export default ProgressBar;

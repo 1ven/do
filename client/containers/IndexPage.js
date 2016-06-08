@@ -2,6 +2,7 @@ import React, { PropTypes, Component } from 'react';
 import { connect } from 'react-redux';
 import { getActivity } from '../actions/activityActions';
 import { getBoards, removeBoard, updateBoard, toggleStarred } from '../actions/boardsActions';
+import { startProgressBar, finishProgressBar } from '../actions/progressBarActions';
 import BoardsList from '../components/BoardsList.js';
 import Loader from '../components/Loader';
 import BottomBox from '../components/BottomBox';
@@ -26,9 +27,14 @@ class IndexPage extends Component {
   }
 
   componentWillMount() {
-    if (!this.props.lastUpdated) {
-      this.props.dispatch(getBoards());
-      this.props.dispatch(getActivity());
+    const { lastUpdated, dispatch } = this.props;
+    if (!lastUpdated) {
+      dispatch(startProgressBar());
+      dispatch(getBoards())
+        .then(() => {
+          dispatch(finishProgressBar());
+        });
+      dispatch(getActivity());
     }
   }
 

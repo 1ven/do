@@ -1,5 +1,6 @@
 import React, { PropTypes, Component } from 'react';
 import { connect } from 'react-redux';
+import { startProgressBar, finishProgressBar } from '../actions/progressBarActions';
 import { getBoard } from '../actions/boardsActions';
 import Board from '../components/Board';
 import Loader from '../components/Loader';
@@ -8,7 +9,9 @@ import EditBoardModal from './EditBoardModal';
 
 function loadBoard(props) {
   const { dispatch, params: { boardId } } = props;
-  dispatch(getBoard(boardId));
+  dispatch(startProgressBar())
+  dispatch(getBoard(boardId))
+    .then(() => dispatch(finishProgressBar()));
 }
 
 class BoardPage extends Component {
