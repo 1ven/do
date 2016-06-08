@@ -1,4 +1,5 @@
 import React, { PropTypes, Component } from 'react';
+import cookie from 'js-cookie';
 import { connect } from 'react-redux';
 import { getActivity } from '../actions/activityActions';
 import { getBoards, removeBoard, updateBoard, toggleStarred } from '../actions/boardsActions';
@@ -69,6 +70,15 @@ class IndexPage extends Component {
     );
   }
 
+  handleGroupTitleClick(groupTitle, isActive) {
+    const name = `${groupTitle}_accordion_hidden`;
+    if (!isActive) {
+      cookie.set(name, true);
+    } else {
+      cookie.remove(name);
+    }
+  }
+
   hideModal() {
     this.setState({
       modal: null,
@@ -104,6 +114,7 @@ class IndexPage extends Component {
               onBoardTileRemoveClick={this.handleBoardTileRemoveClick}
               onBoardTileEditClick={this.handleBoardTileEditClick}
               onBoardTileToggleStarredClick={this.handleBoardTileToggleStarredClick}
+              onGroupTitleClick={this.handleGroupTitleClick}
             />
         )}
         <BottomBox
@@ -150,15 +161,20 @@ function mapStateToProps(state) {
   });
 
   return {
-    groups: [{
-      title: 'Starred boards',
-      boards: items.filter(b => b.starred),
-    }, {
-      title: 'My boards',
-      boards: items,
-    }],
+    groups: [
+      getGroupObject('Starred boards', items.filter(b => b.starred)),
+      getGroupObject('My boards', items),
+    ],
     isFetching,
     lastUpdated,
+  };
+}
+
+function getGroupObject(title, boards) {
+  return {
+    hidden: cookie.get(`${title}_accordion_hidden`),
+    title,
+    boards,
   };
 }
 

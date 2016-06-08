@@ -15,11 +15,14 @@ class Toggle extends Component {
   handleLinkClick(e) {
     e.preventDefault();
 
+    const { onLinkClick } = this.props;
     const { isActive } = this.state;
 
     this.setState({
       isActive: !isActive,
     });
+
+    if (onLinkClick) { onLinkClick(!isActive); }
   }
 
   render() {
@@ -60,6 +63,7 @@ Toggle.defaultProps = {
 
 Toggle.propTypes = {
   link: PropTypes.node.isRequired,
+  onLinkClick: PropTypes.func,
   content: PropTypes.node.isRequired,
   isActive: PropTypes.bool,
   animationName: PropTypes.string,

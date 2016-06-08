@@ -9,6 +9,7 @@ function BoardsList({
   onBoardTileRemoveClick,
   onBoardTileEditClick,
   onBoardTileToggleStarredClick,
+  onGroupTitleClick,
 }) {
   return (
     <div className="b-boards-list">
@@ -60,7 +61,8 @@ function BoardsList({
                   </Animation>
                 )
               }
-              isActive
+              onLinkClick={isActive => onGroupTitleClick(group.title, isActive)}
+              isActive={!group.hidden}
             />
           </div>
         ))}
@@ -79,6 +81,7 @@ BoardsList.propTypes = {
   onBoardTileRemoveClick: PropTypes.func.isRequired,
   onBoardTileEditClick: PropTypes.func.isRequired,
   onBoardTileToggleStarredClick: PropTypes.func.isRequired,
+  onGroupTitleClick: PropTypes.func.isRequired,
 };
 
 export default BoardsList;
