@@ -17,7 +17,7 @@ export function getBoards() {
       }
     }
   };
-};
+}
 
 export function getBoard(id) {
   return {
@@ -35,7 +35,7 @@ export function getBoard(id) {
       }
     }
   };
-};
+}
 
 export function createBoard(title) {
   return {
@@ -55,7 +55,7 @@ export function createBoard(title) {
       },
     },
   };
-};
+}
 
 export function removeBoard(id) {
   return {
@@ -71,7 +71,7 @@ export function removeBoard(id) {
       },
     },
   };
-};
+}
 
 export function updateBoard(id, props, activityAction) {
   const queryParams = activityAction ? '?activityAction=' + activityAction : '';
@@ -90,7 +90,24 @@ export function updateBoard(id, props, activityAction) {
       },
     },
   };
-};
+}
+
+export function toggleStarred(boardId) {
+  return {
+    [CALL_API]: {
+      types: [
+        types.BOARDS_TOGGLE_STARRED_REQUEST,
+        types.BOARDS_TOGGLE_STARRED_SUCCESS,
+        types.BOARDS_TOGGLE_STARRED_ERROR,
+      ],
+      endpoint: `/api/boards/${boardId}/toggleStarred`,
+      schema: BOARD,
+      request: {
+        method: 'POST'
+      },
+    },
+  };
+}
 
 export function addListId(boardId, listId) {
   return {
@@ -100,7 +117,7 @@ export function addListId(boardId, listId) {
       listId,
     },
   };
-};
+}
 
 export function removeListId(boardId, listId) {
   return {
@@ -110,7 +127,7 @@ export function removeListId(boardId, listId) {
       listId,
     },
   };
-};
+}
 
 export function incListsLength(boardId) {
   return {
@@ -119,7 +136,7 @@ export function incListsLength(boardId) {
       boardId,
     },
   };
-};
+}
 
 export function decListsLength(boardId) {
   return {
@@ -128,7 +145,7 @@ export function decListsLength(boardId) {
       boardId
     }
   };
-};
+}
 
 export function incCardsLength(boardId) {
   return {
@@ -137,7 +154,7 @@ export function incCardsLength(boardId) {
       boardId
     }
   };
-};
+}
 
 export function decCardsLength(boardId) {
   return {
@@ -146,4 +163,4 @@ export function decCardsLength(boardId) {
       boardId,
     },
   };
-};
+}

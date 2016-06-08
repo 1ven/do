@@ -1,7 +1,7 @@
 import React, { PropTypes, Component } from 'react';
 import { connect } from 'react-redux';
 import { getActivity } from '../actions/activityActions';
-import { getBoards, removeBoard, updateBoard } from '../actions/boardsActions';
+import { getBoards, removeBoard, updateBoard, toggleStarred } from '../actions/boardsActions';
 import BoardsList from '../components/BoardsList.js';
 import Loader from '../components/Loader';
 import BottomBox from '../components/BottomBox';
@@ -57,9 +57,9 @@ class IndexPage extends Component {
     this.props.dispatch(removeBoard(id));
   }
 
-  handleBoardTileToggleStarredClick(id, starred) {
+  handleBoardTileToggleStarredClick(boardId, starred) {
     this.props.dispatch(
-      updateBoard(id, { starred: !starred }, starred ? 'Unstarred' : 'Starred')
+      toggleStarred(boardId)
     );
   }
 
