@@ -6,7 +6,7 @@ import BoardsList from '../components/BoardsList.js';
 import Loader from '../components/Loader';
 import BottomBox from '../components/BottomBox';
 import Btn from '../components/Btn';
-import Animate from '../components/Animate';
+import Animation from '../components/Animation';
 import CreateBoardModal from './CreateBoardModal';
 import EditBoardModal from './EditBoardModal';
 
@@ -104,7 +104,7 @@ class IndexPage extends Component {
           button={addBoardBtn}
         />
         <div>
-          <Animate name="a-fade-in">
+          <Animation name="a-fade-in">
             {modal && modal.name === 'createBoard' ? (
               <CreateBoardModal
                 hideModal={this.hideModal}
@@ -115,7 +115,7 @@ class IndexPage extends Component {
                   board={modal.data}
                 />
             ) : null}
-          </Animate>
+          </Animation>
         </div>
       </div>
     );

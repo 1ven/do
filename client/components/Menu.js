@@ -40,6 +40,8 @@ function Menu() {
       <Toggle
         link={link}
         content={menu}
+        animationName="a-slide-in-left"
+        animationDuration={400}
       />
     </div>
   );

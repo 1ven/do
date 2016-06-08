@@ -1,5 +1,5 @@
 import React, { PropTypes, Component } from 'react';
-import Animate from './Animate';
+import Animation from './Animation';
 
 class Toggle extends Component {
   constructor(props) {
@@ -23,7 +23,12 @@ class Toggle extends Component {
   }
 
   render() {
-    const { link, content, animation } = this.props;
+    const {
+      link,
+      content,
+      animationName,
+      animationDuration,
+    } = this.props;
     const { isActive } = this.state;
     const className = `b-toggle ${(isActive ? ' b-toggle_active' : '')}`;
     const body = isActive ? content : null;
@@ -33,11 +38,17 @@ class Toggle extends Component {
         <a
           className={className}
           onClick={this.handleLinkClick}
-        >{link}</a>
-        {animation ?
-          <Animate name={animation}>{body}</Animate> :
-          body
-        }
+        >
+          {link}
+        </a>
+        {animationName ? (
+          <Animation
+            name={animationName}
+            duration={animationDuration}
+          >
+            {body}
+          </Animation>
+        ) : body}
       </div>
     );
   }
@@ -51,7 +62,8 @@ Toggle.propTypes = {
   link: PropTypes.node.isRequired,
   content: PropTypes.node.isRequired,
   isActive: PropTypes.bool,
-  animation: PropTypes.string,
+  animationName: PropTypes.string,
+  animationDuration: PropTypes.number,
 };
 
 export default Toggle;

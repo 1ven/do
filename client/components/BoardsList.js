@@ -2,6 +2,7 @@ import React, { PropTypes } from 'react';
 import BoardTile from './BoardTile';
 import Icon from './Icon';
 import Toggle from './Toggle';
+import Animation from './Animation';
 
 function BoardsList({
   groups,
@@ -34,13 +35,16 @@ function BoardsList({
                 </div>
               }
               content={
-                <div className="b-boards-list__items">
-                  {!group.boards.length ? (
-                    <div className="b-boards-list__not-found">
-                      Boards not found
-                    </div>
-                    ) : (
-                    group.boards.map((board, i) =>
+                !group.boards.length ? (
+                  <div className="b-boards-list__not-found">
+                    Boards not found
+                  </div>
+                ) : (
+                  <Animation
+                    name="a-fade-in"
+                    className="b-boards-list__items"
+                  >
+                    {group.boards.map((board, i) =>
                       <div
                         className="b-boards-list__item"
                         key={i}
@@ -52,9 +56,9 @@ function BoardsList({
                           onToggleStarredClick={onBoardTileToggleStarredClick}
                         />
                       </div>
-                    )
-                  )}
-                </div>
+                    )}
+                  </Animation>
+                )
               }
               isActive
             />
