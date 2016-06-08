@@ -117,11 +117,7 @@ const Board = {
       `UPDATE boards SET starred = NOT starred
       WHERE id = $1 RETURNING id, starred`,
       [boardId]
-    )
-      .then(board => {
-        return Activity.create(userId, boardId, 'boards', 'Starred')
-          .then(() => board);
-      });
+    );
   },
 };
 
