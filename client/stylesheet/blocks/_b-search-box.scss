@@ -42,9 +42,9 @@
     border-radius: 2px;
     background-color: rgba($white, .1);
     border: 0;
-    transition: background-color .1s ease-out;
+    transition: background-color .2s, width .2s;
     font-size: 12px;
-    width: 200px;
+    width: 180px;
     padding: 0 12px;
     color: $white;
     @include placeholder {
@@ -54,6 +54,7 @@
       background-color: $white;
       transition-duration: .3s;
       color: $black;
+      width: 220px;
       @include placeholder {
         color: $black;
       }
@@ -79,7 +80,7 @@
     outline: 0;
     path {
       fill: $white;
-      transition: fill .1s ease-out;
+      transition: fill .2s;
     }
   }
   &__highlight {
