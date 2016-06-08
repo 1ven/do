@@ -44,7 +44,7 @@ class Input extends Component {
 }
 
 Input.propTypes = {
-  onChange: PropTypes.func.isRequired,
+  onChange: PropTypes.func,
   value: PropTypes.string,
   focus: PropTypes.bool,
 };
