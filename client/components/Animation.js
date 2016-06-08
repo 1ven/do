@@ -9,6 +9,7 @@ function Animation({
 }) {
   return (
     <ReactCSSTransitionGroup
+      component="div"
       transitionName={name}
       transitionEnterTimeout={duration}
       transitionLeaveTimeout={duration}

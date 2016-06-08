@@ -19,6 +19,7 @@ function ToggleMenu({ menu }) {
       <Toggle
         link={link}
         content={content}
+        animationName="a-fade-in-down"
       />
     </div>
   );

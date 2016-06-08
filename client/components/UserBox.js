@@ -52,6 +52,7 @@ function UserBox({
       <Toggle
         link={wrap}
         content={menu}
+        animationName="a-fade-in-down"
       />
     </div>
   );
