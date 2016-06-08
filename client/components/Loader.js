@@ -3,8 +3,8 @@ import React from 'react';
 function Loader() {
   console.log('render');
   return (
-    <div className="c-loader">
-      Loading...
+    <div className="b-loader">
+      <div className="b-loader__spinner" />
     </div>
   );
 }
