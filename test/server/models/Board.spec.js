@@ -144,6 +144,18 @@ describe('Board', () => {
     });
   });
 
+  describe('toggleStarred', () => {
+    it('should toggle starred flag', () => {
+      return Board.toggleStarred(userId, boardId)
+        .then(board => {
+          assert.deepEqual(board, {
+            id: boardId,
+            starred: true,
+          });
+        });
+    });
+  });
+
   describe('archive', () => {
     it('should set `archive` flag to true', () => {
       return Board.archive(boardId)

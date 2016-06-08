@@ -7,7 +7,7 @@ const Activity = require('./Activity');
 
 const Board = {
   update(userId, boardId, data, activityAction) {
-    const _data = _.pick(data, ['title', 'starred']);
+    const _data = _.pick(data, ['title']);
 
     const props = _.keys(_data).map(k => pgp.as.name(k)).join();
     const values = _.values(_data);
@@ -110,6 +110,18 @@ const Board = {
       `UPDATE boards SET (archived) = (true) WHERE id = $1 RETURNING id`,
       [boardId]
     );
+  },
+
+  toggleStarred(userId, boardId) {
+    return db.one(
+      `UPDATE boards SET starred = NOT starred
+      WHERE id = $1 RETURNING id, starred`,
+      [boardId]
+    )
+      .then(board => {
+        return Activity.create(userId, boardId, 'boards', 'Starred')
+          .then(() => board);
+      });
   },
 };
 

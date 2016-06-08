@@ -49,3 +49,13 @@ exports.drop = (req, res, next) => {
       res.status(200).json({ result });
     }, next);
 };
+
+exports.toggleStarred = (req, res, next) => {
+  const userId = req.user.id;
+  const boardId = req.params.id;
+
+  return Board.toggleStarred(userId, boardId)
+    .then(result => {
+      res.status(200).json({ result });
+    }, next);
+};
