@@ -6,18 +6,19 @@ import MenuList from './MenuList';
 import ToggleMenu from './ToggleMenu';
 
 function BoardTile({
-  data: {
+  data,
+  onRemoveClick,
+  onEditClick,
+  onToggleStarredClick,
+}) {
+  const {
     id,
     link,
     title,
     starred,
     listsLength,
     cardsLength,
-  },
-  onRemoveClick,
-  onEditClick,
-  onToggleStarredClick,
-}) {
+  } = data;
   const menu = (
     <MenuList
       modifiers={['sm']}
