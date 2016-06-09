@@ -33,6 +33,7 @@ function boardsReducer(state = {}, action) {
       return {
         ...state,
         [boardId]: {
+          ...state[boardId],
           lists: [...lists, listId]
         },
       };
