@@ -1,32 +1,36 @@
 import React, { PropTypes } from 'react';
 import addModifiers from '../utils/addModifiers';
+import Animation from './Animation';
 
 function Notifications({
   items,
   onNotificationClick,
 }) {
-  if (items.length) {
-    return (
-      <div className="b-notifications">
-        {items.map((notification, i) => {
-          const className = addModifiers('b-notification', [`type_${notification.type}`]);
-          return (
-            <div
-              className="b-notifications__item"
-              key={i}
-            >
-              <div
-                className={className}
-                onClick={() => onNotificationClick(notification.id)}
-              >
-                {notification.text}
-              </div>
-            </div>
-          );
-        })}
-      </div>
-    );
-  }
+  return (
+    <Animation
+      name="a-fade-in"
+      className="b-notifications"
+    >
+      {items.map((notification, i) =>
+        <div
+          className="b-notifications__item"
+          key={i}
+        >
+          <div
+            className={
+              addModifiers(
+                'b-notification',
+                [`type_${notification.type}`]
+              )
+            }
+            onClick={() => onNotificationClick(notification.id)}
+          >
+            {notification.text}
+          </div>
+        </div>
+      )}
+    </Animation>
+  );
 
   return <div />;
 }
