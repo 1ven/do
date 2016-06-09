@@ -63,6 +63,7 @@ function BoardsList({
               }
               onLinkClick={isActive => onGroupTitleClick(group.title, isActive)}
               isActive={!group.hidden}
+              closeWhenClickedOutside={false}
             />
           </div>
         ))}
