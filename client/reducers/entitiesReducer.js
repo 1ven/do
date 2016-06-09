@@ -114,6 +114,7 @@ function listsReducer(state = {}, action) {
       return {
         ...state,
         [listId]: {
+          ...state[listId],
           cards: [...cards, cardId],
         },
       };
