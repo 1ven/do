@@ -4,6 +4,7 @@ import map from 'lodash/map';
 import { connect } from 'react-redux';
 import { updateCard, getCard, addCommentId } from '../actions/cardsActions';
 import { createComment } from '../actions/commentsActions';
+import { createNotificationWithTimeout } from '../actions/notificationsActions';
 import FullCard from '../components/FullCard';
 import Modal from '../components/Modal';
 
@@ -67,7 +68,15 @@ function mapDispatchToProps(dispatch, ownProps) {
     onEditCardFormSubmit(formData) {
       return dispatch(updateCard(cardId, {
         text: formData.text,
-      }));
+      })).then(action => {
+        if (!action.payload.error) {
+          dispatch( createNotificationWithTimeout(
+              `Card was successfully updated`,
+              'info'
+            )
+          );
+        }
+      });
     },
 
     onSendCommentSubmit(formData) {

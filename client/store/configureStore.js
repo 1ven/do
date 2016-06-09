@@ -12,7 +12,6 @@ const enhancer = compose(
   DevTools.instrument()
 );
 
-// TODO: disable thunk middleware
 export default function configureStore(initialState) {
   return createStore(
     rootReducer,

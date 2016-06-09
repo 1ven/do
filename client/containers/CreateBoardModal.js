@@ -7,23 +7,13 @@ import Modal from '../components/Modal';
 import InputBox from '../components/InputBox';
 
 function CreateBoardModal({ hideModal, dispatch }) {
-  function handleFormBoxRequest({ title }) {
-    return dispatch(createBoard(title))
-      .then(action => {
-        if (!action.payload.error) {
-          dispatch(createNotificationWithTimeout(
-            'Board was successfully created',
-            'info'
-          ));
-        }
-        return action;
-      })
-      .catch(() => {
-        dispatch(createNotificationWithTimeout(
-          'Something bad happened. Board was not created',
-          'error'
-        ));
-      });
+  function handleSuccess(payload) {
+    const boardTitle = payload.entities.boards[payload.result].title;
+    hideModal();
+    dispatch(createNotificationWithTimeout(
+      `Board "${boardTitle}" was successfully created`,
+      'info'
+    ));
   }
 
   return (
@@ -32,9 +22,9 @@ function CreateBoardModal({ hideModal, dispatch }) {
       hideModal={hideModal}
     >
       <FormBox
-        onSuccess={hideModal}
+        onSuccess={handleSuccess}
         onCancelClick={hideModal}
-        request={handleFormBoxRequest}
+        request={({ title }) => dispatch(createBoard(title))}
         rows={[
           <InputBox
             title="Title"

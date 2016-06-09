@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import { addCardId } from '../actions/listsActions';
 import { createCard } from '../actions/cardsActions';
 import { incCardsLength } from '../actions/boardsActions';
+import { createNotificationWithTimeout } from '../actions/notificationsActions';
 import FormBox from '../components/FormBox';
 import Modal from '../components/Modal';
 import InputBox from '../components/InputBox';
@@ -14,6 +15,10 @@ function CreateCardModal({ hideModal, dispatch, listId }) {
     dispatch(addCardId(listId, cardId));
     dispatch(incCardsLength(boardId));
     hideModal();
+    dispatch(createNotificationWithTimeout(
+      'Card was successfully created',
+      'info'
+    ));
   }
 
   return (
