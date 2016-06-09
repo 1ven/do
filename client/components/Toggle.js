@@ -12,6 +12,35 @@ class Toggle extends Component {
     };
   }
 
+  componentDidMount() {
+    document.body.addEventListener('click', (e) => {
+      if (
+        !this.props.closeWhenClickedOutside ||
+        !this.state.isActive ||
+        this.isLinkNode(e.target)
+      ) return;
+
+      if (e.target !== this.contentNode) {
+        this.setState({
+          isActive: false,
+        });
+      }
+    });
+  }
+
+  isLinkNode(target) {
+    let parents = getParents(target);
+
+    if (
+      parents.indexOf(this.linkNode) !== -1 ||
+      target === this.linkNode && target
+    ) {
+      return true;
+    }
+
+    return false;
+  }
+
   handleLinkClick(e) {
     e.preventDefault();
 
@@ -34,31 +63,44 @@ class Toggle extends Component {
     } = this.props;
     const { isActive } = this.state;
     const className = `b-toggle ${(isActive ? ' b-toggle_active' : '')}`;
-    const body = isActive ? content : null;
+    const _content = isActive ? content : null;
 
     return (
       <div>
         <a
+          ref={node => { this.linkNode = node }}
           className={className}
           onClick={this.handleLinkClick}
         >
           {link}
         </a>
-        {animationName ? (
-          <Animation
-            name={animationName}
-            duration={animationDuration}
-          >
-            {body}
-          </Animation>
-        ) : body}
+        <div ref={node => { this.contentNode = node }}>
+          {animationName ? (
+            <Animation
+              name={animationName}
+              duration={animationDuration}
+            >
+              {_content}
+            </Animation>
+          ) : _content}
+        </div>
       </div>
     );
   }
 }
 
+function getParents(target) {
+  let parents = [];
+  while (target) {
+    parents.unshift(target);
+    target = target.parentNode;
+  }
+  return parents;
+}
+
 Toggle.defaultProps = {
   isActive: false,
+  closeWhenClickedOutside: true,
 };
 
 Toggle.propTypes = {
@@ -68,6 +110,7 @@ Toggle.propTypes = {
   isActive: PropTypes.bool,
   animationName: PropTypes.string,
   animationDuration: PropTypes.number,
+  closeWhenClickedOutside: PropTypes.bool,
 };
 
 export default Toggle;
