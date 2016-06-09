@@ -9,7 +9,7 @@
   background-color: $white;
   line-height: 1.35;
   cursor: pointer;
-  transition: all .2s ease-out;
+  transition: all .2s;
   &:hover {
     background-color: darken($white, 1)
   }

@@ -13,7 +13,7 @@
   &__link {
     color: $black;
     text-decoration: none;
-    transition: opacity .2s ease-out;
+    transition: opacity .2s;
     white-space: nowrap;
     &:hover {
       opacity: .8;

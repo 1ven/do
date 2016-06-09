@@ -17,7 +17,7 @@
     color: $white;
     text-decoration: none;
     border-bottom: 1px solid rgba($white, .4);
-    transition: border-color .1s ease-out;
+    transition: border-color .1s;
     &:hover {
       border-color: transparent;
     }

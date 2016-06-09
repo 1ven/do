@@ -5,11 +5,11 @@
   font-size: 12px;
   border: 0;
   border-bottom: 1px solid darken($gray, 10%);
-  transition: all .2s ease-out;
+  transition: all .2s;
   @include placeholder() {
     color: lighten($black, 60%);
     opacity: 1 !important;
-    transition: all .2s ease-out;
+    transition: all .2s;
   }
   &:focus {
     border-color: darken($gray, 25%);
