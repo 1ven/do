@@ -154,10 +154,9 @@ describe('boards routes', () => {
           if (err) { return done(err); }
 
           const { result } = res.body;
-          const { id } = result;
 
           assert.property(result, 'activity');
-          assert.equal(id, boardId);
+          assert.equal(result.id, boardId);
 
           done();
         });

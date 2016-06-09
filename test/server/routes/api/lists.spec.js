@@ -68,9 +68,10 @@ describe('lists routes', () => {
         .end((err, res) => {
           if (err) { return done(err); }
 
-          const id = res.body.result.id;
+          const { result } = res.body;
 
-          assert.equal(id, listId);
+          assert.property(result, 'activity');
+          assert.equal(result.id, listId);
 
           done();
         });
