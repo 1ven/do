@@ -27,8 +27,9 @@ function mapStateToProps(state) {
     .filter((item, i) => i < 15)
     .map(item => {
       const date = moment.unix(item.createdAt).format('D MMM [at] HH:mm');
+      const noLink = item.action === 'Removed' ? true : false;
       return {
-        ...omit(item, ['createdAt']),
+        ...omit({ ...item, noLink }, ['createdAt']),
         date,
       };
     });
