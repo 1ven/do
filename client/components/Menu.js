@@ -2,6 +2,7 @@ import React from 'react';
 import ActivityContainer from '../containers/ActivityContainer';
 import Icon from './Icon';
 import Toggle from './Toggle';
+import Scrollbar from './Scrollbar';
 
 function Menu() {
   const link = (
@@ -29,9 +30,11 @@ function Menu() {
           </a>
         </div>
       </div>
-      <div className="b-menu__activity">
-        <ActivityContainer />
-      </div>
+      <Scrollbar>
+        <div className="b-menu__activity">
+          <ActivityContainer />
+        </div>
+      </Scrollbar>
     </div>
   );
 
