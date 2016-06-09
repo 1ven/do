@@ -69,3 +69,13 @@
     }
   }
 }
+
+.a-fade-enter {
+  &-enter {
+    opacity: 0.01;
+    &-active {
+      opacity: 1;
+      transition: opacity .3s;
+    }
+  }
+}
