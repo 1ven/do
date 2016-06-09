@@ -87,7 +87,7 @@ describe('List', () => {
 
   describe('drop', () => {
     it('should set `archive` prop to true', () => {
-      return List.drop(listId)
+      return List.drop(userId, listId)
         .then(() => {
           return db.one(
             `SELECT deleted FROM lists WHERE id = $1`,
@@ -100,9 +100,24 @@ describe('List', () => {
     });
 
     it('should return dropped list id', () => {
-      return List.drop(listId)
+      return List.drop(userId, listId)
         .then(result => {
-          assert.equal(result.id, listId);
+          assert.property(result.activity, 'created_at');
+
+          delete result.activity.created_at;
+
+          assert.deepEqual(result, {
+            id: listId,
+            activity: {
+              id: 1,
+              action: 'Removed',
+              type: 'list',
+              entry: {
+                title: 'test list',
+                link: '/boards/' + boardId + '/lists/' + listId,
+              },
+            },
+          });
         });
     });
   });

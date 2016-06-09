@@ -24,9 +24,10 @@ exports.update = (req, res, next) => {
 };
 
 exports.drop = (req, res, next) => {
-  const id = req.params.id;
+  const userId = req.user.id;
+  const cardId = req.params.id;
 
-  return Card.drop(id)
+  return Card.drop(userId, cardId)
     .then(result => {
       res.status(200).json({ result });
     }, next);

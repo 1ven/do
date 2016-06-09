@@ -47,7 +47,10 @@ describe('cards routes', () => {
         .end((err, res) => {
           if (err) { return done(err); }
 
-          assert.deepEqual(res.body.result, {
+          const { result } = res.body;
+
+          assert.property(result, 'activity');
+          assert.deepEqual(_.omit(result, ['activity']), {
             id: card2Id,
             board_id: boardId,
           });

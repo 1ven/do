@@ -54,17 +54,21 @@ const List = {
       )
         .then(list => {
           return Activity.create(userId, listId, 'lists', 'Updated')
-          .then(activity => _.assign({}, list, { activity }));
+            .then(activity => _.assign({}, list, { activity }));
         });
     });
   },
 
-  drop(id) {
+  drop(userId, listId) {
     return db.one(
       `UPDATE lists SET deleted = true
       WHERE id = $1 RETURNING id`,
-      [id]
-    );
+      [listId]
+    )
+      .then(result => {
+        return Activity.create(userId, listId, 'lists', 'Removed')
+          .then(activity => _.assign({}, result, { activity }));
+      });
   },
 };
 

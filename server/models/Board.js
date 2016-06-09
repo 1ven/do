@@ -19,19 +19,21 @@ const Board = {
       )
         .then(board => {
           return Activity.create(userId, boardId, 'boards', activityAction || 'Updated')
-            .then(activity => {
-              return _.assign({}, board, { activity });
-            });
+            .then(activity => _.assign({}, board, { activity }));
         });
       });
   },
 
-  drop(id) {
+  drop(userId, boardId) {
     return db.one(
       `UPDATE boards SET deleted = true
       WHERE id = $1 RETURNING id`,
-      [id]
-    );
+      [boardId]
+    )
+      .then(result => {
+        return Activity.create(userId, boardId, 'boards', 'Removed')
+          .then(activity => _.assign({}, result, { activity }));
+      });
   },
 
   validate(props) {

@@ -29,7 +29,9 @@ describe('Board', () => {
       return Board.create(userId, boardData).then(board => {
         assert.property(board, 'id');
         assert.property(board.activity, 'created_at');
+
         delete board.activity.created_at;
+
         assert.deepEqual(_.omit(board, ['id']), {
           title: boardData.title,
           link: '/boards/' + board.id,
@@ -92,7 +94,7 @@ describe('Board', () => {
 
   describe('drop', () => {
     it('should set `deleted` prop to true', () => {
-      return Board.drop(board2Id)
+      return Board.drop(userId, board2Id)
         .then(() => {
           return db.one(
             `SELECT deleted FROM boards WHERE id = $1`,
@@ -105,9 +107,24 @@ describe('Board', () => {
     });
 
     it('should return dropped board id', () => {
-      return Board.drop(board2Id)
+      return Board.drop(userId, board2Id)
         .then(result => {
-          assert.equal(result.id, board2Id);
+          assert.property(result.activity, 'created_at');
+
+          delete result.activity.created_at;
+
+          assert.deepEqual(result, {
+            id: board2Id,
+            activity: {
+              id: 1,
+              type: 'board',
+              action: 'Removed',
+              entry: {
+                title: 'test board 2',
+                link: '/boards/' + board2Id,
+              },
+            },
+          });
         });
     });
   });

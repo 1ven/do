@@ -59,20 +59,23 @@ const Card = {
     });
   },
 
-  drop(id) {
+  drop(userId, cardId) {
     return db.one(
       `SELECT id, bl.board_id FROM cards AS c
       LEFT JOIN lists_cards AS lc ON (lc.card_id = c.id)
       LEFT JOIN boards_lists AS bl ON (bl.list_id = lc.list_id)
       WHERE id = $1`,
-      [id]
+      [cardId]
     )
       .then(result => {
         return db.none(
           `UPDATE cards SET deleted = true WHERE id = $1`,
-          [id]
+          [cardId]
         )
-        .then(() => result);
+          .then(() => {
+            return Activity.create(userId, cardId, 'cards', 'Deleted')
+              .then(activity => _.assign({}, result, { activity }));
+          });
       });
   },
 

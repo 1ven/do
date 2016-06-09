@@ -96,7 +96,7 @@ describe('Card', () => {
 
   describe('drop', () => {
     it('should set `deleted` prop to true', () => {
-      return Card.drop(cardId)
+      return Card.drop(userId, cardId)
         .then(() => {
           return db.one(
             `SELECT deleted FROM cards WHERE id = $1`,
@@ -109,12 +109,22 @@ describe('Card', () => {
     });
 
     it('should return dropped card id and board id which card belongs', () => {
-      return Card.drop(cardId)
+      return Card.drop(userId, cardId)
         .then(result => {
-          assert.equal(result.id, cardId);
+          assert.property(result.activity, 'created_at');
+          delete result.activity.created_at;
           assert.deepEqual(result, {
             id: cardId,
             board_id: boardId,
+            activity: {
+              id: 1,
+              action: 'Deleted',
+              type: 'card',
+              entry: {
+                title: 'test card 1',
+                link: '/boards/' + boardId + '/cards/' + cardId,
+              },
+            },
           });
         });
     });

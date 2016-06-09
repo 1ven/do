@@ -42,9 +42,10 @@ exports.update = (req, res, next) => {
 };
 
 exports.drop = (req, res, next) => {
-  const id = req.params.id;
+  const userId = req.user.id;
+  const boardId = req.params.id;
 
-  return Board.drop(id)
+  return Board.drop(userId, boardId)
     .then(result => {
       res.status(200).json({ result });
     }, next);

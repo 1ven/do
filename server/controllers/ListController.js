@@ -24,9 +24,10 @@ exports.update = (req, res, next) => {
 };
 
 exports.drop = (req, res, next) => {
-  const id = req.params.id;
+  const userId = req.user.id;
+  const listId = req.params.id;
 
-  return List.drop(id)
+  return List.drop(userId, listId)
     .then(result => {
       res.status(200).json({ result });
     }, next);
