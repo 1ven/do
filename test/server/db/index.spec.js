@@ -125,7 +125,7 @@ describe('tables', () => {
           assert.equal(columns.created_at, 'integer');
           assert.equal(columns.title, 'text');
           assert.equal(columns.link, 'text');
-          assert.equal(columns.archived, 'boolean');
+          assert.equal(columns.deleted, 'boolean');
           assert.equal(columns.starred, 'boolean');
         });
     });
@@ -173,7 +173,7 @@ describe('tables', () => {
           assert.equal(columns.created_at, 'integer');
           assert.equal(columns.title, 'text');
           assert.equal(columns.link, 'text');
-          assert.equal(columns.archived, 'boolean');
+          assert.equal(columns.deleted, 'boolean');
         });
     });
   });
@@ -220,7 +220,7 @@ describe('tables', () => {
           assert.equal(columns.created_at, 'integer');
           assert.equal(columns.text, 'text');
           assert.equal(columns.link, 'text');
-          assert.equal(columns.archived, 'boolean');
+          assert.equal(columns.deleted, 'boolean');
         });
     });
   });

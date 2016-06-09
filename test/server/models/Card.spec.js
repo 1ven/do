@@ -1,9 +1,12 @@
-import { assert } from 'chai';
+import chai, { assert } from 'chai';
+import chaiAsPromised from 'chai-as-promised';
 import _ from 'lodash';
 import shortid from 'shortid';
 import { recreateTables } from '../helpers';
 import db from 'server/db';
 import Card from 'server/models/Card';
+
+chai.use(chaiAsPromised);
 
 const boardId = shortid.generate();
 const listId = shortid.generate();
@@ -11,6 +14,7 @@ const commentId = shortid.generate();
 const comment2Id = shortid.generate();
 const cardId = shortid.generate();
 const card2Id = shortid.generate();
+const card3Id = shortid.generate();
 const userId = shortid.generate();
 
 describe('Card', () => {
@@ -91,16 +95,16 @@ describe('Card', () => {
   });
 
   describe('drop', () => {
-    it('should drop card entry', () => {
+    it('should set `deleted` prop to true', () => {
       return Card.drop(cardId)
         .then(() => {
-          return db.query(
-            `SELECT id FROM cards WHERE id = $1`,
+          return db.one(
+            `SELECT deleted FROM cards WHERE id = $1`,
             [cardId]
           );
         })
-        .then(result => {
-          assert.lengthOf(result, 0);
+        .then(card => {
+          assert.isTrue(card.deleted);
         });
     });
 
@@ -159,29 +163,10 @@ describe('Card', () => {
           });
         });
     });
-  });
 
-  describe('archive', () => {
-    it('should set `archive` flag to true', () => {
-      return Card.archive(cardId)
-        .then(() => {
-          return db.one(
-            `SELECT archived FROM cards WHERE id = $1`,
-            [cardId]
-          );
-        })
-        .then(result => {
-          assert.isTrue(result.archived);
-        });
-    });
-
-    it('should return archived entry id', () => {
-      return Card.archive(cardId)
-        .then(result => {
-          assert.deepEqual(result, {
-            id: cardId,
-          });
-        });
+    it('should not return card with `deleted = true`', () => {
+      const promise = Card.findById(card3Id);
+      return assert.isRejected(promise, /No data returned/);
     });
   });
 });
@@ -193,16 +178,12 @@ function setup() {
     INSERT INTO boards (id, title) VALUES ($6, 'test board');
     INSERT INTO lists (id, title) VALUES ($7, 'test list');
     INSERT INTO boards_lists VALUES ($6, $7);
-    INSERT INTO cards (id, text) VALUES ($2, 'test card 1');
-    INSERT INTO cards (id, text) VALUES ($3, 'test card 2');
-    INSERT INTO lists_cards VALUES ($7, $2);
-    INSERT INTO lists_cards VALUES ($7, $3);
-    INSERT INTO comments (id, text) VALUES ($4, 'test comment 1');
-    INSERT INTO comments (id, text) VALUES ($5, 'test comment 2');
-    INSERT INTO cards_comments VALUES ($3, $4);
-    INSERT INTO cards_comments VALUES ($3, $5);
-    INSERT INTO users_comments VALUES ($1, $4);
-    INSERT INTO users_comments VALUES ($1, $5)`,
-    [userId, cardId, card2Id, commentId, comment2Id, boardId, listId]
+    INSERT INTO cards (id, text, deleted)
+    VALUES ($2, 'test card 1', false), ($3, 'test card 2', false), ($8, 'test card 3', true);
+    INSERT INTO lists_cards VALUES ($7, $2), ($7, $3), ($7, $8);
+    INSERT INTO comments (id, text) VALUES ($4, 'test comment 1'), ($5, 'test comment 2');
+    INSERT INTO cards_comments VALUES ($3, $4), ($3, $5);
+    INSERT INTO users_comments VALUES ($1, $4), ($1, $5)`,
+    [userId, cardId, card2Id, commentId, comment2Id, boardId, listId, card3Id]
   );
 }

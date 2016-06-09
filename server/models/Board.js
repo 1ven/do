@@ -28,7 +28,8 @@ const Board = {
 
   drop(id) {
     return db.one(
-      `DELETE FROM boards WHERE id = $1 RETURNING id`,
+      `UPDATE boards SET deleted = true
+      WHERE id = $1 RETURNING id`,
       [id]
     );
   },
@@ -77,13 +78,14 @@ const Board = {
         LEFT JOIN lists_cards AS lc ON (l.id = lc.list_id)
         LEFT JOIN (
           SELECT id, text, link FROM cards AS c
+          WHERE deleted = false
         ) AS c ON (c.id = lc.card_id)
+        WHERE deleted = false
         GROUP BY l.id
       ) AS l ON (l.id = list_id)
-      WHERE b.id = $1
+      WHERE b.id = $1 AND deleted = false
       GROUP BY b.id
-      ORDER BY b.index
-      `,
+      ORDER BY b.index`,
       [id]
     );
   },
@@ -91,24 +93,20 @@ const Board = {
   findAllByUser(userId) {
     return db.query(`
       SELECT b.id, b.title, b.link, b.starred, (
-        SELECT count(list_id)::integer FROM boards_lists
+        SELECT count(list_id)::integer FROM boards_lists AS bl
+        INNER JOIN lists AS l ON (l.id = bl.list_id AND deleted = false)
         WHERE board_id = b.id
       ) AS lists_length, (
         SELECT count(card_id)::integer FROM lists_cards AS lc
-        JOIN boards_lists AS bl ON (bl.board_id = b.id) AND (bl.list_id = lc.list_id)
+        INNER JOIN boards_lists AS bl ON (bl.board_id = b.id) AND (bl.list_id = lc.list_id)
+        INNER JOIN cards AS c ON (c.id = lc.card_id AND deleted = false)
       ) AS cards_length
       FROM boards AS b
       INNER JOIN users_boards AS ub ON (user_id = $1 AND ub.board_id = b.id)
+      WHERE deleted = false
       GROUP BY b.id
       ORDER BY b.index`,
       [userId]
-    );
-  },
-
-  archive(boardId) {
-    return db.one(
-      `UPDATE boards SET (archived) = (true) WHERE id = $1 RETURNING id`,
-      [boardId]
     );
   },
 

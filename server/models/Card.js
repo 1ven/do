@@ -69,7 +69,7 @@ const Card = {
     )
       .then(result => {
         return db.none(
-          `DELETE FROM cards WHERE id = $1`,
+          `UPDATE cards SET deleted = true WHERE id = $1`,
           [id]
         )
         .then(() => result);
@@ -91,16 +91,8 @@ const Card = {
           SELECT id, username, avatar FROM users
         ) AS u ON (u.id = uc.user_id)
       ) AS cm ON (cm.id = cc.comment_id)
-      WHERE cr.id = $1
+      WHERE cr.id = $1 AND deleted = false
       GROUP BY cr.id, bl.board_id`,
-      [cardId]
-    );
-  },
-
-  archive(cardId) {
-    return db.one(
-      `UPDATE cards SET (archived) = (true)
-      WHERE id = $1 RETURNING id`,
       [cardId]
     );
   },

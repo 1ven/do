@@ -86,16 +86,16 @@ describe('List', () => {
   });
 
   describe('drop', () => {
-    it('should drop list entry', () => {
+    it('should set `archive` prop to true', () => {
       return List.drop(listId)
         .then(() => {
-          return db.query(
-            `SELECT id FROM lists WHERE id = $1`,
+          return db.one(
+            `SELECT deleted FROM lists WHERE id = $1`,
             [listId]
           );
         })
-        .then(result => {
-          assert.lengthOf(result, 0);
+        .then(list => {
+          assert.isTrue(list.deleted);
         });
     });
 
@@ -103,30 +103,6 @@ describe('List', () => {
       return List.drop(listId)
         .then(result => {
           assert.equal(result.id, listId);
-        });
-    });
-  });
-
-  describe('archive', () => {
-    it('should set `archive` flag to true', () => {
-      return List.archive(listId)
-        .then(() => {
-          return db.one(
-            `SELECT archived FROM lists WHERE id = $1`,
-            [listId]
-          );
-        })
-        .then(result => {
-          assert.isTrue(result.archived);
-        });
-    });
-
-    it('should return archived entry id', () => {
-      return List.archive(listId)
-        .then(result => {
-          assert.deepEqual(result, {
-            id: listId,
-          });
         });
     });
   });

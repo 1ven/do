@@ -1,15 +1,21 @@
-import { assert } from 'chai';
+import chai, { assert } from 'chai';
+import chaiAsPromised from 'chai-as-promised';
 import _ from 'lodash';
 import shortid from 'shortid';
 import { recreateTables, getValidationMessages } from '../helpers';
 import db from 'server/db';
 import Board from 'server/models/Board';
 
+chai.use(chaiAsPromised);
+
 const boardId = shortid.generate();
 const board2Id = shortid.generate();
+const board3Id = shortid.generate();
 const userId = shortid.generate();
 const listId = shortid.generate();
+const list2Id = shortid.generate();
 const cardId = shortid.generate();
+const card2Id = shortid.generate();
 
 describe('Board', () => {
   beforeEach(() => recreateTables().then(setup));
@@ -85,13 +91,16 @@ describe('Board', () => {
   });
 
   describe('drop', () => {
-    it('should drop board entry', () => {
+    it('should set `deleted` prop to true', () => {
       return Board.drop(board2Id)
         .then(() => {
-          return db.query(`SELECT id FROM boards WHERE id = '2'`);
+          return db.one(
+            `SELECT deleted FROM boards WHERE id = $1`,
+            [board2Id]
+          );
         })
-        .then(result => {
-          assert.lengthOf(result, 0);
+        .then(board => {
+          assert.isTrue(board.deleted);
         });
     });
 
@@ -125,10 +134,15 @@ describe('Board', () => {
             });
           });
       });
+
+      it('should not return board with `deleted = true`', () => {
+        const promise = Board.findById(board3Id);
+        return assert.isRejected(promise, /No data returned/);
+      });
     });
 
     describe('findAllByUser', () => {
-      it('should return all boards with nested children', () => {
+      it('should return all boards with nested children excluding deleted items', () => {
         return Board.findAllByUser(userId)
           .then(boards => {
             assert.deepEqual(boards, [{
@@ -151,30 +165,6 @@ describe('Board', () => {
           assert.deepEqual(board, {
             id: boardId,
             starred: true,
-          });
-        });
-    });
-  });
-
-  describe('archive', () => {
-    it('should set `archive` flag to true', () => {
-      return Board.archive(boardId)
-        .then(() => {
-          return db.one(
-            `SELECT archived FROM boards WHERE id = $1`,
-            [boardId]
-          );
-        })
-        .then(result => {
-          assert.isTrue(result.archived);
-        });
-    });
-
-    it('should return archived entry id', () => {
-      return Board.archive(boardId)
-        .then(result => {
-          assert.deepEqual(result, {
-            id: boardId,
           });
         });
     });
@@ -204,12 +194,15 @@ function setup() {
   return db.none(
     `INSERT INTO users(id, username, email, hash, salt)
     VALUES ($5, 'test', 'test@test.com', 'hash', 'salt');
-    INSERT INTO boards(id, title) VALUES ($1, 'test board'), ($2, 'test board 2');
-    INSERT INTO users_boards VALUES ($5, $1);
-    INSERT INTO lists(id, title) VALUES ($3, 'test list');
-    INSERT INTO boards_lists VALUES ($1, $3);
-    INSERT INTO cards(id, text) VALUES ($4, 'test card');
-    INSERT INTO lists_cards VALUES ($3, $4);`,
-    [boardId, board2Id, listId, cardId, userId]
+    INSERT INTO boards(id, title, deleted)
+    VALUES ($1, 'test board', false), ($2, 'test board 2', false), ($6, 'test board 3', true);
+    INSERT INTO users_boards VALUES ($5, $1), ($5, $6);
+    INSERT INTO lists(id, title, deleted)
+    VALUES ($3, 'test list', false), ($7, 'test list 2', true);
+    INSERT INTO boards_lists VALUES ($1, $3), ($1, $7);
+    INSERT INTO cards(id, text, deleted)
+    VALUES ($4, 'test card', false), ($8, 'test card', true);
+    INSERT INTO lists_cards VALUES ($3, $4), ($3, $8);`,
+    [boardId, board2Id, listId, cardId, userId, board3Id, list2Id, card2Id]
   );
 }

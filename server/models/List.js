@@ -61,15 +61,9 @@ const List = {
 
   drop(id) {
     return db.one(
-      `DELETE FROM lists WHERE id = $1 RETURNING id`,
+      `UPDATE lists SET deleted = true
+      WHERE id = $1 RETURNING id`,
       [id]
-    );
-  },
-
-  archive(listId) {
-    return db.one(
-      `UPDATE lists SET (archived) = (true) WHERE id = $1 RETURNING id`,
-      [listId]
     );
   },
 };
