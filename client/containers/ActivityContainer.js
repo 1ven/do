@@ -4,25 +4,14 @@ import omit from 'lodash/omit';
 import values from 'lodash/values';
 import moment from 'moment';
 import { connect } from 'react-redux';
-import { getActivity } from '../actions/activityActions';
 import Activity from '../components/Activity';
 
-class ActivityContainer extends Component {
-  componentWillMount() {
-    if (!this.props.items) {
-      this.props.dispatch(getActivity());
-    }
-  }
-
-  render() {
-    const { items } = this.props;
-
-    return !items ? (
-      <div>Activity not found</div>
-    ) : (
-      <Activity items={items} />
-    );
-  }
+function ActivityContainer({ items }) {
+  return !items ? (
+    <div>Activity not found</div>
+  ) : (
+    <Activity items={items} />
+  );
 }
 
 ActivityContainer.propTypes = {

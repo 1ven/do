@@ -31,6 +31,7 @@ export function removeCard(id) {
         types.CARDS_REMOVE_ERROR,
       ],
       endpoint: `/api/cards/${id}`,
+      schema: CARD,
       request: {
         method: 'delete',
       },
@@ -68,8 +69,8 @@ export function getCard(id) {
       schema: CARD,
       request: {
         method: 'get',
-      }
-    }
+      },
+    },
   };
 };
 

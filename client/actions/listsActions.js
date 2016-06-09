@@ -51,6 +51,7 @@ export function removeList(id) {
         types.LISTS_REMOVE_ERROR,
       ],
       endpoint: `/api/lists/${id}`,
+      schema: LIST,
       request: {
         method: 'delete',
       },

@@ -31,11 +31,13 @@ class CardsContainer extends Component {
     });
   }
 
-  handleCardRemoveClick(id) {
+  handleCardRemoveClick(cardId) {
     const { dispatch, listId } = this.props;
-    dispatch(removeCard(id))
-      .then(() => {
-        dispatch(removeCardId(listId, id));
+    dispatch(removeCard(cardId))
+      .then(action => {
+        if (!action.payload.error) {
+          dispatch(removeCardId(listId, cardId));
+        }
       });
   }
 

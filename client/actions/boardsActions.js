@@ -66,6 +66,7 @@ export function removeBoard(id) {
         types.BOARDS_REMOVE_ERROR,
       ],
       endpoint: '/api/boards/' + id,
+      schema: BOARD,
       request: {
         method: 'delete',
       },
