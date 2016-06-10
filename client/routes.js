@@ -8,6 +8,7 @@ import BoardPage from './containers/BoardPage';
 import SignInPage from './containers/SignInPage';
 import SignUpPage from './containers/SignUpPage';
 import FullCardModal from './containers/FullCardModal';
+import Trash from './components/Trash';
 
 function ensureSignedIn(nextState, replace) {
   if (!cookie.get('authenticated')) {
@@ -38,6 +39,11 @@ export default (
           path="cards/:cardId"
           component={FullCardModal}
         />
+      </Route>
+      <Route
+        path="trash"
+        component={Trash}
+      >
       </Route>
     </Route>
     <Route

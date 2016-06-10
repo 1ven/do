@@ -3,6 +3,7 @@ import ActivityContainer from '../containers/ActivityContainer';
 import Icon from './Icon';
 import Toggle from './Toggle';
 import Scrollbar from './Scrollbar';
+import { IndexLink, Link } from 'react-router';
 
 function Menu() {
   const link = (
@@ -14,12 +15,24 @@ function Menu() {
     <div className="b-menu__body">
       <div className="b-menu__items">
         <div className="b-menu__item">
-          <a
+          <IndexLink
+            to="/"
             className="b-menu__item-link"
+            activeClassName="b-menu__item-link_active"
             data-title="Main page"
           >
             Main page
-          </a>
+          </IndexLink>
+        </div>
+        <div className="b-menu__item">
+          <Link
+            to="/trash"
+            className="b-menu__item-link"
+            activeClassName="b-menu__item-link_active"
+            data-title="Trash"
+          >
+            Trash
+          </Link>
         </div>
         <div className="b-menu__item">
           <a

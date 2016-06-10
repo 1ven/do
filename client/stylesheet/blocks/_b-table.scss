@@ -1,0 +1,16 @@
+.b-table {
+  width: 100%;
+  color: $white;
+  text-align: left;
+  font-size: 14px;
+  border-spacing: 0;
+  th, td {
+    padding: 12px 0;
+  }
+  td {
+    border-bottom: 1px solid rgba($white, .3);
+  }
+  th {
+    border-bottom: 2px solid $white;
+  }
+}

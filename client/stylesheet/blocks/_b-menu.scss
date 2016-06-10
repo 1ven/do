@@ -19,7 +19,7 @@ $menu-width: 380px;
     padding-left: calc((100% - #{$container-max-width} + #{$container-x-padding} * 2) / 2);
   }
   &__item {
-    margin-bottom: 14px;
+    margin-bottom: 12px;
   }
   &__item-link {
     color: rgba($white, .8);
@@ -28,6 +28,9 @@ $menu-width: 380px;
     font-size: 23px;
     font-weight: 300;
     position: relative;
+    border-bottom: 1px solid transparent;
+    padding-bottom: 2px;
+    transition: border-color .2s;
     &:before {
       content: attr(data-title);
       position: absolute;
@@ -40,7 +43,10 @@ $menu-width: 380px;
       zoom: 1;
       transition: clip 0.4s cubic-bezier(0.645, 0.045, 0.355, 1);
     }
-    &:hover {
+    &_active {
+      border-color: $white;
+    }
+    &:hover, &_active {
       &:before {
         clip: rect(0px 200px 100px 0px);
       }

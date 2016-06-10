@@ -1,0 +1,30 @@
+.b-pagination {
+  font-size: 14px;
+  display: flex;
+  justify-content: center;
+  &__item, &__ctrl {
+    color: $white;
+    text-decoration: none;
+    padding-bottom: 1px;
+  }
+  &__ctrl {
+    margin: 0 10px;
+    &_inactive {
+      opacity: .3;
+    }
+  }
+  &__item {
+    margin: 0 4px;
+    padding: 0 2px;
+  }
+}
+
+a.b-pagination {
+  &__item, &__ctrl {
+    border-bottom: 1px solid transparent;
+    transition: border-color .2s;
+    &:hover, &_active {
+      border-color: $white;
+    }
+  }
+}

@@ -1,0 +1,9 @@
+.b-link {
+  color: $white;
+  text-decoration: none;
+  transition: border-color .2s;
+  border-bottom: 1px solid $white;
+  &:hover {
+    border-color: transparent;
+  }
+}
