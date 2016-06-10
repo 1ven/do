@@ -86,7 +86,7 @@ describe('List', () => {
   });
 
   describe('drop', () => {
-    it('should set `archive` prop to true', () => {
+    it('should assign to deleted prop current timestamp', () => {
       return List.drop(userId, listId)
         .then(() => {
           return db.one(
@@ -95,7 +95,7 @@ describe('List', () => {
           );
         })
         .then(list => {
-          assert.isTrue(list.deleted);
+          assert.isNumber(list.deleted);
         });
     });
 

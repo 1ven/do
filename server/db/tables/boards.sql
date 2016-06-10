@@ -6,7 +6,7 @@ CREATE TABLE IF NOT EXISTS boards(
   link text NOT NULL UNIQUE CHECK (
     link ~* '\/boards\/.*'
   ),
-  deleted boolean DEFAULT false,
+  deleted integer DEFAULT null,
   starred boolean DEFAULT false
 );
 

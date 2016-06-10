@@ -95,7 +95,7 @@ describe('Card', () => {
   });
 
   describe('drop', () => {
-    it('should set `deleted` prop to true', () => {
+    it('should assign to deleted prop current timestamp', () => {
       return Card.drop(userId, cardId)
         .then(() => {
           return db.one(
@@ -104,7 +104,7 @@ describe('Card', () => {
           );
         })
         .then(card => {
-          assert.isTrue(card.deleted);
+          assert.isNumber(card.deleted);
         });
     });
 
@@ -174,7 +174,7 @@ describe('Card', () => {
         });
     });
 
-    it('should not return card with `deleted = true`', () => {
+    it('should not return deleted cards', () => {
       const promise = Card.findById(card3Id);
       return assert.isRejected(promise, /No data returned/);
     });
@@ -189,7 +189,7 @@ function setup() {
     INSERT INTO lists (id, title) VALUES ($7, 'test list');
     INSERT INTO boards_lists VALUES ($6, $7);
     INSERT INTO cards (id, text, deleted)
-    VALUES ($2, 'test card 1', false), ($3, 'test card 2', false), ($8, 'test card 3', true);
+    VALUES ($2, 'test card 1', null), ($3, 'test card 2', null), ($8, 'test card 3', 1);
     INSERT INTO lists_cards VALUES ($7, $2), ($7, $3), ($7, $8);
     INSERT INTO comments (id, text) VALUES ($4, 'test comment 1'), ($5, 'test comment 2');
     INSERT INTO cards_comments VALUES ($3, $4), ($3, $5);

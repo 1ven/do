@@ -93,7 +93,7 @@ describe('Board', () => {
   });
 
   describe('drop', () => {
-    it('should set `deleted` prop to true', () => {
+    it('should assign to deleted prop current timestamp', () => {
       return Board.drop(userId, board2Id)
         .then(() => {
           return db.one(
@@ -102,7 +102,7 @@ describe('Board', () => {
           );
         })
         .then(board => {
-          assert.isTrue(board.deleted);
+          assert.isNumber(board.deleted);
         });
     });
 
@@ -152,7 +152,7 @@ describe('Board', () => {
           });
       });
 
-      it('should not return board with `deleted = true`', () => {
+      it('should not return deleted boards', () => {
         const promise = Board.findById(board3Id);
         return assert.isRejected(promise, /No data returned/);
       });
@@ -212,13 +212,13 @@ function setup() {
     `INSERT INTO users(id, username, email, hash, salt)
     VALUES ($5, 'test', 'test@test.com', 'hash', 'salt');
     INSERT INTO boards(id, title, deleted)
-    VALUES ($1, 'test board', false), ($2, 'test board 2', false), ($6, 'test board 3', true);
+    VALUES ($1, 'test board', null), ($2, 'test board 2', null), ($6, 'test board 3', 1);
     INSERT INTO users_boards VALUES ($5, $1), ($5, $6);
     INSERT INTO lists(id, title, deleted)
-    VALUES ($3, 'test list', false), ($7, 'test list 2', true);
+    VALUES ($3, 'test list', null), ($7, 'test list 2', 1);
     INSERT INTO boards_lists VALUES ($1, $3), ($1, $7);
     INSERT INTO cards(id, text, deleted)
-    VALUES ($4, 'test card', false), ($8, 'test card', true);
+    VALUES ($4, 'test card', null), ($8, 'test card', 1);
     INSERT INTO lists_cards VALUES ($3, $4), ($3, $8);`,
     [boardId, board2Id, listId, cardId, userId, board3Id, list2Id, card2Id]
   );

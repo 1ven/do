@@ -6,7 +6,7 @@ CREATE TABLE IF NOT EXISTS lists(
   link text UNIQUE CHECK (
     link ~* '\/boards\/.*\/lists\/.*'
   ),
-  deleted boolean DEFAULT false
+  deleted integer DEFAULT null
 );
 
 CREATE TABLE IF NOT EXISTS lists_cards(

@@ -60,6 +60,7 @@ const Card = {
   },
 
   drop(userId, cardId) {
+    const now = Math.round(Date.now() / 1000);
     return db.one(
       `SELECT id, bl.board_id FROM cards AS c
       LEFT JOIN lists_cards AS lc ON (lc.card_id = c.id)
@@ -69,8 +70,8 @@ const Card = {
     )
       .then(result => {
         return db.none(
-          `UPDATE cards SET deleted = true WHERE id = $1`,
-          [cardId]
+          `UPDATE cards SET deleted = $2 WHERE id = $1`,
+          [cardId, now]
         )
           .then(() => {
             return Activity.create(userId, cardId, 'cards', 'Deleted')
@@ -94,7 +95,7 @@ const Card = {
           SELECT id, username, avatar FROM users
         ) AS u ON (u.id = uc.user_id)
       ) AS cm ON (cm.id = cc.comment_id)
-      WHERE cr.id = $1 AND deleted = false
+      WHERE cr.id = $1 AND deleted IS NULL
       GROUP BY cr.id, bl.board_id`,
       [cardId]
     );

@@ -60,10 +60,11 @@ const List = {
   },
 
   drop(userId, listId) {
+    const now = Math.round(Date.now() / 1000);
     return db.one(
-      `UPDATE lists SET deleted = true
+      `UPDATE lists SET deleted = $2
       WHERE id = $1 RETURNING id`,
-      [listId]
+      [listId, now]
     )
       .then(result => {
         return Activity.create(userId, listId, 'lists', 'Removed')

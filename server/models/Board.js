@@ -25,10 +25,11 @@ const Board = {
   },
 
   drop(userId, boardId) {
+    const now = Math.round(Date.now() / 1000);
     return db.one(
-      `UPDATE boards SET deleted = true
+      `UPDATE boards SET deleted = $2
       WHERE id = $1 RETURNING id`,
-      [boardId]
+      [boardId, now]
     )
       .then(result => {
         return Activity.create(userId, boardId, 'boards', 'Removed')
@@ -80,12 +81,12 @@ const Board = {
         LEFT JOIN lists_cards AS lc ON (l.id = lc.list_id)
         LEFT JOIN (
           SELECT id, text, link FROM cards AS c
-          WHERE deleted = false
+          WHERE deleted IS NULL
         ) AS c ON (c.id = lc.card_id)
-        WHERE deleted = false
+        WHERE deleted IS NULL
         GROUP BY l.id
       ) AS l ON (l.id = list_id)
-      WHERE b.id = $1 AND deleted = false
+      WHERE b.id = $1 AND deleted IS NULL
       GROUP BY b.id
       ORDER BY b.index`,
       [id]
@@ -96,16 +97,16 @@ const Board = {
     return db.query(`
       SELECT b.id, b.title, b.link, b.starred, (
         SELECT count(list_id)::integer FROM boards_lists AS bl
-        INNER JOIN lists AS l ON (l.id = bl.list_id AND deleted = false)
+        INNER JOIN lists AS l ON (l.id = bl.list_id AND deleted IS NULL)
         WHERE board_id = b.id
       ) AS lists_length, (
         SELECT count(card_id)::integer FROM lists_cards AS lc
         INNER JOIN boards_lists AS bl ON (bl.board_id = b.id) AND (bl.list_id = lc.list_id)
-        INNER JOIN cards AS c ON (c.id = lc.card_id AND deleted = false)
+        INNER JOIN cards AS c ON (c.id = lc.card_id AND deleted IS NULL)
       ) AS cards_length
       FROM boards AS b
       INNER JOIN users_boards AS ub ON (user_id = $1 AND ub.board_id = b.id)
-      WHERE deleted = false
+      WHERE deleted IS NULL
       GROUP BY b.id
       ORDER BY b.index`,
       [userId]
