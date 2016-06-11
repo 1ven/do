@@ -26,7 +26,10 @@ const Trash = {
           WHERE user_id = $1`,
           [userId]
         )
-          .then(({ pages_length }) => ({ entries, pages_length }));
+          .then(result => ({
+            pages_length: result.pages_length,
+            entries,
+          }));
       });
   },
 

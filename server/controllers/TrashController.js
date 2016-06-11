@@ -12,8 +12,8 @@ exports.find = (req, res, next) => {
 
 exports.restore = (req, res, next) => {
   const userId = req.user.id;
-  const { entryId } = req.params;
-  const { table } = req.body;
+  const entryId = req.params.entryId;
+  const table = req.body.table;
 
   return Trash.restore(userId, entryId, table)
     .then(result => {
