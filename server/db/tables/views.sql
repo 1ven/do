@@ -11,18 +11,18 @@ CREATE OR REPLACE VIEW search AS (
 );
 
 CREATE OR REPLACE VIEW trash AS (
-  SELECT id AS entry_id, title AS content, 'board' AS type, ub.user_id, deleted
+  SELECT id AS entry_id, title AS content, 'boards' AS entry_table, ub.user_id, deleted
   FROM boards AS b
   LEFT JOIN users_boards AS ub ON (ub.board_id = b.id)
   WHERE b.deleted IS NOT NULL
 ) UNION (
-  SELECT id AS entry_id, title AS content, 'list' AS type, ub.user_id, deleted
+  SELECT id AS entry_id, title AS content, 'lists' AS entry_table, ub.user_id, deleted
   FROM lists AS l
   LEFT JOIN boards_lists AS bl ON (bl.list_id = l.id)
   LEFT JOIN users_boards AS ub ON (ub.board_id = bl.board_id)
   WHERE l.deleted IS NOT NULL
 ) UNION (
-  SELECT id as entry_id, text AS content, 'card' AS type, ub.user_id, deleted
+  SELECT id as entry_id, text AS content, 'cards' AS entry_table, ub.user_id, deleted
   FROM cards AS c
   LEFT JOIN lists_cards AS lc ON (lc.card_id = c.id)
   LEFT JOIN boards_lists AS bl ON (bl.list_id = lc.list_id)

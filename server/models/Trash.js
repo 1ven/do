@@ -14,7 +14,7 @@ const Trash = {
     }
 
     return db.query(
-      `SELECT entry_id, content, deleted, type
+      `SELECT entry_id, entry_table, content, deleted
       FROM trash WHERE user_id = $1
       ORDER BY deleted
       LIMIT 20 OFFSET $2 * 20`,
@@ -30,7 +30,7 @@ const Trash = {
       });
   },
 
-  restore(userId, entryId, type) {
+  restore(userId, entryId, table) {
     if (!userId || typeof userId !== 'string') {
       throw new Error('`userId` is not provided or given with wrong type');
     }
@@ -39,11 +39,9 @@ const Trash = {
       throw new Error('`entryId` is not provided or given with wrong type');
     }
 
-    if (!type || typeof type !== 'string') {
-      throw new Error('`type` is not provided or given with wrong type');
+    if (!table || typeof table !== 'string') {
+      throw new Error('`table` is not provided or given with wrong table');
     }
-
-    const table = inflect.pluralize(type);
 
     return db.one(
       `UPDATE $1~ SET deleted = null WHERE id = $2
