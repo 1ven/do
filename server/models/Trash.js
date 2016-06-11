@@ -20,7 +20,7 @@ const Trash = {
       LIMIT 20 OFFSET $2 * 20`,
       [userId, pageIndex - 1]
     )
-      .then(entries => {
+      .then(trash => {
         return db.one(
           `SELECT ceil(count(entry_id) / 20.0)::integer AS pages_length FROM trash
           WHERE user_id = $1`,
@@ -28,7 +28,7 @@ const Trash = {
         )
           .then(result => ({
             pages_length: result.pages_length,
-            entries,
+            trash,
           }));
       });
   },

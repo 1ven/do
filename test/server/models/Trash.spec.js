@@ -19,32 +19,32 @@ describe('Trash', () => {
   ));
 
   describe('find', () => {
-    it('should return deleted entries for particular user according provided `pageIndex`', () => {
+    it('should return deleted items array for particular user according provided `pageIndex`', () => {
       return Trash.find(userId, 1)
         .then(result => {
-          assert.lengthOf(result.entries, 20);
+          assert.lengthOf(result.trash, 20);
           assert.equal(result.pages_length, 9);
         });
     });
 
-    it('should return 12 entries on last page', () => {
+    it('should return 12 items on last page', () => {
       return Trash.find(userId, 9)
         .then(result => {
-          assert.lengthOf(result.entries, 12);
+          assert.lengthOf(result.trash, 12);
         });
     });
 
-    it('should return empty entries array when nonexistent page index is provided', () => {
+    it('should return empty array when nonexistent page index is provided', () => {
       return Trash.find(userId, 30)
         .then(result => {
           assert.deepEqual(result, {
             pages_length: 9,
-            entries: [],
+            trash: [],
           });
         });
     });
 
-    it('should return empty entries array if user has no deleted entries', () => {
+    it('should return empty array if user has no deleted entries', () => {
       const emptyUserId = shortid.generate();
       const boardId = shortid.generate();
       return db.none(
@@ -59,7 +59,7 @@ describe('Trash', () => {
             .then(result => {
               assert.deepEqual(result, {
                 pages_length: 0,
-                entries: [],
+                trash: [],
               });
             });
         });

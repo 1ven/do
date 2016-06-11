@@ -15,7 +15,7 @@ describe('trash routes', () => {
       .then(() => db.none(sql('views.sql')));
   });
 
-  it('GET /api/trash/:pageIndex should respond with 200 and return entries from trash by given page index', (done) => {
+  it('GET /api/trash/:pageIndex should respond with 200 and return items from trash by given page index', (done) => {
     setup().then(request => {
       request
         .get('/api/trash/1')
@@ -24,7 +24,7 @@ describe('trash routes', () => {
           if (err) { return done(err); }
 
           assert.deepEqual(res.body.result, {
-            entries: [{
+            trash: [{
               entry_id: boardId,
               entry_table: 'boards',
               content: 'test board 1',
