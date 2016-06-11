@@ -94,37 +94,6 @@ describe('Trash', () => {
   });
 });
 
-/* const len = 180; */
-/* const entries = _.times(len, i => { */
-/*   const third = len / 3; */
-/*   const type = i < third ? 'board' : i >= third && i < third * 2 ? 'list' : 'card'; */
-/*   const now = Math.round(Date.now() / 1000); */
-/*   return { */
-/*     entry_id: shortid.generate(), */
-/*     content: `test ${type}`, */
-/*     deleted: i % 4 === 0 ? null : now, */
-/*     type, */
-/*   }; */
-/* }); */
-
-/* const data = entries.reduce((acc, entry) => { */
-/*   const { type } = entry; */
-/*   return { */
-/*     ...acc, */
-/*     [type]: [ */
-/*       ...acc[type] || [], */
-/*       { */
-/*         id: entry.entry_id, */
-/*         [type === 'card' ? 'text' : 'title']: entry.content, */
-/*         deleted: entry.deleted, */
-/*       }, */
-/*     ], */
-/*   }; */
-/* }, {}); */
-
-/* console.log(data); */
-
-// need to share all entries equal by two users;
 function setup() {
   const now = Math.round(Date.now() / 1000);
   return db.tx(t => {
