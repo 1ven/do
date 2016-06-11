@@ -55,4 +55,4 @@ const Trash = {
   },
 };
 
-export default Trash;
+module.exports = Trash;
