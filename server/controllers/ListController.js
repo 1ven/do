@@ -8,7 +8,7 @@ exports.create = (req, res, next) => {
   const boardId = req.params.id;
   const listProps = sanitize(req.body);
 
-  return List.create(userId, boardId, listProps)
+  return List.create(boardId, listProps)
     .then(list => {
       return Activity.create(userId, list.id, 'lists', 'Created')
       .then(activity => {
@@ -25,7 +25,7 @@ exports.update = (req, res, next) => {
   const listId = req.params.id;
   const props = sanitize(req.body);
 
-  return List.update(userId, listId, props)
+  return List.update(listId, props)
     .then(list => {
       return Activity.create(userId, list.id, 'lists', 'Updated')
         .then(activity => _.assign({}, list, { activity }));
@@ -39,7 +39,7 @@ exports.drop = (req, res, next) => {
   const userId = req.user.id;
   const listId = req.params.id;
 
-  return List.drop(userId, listId)
+  return List.drop(listId)
     .then(result => {
       return Activity.create(userId, result.id, 'lists', 'Removed')
         .then(activity => _.assign({}, result, { activity }));

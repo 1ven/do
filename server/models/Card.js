@@ -5,7 +5,7 @@ const db = require('../db');
 const validator = require('../utils/validator');
 
 const Card = {
-  create(userId, listId, cardData) {
+  create(listId, cardData) {
     const cardId = shortid.generate();
 
     return this.validate(cardData).then(() => {
@@ -35,7 +35,7 @@ const Card = {
     });
   },
 
-  update(userId, cardId, data) {
+  update(cardId, data) {
     const _data = _.pick(data, ['text']);
 
     const props = _.keys(_data).map(k => pgp.as.name(k)).join();
@@ -50,7 +50,7 @@ const Card = {
     });
   },
 
-  drop(userId, cardId) {
+  drop(cardId) {
     const now = Math.round(Date.now() / 1000);
     return db.one(
       `SELECT id, bl.board_id FROM cards AS c

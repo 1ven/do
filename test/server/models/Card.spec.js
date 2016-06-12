@@ -26,7 +26,7 @@ describe('Card', () => {
     };
 
     it('should create card', () => {
-      return Card.create(userId, listId, cardData).then(card => {
+      return Card.create(listId, cardData).then(card => {
         assert.property(card, 'id');
         assert.deepEqual(_.omit(card, ['id']), {
           text: cardData.text,
@@ -37,13 +37,13 @@ describe('Card', () => {
     });
 
     it('should generate shortid', () => {
-      return Card.create(userId, listId, cardData).then(card => {
+      return Card.create(listId, cardData).then(card => {
         assert.isTrue(shortid.isValid(card.id));
       });
     });
 
     it('should relate card to list', () => {
-      return Card.create(userId, listId, cardData)
+      return Card.create(listId, cardData)
         .then(card => {
           return db.one(
             `SELECT list_id FROM lists_cards WHERE card_id = $1`,
@@ -58,7 +58,7 @@ describe('Card', () => {
 
   describe('update', () => {
     it('should update card and return updated card with id and updated fields', () => {
-      return Card.update(userId, cardId, { text: 'updated text' })
+      return Card.update(cardId, { text: 'updated text' })
       .then(card => {
         assert.deepEqual(card, {
           id: cardId,
@@ -70,7 +70,7 @@ describe('Card', () => {
 
   describe('drop', () => {
     it('should assign to deleted prop current timestamp', () => {
-      return Card.drop(userId, cardId)
+      return Card.drop(cardId)
         .then(() => {
           return db.one(
             `SELECT deleted FROM cards WHERE id = $1`,
@@ -83,7 +83,7 @@ describe('Card', () => {
     });
 
     it('should return dropped card id and board id which card belongs', () => {
-      return Card.drop(userId, cardId)
+      return Card.drop(cardId)
         .then(result => {
           assert.deepEqual(result, {
             id: cardId,

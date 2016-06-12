@@ -41,7 +41,7 @@ exports.update = (req, res, next) => {
   const props = sanitize(req.body);
   const activityAction = req.query.activityAction;
 
-  return Board.update(userId, boardId, props)
+  return Board.update(boardId, props)
     .then(board => {
       return Activity.create(userId, boardId, 'boards', activityAction || 'Updated')
         .then(activity => _.assign({}, board, { activity }));
@@ -55,7 +55,7 @@ exports.drop = (req, res, next) => {
   const userId = req.user.id;
   const boardId = req.params.id;
 
-  return Board.drop(userId, boardId)
+  return Board.drop(boardId)
     .then(result => {
       return Activity.create(userId, boardId, 'boards', 'Removed')
         .then(activity => _.assign({}, result, { activity }));
@@ -69,7 +69,7 @@ exports.toggleStarred = (req, res, next) => {
   const userId = req.user.id;
   const boardId = req.params.id;
 
-  return Board.toggleStarred(userId, boardId)
+  return Board.toggleStarred(boardId)
     .then(result => {
       res.status(200).json({ result });
     }, next);

@@ -5,7 +5,7 @@ const db = require('../db');
 const validator = require('../utils/validator');
 
 const Board = {
-  update(userId, boardId, data) {
+  update(boardId, data) {
     const _data = _.pick(data, ['title']);
 
     const props = _.keys(_data).map(k => pgp.as.name(k)).join();
@@ -19,7 +19,7 @@ const Board = {
     });
   },
 
-  drop(userId, boardId) {
+  drop(boardId) {
     const now = Math.round(Date.now() / 1000);
     return db.one(
       `UPDATE boards SET deleted = $2
@@ -101,7 +101,7 @@ const Board = {
     );
   },
 
-  toggleStarred(userId, boardId) {
+  toggleStarred(boardId) {
     return db.one(
       `UPDATE boards SET starred = NOT starred
       WHERE id = $1 RETURNING id, starred`,

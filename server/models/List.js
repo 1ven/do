@@ -5,7 +5,7 @@ const db = require('../db');
 const validator = require('../utils/validator');
 
 const List = {
-  create(userId, boardId, listData) {
+  create(boardId, listData) {
     const listId = shortid.generate();
 
     return this.validate(listData).then(() => {
@@ -33,7 +33,7 @@ const List = {
     });
   },
 
-  update(userId, listId, data) {
+  update(listId, data) {
     const _data = _.pick(data, ['title']);
 
     const props = _.keys(_data).map(k => pgp.as.name(k)).join();
@@ -48,7 +48,7 @@ const List = {
     });
   },
 
-  drop(userId, listId) {
+  drop(listId) {
     const now = Math.round(Date.now() / 1000);
     return db.one(
       `UPDATE lists SET deleted = $2

@@ -58,7 +58,7 @@ describe('Board', () => {
 
   describe('update', () => {
     it('should update board and return updated board with id and updated fields', () => {
-      return Board.update(userId, boardId, { title: 'updated title' })
+      return Board.update(boardId, { title: 'updated title' })
         .then(board => {
           assert.deepEqual(board, {
             id: boardId,
@@ -70,7 +70,7 @@ describe('Board', () => {
 
   describe('drop', () => {
     it('should assign to deleted prop current timestamp', () => {
-      return Board.drop(userId, board2Id)
+      return Board.drop(board2Id)
         .then(() => {
           return db.one(
             `SELECT deleted FROM boards WHERE id = $1`,
@@ -83,7 +83,7 @@ describe('Board', () => {
     });
 
     it('should return dropped board id', () => {
-      return Board.drop(userId, board2Id)
+      return Board.drop(board2Id)
         .then(result => {
           assert.deepEqual(result, {
             id: board2Id,
@@ -140,7 +140,7 @@ describe('Board', () => {
 
   describe('toggleStarred', () => {
     it('should toggle starred flag', () => {
-      return Board.toggleStarred(userId, boardId)
+      return Board.toggleStarred(boardId)
         .then(board => {
           assert.deepEqual(board, {
             id: boardId,
