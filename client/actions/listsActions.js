@@ -57,7 +57,7 @@ export function removeList(id) {
       schema: {
         list: LIST,
         activity: ACTIVITY,
-        trash: TRASH,
+        trashItem: TRASH,
       },
       request: {
         method: 'delete',

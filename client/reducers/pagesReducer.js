@@ -54,7 +54,7 @@ function trashReducer(state = {
   if (payload && payload.result && payload.result.trashItem) {
     return {
       ...state,
-      ids: [...state.ids, payload.result.trashItem],
+      ids: [payload.result.trashItem, ...state.ids],
     };
   }
 

@@ -71,7 +71,7 @@ export function removeBoard(id) {
       endpoint: '/api/boards/' + id,
       schema: {
         board: BOARD,
-        trash: TRASH,
+        trashItem: TRASH,
         activity: ACTIVITY,
       },
       request: {

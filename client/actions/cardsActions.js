@@ -37,7 +37,7 @@ export function removeCard(id) {
       schema: {
         card: CARD,
         activity: ACTIVITY,
-        trash: TRASH,
+        trashItem: TRASH,
       },
       request: {
         method: 'delete',
