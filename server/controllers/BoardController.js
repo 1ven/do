@@ -75,7 +75,7 @@ exports.drop = (req, res, next) => {
     })
     .then(result => {
       return Trash.findByEntryId(boardId)
-        .then(trash => _.assign({}, result, { trash }));
+        .then(trash_item => _.assign({}, result, { trash_item }));
     })
     .then(result => {
       res.status(200).json({
