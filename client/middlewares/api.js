@@ -1,4 +1,5 @@
 import camelcaseKeysDeep from 'camelcase-keys-deep';
+import { createNotificationWithTimeout } from '../actions/notificationsActions';
 import { normalize } from 'normalizr';
 import { headers } from '../constants/config';
 import 'isomorphic-fetch';
@@ -59,9 +60,18 @@ export default store => next => action => {
 
   return callApi(endpoint, request)
     .then(json => {
+      if (json.notification) {
+        const { message, type } = json.notification;
+        next(createNotificationWithTimeout(
+          message,
+          type
+        ));
+      }
+
       if (schema) {
         return normalize(json.result, schema);
       }
+
       return json.result || {};
     })
     .then(
