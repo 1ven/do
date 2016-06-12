@@ -15,7 +15,7 @@ const Trash = {
     return db.query(
       `SELECT entry_id, entry_table, content, deleted
       FROM trash WHERE user_id = $1
-      ORDER BY deleted
+      ORDER BY deleted DESC
       LIMIT 20 OFFSET $2 * 20`,
       [userId, pageIndex - 1]
     )
