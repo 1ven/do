@@ -3,7 +3,6 @@ const shortid = require('shortid');
 const pgp = require('pg-promise');
 const db = require('../db');
 const validator = require('../utils/validator');
-const Activity = require('./Activity');
 
 const List = {
   create(userId, boardId, listData) {
@@ -21,12 +20,6 @@ const List = {
             SELECT id, title, link FROM lists WHERE id = $2`,
             [boardId, listId]
           );
-        })
-        .then(list => {
-          return Activity.create(userId, listId, 'lists', 'Created')
-          .then(activity => {
-            return _.assign({}, list, { activity });
-          });
         });
     });
   },
@@ -51,11 +44,7 @@ const List = {
         `UPDATE lists SET ($2^) = ($3:csv)
         WHERE id = $1 RETURNING id, $2^`,
         [listId, props, values]
-      )
-        .then(list => {
-          return Activity.create(userId, listId, 'lists', 'Updated')
-            .then(activity => _.assign({}, list, { activity }));
-        });
+      );
     });
   },
 
@@ -65,11 +54,7 @@ const List = {
       `UPDATE lists SET deleted = $2
       WHERE id = $1 RETURNING id`,
       [listId, now]
-    )
-      .then(result => {
-        return Activity.create(userId, listId, 'lists', 'Removed')
-          .then(activity => _.assign({}, result, { activity }));
-      });
+    );
   },
 };
 

@@ -76,11 +76,21 @@ describe('boards routes', () => {
 
           const board = res.body.result;
 
+          assert.property(board.activity, 'created_at');
           assert.property(board, 'id');
-          assert.property(board, 'activity');
-          assert.deepEqual(_.omit(board, ['id', 'activity']), {
+          delete board.activity.created_at;
+          assert.deepEqual(_.omit(board, ['id']), {
             title: 'test board',
             link: '/boards/' + board.id,
+            activity: {
+              id: 1,
+              type: 'board',
+              action: 'Created',
+              entry: {
+                title: 'test board',
+                link: '/boards/' + board.id,
+              },
+            },
           });
 
           db.one(`
@@ -107,12 +117,23 @@ describe('boards routes', () => {
           if (err) { return done(err); }
 
           const list = res.body.result;
+          const link = '/boards/' + boardId + '/lists/' + list.id;
 
-          assert.property(list, 'id');
           assert.property(list, 'activity');
-          assert.deepEqual(_.omit(list, ['id', 'activity']), {
+          delete list.activity.created_at;
+          assert.property(list, 'id');
+          assert.deepEqual(_.omit(list, ['id']), {
+            link,
             title: 'test list',
-            link: '/boards/' + boardId + '/lists/' + list.id,
+            activity: {
+              id: 1,
+              action: 'Created',
+              type: 'list',
+              entry: {
+                title: 'test list',
+                link,
+              },
+            },
           });
 
           done();
@@ -133,11 +154,20 @@ describe('boards routes', () => {
 
           const board = res.body.result;
 
-          assert.property(board, 'activity');
-          assert.equal(board.activity.action, 'Renamed');
-          assert.deepEqual(_.omit(board, ['activity']), {
+          assert.property(board.activity, 'created_at');
+          delete board.activity.created_at;
+          assert.deepEqual(board, {
             id: boardId,
             title: 'new title',
+            activity: {
+              id: 1,
+              action: 'Renamed',
+              type: 'board',
+              entry: {
+                title: 'new title',
+                link: '/boards/' + boardId,
+              },
+            },
           });
 
           done();
@@ -155,8 +185,20 @@ describe('boards routes', () => {
 
           const { result } = res.body;
 
-          assert.property(result, 'activity');
-          assert.equal(result.id, boardId);
+          assert.property(result, 'id');
+          assert.property(result.activity, 'created_at');
+          delete result.activity.created_at;
+          assert.deepEqual(_.omit(result, ['id']), {
+            activity: {
+              id: 1,
+              type: 'board',
+              action: 'Removed',
+              entry: {
+                title: 'test board 1',
+                link: '/boards/' + boardId,
+              },
+            },
+          });
 
           done();
         });

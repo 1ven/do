@@ -28,10 +28,20 @@ describe('cards routes', () => {
 
           const card = res.body.result;
 
-          assert.property(card, 'activity');
-          assert.deepEqual(_.omit(card, ['activity']), {
+          assert.property(card.activity, 'created_at');
+          delete card.activity.created_at;
+          assert.deepEqual(card, {
             id: card2Id,
             text: 'new text',
+            activity: {
+              id: 1,
+              action: 'Updated',
+              type: 'card',
+              entry: {
+                title: 'new text',
+                link: '/boards/' + boardId + '/cards/' + card2Id,
+              },
+            },
           });
 
           done();
@@ -49,10 +59,20 @@ describe('cards routes', () => {
 
           const { result } = res.body;
 
-          assert.property(result, 'activity');
-          assert.deepEqual(_.omit(result, ['activity']), {
+          assert.property(result.activity, 'created_at');
+          delete result.activity.created_at;
+          assert.deepEqual(result, {
             id: card2Id,
             board_id: boardId,
+            activity: {
+              id: 1,
+              action: 'Deleted',
+              type: 'card',
+              entry: {
+                title: 'test card 2',
+                link: '/boards/' + boardId + '/cards/' + card2Id,
+              },
+            },
           });
 
           done();

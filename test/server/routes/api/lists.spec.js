@@ -22,13 +22,24 @@ describe('lists routes', () => {
           if (err) { return done(err); }
 
           const card = res.body.result;
+          const link = '/boards/' + boardId + '/cards/' + card.id;
 
           assert.property(card, 'id');
-          assert.property(card, 'activity');
-          assert.deepEqual(_.omit(card, ['id', 'activity']), {
+          assert.property(card.activity, 'created_at');
+          delete card.activity.created_at;
+          assert.deepEqual(_.omit(card, ['id']), {
+            link, 
             text: 'test card',
-            link: '/boards/' + boardId + '/cards/' + card.id,
             board_id: boardId,
+            activity: {
+              id: 1,
+              action: 'Created',
+              type: 'card',
+              entry: {
+                title: 'test card',
+                link,
+              },
+            },
           });
 
           done();
@@ -49,10 +60,20 @@ describe('lists routes', () => {
 
           const list = res.body.result;
 
-          assert.property(list, 'activity');
-          assert.deepEqual(_.omit(list, ['activity']), {
+          assert.property(list.activity, 'created_at');
+          delete list.activity.created_at;
+          assert.deepEqual(list, {
             id: listId,
             title: 'new title',
+            activity: {
+              id: 1,
+              action: 'Updated',
+              type: 'list',
+              entry: {
+                title: 'new title',
+                link: '/boards/' + boardId + '/lists/' + listId,
+              },
+            },
           });
 
           done();
@@ -70,8 +91,20 @@ describe('lists routes', () => {
 
           const { result } = res.body;
 
-          assert.property(result, 'activity');
-          assert.equal(result.id, listId);
+          assert.property(result.activity, 'created_at');
+          delete result.activity.created_at;
+          assert.deepEqual(result, {
+            id: listId,
+            activity: {
+              id: 1,
+              action: 'Removed',
+              type: 'list',
+              entry: {
+                title: 'test list',
+                link: '/boards/' + boardId + '/lists/' + listId,
+              },
+            },
+          });
 
           done();
         });

@@ -21,22 +21,9 @@ describe('List', () => {
       return List.create(userId, boardId, listData)
         .then(list => {
           assert.property(list, 'id');
-          assert.property(list.activity, 'created_at');
-
-          delete list.activity.created_at;
-
           assert.deepEqual(_.omit(list, ['id']), {
             title: listData.title,
             link: '/boards/' + boardId + '/lists/' + list.id,
-            activity: {
-              id: 1,
-              action: 'Created',
-              type: 'list',
-              entry: {
-                title: listData.title,
-                link: '/boards/' + boardId + '/lists/' + list.id,
-              },
-            },
           });
         });
     });
@@ -63,23 +50,12 @@ describe('List', () => {
   });
 
   describe('update', () => {
-    it('should update list and return updated list with id, activity and updated fields', () => {
+    it('should update list and return updated list with id and updated fields', () => {
       return List.update(userId, listId, { title: 'updated title' })
         .then(list => {
-          assert.property(list.activity, 'created_at');
-          delete list.activity.created_at;
           assert.deepEqual(list, {
             id: listId,
             title: 'updated title',
-            activity: {
-              id: 1,
-              action: 'Updated',
-              type: 'list',
-              entry: {
-                title: 'updated title',
-                link: '/boards/' + boardId + '/lists/' + listId,
-              },
-            },
           });
         });
     });
@@ -102,21 +78,8 @@ describe('List', () => {
     it('should return dropped list id', () => {
       return List.drop(userId, listId)
         .then(result => {
-          assert.property(result.activity, 'created_at');
-
-          delete result.activity.created_at;
-
           assert.deepEqual(result, {
             id: listId,
-            activity: {
-              id: 1,
-              action: 'Removed',
-              type: 'list',
-              entry: {
-                title: 'test list',
-                link: '/boards/' + boardId + '/lists/' + listId,
-              },
-            },
           });
         });
     });

@@ -28,22 +28,9 @@ describe('Board', () => {
     it('should create board', () => {
       return Board.create(userId, boardData).then(board => {
         assert.property(board, 'id');
-        assert.property(board.activity, 'created_at');
-
-        delete board.activity.created_at;
-
         assert.deepEqual(_.omit(board, ['id']), {
           title: boardData.title,
           link: '/boards/' + board.id,
-          activity: {
-            id: 1,
-            type: 'board',
-            action: 'Created',
-            entry: {
-              title: boardData.title,
-              link: '/boards/' + board.id,
-            },
-          },
         });
       });
     });
@@ -70,23 +57,12 @@ describe('Board', () => {
   });
 
   describe('update', () => {
-    it('should update board and return updated board with id, activity and updated fields', () => {
+    it('should update board and return updated board with id and updated fields', () => {
       return Board.update(userId, boardId, { title: 'updated title' })
         .then(board => {
-          assert.property(board.activity, 'created_at');
-          delete board.activity.created_at;
           assert.deepEqual(board, {
             id: boardId,
             title: 'updated title',
-            activity: {
-              id: 1,
-              action: 'Updated',
-              type: 'board',
-              entry: {
-                title: 'updated title',
-                link: '/boards/' + boardId,
-              },
-            },
           });
         });
     });
@@ -109,21 +85,8 @@ describe('Board', () => {
     it('should return dropped board id', () => {
       return Board.drop(userId, board2Id)
         .then(result => {
-          assert.property(result.activity, 'created_at');
-
-          delete result.activity.created_at;
-
           assert.deepEqual(result, {
             id: board2Id,
-            activity: {
-              id: 1,
-              type: 'board',
-              action: 'Removed',
-              entry: {
-                title: 'test board 2',
-                link: '/boards/' + board2Id,
-              },
-            },
           });
         });
     });

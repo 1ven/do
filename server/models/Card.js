@@ -3,7 +3,6 @@ const shortid = require('shortid');
 const pgp = require('pg-promise');
 const db = require('../db');
 const validator = require('../utils/validator');
-const Activity = require('./Activity');
 
 const Card = {
   create(userId, listId, cardData) {
@@ -23,10 +22,6 @@ const Card = {
             WHERE id = $2`,
             [listId, cardId]
           );
-        })
-        .then(card => {
-          return Activity.create(userId, cardId, 'cards', 'Created')
-            .then(activity => _.assign({}, card, { activity }));
         });
     });
   },
@@ -51,11 +46,7 @@ const Card = {
         `UPDATE cards SET ($2^) = ($3:csv)
         WHERE id = $1 RETURNING id, $2^`,
         [cardId, props, values]
-      )
-        .then(card => {
-          return Activity.create(userId, cardId, 'cards', 'Updated')
-            .then(activity => _.assign({}, card, { activity }));
-        });
+      );
     });
   },
 
@@ -73,12 +64,11 @@ const Card = {
           `UPDATE cards SET deleted = $2 WHERE id = $1`,
           [cardId, now]
         )
-          .then(() => {
-            return Activity.create(userId, cardId, 'cards', 'Deleted')
-              .then(activity => _.assign({}, result, { activity }));
-          });
+          .then(() => result);
       });
   },
+
+  // TODO: implement getBoardId method for using in controller
 
   findById(cardId) {
     return db.one(

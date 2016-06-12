@@ -1,5 +1,7 @@
+const _ = require('lodash');
 const sanitize = require('../utils/sanitize');
 const List = require('../models/List');
+const Activity = require('../models/Activity');
 
 exports.create = (req, res, next) => {
   const userId = req.user.id;
@@ -8,7 +10,13 @@ exports.create = (req, res, next) => {
 
   return List.create(userId, boardId, listProps)
     .then(list => {
-      res.status(201).json({ result: list });
+      return Activity.create(userId, list.id, 'lists', 'Created')
+      .then(activity => {
+        return _.assign({}, list, { activity });
+      });
+    })
+    .then(result => {
+      res.status(201).json({ result });
     }, next);
 };
 
@@ -19,7 +27,11 @@ exports.update = (req, res, next) => {
 
   return List.update(userId, listId, props)
     .then(list => {
-      res.status(200).json({ result: list });
+      return Activity.create(userId, list.id, 'lists', 'Updated')
+        .then(activity => _.assign({}, list, { activity }));
+    })
+    .then(result => {
+      res.status(200).json({ result });
     }, next);
 };
 
@@ -28,6 +40,10 @@ exports.drop = (req, res, next) => {
   const listId = req.params.id;
 
   return List.drop(userId, listId)
+    .then(result => {
+      return Activity.create(userId, result.id, 'lists', 'Removed')
+        .then(activity => _.assign({}, result, { activity }));
+    })
     .then(result => {
       res.status(200).json({ result });
     }, next);

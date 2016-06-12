@@ -3,10 +3,9 @@ const shortid = require('shortid');
 const pgp = require('pg-promise');
 const db = require('../db');
 const validator = require('../utils/validator');
-const Activity = require('./Activity');
 
 const Board = {
-  update(userId, boardId, data, activityAction) {
+  update(userId, boardId, data) {
     const _data = _.pick(data, ['title']);
 
     const props = _.keys(_data).map(k => pgp.as.name(k)).join();
@@ -16,12 +15,8 @@ const Board = {
       return db.one(
         `UPDATE boards SET ($2^) = ($3:csv) WHERE id = $1 RETURNING id, $2^`,
         [boardId, props, values]
-      )
-        .then(board => {
-          return Activity.create(userId, boardId, 'boards', activityAction || 'Updated')
-            .then(activity => _.assign({}, board, { activity }));
-        });
-      });
+      );
+    });
   },
 
   drop(userId, boardId) {
@@ -30,11 +25,7 @@ const Board = {
       `UPDATE boards SET deleted = $2
       WHERE id = $1 RETURNING id`,
       [boardId, now]
-    )
-      .then(result => {
-        return Activity.create(userId, boardId, 'boards', 'Removed')
-          .then(activity => _.assign({}, result, { activity }));
-      });
+    );
   },
 
   validate(props) {
@@ -60,10 +51,7 @@ const Board = {
             `INSERT INTO users_boards VALUES ($1, $2)`,
             [userId, board.id]
           )
-            .then(() => Activity.create(userId, id, 'boards', 'Created'))
-            .then(activity => {
-              return _.assign({}, board, { activity });
-            });
+            .then(() => board);
         });
     });
   },

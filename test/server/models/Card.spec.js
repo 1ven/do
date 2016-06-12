@@ -27,24 +27,11 @@ describe('Card', () => {
 
     it('should create card', () => {
       return Card.create(userId, listId, cardData).then(card => {
-        const link = '/boards/' + boardId + '/cards/' + card.id;
-
         assert.property(card, 'id');
-        assert.property(card.activity, 'created_at');
-        delete card.activity.created_at;
         assert.deepEqual(_.omit(card, ['id']), {
           text: cardData.text,
           board_id: boardId,
-          link,
-          activity: {
-            id: 1,
-            action: 'Created',
-            type: 'card',
-            entry: {
-              title: cardData.text,
-              link,
-            },
-          },
+          link: '/boards/' + boardId + '/cards/' + card.id,
         });
       });
     });
@@ -70,25 +57,12 @@ describe('Card', () => {
   });
 
   describe('update', () => {
-    it('should update card and return updated card with id, activity and updated fields', () => {
+    it('should update card and return updated card with id and updated fields', () => {
       return Card.update(userId, cardId, { text: 'updated text' })
       .then(card => {
-        const text = 'updated text';
-
-        assert.property(card.activity, 'created_at');
-        delete card.activity.created_at;
         assert.deepEqual(card, {
           id: cardId,
-          text,
-          activity: {
-            id: 1,
-            action: 'Updated',
-            type: 'card',
-            entry: {
-              title: text,
-              link: '/boards/' + boardId + '/cards/' + cardId,
-            },
-          },
+          text: 'updated text',
         });
       });
     });
@@ -111,20 +85,9 @@ describe('Card', () => {
     it('should return dropped card id and board id which card belongs', () => {
       return Card.drop(userId, cardId)
         .then(result => {
-          assert.property(result.activity, 'created_at');
-          delete result.activity.created_at;
           assert.deepEqual(result, {
             id: cardId,
             board_id: boardId,
-            activity: {
-              id: 1,
-              action: 'Deleted',
-              type: 'card',
-              entry: {
-                title: 'test card 1',
-                link: '/boards/' + boardId + '/cards/' + cardId,
-              },
-            },
           });
         });
     });
