@@ -2,7 +2,6 @@ import React, { PropTypes } from 'react';
 import { connect } from 'react-redux';
 import { createList } from '../actions/listsActions';
 import { addListId, incListsLength } from '../actions/boardsActions';
-import { createNotificationWithTimeout } from '../actions/notificationsActions';
 import FormBox from '../components/FormBox';
 import Modal from '../components/Modal';
 import InputBox from '../components/InputBox';
@@ -10,14 +9,9 @@ import InputBox from '../components/InputBox';
 function CreateListModal({ hideModal, dispatch, boardId }) {
   function handleSuccess(payload) {
     const listId = payload.result.list;
-    const listTitle = payload.entities.lists[listId].title;
     dispatch(addListId(boardId, listId));
     dispatch(incListsLength(boardId));
     hideModal();
-    dispatch(createNotificationWithTimeout(
-      `List "${listTitle}" was successfully created`,
-      'info'
-    ));
   }
 
   return (

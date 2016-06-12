@@ -14,7 +14,13 @@ exports.create = (req, res, next) => {
         .then(activity => _.assign({}, { board }, { activity }));
     })
     .then(result => {
-      res.status(201).json({ result });
+      res.status(201).json({
+        notification: {
+          message: 'Board was successfully created',
+          type: 'info',
+        },
+        result,
+      });
     }, next);
 };
 

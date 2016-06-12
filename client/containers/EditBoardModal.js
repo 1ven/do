@@ -1,21 +1,11 @@
 import React, { PropTypes } from 'react';
 import { connect } from 'react-redux';
 import { updateBoard } from '../actions/boardsActions';
-import { createNotificationWithTimeout } from '../actions/notificationsActions';
 import FormBox from '../components/FormBox';
 import Modal from '../components/Modal';
 import InputBox from '../components/InputBox';
 
 function EditBoardModal({ hideModal, dispatch, board }) {
-  function handleSuccess(payload) {
-    const boardTitle = payload.entities.boards[payload.result.board].title;
-    hideModal();
-    dispatch(createNotificationWithTimeout(
-      `Board "${boardTitle}" was successfully updated`,
-      'info'
-    ));
-  }
-
   return (
     <Modal
       title="Edit board"
@@ -24,7 +14,7 @@ function EditBoardModal({ hideModal, dispatch, board }) {
       <FormBox
         request={formData => dispatch(updateBoard(board.id, formData))}
         onCancelClick={hideModal}
-        onSuccess={handleSuccess}
+        onSuccess={hideModal}
         rows={[
           <InputBox
             name="title"
