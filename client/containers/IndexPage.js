@@ -4,7 +4,6 @@ import { connect } from 'react-redux';
 import { getActivity } from '../actions/activityActions';
 import { getBoards, removeBoard, updateBoard, toggleStarred } from '../actions/boardsActions';
 import { startProgressBar, finishProgressBar } from '../actions/progressBarActions';
-import { createNotificationWithTimeout } from '../actions/notificationsActions';
 import BoardsList from '../components/BoardsList.js';
 import Loader from '../components/Loader';
 import BottomBox from '../components/BottomBox';
@@ -64,16 +63,7 @@ class IndexPage extends Component {
   handleBoardTileRemoveClick(boardId) {
     const { dispatch, groups } = this.props;
     const boards = groups.reduce((acc, g) => [...acc, ...g.boards ], []);
-    dispatch(removeBoard(boardId))
-      .then(action => {
-        if (!action.payload.error) {
-          const boardTitle = boards.filter(b => b.id === boardId)[0].title;
-          dispatch(createNotificationWithTimeout(
-            `Board "${boardTitle}" was successfully removed`,
-            'info'
-          ));
-        }
-      });
+    dispatch(removeBoard(boardId));
   }
 
   handleBoardTileToggleStarredClick(boardId, starred) {

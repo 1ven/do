@@ -3,7 +3,6 @@ import { connect } from 'react-redux';
 import Lists from '../components/Lists';
 import { removeList } from '../actions/listsActions';
 import { removeListId, decListsLength } from '../actions/boardsActions';
-import { createNotificationWithTimeout } from '../actions/notificationsActions';
 import EditListModal from './EditListModal';
 
 class ListsContainer extends Component {
@@ -37,13 +36,8 @@ class ListsContainer extends Component {
     dispatch(removeList(listId))
     .then(action => {
       if (!action.payload.error) {
-        const listTitle = lists.filter(l => l.id === listId)[0].title;
         dispatch(removeListId(boardId, listId));
         dispatch(decListsLength(boardId));
-        dispatch(createNotificationWithTimeout(
-          `List "${listTitle}" was successfully removed`,
-          'info'
-        ));
       }
     });
   }
