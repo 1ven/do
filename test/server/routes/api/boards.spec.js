@@ -74,13 +74,14 @@ describe('boards routes', () => {
         .end((err, res) => {
           if (err) { return done(err); }
 
-          const { result } = res.body;
+          const { result, notification } = res.body;
           const boardId = result.board.id;
 
           assert.property(result.activity, 'created_at');
           assert.property(result.board, 'id');
           delete result.activity.created_at;
           delete result.board.id;
+
           assert.deepEqual(result, {
             board: {
               title: 'test board',
@@ -95,6 +96,11 @@ describe('boards routes', () => {
                 link: '/boards/' + boardId,
               },
             },
+          });
+
+          assert.deepEqual(notification, {
+            message: 'Board was successfully created',
+            type: 'info',
           });
 
           db.one(`
@@ -120,13 +126,14 @@ describe('boards routes', () => {
         .end((err, res) => {
           if (err) { return done(err); }
 
-          const { result } = res.body;
+          const { result, notification } = res.body;
           const link = '/boards/' + boardId + '/lists/' + result.list.id;
 
           assert.property(result, 'activity');
           assert.property(result.list, 'id');
           delete result.activity.created_at;
           delete result.list.id;
+
           assert.deepEqual(result, {
             list: {
               link,
@@ -141,6 +148,11 @@ describe('boards routes', () => {
                 link,
               },
             },
+          });
+
+          assert.deepEqual(notification, {
+            message: 'List was successfully created',
+            type: 'info',
           });
 
           done();
@@ -159,10 +171,11 @@ describe('boards routes', () => {
         .end((err, res) => {
           if (err) { return done(err); }
 
-          const { result } = res.body;
+          const { result, notification } = res.body;
 
           assert.property(result.activity, 'created_at');
           delete result.activity.created_at;
+
           assert.deepEqual(result, {
             board: {
               id: boardId,
@@ -179,6 +192,11 @@ describe('boards routes', () => {
             },
           });
 
+          assert.deepEqual(notification, {
+            message: 'Board was successfully updated',
+            type: 'info',
+          });
+
           done();
         });
     }).catch(done);
@@ -192,12 +210,13 @@ describe('boards routes', () => {
         .end((err, res) => {
           if (err) { return done(err); }
 
-          const { result } = res.body;
+          const { result, notification } = res.body;
 
           assert.property(result.activity, 'created_at');
           assert.property(result.trash, 'deleted');
           delete result.activity.created_at;
           delete result.trash.deleted;
+
           assert.deepEqual(result, {
             board: {
               id: boardId,
@@ -216,6 +235,11 @@ describe('boards routes', () => {
                 link: '/boards/' + boardId,
               },
             },
+          });
+
+          assert.deepEqual(notification, {
+            message: 'Board was successfully removed',
+            type: 'info',
           });
 
           done();

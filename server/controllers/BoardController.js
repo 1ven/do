@@ -54,7 +54,13 @@ exports.update = (req, res, next) => {
         .then(activity => _.assign({}, { board }, { activity }));
     })
     .then(result => {
-      res.status(200).json({ result });
+      res.status(200).json({
+        notification: {
+          message: 'Board was successfully updated',
+          type: 'info',
+        },
+        result,
+      });
     }, next);
 };
 
@@ -72,7 +78,13 @@ exports.drop = (req, res, next) => {
         .then(trash => _.assign({}, result, { trash }));
     })
     .then(result => {
-      res.status(200).json({ result });
+      res.status(200).json({
+        notification: {
+          message: 'Board was successfully removed',
+          type: 'info',
+        },
+        result,
+      });
     }, next);
 };
 

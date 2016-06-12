@@ -21,13 +21,14 @@ describe('lists routes', () => {
         .end((err, res) => {
           if (err) { return done(err); }
 
-          const { result } = res.body;
+          const { result, notification } = res.body;
           const link = '/boards/' + boardId + '/cards/' + result.card.id;
 
           assert.property(result.card, 'id');
           assert.property(result.activity, 'created_at');
           delete result.card.id;
           delete result.activity.created_at;
+
           assert.deepEqual(result, {
             card: {
               link, 
@@ -43,6 +44,11 @@ describe('lists routes', () => {
                 link,
               },
             },
+          });
+
+          assert.deepEqual(notification, {
+            message: 'Card was successfully created',
+            type: 'info',
           });
 
           done();
@@ -61,10 +67,11 @@ describe('lists routes', () => {
         .end((err, res) => {
           if (err) { return done(err); }
 
-          const { result } = res.body;
+          const { result, notification } = res.body;
 
           assert.property(result.activity, 'created_at');
           delete result.activity.created_at;
+
           assert.deepEqual(result, {
             list: {
               id: listId,
@@ -81,6 +88,11 @@ describe('lists routes', () => {
             },
           });
 
+          assert.deepEqual(notification, {
+            message: 'List was successfully updated',
+            type: 'info',
+          });
+
           done();
         });
     }).catch(done);
@@ -94,12 +106,13 @@ describe('lists routes', () => {
         .end((err, res) => {
           if (err) { return done(err); }
 
-          const { result } = res.body;
+          const { result, notification } = res.body;
 
           assert.property(result.activity, 'created_at');
           assert.property(result.trash, 'deleted');
           delete result.activity.created_at;
           delete result.trash.deleted;
+
           assert.deepEqual(result, {
             list: {
               id: listId,
@@ -118,6 +131,11 @@ describe('lists routes', () => {
                 link: '/boards/' + boardId + '/lists/' + listId,
               },
             },
+          });
+
+          assert.deepEqual(notification, {
+            message: 'List was successfully removed',
+            type: 'info',
           });
 
           done();

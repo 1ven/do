@@ -26,10 +26,11 @@ describe('cards routes', () => {
         .end((err, res) => {
           if (err) { return done(err); }
 
-          const { result } = res.body;
+          const { result, notification } = res.body;
 
           assert.property(result.activity, 'created_at');
           delete result.activity.created_at;
+
           assert.deepEqual(result, {
             card: {
               id: card2Id,
@@ -46,6 +47,11 @@ describe('cards routes', () => {
             },
           });
 
+          assert.deepEqual(notification, {
+            message: 'Card was successfully updated',
+            type: 'info',
+          });
+
           done();
         });
     }).catch(done);
@@ -59,12 +65,13 @@ describe('cards routes', () => {
         .end((err, res) => {
           if (err) { return done(err); }
 
-          const { result } = res.body;
+          const { result, notification } = res.body;
 
           assert.property(result.activity, 'created_at');
           assert.property(result.trash, 'deleted');
           delete result.activity.created_at;
           delete result.trash.deleted;
+
           assert.deepEqual(result, {
             card: {
               id: card2Id,
@@ -84,6 +91,11 @@ describe('cards routes', () => {
                 link: '/boards/' + boardId + '/cards/' + card2Id,
               },
             },
+          });
+
+          assert.deepEqual(notification, {
+            message: 'Card was successfully removed',
+            type: 'info',
           });
 
           done();
