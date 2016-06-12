@@ -1,5 +1,5 @@
 import { CALL_API } from '../middlewares/api';
-import { CARD } from '../schemas';
+import { CARD, ACTIVITY, TRASH } from '../schemas';
 import * as types from '../constants/actionTypes';
 
 export function createCard(listId, text) {
@@ -11,7 +11,10 @@ export function createCard(listId, text) {
         types.CARDS_CREATE_ERROR,
       ],
       endpoint: `/api/lists/${listId}/cards`,
-      schema: CARD,
+      schema: {
+        card: CARD,
+        activity: ACTIVITY,
+      },
       request: {
         method: 'post',
         body: {
@@ -31,7 +34,11 @@ export function removeCard(id) {
         types.CARDS_REMOVE_ERROR,
       ],
       endpoint: `/api/cards/${id}`,
-      schema: CARD,
+      schema: {
+        card: CARD,
+        activity: ACTIVITY,
+        trash: TRASH,
+      },
       request: {
         method: 'delete',
       },
@@ -48,7 +55,10 @@ export function updateCard(id, props) {
         types.CARDS_UPDATE_ERROR,
       ],
       endpoint: `/api/cards/${id}`,
-      schema: CARD,
+      schema: {
+        card: CARD,
+        activity: ACTIVITY,
+      },
       request: {
         method: 'put',
         body: props,

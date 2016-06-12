@@ -1,5 +1,5 @@
 import { CALL_API } from '../middlewares/api';
-import { BOARD_ARRAY, BOARD } from '../schemas';
+import { BOARD_ARRAY, BOARD, ACTIVITY, TRASH } from '../schemas';
 import * as types from '../constants/actionTypes';
 
 export function getBoards() {
@@ -46,7 +46,10 @@ export function createBoard(title) {
         types.BOARDS_CREATE_ERROR
       ],
       endpoint: '/api/boards',
-      schema: BOARD,
+      schema: {
+        board: BOARD,
+        activity: ACTIVITY,
+      },
       request: {
         method: 'post',
         body: {
@@ -66,7 +69,11 @@ export function removeBoard(id) {
         types.BOARDS_REMOVE_ERROR,
       ],
       endpoint: '/api/boards/' + id,
-      schema: BOARD,
+      schema: {
+        board: BOARD,
+        trash: TRASH,
+        activity: ACTIVITY,
+      },
       request: {
         method: 'delete',
       },
@@ -84,7 +91,10 @@ export function updateBoard(id, props, activityAction) {
         types.BOARDS_UPDATE_ERROR,
       ],
       endpoint: `/api/boards/${id}${queryParams}`,
-      schema: BOARD,
+      schema: {
+        board: BOARD,
+        activity: ACTIVITY,
+      },
       request: {
         method: 'put',
         body: props

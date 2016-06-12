@@ -13,7 +13,7 @@ exports.create = (req, res, next) => {
     .then(list => {
       return Activity.create(userId, list.id, 'lists', 'Created')
       .then(activity => {
-        return _.assign({}, list, { activity });
+        return _.assign({}, { list }, { activity });
       });
     })
     .then(result => {
@@ -29,7 +29,7 @@ exports.update = (req, res, next) => {
   return List.update(listId, props)
     .then(list => {
       return Activity.create(userId, list.id, 'lists', 'Updated')
-        .then(activity => _.assign({}, list, { activity }));
+        .then(activity => _.assign({}, { list }, { activity }));
     })
     .then(result => {
       res.status(200).json({ result });
@@ -41,9 +41,9 @@ exports.drop = (req, res, next) => {
   const listId = req.params.id;
 
   return List.drop(listId)
-    .then(result => {
-      return Activity.create(userId, result.id, 'lists', 'Removed')
-        .then(activity => _.assign({}, result, { activity }));
+    .then(list => {
+      return Activity.create(userId, listId, 'lists', 'Removed')
+        .then(activity => _.assign({}, { list }, { activity }));
     })
     .then(result => {
       return Trash.findByEntryId(listId)

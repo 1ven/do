@@ -8,7 +8,7 @@ import InputBox from '../components/InputBox';
 
 function EditBoardModal({ hideModal, dispatch, board }) {
   function handleSuccess(payload) {
-    const boardTitle = payload.entities.boards[payload.result].title;
+    const boardTitle = payload.entities.boards[payload.result.board].title;
     hideModal();
     dispatch(createNotificationWithTimeout(
       `Board "${boardTitle}" was successfully updated`,

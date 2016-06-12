@@ -26,13 +26,15 @@ describe('cards routes', () => {
         .end((err, res) => {
           if (err) { return done(err); }
 
-          const card = res.body.result;
+          const { result } = res.body;
 
-          assert.property(card.activity, 'created_at');
-          delete card.activity.created_at;
-          assert.deepEqual(card, {
-            id: card2Id,
-            text: 'new text',
+          assert.property(result.activity, 'created_at');
+          delete result.activity.created_at;
+          assert.deepEqual(result, {
+            card: {
+              id: card2Id,
+              text: 'new text',
+            },
             activity: {
               id: 1,
               action: 'Updated',
@@ -64,8 +66,10 @@ describe('cards routes', () => {
           delete result.activity.created_at;
           delete result.trash.deleted;
           assert.deepEqual(result, {
-            id: card2Id,
-            board_id: boardId,
+            card: {
+              id: card2Id,
+              board_id: boardId,
+            },
             trash: {
               entry_id: card2Id,
               entry_table: 'cards',

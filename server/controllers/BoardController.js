@@ -11,7 +11,7 @@ exports.create = (req, res, next) => {
   return Board.create(userId, boardProps)
     .then(board => {
       return Activity.create(userId, board.id, 'boards', 'Created')
-        .then(activity => _.assign({}, board, { activity }));
+        .then(activity => _.assign({}, { board }, { activity }));
     })
     .then(result => {
       res.status(201).json({ result });
@@ -45,7 +45,7 @@ exports.update = (req, res, next) => {
   return Board.update(boardId, props)
     .then(board => {
       return Activity.create(userId, boardId, 'boards', activityAction || 'Updated')
-        .then(activity => _.assign({}, board, { activity }));
+        .then(activity => _.assign({}, { board }, { activity }));
     })
     .then(result => {
       res.status(200).json({ result });
@@ -57,9 +57,9 @@ exports.drop = (req, res, next) => {
   const boardId = req.params.id;
 
   return Board.drop(boardId)
-    .then(result => {
+    .then(board => {
       return Activity.create(userId, boardId, 'boards', 'Removed')
-        .then(activity => _.assign({}, result, { activity }));
+        .then(activity => _.assign({}, { board }, { activity }));
     })
     .then(result => {
       return Trash.findByEntryId(boardId)

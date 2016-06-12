@@ -30,12 +30,12 @@ function indexReducer(state = {
     case types.BOARDS_CREATE_SUCCESS:
       return {
         ...state,
-        ids: [...state.ids, payload.result],
+        ids: [...state.ids, payload.result.board],
       };
     case types.BOARDS_REMOVE_SUCCESS:
       return {
         ...state,
-        ids: without(state.ids, payload.result),
+        ids: without(state.ids, payload.result.board),
       };
     default:
       return state;

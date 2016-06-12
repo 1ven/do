@@ -8,7 +8,7 @@ import InputBox from '../components/InputBox';
 
 function EditListModal({ hideModal, dispatch, list }) {
   function handleSuccess(payload) {
-    const listTitle = payload.entities.lists[payload.result].title;
+    const listTitle = payload.entities.lists[payload.result.list].title;
     hideModal();
     dispatch(createNotificationWithTimeout(
       `List "${listTitle}" was successfully updated`,

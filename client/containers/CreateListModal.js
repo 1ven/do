@@ -9,7 +9,7 @@ import InputBox from '../components/InputBox';
 
 function CreateListModal({ hideModal, dispatch, boardId }) {
   function handleSuccess(payload) {
-    const listId = payload.result;
+    const listId = payload.result.list;
     const listTitle = payload.entities.lists[listId].title;
     dispatch(addListId(boardId, listId));
     dispatch(incListsLength(boardId));

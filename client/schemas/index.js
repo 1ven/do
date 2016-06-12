@@ -17,4 +17,5 @@ export const USER = userSchema;
 export const COMMENT = commentSchema;
 export const ACTIVITY = activitySchema;
 export const ACTIVITY_ARRAY = arrayOf(activitySchema);
+export const TRASH = trashSchema;
 export const TRASH_ARRAY = arrayOf(trashSchema);

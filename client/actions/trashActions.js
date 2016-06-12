@@ -12,7 +12,6 @@ export function getTrash(pageIndex) {
       ],
       endpoint: `/api/trash/${pageIndex}`,
       schema: {
-        // TODO: Implement handling this case in api middleware. Tip - isSchema variable.
         trash: TRASH_ARRAY,
       },
       request: {

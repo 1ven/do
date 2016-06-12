@@ -12,7 +12,7 @@ exports.create = (req, res, next) => {
   return Card.create(listId, cardProps)
     .then(card => {
       return Activity.create(userId, card.id, 'cards', 'Created')
-        .then(activity => _.assign({}, card, { activity }));
+        .then(activity => _.assign({}, { card }, { activity }));
     })
     .then(result => {
       res.status(201).json({ result });
@@ -27,7 +27,7 @@ exports.update = (req, res, next) => {
   return Card.update(cardId, props)
     .then(card => {
       return Activity.create(userId, card.id, 'cards', 'Updated')
-        .then(activity => _.assign({}, card, { activity }));
+        .then(activity => _.assign({}, { card }, { activity }));
     })
     .then(result => {
       res.status(200).json({ result });
@@ -39,9 +39,9 @@ exports.drop = (req, res, next) => {
   const cardId = req.params.id;
 
   return Card.drop(cardId)
-    .then(result => {
-      return Activity.create(userId, result.id, 'cards', 'Deleted')
-        .then(activity => _.assign({}, result, { activity }));
+    .then(card => {
+      return Activity.create(userId, card.id, 'cards', 'Deleted')
+        .then(activity => _.assign({}, { card }, { activity }));
     })
     .then(result => {
       return Trash.findByEntryId(cardId)

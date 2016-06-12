@@ -74,28 +74,32 @@ describe('boards routes', () => {
         .end((err, res) => {
           if (err) { return done(err); }
 
-          const board = res.body.result;
+          const { result } = res.body;
+          const boardId = result.board.id;
 
-          assert.property(board.activity, 'created_at');
-          assert.property(board, 'id');
-          delete board.activity.created_at;
-          assert.deepEqual(_.omit(board, ['id']), {
-            title: 'test board',
-            link: '/boards/' + board.id,
+          assert.property(result.activity, 'created_at');
+          assert.property(result.board, 'id');
+          delete result.activity.created_at;
+          delete result.board.id;
+          assert.deepEqual(result, {
+            board: {
+              title: 'test board',
+              link: '/boards/' + boardId,
+            },
             activity: {
               id: 1,
               type: 'board',
               action: 'Created',
               entry: {
                 title: 'test board',
-                link: '/boards/' + board.id,
+                link: '/boards/' + boardId,
               },
             },
           });
 
           db.one(`
             SELECT EXISTS(SELECT board_id FROM users_boards WHERE board_id = $1)`,
-            [board.id]
+            [boardId]
           )
             .then(result => {
               assert.isTrue(result.exists);
@@ -116,15 +120,18 @@ describe('boards routes', () => {
         .end((err, res) => {
           if (err) { return done(err); }
 
-          const list = res.body.result;
-          const link = '/boards/' + boardId + '/lists/' + list.id;
+          const { result } = res.body;
+          const link = '/boards/' + boardId + '/lists/' + result.list.id;
 
-          assert.property(list, 'activity');
-          delete list.activity.created_at;
-          assert.property(list, 'id');
-          assert.deepEqual(_.omit(list, ['id']), {
-            link,
-            title: 'test list',
+          assert.property(result, 'activity');
+          assert.property(result.list, 'id');
+          delete result.activity.created_at;
+          delete result.list.id;
+          assert.deepEqual(result, {
+            list: {
+              link,
+              title: 'test list',
+            },
             activity: {
               id: 1,
               action: 'Created',
@@ -152,13 +159,15 @@ describe('boards routes', () => {
         .end((err, res) => {
           if (err) { return done(err); }
 
-          const board = res.body.result;
+          const { result } = res.body;
 
-          assert.property(board.activity, 'created_at');
-          delete board.activity.created_at;
-          assert.deepEqual(board, {
-            id: boardId,
-            title: 'new title',
+          assert.property(result.activity, 'created_at');
+          delete result.activity.created_at;
+          assert.deepEqual(result, {
+            board: {
+              id: boardId,
+              title: 'new title',
+            },
             activity: {
               id: 1,
               action: 'Renamed',
@@ -190,7 +199,9 @@ describe('boards routes', () => {
           delete result.activity.created_at;
           delete result.trash.deleted;
           assert.deepEqual(result, {
-            id: boardId,
+            board: {
+              id: boardId,
+            },
             trash: {
               entry_id: boardId,
               entry_table: 'boards',

@@ -21,16 +21,19 @@ describe('lists routes', () => {
         .end((err, res) => {
           if (err) { return done(err); }
 
-          const card = res.body.result;
-          const link = '/boards/' + boardId + '/cards/' + card.id;
+          const { result } = res.body;
+          const link = '/boards/' + boardId + '/cards/' + result.card.id;
 
-          assert.property(card, 'id');
-          assert.property(card.activity, 'created_at');
-          delete card.activity.created_at;
-          assert.deepEqual(_.omit(card, ['id']), {
-            link, 
-            text: 'test card',
-            board_id: boardId,
+          assert.property(result.card, 'id');
+          assert.property(result.activity, 'created_at');
+          delete result.card.id;
+          delete result.activity.created_at;
+          assert.deepEqual(result, {
+            card: {
+              link, 
+              text: 'test card',
+              board_id: boardId,
+            },
             activity: {
               id: 1,
               action: 'Created',
@@ -58,13 +61,15 @@ describe('lists routes', () => {
         .end((err, res) => {
           if (err) { return done(err); }
 
-          const list = res.body.result;
+          const { result } = res.body;
 
-          assert.property(list.activity, 'created_at');
-          delete list.activity.created_at;
-          assert.deepEqual(list, {
-            id: listId,
-            title: 'new title',
+          assert.property(result.activity, 'created_at');
+          delete result.activity.created_at;
+          assert.deepEqual(result, {
+            list: {
+              id: listId,
+              title: 'new title',
+            },
             activity: {
               id: 1,
               action: 'Updated',
@@ -96,7 +101,9 @@ describe('lists routes', () => {
           delete result.activity.created_at;
           delete result.trash.deleted;
           assert.deepEqual(result, {
-            id: listId,
+            list: {
+              id: listId,
+            },
             trash: {
               entry_id: listId,
               entry_table: 'lists',
