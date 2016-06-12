@@ -50,6 +50,14 @@ function trashReducer(state = {
   lastUpdated: undefined,
 }, action) {
   const { payload } = action;
+
+  if (payload && payload.result && payload.result.trashItem) {
+    return {
+      ...state,
+      ids: [...state.ids, payload.result.trashItem],
+    };
+  }
+
   switch (action.type) {
     case types.TRASH_FETCH_REQUEST:
       return {
