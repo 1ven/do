@@ -5,10 +5,10 @@ import Sign from './components/Sign';
 import App from './components/App';
 import IndexPage from './containers/IndexPage';
 import BoardPage from './containers/BoardPage';
+import TrashPage from './containers/TrashPage';
 import SignInPage from './containers/SignInPage';
 import SignUpPage from './containers/SignUpPage';
 import FullCardModal from './containers/FullCardModal';
-import Trash from './components/Trash';
 
 function ensureSignedIn(nextState, replace) {
   if (!cookie.get('authenticated')) {
@@ -41,8 +41,8 @@ export default (
         />
       </Route>
       <Route
-        path="trash"
-        component={Trash}
+        path="trash/:pageIndex"
+        component={TrashPage}
       >
       </Route>
     </Route>

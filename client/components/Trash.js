@@ -1,7 +1,12 @@
 import React, { PropTypes } from 'react';
-import _ from 'lodash';
+import Pagination from './Pagination';
 
-function Trash() {
+function Trash({
+  items,
+  pageIndex,
+  pagesLength,
+  onRestoreClick
+}) {
   return (
     <div className="b-trash">
       <div className="b-container">
@@ -15,13 +20,18 @@ function Trash() {
               </tr>
             </thead>
             <tbody>
-              {_.times(20, () =>
-                <tr>
-                  <td>Test board</td>
-                  <td>Board</td>
-                  <td>20 Jun 2016 15:30</td>
+              {items.map(({ entryId, content, type, date, }, i) =>
+                <tr key={i}>
+                  <td>{content}</td>
+                  <td>{type}</td>
+                  <td>{date}</td>
                   <td>
-                    <a className="b-link">Restore</a>
+                    <a
+                      className="b-link"
+                      onClick={() => onRestoreClick(entryId, type)}
+                    >
+                      Restore
+                    </a>
                   </td>
                 </tr>
               )}
@@ -29,24 +39,29 @@ function Trash() {
           </table>
         </div>
         <div className="b-trash__pagination">
-          <div className="b-pagination">
-            <span className="b-pagination__ctrl b-pagination__ctrl_prev b-pagination__ctrl_inactive">
-              PREV
-            </span>
-            <a className="b-pagination__item">1</a>
-            <a className="b-pagination__item b-pagination__item_active">2</a>
-            <a className="b-pagination__item">3</a>
-            <a className="b-pagination__item">4</a>
-            <span className="b-pagination__item">...</span>
-            <a className="b-pagination__item">10</a>
-            <a className="b-pagination__ctrl b-pagination__ctrl_next">
-              NEXT
-            </a>
-          </div>
+          <Pagination
+            currentIndex={pageIndex}
+            pagesLength={pagesLength}
+            path="/trash"
+          />
         </div>
       </div>
     </div>
   );
 }
+
+Trash.propTypes = {
+  items: PropTypes.arrayOf(
+    PropTypes.shape({
+      entryId: PropTypes.string,
+      type: PropTypes.string,
+      content: PropTypes.string,
+      date: PropTypes.string,
+    })
+  ).isRequired,
+  pageIndex: PropTypes.number.isRequired,
+  pagesLength: PropTypes.number.isRequired,
+  onRestoreClick: PropTypes.func.isRequired,
+};
 
 export default Trash;

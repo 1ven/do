@@ -26,7 +26,7 @@ function Menu() {
         </div>
         <div className="b-menu__item">
           <Link
-            to="/trash"
+            to="/trash/1"
             className="b-menu__item-link"
             activeClassName="b-menu__item-link_active"
             data-title="Trash"
