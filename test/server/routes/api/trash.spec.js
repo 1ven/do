@@ -54,9 +54,11 @@ describe('trash routes', () => {
           assert.isNumber(result.activity.created_at);
           delete result.activity.created_at;
           assert.deepEqual(_.omit(result, ['created_at']), {
-            id: boardId,
-            title: 'test board 1',
-            link: `/boards/${boardId}`,
+            board: {
+              id: boardId,
+              title: 'test board 1',
+              link: `/boards/${boardId}`,
+            },
             activity: {
               id: 1,
               type: 'board',
