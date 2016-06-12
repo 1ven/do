@@ -70,23 +70,12 @@ describe('Trash', () => {
     it('should restore entry and resolve it', () => {
       return db.one(`SELECT id FROM boards LIMIT 1`)
         .then(({ id }) => {
-          return Trash.restore(userId, id, 'boards')
+          return Trash.restore(id, 'boards')
             .then(board => {
-              assert.isNumber(board.activity.created_at);
-              delete board.activity.created_at;
               assert.deepEqual(board, {
                 id: id,
                 title: 'test board',
                 link: '/boards/' + id,
-                activity: {
-                  id: 1,
-                  type: 'board',
-                  action: 'Restored',
-                  entry: {
-                    title: 'test board',
-                    link: '/boards/' + id,
-                  },
-                },
               });
             });
         });

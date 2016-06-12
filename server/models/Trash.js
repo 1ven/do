@@ -1,7 +1,6 @@
 const db = require('../db');
 const _ = require('lodash');
 const inflect = require('i')();
-const Activity = require('./Activity');
 
 const Trash = {
   find(userId, pageIndex) {
@@ -33,11 +32,7 @@ const Trash = {
       });
   },
 
-  restore(userId, entryId, table) {
-    if (!userId || typeof userId !== 'string') {
-      throw new Error('`userId` is not provided or given with wrong type');
-    }
-
+  restore(entryId, table) {
     if (!entryId || typeof entryId !== 'string') {
       throw new Error('`entryId` is not provided or given with wrong type');
     }
@@ -46,15 +41,13 @@ const Trash = {
       throw new Error('`table` is not provided or given with wrong table');
     }
 
+    const contentField = table === 'cards' ? 'text' : 'title';
+
     return db.one(
       `UPDATE $1~ SET deleted = null WHERE id = $2
-      RETURNING id, title, link`,
-      [table, entryId]
-    )
-      .then(entry => {
-        return Activity.create(userId, entryId, table, 'Restored')
-          .then(activity => _.assign({}, entry, { activity }));
-      });
+      RETURNING id, $3~, link`,
+      [table, entryId, contentField]
+    );
   },
 };
 
