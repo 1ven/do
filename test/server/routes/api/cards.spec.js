@@ -60,10 +60,17 @@ describe('cards routes', () => {
           const { result } = res.body;
 
           assert.property(result.activity, 'created_at');
+          assert.property(result.trash, 'deleted');
           delete result.activity.created_at;
+          delete result.trash.deleted;
           assert.deepEqual(result, {
             id: card2Id,
             board_id: boardId,
+            trash: {
+              entry_id: card2Id,
+              entry_table: 'cards',
+              content: 'test card 2',
+            },
             activity: {
               id: 1,
               action: 'Deleted',

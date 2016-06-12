@@ -185,10 +185,17 @@ describe('boards routes', () => {
 
           const { result } = res.body;
 
-          assert.property(result, 'id');
           assert.property(result.activity, 'created_at');
+          assert.property(result.trash, 'deleted');
           delete result.activity.created_at;
-          assert.deepEqual(_.omit(result, ['id']), {
+          delete result.trash.deleted;
+          assert.deepEqual(result, {
+            id: boardId,
+            trash: {
+              entry_id: boardId,
+              entry_table: 'boards',
+              content: 'test board 1',
+            },
             activity: {
               id: 1,
               type: 'board',
