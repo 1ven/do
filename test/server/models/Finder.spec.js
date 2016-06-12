@@ -6,9 +6,7 @@ import Finder from 'server/models/Finder';
 
 describe('Finder', () => {
   beforeEach(() => (
-    recreateTables()
-      .then(() => db.none(sql('views.sql')))
-      .then(setup)
+    recreateTables().then(setup)
   ));
 
   describe('find', () => {
