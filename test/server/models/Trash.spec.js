@@ -12,13 +12,11 @@ const user2Id = shortid.generate();
 const user3Id = shortid.generate();
 
 describe('Trash', () => {
-  beforeEach(() => (
-    recreateTables()
-      .then(() => db.none(sql('views.sql')))
-      .then(setup)
-  ));
-
   describe('find', () => {
+    beforeEach(() => (
+      recreateTables().then(setup)
+    ));
+
     it('should return deleted items array for particular user according provided `pageIndex`', () => {
       return Trash.find(userId, 1)
         .then(result => {
@@ -67,6 +65,10 @@ describe('Trash', () => {
   });
 
   describe('restore', () => {
+    beforeEach(() => (
+      recreateTables().then(setup)
+    ));
+
     it('should restore entry and resolve it', () => {
       return db.one(`SELECT id FROM boards LIMIT 1`)
         .then(({ id }) => {
@@ -76,6 +78,29 @@ describe('Trash', () => {
                 id: id,
                 title: 'test board',
                 link: '/boards/' + id,
+              });
+            });
+        });
+    });
+  });
+
+  describe('findByEntryId', () => {
+    it('should return trash item by given entryId', () => {
+      const boardId = shortid.generate();
+      const now = Math.round(Date.now() / 1000);
+      return db.none(
+        `INSERT INTO boards(id, title, deleted)
+        VALUES ($1, 'test board', $2)`,
+        [boardId, now]
+      )
+        .then(() => {
+          return Trash.findByEntryId(boardId)
+            .then(trashItem => {
+              assert.deepEqual(trashItem, {
+                entry_id: boardId,
+                entry_table: 'boards',
+                content: 'test board',
+                deleted: now,
               });
             });
         });

@@ -32,6 +32,14 @@ const Trash = {
       });
   },
 
+  findByEntryId(entryId) {
+    return db.one(
+      `SELECT entry_id, entry_table, content, deleted
+      FROM trash WHERE entry_id = $1`,
+      [entryId]
+    );
+  },
+
   restore(entryId, table) {
     if (!entryId || typeof entryId !== 'string') {
       throw new Error('`entryId` is not provided or given with wrong type');
