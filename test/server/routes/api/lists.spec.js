@@ -34,6 +34,7 @@ describe('lists routes', () => {
               link, 
               text: 'test card',
               board_id: boardId,
+              list_id: listId,
             },
             activity: {
               id: 1,

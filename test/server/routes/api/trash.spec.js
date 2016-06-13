@@ -6,7 +6,6 @@ import sql from 'server/utils/sql';
 import { recreateTables, authenticate } from '../../helpers';
 
 const boardId = shortid.generate();
-const board2Id = shortid.generate();
 const listId = shortid.generate();
 const now = Math.round(Date.now() / 1000);
 
@@ -26,9 +25,9 @@ describe('trash routes', () => {
 
           assert.deepEqual(res.body.result, {
             trash: [{
-              entry_id: boardId,
-              entry_table: 'boards',
-              content: 'test board 1',
+              entry_id: listId,
+              entry_table: 'lists',
+              content: 'test list',
               deleted: now,
             }],
             pages_length: 1,
@@ -51,7 +50,7 @@ describe('trash routes', () => {
           if (err) { return done(err); }
 
           const { result } = res.body;
-          const link = `/boards/${board2Id}/lists/${listId}`;
+          const link = `/boards/${boardId}/lists/${listId}`;
 
           assert.isNumber(result.activity.created_at);
           delete result.activity.created_at;
@@ -59,7 +58,7 @@ describe('trash routes', () => {
             list: {
               id: listId,
               title: 'test list',
-              board_id: board2Id,
+              board_id: boardId,
               link,
             },
             activity: {
@@ -85,12 +84,12 @@ function setup() {
       .then(({ id }) => {
         return db.none(
           `INSERT INTO boards(id, title, deleted)
-          VALUES ($2, 'test board 1', $4), ($3, 'test board 2', null);
-          INSERT INTO users_boards VALUES ($1, $2), ($1, $3);
+          VALUES ($2, 'test board', null);
+          INSERT INTO users_boards VALUES ($1, $2);
           INSERT INTO lists(id, title, deleted)
-          VALUES ($5, 'test list', $4);
-          INSERT INTO boards_lists VALUES ($3, $5);`,
-          [id, boardId, board2Id, now, listId]
+          VALUES ($3, 'test list', $4);
+          INSERT INTO boards_lists VALUES ($2, $3);`,
+          [id, boardId, listId, now]
         );
       })
       .then(() => request);

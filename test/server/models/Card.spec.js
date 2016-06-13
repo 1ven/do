@@ -30,7 +30,6 @@ describe('Card', () => {
         assert.property(card, 'id');
         assert.deepEqual(_.omit(card, ['id']), {
           text: cardData.text,
-          board_id: boardId,
           link: '/boards/' + boardId + '/cards/' + card.id,
         });
       });
@@ -82,12 +81,11 @@ describe('Card', () => {
         });
     });
 
-    it('should return dropped card id and board id which card belongs', () => {
+    it('should return dropped card id', () => {
       return Card.drop(cardId)
         .then(result => {
           assert.deepEqual(result, {
             id: cardId,
-            board_id: boardId,
           });
         });
     });
