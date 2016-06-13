@@ -8,14 +8,6 @@ import Modal from '../components/Modal';
 import InputBox from '../components/InputBox';
 
 function CreateCardModal({ hideModal, dispatch, listId }) {
-  function handleSuccess(payload) {
-    const cardId = payload.result.card;
-    const { boardId } = payload.entities.cards[cardId];
-    dispatch(addCardId(listId, cardId));
-    dispatch(incCardsLength(boardId));
-    hideModal();
-  }
-
   return (
     <Modal
       title="Create card"
@@ -24,7 +16,7 @@ function CreateCardModal({ hideModal, dispatch, listId }) {
       <FormBox
         request={({ text }) => dispatch(createCard(listId, text))}
         onCancelClick={hideModal}
-        onSuccess={handleSuccess}
+        onSuccess={hideModal}
         rows={[
           <InputBox
             name="text"

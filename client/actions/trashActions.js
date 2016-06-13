@@ -1,5 +1,5 @@
 import { CALL_API } from '../middlewares/api';
-import { TRASH_ARRAY, BOARD, LIST, CARD } from '../schemas';
+import { TRASH_ARRAY, BOARD, LIST, CARD, ACTIVITY } from '../schemas';
 import * as types from '../constants/actionTypes';
 
 export function getTrash(pageIndex) {
@@ -31,13 +31,13 @@ export function restore(entryId, table) {
       ],
       endpoint: `/api/trash/restore/${entryId}`,
       schema: {
-        // TODO: Send this kind of response from server. Instead of sending any entry type in explicitly in result.
         board: BOARD,
         list: LIST,
         card: CARD,
+        activity: ACTIVITY,
       },
       request: {
-        method: 'get',
+        method: 'post',
         body: {
           table,
         },

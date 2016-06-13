@@ -34,12 +34,6 @@ class ListsContainer extends Component {
   handleListRemoveClick(listId) {
     const { dispatch, boardId, lists } = this.props;
     dispatch(removeList(listId))
-    .then(action => {
-      if (!action.payload.error) {
-        dispatch(removeListId(boardId, listId));
-        dispatch(decListsLength(boardId));
-      }
-    });
   }
 
   render() {
