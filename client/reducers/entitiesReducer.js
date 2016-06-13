@@ -22,15 +22,42 @@ function cardsReducer(state = {}, action) {
   }
 }
 
-export default function entities(state = {}, action) {
-  const payload = action.payload;
+function boardsReducer(state = {}, action) {
+  const { payload } = action;
 
-  if (payload && payload.entities) {
-    return merge({}, state, payload.entities);
+  try {
+    var listId = payload.result.list;
+    var list = payload.entities.lists[listId];
+    var board = state[list.boardId];
+  } catch (e) {}
+
+  switch (action.type) {
+    case types.LISTS_CREATE_SUCCESS:
+      return {
+        ...state,
+        [board.id]: {
+          ...board,
+          lists: [...board.lists, listId],
+          listsLength: board.listsLength + 1,
+        },
+      };
+    case types.LISTS_REMOVE_SUCCESS:
+      return {
+        ...state,
+        [board.id]: {
+          ...board,
+          lists: board.lists.filter(id => id !== listId),
+          listsLength: board.listsLength - 1,
+        },
+      };
+    default:
+      return state;
   }
+}
 
+function combine(state = {}, action) {
   return {
-    boards: state.boards || {},
+    boards: boardsReducer(state.boards, action),
     lists: state.lists || {},
     cards: cardsReducer(state.cards, action),
     users: state.users || {},
@@ -38,4 +65,15 @@ export default function entities(state = {}, action) {
     activity: state.activity || {},
     trash: state.trash || {},
   };
+}
+
+export default function entities(state = {}, action) {
+  const payload = action.payload;
+
+  if (payload && payload.entities) {
+    const mergedState = merge({}, state, payload.entities);
+    return combine(mergedState, action);
+  }
+
+  return combine(state, action);
 }
