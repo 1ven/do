@@ -31,6 +31,12 @@ function boardsReducer(state = {}, action) {
     var board = state[list.boardId];
   } catch (e) {}
 
+  try {
+    var cardId = payload.result.card;
+    var card = payload.entities.cards[cardId];
+    var board = state[card.boardId];
+  } catch (e) {}
+
   switch (action.type) {
     case types.LISTS_CREATE_SUCCESS:
       return {
@@ -50,6 +56,53 @@ function boardsReducer(state = {}, action) {
           listsLength: board.listsLength - 1,
         },
       };
+    case types.CARDS_CREATE_SUCCESS:
+      return {
+        ...state,
+        [board.id]: {
+          ...board,
+          cardsLength: board.cardsLength + 1,
+        },
+      };
+    case types.CARDS_REMOVE_SUCCESS:
+      return {
+        ...state,
+        [board.id]: {
+          ...board,
+          cardsLength: board.cardsLength - 1,
+        },
+      };
+    default:
+      return state;
+  }
+}
+
+function listsReducer(state = {}, action) {
+  const { payload } = action;
+
+  try {
+    var cardId = payload.result.card;
+    var card = payload.entities.cards[cardId];
+    var list = state[card.listId];
+  } catch (e) {}
+
+  switch (action.type) {
+    case types.CARDS_CREATE_SUCCESS:
+      return {
+        ...state,
+        [list.id]: {
+          ...list,
+          cards: [...list.cards, cardId],
+        },
+      };
+    case types.CARDS_REMOVE_SUCCESS:
+      return {
+        ...state,
+        [list.id]: {
+          ...list,
+          cards: list.cards.filter(id => id !== cardId),
+        },
+      };
     default:
       return state;
   }
@@ -58,7 +111,7 @@ function boardsReducer(state = {}, action) {
 function combine(state = {}, action) {
   return {
     boards: boardsReducer(state.boards, action),
-    lists: state.lists || {},
+    lists: listsReducer(state.lists, action),
     cards: cardsReducer(state.cards, action),
     users: state.users || {},
     comments: state.comments || {},
