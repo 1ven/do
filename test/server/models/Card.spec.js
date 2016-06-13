@@ -142,6 +142,18 @@ describe('Card', () => {
       return assert.isRejected(promise, /No data returned/);
     });
   });
+  
+  describe('getParentsIds', () => {
+    it('should return parents ids of card', () => {
+      return Card.getParentsIds(cardId)
+        .then(ids => {
+          assert.deepEqual(ids, {
+            board_id: boardId,
+            list_id: listId,
+          });
+        });
+    });
+  });
 });
 
 function setup() {

@@ -68,7 +68,15 @@ const Card = {
       });
   },
 
-  // TODO: implement getBoardId method for using in controller
+  getParentsIds(cardId) {
+    return db.one(
+      `SELECT bl.board_id, lc.list_id FROM cards AS c
+      INNER JOIN lists_cards AS lc ON (lc.card_id = c.id)
+      INNER JOIN boards_lists AS bl ON (bl.list_id = lc.list_id)
+      WHERE c.id = $1`,
+      [cardId]
+    );
+  },
 
   findById(cardId) {
     return db.one(
