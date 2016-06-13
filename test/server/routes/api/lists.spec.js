@@ -117,6 +117,7 @@ describe('lists routes', () => {
           assert.deepEqual(result, {
             list: {
               id: listId,
+              board_id: boardId,
             },
             trash_item: {
               entry_id: listId,

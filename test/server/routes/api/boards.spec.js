@@ -138,6 +138,7 @@ describe('boards routes', () => {
             list: {
               link,
               title: 'test list',
+              board_id: boardId,
             },
             activity: {
               id: 1,
