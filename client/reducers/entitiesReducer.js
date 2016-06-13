@@ -22,55 +22,66 @@ function cardsReducer(state = {}, action) {
   }
 }
 
+function boardReducer(state = {
+  lists: [],
+  listsLength: 0,
+  cardsLength: 0,
+}, action) {
+  const { payload } = action;
+  switch (action.type) {
+    case types.LISTS_CREATE_SUCCESS:
+      return {
+        ...state,
+        lists: [...state.lists, payload.result.list],
+        listsLength: state.listsLength + 1,
+      };
+    case types.LISTS_REMOVE_SUCCESS:
+      return {
+        ...state,
+        lists: state.lists.filter(id => id !== payload.result.list),
+        listsLength: state.listsLength - 1,
+      };
+    case types.CARDS_CREATE_SUCCESS:
+      return {
+        ...state,
+        cardsLength: state.cardsLength + 1,
+      };
+    case types.CARDS_REMOVE_SUCCESS:
+      return {
+        ...state,
+        cardsLength: state.cardsLength - 1,
+      };
+    default:
+      return state;
+  }
+}
+
 function boardsReducer(state = {}, action) {
   const { payload } = action;
 
   try {
-    var listId = payload.result.list;
-    var list = payload.entities.lists[listId];
+    const list = payload.entities.lists[payload.result.list];
     var board = state[list.boardId];
   } catch (e) {}
 
   try {
-    var cardId = payload.result.card;
-    var card = payload.entities.cards[cardId];
+    const card = payload.entities.cards[payload.result.card];
     var board = state[card.boardId];
   } catch (e) {}
 
   switch (action.type) {
     case types.LISTS_CREATE_SUCCESS:
-      return {
-        ...state,
-        [board.id]: {
-          ...board,
-          lists: [...board.lists, listId],
-          listsLength: board.listsLength + 1,
-        },
-      };
     case types.LISTS_REMOVE_SUCCESS:
-      return {
-        ...state,
-        [board.id]: {
-          ...board,
-          lists: board.lists.filter(id => id !== listId),
-          listsLength: board.listsLength - 1,
-        },
-      };
     case types.CARDS_CREATE_SUCCESS:
-      return {
-        ...state,
-        [board.id]: {
-          ...board,
-          cardsLength: board.cardsLength + 1,
-        },
-      };
     case types.CARDS_REMOVE_SUCCESS:
       return {
         ...state,
-        [board.id]: {
-          ...board,
-          cardsLength: board.cardsLength - 1,
-        },
+        [board.id]: boardReducer(board, action),
+      };
+    case types.BOARDS_CREATE_SUCCESS:
+      return {
+        ...state,
+        [payload.result.board]: boardReducer(undefined, action),
       };
     default:
       return state;
@@ -92,7 +103,7 @@ function listsReducer(state = {}, action) {
         ...state,
         [list.id]: {
           ...list,
-          cards: [...list.cards, cardId],
+          cards: [...list.cards || [], cardId],
         },
       };
     case types.CARDS_REMOVE_SUCCESS:
@@ -124,8 +135,9 @@ export default function entities(state = {}, action) {
   const payload = action.payload;
 
   if (payload && payload.entities) {
-    const mergedState = merge({}, state, payload.entities);
-    return combine(mergedState, action);
+    /* const mergedState = merge({}, state, payload.entities); */
+    /* return combine(mergedState, action); */
+    return merge({}, combine(state, action), payload.entities);
   }
 
   return combine(state, action);
