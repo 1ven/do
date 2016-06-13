@@ -7,6 +7,7 @@ import { recreateTables, authenticate } from '../../helpers';
 
 const boardId = shortid.generate();
 const board2Id = shortid.generate();
+const listId = shortid.generate();
 const now = Math.round(Date.now() / 1000);
 
 describe('trash routes', () => {
@@ -41,31 +42,33 @@ describe('trash routes', () => {
   it('POST /api/trash/restore/:entry_id should respond with 200 and return restored entry with corresponding activity', (done) => {
     setup().then(request => {
       request
-        .post(`/api/trash/restore/${boardId}`)
+        .post(`/api/trash/restore/${listId}`)
         .send({
-          table: 'boards',
+          table: 'lists',
         })
         .expect(200)
         .end((err, res) => {
           if (err) { return done(err); }
 
           const { result } = res.body;
+          const link = `/boards/${board2Id}/lists/${listId}`;
 
           assert.isNumber(result.activity.created_at);
           delete result.activity.created_at;
           assert.deepEqual(_.omit(result, ['created_at']), {
-            board: {
-              id: boardId,
-              title: 'test board 1',
-              link: `/boards/${boardId}`,
+            list: {
+              id: listId,
+              title: 'test list',
+              board_id: board2Id,
+              link,
             },
             activity: {
               id: 1,
-              type: 'board',
+              type: 'list',
               action: 'Restored',
               entry: {
-                title: 'test board 1',
-                link: `/boards/${boardId}`,
+                title: 'test list',
+                link,
               },
             },
           });
@@ -83,8 +86,11 @@ function setup() {
         return db.none(
           `INSERT INTO boards(id, title, deleted)
           VALUES ($2, 'test board 1', $4), ($3, 'test board 2', null);
-          INSERT INTO users_boards VALUES ($1, $2), ($1, $3)`,
-          [id, boardId, board2Id, now]
+          INSERT INTO users_boards VALUES ($1, $2), ($1, $3);
+          INSERT INTO lists(id, title, deleted)
+          VALUES ($5, 'test list', $4);
+          INSERT INTO boards_lists VALUES ($3, $5);`,
+          [id, boardId, board2Id, now, listId]
         );
       })
       .then(() => request);
