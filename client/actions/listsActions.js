@@ -2,6 +2,26 @@ import { CALL_API } from '../middlewares/api';
 import { LIST, ACTIVITY, TRASH } from '../schemas';
 import * as types from '../constants/actionTypes';
 
+export function addCardId(listId, cardId) {
+  return {
+    type: types.LISTS_ADD_CARD_ID,
+    payload: {
+      listId,
+      cardId,
+    },
+  };
+};
+
+export function removeCardId(listId, cardId) {
+  return {
+    type: types.LISTS_REMOVE_CARD_ID,
+    payload: {
+      listId,
+      cardId,
+    },
+  };
+};
+
 export function createList(boardId, title) {
   return {
     [CALL_API]: {

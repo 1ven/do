@@ -83,17 +83,6 @@ describe('List', () => {
         });
     });
   });
-  
-  describe('getParentsIds', () => {
-    it('should return parents ids of list', () => {
-      return List.getParentsIds(listId)
-        .then(ids => {
-          assert.deepEqual(ids, {
-            board_id: boardId,
-          });
-        });
-    });
-  });
 });
 
 function setup() {

@@ -16,7 +16,10 @@ const Card = {
         .then(card => {
           return db.one(
             `INSERT INTO lists_cards VALUES ($1, $2);
-            SELECT id, text, link FROM cards WHERE id = $2`,
+            SELECT id, text, link, bl.board_id FROM cards AS c
+            LEFT JOIN lists_cards AS lc ON (lc.card_id = c.id)
+            LEFT JOIN boards_lists AS bl ON (bl.list_id = lc.list_id)
+            WHERE id = $2`,
             [listId, cardId]
           );
         });
@@ -50,20 +53,22 @@ const Card = {
   drop(cardId) {
     const now = Math.round(Date.now() / 1000);
     return db.one(
-      `UPDATE cards SET deleted = $2 WHERE id = $1 RETURNING id`,
-      [cardId, now]
-    );
+      `SELECT id, bl.board_id FROM cards AS c
+      LEFT JOIN lists_cards AS lc ON (lc.card_id = c.id)
+      LEFT JOIN boards_lists AS bl ON (bl.list_id = lc.list_id)
+      WHERE id = $1`,
+      [cardId]
+    )
+      .then(result => {
+        return db.none(
+          `UPDATE cards SET deleted = $2 WHERE id = $1`,
+          [cardId, now]
+        )
+          .then(() => result);
+      });
   },
 
-  getParentsIds(cardId) {
-    return db.one(
-      `SELECT bl.board_id, lc.list_id FROM cards AS c
-      INNER JOIN lists_cards AS lc ON (lc.card_id = c.id)
-      INNER JOIN boards_lists AS bl ON (bl.list_id = lc.list_id)
-      WHERE c.id = $1`,
-      [cardId]
-    );
-  },
+  // TODO: implement getBoardId method for using in controller
 
   findById(cardId) {
     return db.one(

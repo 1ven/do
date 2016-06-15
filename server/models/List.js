@@ -56,15 +56,6 @@ const List = {
       [listId, now]
     );
   },
-
-  getParentsIds(listId) {
-    return db.one(
-      `SELECT bl.board_id FROM lists AS l
-      INNER JOIN boards_lists AS bl ON (bl.list_id = l.id)
-      WHERE l.id = $1`,
-      [listId]
-    );
-  },
 };
 
 module.exports = List;

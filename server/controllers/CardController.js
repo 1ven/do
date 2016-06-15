@@ -11,10 +11,6 @@ exports.create = (req, res, next) => {
 
   return Card.create(listId, cardProps)
     .then(card => {
-      return Card.getParentsIds(card.id)
-        .then(ids => _.assign({}, card, ids));
-    })
-    .then(card => {
       return Activity.create(userId, card.id, 'cards', 'Created')
         .then(activity => _.assign({}, { card }, { activity }));
     })
@@ -55,10 +51,6 @@ exports.drop = (req, res, next) => {
   const cardId = req.params.id;
 
   return Card.drop(cardId)
-    .then(card => {
-      return Card.getParentsIds(cardId)
-        .then(ids => _.assign({}, card, ids));
-    })
     .then(card => {
       return Activity.create(userId, card.id, 'cards', 'Deleted')
         .then(activity => _.assign({}, { card }, { activity }));

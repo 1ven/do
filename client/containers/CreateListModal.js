@@ -7,13 +7,20 @@ import Modal from '../components/Modal';
 import InputBox from '../components/InputBox';
 
 function CreateListModal({ hideModal, dispatch, boardId }) {
+  function handleSuccess(payload) {
+    const listId = payload.result.list;
+    dispatch(addListId(boardId, listId));
+    dispatch(incListsLength(boardId));
+    hideModal();
+  }
+
   return (
     <Modal
       title="Edit list"
       hideModal={hideModal}
     >
       <FormBox
-        onSuccess={hideModal}
+        onSuccess={handleSuccess}
         onCancelClick={hideModal}
         request={({ title }) => dispatch(createList(boardId, title))}
         rows={[

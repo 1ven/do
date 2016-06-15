@@ -30,6 +30,7 @@ describe('Card', () => {
         assert.property(card, 'id');
         assert.deepEqual(_.omit(card, ['id']), {
           text: cardData.text,
+          board_id: boardId,
           link: '/boards/' + boardId + '/cards/' + card.id,
         });
       });
@@ -81,11 +82,12 @@ describe('Card', () => {
         });
     });
 
-    it('should return dropped card id', () => {
+    it('should return dropped card id and board id which card belongs', () => {
       return Card.drop(cardId)
         .then(result => {
           assert.deepEqual(result, {
             id: cardId,
+            board_id: boardId,
           });
         });
     });
@@ -138,18 +140,6 @@ describe('Card', () => {
     it('should not return deleted cards', () => {
       const promise = Card.findById(card3Id);
       return assert.isRejected(promise, /No data returned/);
-    });
-  });
-  
-  describe('getParentsIds', () => {
-    it('should return parents ids of card', () => {
-      return Card.getParentsIds(cardId)
-        .then(ids => {
-          assert.deepEqual(ids, {
-            board_id: boardId,
-            list_id: listId,
-          });
-        });
     });
   });
 });

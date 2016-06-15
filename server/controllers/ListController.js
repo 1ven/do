@@ -11,10 +11,6 @@ exports.create = (req, res, next) => {
 
   return List.create(boardId, listProps)
     .then(list => {
-      return List.getParentsIds(list.id)
-        .then(ids => _.assign({}, list, ids));
-    })
-    .then(list => {
       return Activity.create(userId, list.id, 'lists', 'Created')
       .then(activity => {
         return _.assign({}, { list }, { activity });
@@ -57,10 +53,6 @@ exports.drop = (req, res, next) => {
   const listId = req.params.id;
 
   return List.drop(listId)
-    .then(list => {
-      return List.getParentsIds(listId)
-        .then(ids => _.assign({}, list, ids));
-    })
     .then(list => {
       return Activity.create(userId, listId, 'lists', 'Removed')
         .then(activity => _.assign({}, { list }, { activity }));

@@ -34,7 +34,6 @@ describe('lists routes', () => {
               link, 
               text: 'test card',
               board_id: boardId,
-              list_id: listId,
             },
             activity: {
               id: 1,
@@ -117,7 +116,6 @@ describe('lists routes', () => {
           assert.deepEqual(result, {
             list: {
               id: listId,
-              board_id: boardId,
             },
             trash_item: {
               entry_id: listId,

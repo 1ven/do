@@ -119,3 +119,59 @@ export function toggleStarred(boardId) {
     },
   };
 }
+
+export function addListId(boardId, listId) {
+  return {
+    type: types.BOARDS_ADD_LIST_ID,
+    payload: {
+      boardId,
+      listId,
+    },
+  };
+}
+
+export function removeListId(boardId, listId) {
+  return {
+    type: types.BOARDS_REMOVE_LIST_ID,
+    payload: {
+      boardId,
+      listId,
+    },
+  };
+}
+
+export function incListsLength(boardId) {
+  return {
+    type: types.BOARDS_INC_LISTS_LENGTH,
+    payload: {
+      boardId,
+    },
+  };
+}
+
+export function decListsLength(boardId) {
+  return {
+    type: types.BOARDS_DEC_LISTS_LENGTH,
+    payload: {
+      boardId
+    }
+  };
+}
+
+export function incCardsLength(boardId) {
+  return {
+    type: types.BOARDS_INC_CARDS_LENGTH,
+    payload: {
+      boardId
+    }
+  };
+}
+
+export function decCardsLength(boardId) {
+  return {
+    type: types.BOARDS_DEC_CARDS_LENGTH,
+    payload: {
+      boardId,
+    },
+  };
+}

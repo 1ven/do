@@ -76,7 +76,6 @@ describe('cards routes', () => {
             card: {
               id: card2Id,
               board_id: boardId,
-              list_id: listId,
             },
             trash_item: {
               entry_id: card2Id,

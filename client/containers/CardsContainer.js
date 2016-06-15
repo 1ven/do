@@ -33,7 +33,12 @@ class CardsContainer extends Component {
 
   handleCardRemoveClick(cardId) {
     const { dispatch, listId } = this.props;
-    dispatch(removeCard(cardId));
+    dispatch(removeCard(cardId))
+      .then(action => {
+        if (!action.payload.error) {
+          dispatch(removeCardId(listId, cardId));
+        }
+      });
   }
 
   render() {

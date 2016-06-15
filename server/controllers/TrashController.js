@@ -2,8 +2,6 @@ const _ = require('lodash');
 const inflect = require('i')();
 const Trash = require('../models/Trash');
 const Activity = require('../models/Activity');
-const List = require('../models/List');
-const Card = require('../models/Card');
 
 exports.find = (req, res, next) => {
   const userId = req.user.id;
@@ -22,15 +20,6 @@ exports.restore = (req, res, next) => {
   const type = inflect.singularize(table);
 
   return Trash.restore(entryId, table)
-    .then(entry => {
-      if (table === 'lists' || table === 'cards') {
-        const Model = table === 'lists' ? List : Card;
-        return Model.getParentsIds(entryId)
-          .then(ids => _.assign({}, entry, ids));
-      }
-
-      return entry;
-    })
     .then(entry => {
       return Activity.create(userId, entryId, table, 'Restored')
         .then(activity => _.assign({}, {
