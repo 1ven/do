@@ -112,6 +112,8 @@ describe('cards routes', () => {
 
           const card = res.body.result;
 
+          assert.notEqual(card.colors, 0);
+          assert.property(card, 'colors');
           assert.property(card.comments[0], 'created_at');
           assert.property(card.comments[1], 'created_at');
           assert.property(card.comments[0].user, 'avatar');
@@ -123,7 +125,7 @@ describe('cards routes', () => {
             }), ['created_at']))
           });
 
-          assert.deepEqual(_card, {
+          assert.deepEqual(_.omit(_card, ['colors']), {
             id: cardId,
             text: 'test card 1',
             link: '/boards/' + boardId + '/cards/' + cardId,

@@ -79,6 +79,10 @@ exports.findById = (req, res, next) => {
 
   return Card.findById(cardId)
     .then(card => {
+      return Card.getColors(card.id)
+        .then(colors => _.assign({}, card, { colors }));
+    })
+    .then(card => {
       res.status(200).json({ result: card });
     }, next);
 };
