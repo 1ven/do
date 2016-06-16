@@ -4,6 +4,7 @@ import moment from 'moment';
 import { getTrash, restore } from '../actions/trashActions';
 import Loader from '../components/Loader';
 import Trash from '../components/Trash';
+import TextInfo from '../components/TextInfo';
 
 const inflect = require('i')();
 
@@ -54,11 +55,11 @@ class TrashPage  extends Component {
     const pageIndex = parseInt(this.props.params.pageIndex);
 
     return error ? (
-      <div>Error fetching trash</div>
+      <TextInfo>Error fetching trash</TextInfo>
     ) : isFetching || !lastUpdated ? (
       <Loader />
     ) : isEmpty ? (
-      <div>No result.</div>
+      <TextInfo>No result.</TextInfo>
     ) : (
       <Trash
         items={items}
