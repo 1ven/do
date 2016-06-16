@@ -1,6 +1,7 @@
 import React, { PropTypes, Component } from 'react';
 import EditCardForm from './EditCardForm';
 import Comments from './Comments';
+import Icon from './Icon';
 
 class FullCard extends Component {
   constructor(props) {
@@ -52,7 +53,7 @@ class FullCard extends Component {
                   className="b-card-text__edit"
                   onClick={() => this.showEditForm()}
                 >
-                  Edit text
+                  <Icon name="pencil" />
                 </a>
               </div>
           )}

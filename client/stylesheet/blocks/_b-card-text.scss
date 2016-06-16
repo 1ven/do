@@ -1,9 +1,26 @@
 .b-card-text {
+  position: relative;
   &__text {
     font-size: 14px;
     margin-bottom: 15px;
   }
   &__edit {
     font-size: 12px;
+    width: 16px;
+    position: absolute;
+    top: 2px;
+    right: 0;
+    padding: 2px;
+    border-radius: 1px;
+    background-color: $white;
+    opacity: 0;
+    transition: opacity .2s;
+  }
+  &:hover {
+    .b-card-text {
+      &__edit {
+        opacity: 1;
+      }
+    }
   }
 }
