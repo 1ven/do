@@ -86,3 +86,19 @@ exports.findById = (req, res, next) => {
       res.status(200).json({ result: card });
     }, next);
 };
+
+exports.addColor = (req, res, next) => {
+  const cardId = req.params.id;
+  const colorId = req.body.color_id;
+
+  return Card.addColor(cardId, colorId)
+    .then(() => Card.getColors(cardId))
+    .then((colors) => {
+      res.status(200).json({
+        result: {
+          id: cardId,
+          colors,
+        },
+      });
+    });
+}

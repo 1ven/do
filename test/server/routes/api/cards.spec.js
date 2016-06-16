@@ -181,6 +181,30 @@ describe('cards routes', () => {
         });
     }).catch(done);
   });
+
+  it('POST /api/cards/:id/addColor should add color to card, respond with 200 and return colors array', (done) => {
+    setup().then(request => {
+      request
+        .post(`/api/cards/${cardId}/addColor`)
+        .send({
+          color_id: 2,
+        })
+        .expect(200)
+        .end((err, res) => {
+          if (err) { return done(err); }
+
+          const card = res.body.result;
+
+          assert.notEqual(card.colors.length, 0);
+          assert.lengthOf(card.colors.filter(c => c.active === true), 1);
+          assert.deepEqual(_.omit(card, ['colors']), {
+            id: cardId,
+          });
+
+          done();
+        });
+    }).catch(done);
+  });
 });
 
 function setup() {
