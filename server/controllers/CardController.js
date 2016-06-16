@@ -101,4 +101,20 @@ exports.addColor = (req, res, next) => {
         },
       });
     });
-}
+};
+
+exports.removeColor = (req, res, next) => {
+  const cardId = req.params.id;
+  const colorId = req.body.color_id;
+
+  return Card.removeColor(cardId, colorId)
+    .then(() => Card.getColors(cardId))
+    .then((colors) => {
+      res.status(200).json({
+        result: {
+          id: cardId,
+          colors,
+        },
+      });
+    });
+};

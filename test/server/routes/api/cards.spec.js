@@ -205,6 +205,30 @@ describe('cards routes', () => {
         });
     }).catch(done);
   });
+
+  it('POST /api/cards/:id/removeColor should remove color to card, respond with 200 and return colors array', (done) => {
+    setup().then(request => {
+      request
+        .post(`/api/cards/${card2Id}/removeColor`)
+        .send({
+          color_id: 3,
+        })
+        .expect(200)
+        .end((err, res) => {
+          if (err) { return done(err); }
+
+          const card = res.body.result;
+
+          assert.notEqual(card.colors.length, 0);
+          assert.lengthOf(card.colors.filter(c => c.active === true), 0);
+          assert.deepEqual(_.omit(card, ['colors']), {
+            id: card2Id,
+          });
+
+          done();
+        });
+    }).catch(done);
+  });
 });
 
 function setup() {
@@ -214,16 +238,12 @@ function setup() {
     INSERT INTO boards (id, title) VALUES ($6, 'test board');
     INSERT INTO lists (id, title) VALUES ($7, 'test list');
     INSERT INTO boards_lists VALUES ($6, $7);
-    INSERT INTO cards (id, text) VALUES ($2, 'test card 1');
-    INSERT INTO cards (id, text) VALUES ($3, 'test card 2');
-    INSERT INTO lists_cards VALUES ($7, $2);
-    INSERT INTO lists_cards VALUES ($7, $3);
-    INSERT INTO comments (id, text) VALUES ($4, 'test comment 1');
-    INSERT INTO comments (id, text) VALUES ($5, 'test comment 2');
-    INSERT INTO cards_comments VALUES ($2, $4);
-    INSERT INTO cards_comments VALUES ($2, $5);
-    INSERT INTO users_comments VALUES ($1, $4);
-    INSERT INTO users_comments VALUES ($1, $5);`,
+    INSERT INTO cards (id, text, colors)
+    VALUES ($2, 'test card 1', array[]::integer[]), ($3, 'test card 2', array[3]);
+    INSERT INTO lists_cards VALUES ($7, $2), ($7, $3);
+    INSERT INTO comments (id, text) VALUES ($4, 'test comment 1'), ($5, 'test comment 2');
+    INSERT INTO cards_comments VALUES ($2, $4), ($2, $5);
+    INSERT INTO users_comments VALUES ($1, $4), ($1, $5);`,
     [userId, cardId, card2Id, commentId, comment2Id, boardId, listId]
   )
       .then(authenticate);
