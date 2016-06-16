@@ -84,6 +84,46 @@ export function getCard(id) {
   };
 };
 
+export function addColor(cardId, colorId) {
+  return {
+    [CALL_API]: {
+      types: [
+        types.CARDS_ADD_COLOR_REQUEST,
+        types.CARDS_ADD_COLOR_SUCCESS,
+        types.CARDS_ADD_COLOR_ERROR,
+      ],
+      endpoint: `/api/cards/${cardId}/addColor`,
+      schema: CARD,
+      request: {
+        method: 'post',
+        body: {
+          color_id: colorId,
+        },
+      },
+    },
+  };
+};
+
+export function removeColor(cardId, colorId) {
+  return {
+    [CALL_API]: {
+      types: [
+        types.CARDS_REMOVE_COLOR_REQUEST,
+        types.CARDS_REMOVE_COLOR_SUCCESS,
+        types.CARDS_REMOVE_COLOR_ERROR,
+      ],
+      endpoint: `/api/cards/${cardId}/removeColor`,
+      schema: CARD,
+      request: {
+        method: 'post',
+        body: {
+          color_id: colorId,
+        },
+      },
+    },
+  };
+};
+
 export function addCommentId(cardId, commentId) {
   return {
     type: types.CARDS_ADD_COMMENT_ID,
