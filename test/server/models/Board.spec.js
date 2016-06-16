@@ -97,6 +97,10 @@ describe('Board', () => {
       it('should return board with nested children', () => {
         return Board.findById(boardId)
           .then(board => {
+            const { colors } = board.lists[0].cards[0];
+
+            assert.notEqual(colors.length, 0);
+            delete board.lists[0].cards[0].colors;
             assert.deepEqual(board, {
               id: boardId,
               title: 'test board',

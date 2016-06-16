@@ -68,8 +68,15 @@ const Board = {
         FROM lists AS l
         LEFT JOIN lists_cards AS lc ON (l.id = lc.list_id)
         LEFT JOIN (
-          SELECT id, text, link FROM cards AS c
+          SELECT c.id, c.text, c.link, json_agg(json_build_object(
+            'id', cl.id,
+            'color', cl.color,
+            'active', cl.id = ANY(c.colors)
+          )) AS colors
+          FROM cards AS c
+          CROSS JOIN colors AS cl
           WHERE deleted IS NULL
+          GROUP BY c.id
         ) AS c ON (c.id = lc.card_id)
         WHERE deleted IS NULL
         GROUP BY l.id
