@@ -1,0 +1,14 @@
+.b-card-colors {
+  display: flex;
+  margin: 0 -3px;
+  &__item {
+    width: 18px;
+    height: 18px;
+    border-radius: 2px;
+    margin: 0 3px;
+    cursor: pointer;
+    &_active {
+      transform: scale(1.2);
+    }
+  }
+}
