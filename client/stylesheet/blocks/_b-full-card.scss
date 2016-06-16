@@ -1,5 +1,10 @@
 .b-full-card {
   padding: 10px 21px 20px;
+  &__subtitle {
+    font-size: 12px;
+    display: block;
+    margin-bottom: 7px;
+  }
   &__comments {
     margin-top: 15px;
     padding-top: 15px;

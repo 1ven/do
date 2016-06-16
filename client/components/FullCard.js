@@ -2,6 +2,7 @@ import React, { PropTypes, Component } from 'react';
 import EditCardForm from './EditCardForm';
 import Comments from './Comments';
 import Icon from './Icon';
+import CardColors from './CardColors';
 
 class FullCard extends Component {
   constructor(props) {
@@ -57,6 +58,31 @@ class FullCard extends Component {
                 </a>
               </div>
           )}
+        </div>
+        <div className="b-full-card__colors">
+          <span className="b-full-card__subtitle">
+            Colors:
+          </span>
+          <CardColors
+            colors={[{
+              id: 1,
+              color: '#ddd',
+              active: false,
+            }, {
+              id: 2,
+              color: '#ddd',
+              active: false,
+            }, {
+              id: 3,
+              color: '#ddd',
+              active: true,
+            }, {
+              id: 4,
+              color: '#ddd',
+              active: false,
+            }]}
+            onColorClick={(id, active) => console.log(id, active)}
+          />
         </div>
         <div className="b-full-card__comments">
           <Comments
