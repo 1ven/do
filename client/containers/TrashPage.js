@@ -15,9 +15,23 @@ class TrashPage  extends Component {
   }
 
   componentWillMount() {
-    const { lastUpdated, dispatch } = this.props;
+    const {
+      lastUpdated,
+      dispatch,
+      params: {
+        pageIndex,
+      },
+    } = this.props;
+
     if (!lastUpdated) {
-      dispatch(getTrash(1));
+      dispatch(getTrash(pageIndex));
+    }
+  }
+
+  componentWillReceiveProps(nextProps) {
+    const nextPageIndex = nextProps.params.pageIndex;
+    if (this.props.params.pageIndex !== nextPageIndex) {
+      this.props.dispatch(getTrash(nextPageIndex));
     }
   }
 

@@ -9,15 +9,14 @@ function Pagination({
 }) {
   function renderPage(index) {
     const active = index === currentIndex;
-    return React.createElement(
-      active ? 'span' : 'a',
+    return React.cloneElement(
+      active ? <span /> : <Link to={`${path}/${index}`} />,
       {
         className: `
           b-pagination__item
           ${active ? 'b-pagination__item_active' : ''}
         `,
         key: index,
-        href: `${path}/${index}`,
       },
       index
     );
