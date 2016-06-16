@@ -25,8 +25,11 @@ describe('lists routes', () => {
           const link = '/boards/' + boardId + '/cards/' + result.card.id;
 
           assert.property(result.card, 'id');
+          assert.property(result.card, 'colors');
+          assert.notEqual(result.card.colors, 0);
           assert.property(result.activity, 'created_at');
           delete result.card.id;
+          delete result.card.colors;
           delete result.activity.created_at;
 
           assert.deepEqual(result, {
