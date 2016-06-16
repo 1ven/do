@@ -34,14 +34,16 @@ const Card = {
 
   addColor(cardId, colorId) {
     return db.none(
-      `UPDATE cards SET colors = array_append(colors, $2)`,
+      `UPDATE cards SET colors = array_append(colors, $2)
+      WHERE id = $1`,
       [cardId, colorId]
     );
   },
 
   removeColor(cardId, colorId) {
     return db.none(
-      `UPDATE cards SET colors = array_remove(colors, $2)`,
+      `UPDATE cards SET colors = array_remove(colors, $2)
+      WHERE id = $1`,
       [cardId, colorId]
     );
   },
