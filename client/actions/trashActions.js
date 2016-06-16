@@ -31,13 +31,12 @@ export function restore(entryId, table) {
       ],
       endpoint: `/api/trash/restore/${entryId}`,
       schema: {
-        // TODO: Send this kind of response from server. Instead of sending any entry type in explicitly in result.
         board: BOARD,
         list: LIST,
         card: CARD,
       },
       request: {
-        method: 'get',
+        method: 'post',
         body: {
           table,
         },
