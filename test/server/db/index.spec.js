@@ -274,6 +274,30 @@ describe('tables', () => {
       });
     });
   });
+
+  describe('colors', () => {
+    it('should be created', () => {
+      return selectColumnsInfo('colors')
+        .then(prettyColumnsInfo)
+        .then(columns => {
+          assert.deepEqual(columns, {
+            id: 'integer',
+            color: 'text',
+          });
+        });
+    });
+
+    it('should contain colors entries by default', () => {
+      return db.query(`SELECT id, color FROM colors`)
+        .then(colors => {
+          assert.lengthOf(colors.filter(c => c.color === '#1abc9c'), 1);
+          assert.lengthOf(colors.filter(c => c.color === '#c0392b'), 1);
+          assert.lengthOf(colors.filter(c => c.color === '#2980b9'), 1);
+          assert.lengthOf(colors.filter(c => c.color === '#33cd5f'), 1);
+          assert.lengthOf(colors.filter(c => c.color === '#ffc900'), 1);
+        });
+    });
+  });
 });
 
 function prettyColumnsInfo(data) {

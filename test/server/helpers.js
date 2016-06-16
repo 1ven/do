@@ -14,7 +14,8 @@ export function recreateTables() {
         .then(() => this.query(sql('lists.sql')))
         .then(() => this.query(sql('boards.sql')))
         .then(() => this.query(sql('users.sql')))
-        .then(() => this.query(sql('views.sql')));
+        .then(() => this.query(sql('views.sql')))
+        .then(() => this.query(sql('colors.sql')));
   });
 };
 
