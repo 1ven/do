@@ -6,7 +6,8 @@ CREATE TABLE IF NOT EXISTS cards(
   link text UNIQUE CHECK (
     link ~* '\/boards\/.*\/cards\/.*'
   ),
-  deleted integer DEFAULT null
+  deleted integer DEFAULT null,
+  colors integer[] DEFAULT array[]::integer[]
 );
 
 CREATE TABLE IF NOT EXISTS cards_comments(

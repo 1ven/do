@@ -23,6 +23,15 @@ const Card = {
     });
   },
 
+  getColors(cardId) {
+      return db.query(
+        `SELECT cl.id, color, cl.id = ANY(c.colors) AS active
+        FROM colors AS cl
+        LEFT JOIN cards AS c ON (c.id = $1)`,
+        [cardId]
+      );
+  },
+
   validate(props) {
     return validator.validate(props, {
       text: [{

@@ -221,6 +221,7 @@ describe('tables', () => {
           assert.equal(columns.text, 'text');
           assert.equal(columns.link, 'text');
           assert.equal(columns.deleted, 'integer');
+          assert.equal(columns.colors, 'ARRAY');
         });
     });
   });

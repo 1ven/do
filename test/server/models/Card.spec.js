@@ -140,6 +140,30 @@ describe('Card', () => {
       return assert.isRejected(promise, /No data returned/);
     });
   });
+
+  describe('getColors', () => {
+    it('should return card colors array', () => {
+      return Card.getColors(cardId).then((colors) => {
+        assert.notEqual(colors.length, 0);
+        assert.deepEqual(_.keys(colors[0]), ['id', 'color', 'active']);
+      });
+    });
+
+    it('should return entry with `active` field if card has it color', () => {
+      const cardId = shortid.generate();
+      return db.none(
+        `INSERT INTO cards(id, text, colors)
+        VALUES ($1, 'test card', array[1, 3])`,
+        [cardId]
+      )
+        .then(() => {
+          return Card.getColors(cardId).then(colors => {
+            const active = colors.filter(c => c.active === true);
+            assert.lengthOf(active, 2);
+          });
+        });
+    });
+  });
 });
 
 function setup() {
