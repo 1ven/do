@@ -30,7 +30,6 @@ describe('Card', () => {
         assert.property(card, 'id');
         assert.deepEqual(_.omit(card, ['id']), {
           text: cardData.text,
-          board_id: boardId,
           link: '/boards/' + boardId + '/cards/' + card.id,
         });
       });
@@ -87,7 +86,6 @@ describe('Card', () => {
         .then(result => {
           assert.deepEqual(result, {
             id: cardId,
-            board_id: boardId,
           });
         });
     });

@@ -75,7 +75,6 @@ describe('cards routes', () => {
           assert.deepEqual(result, {
             card: {
               id: card2Id,
-              board_id: boardId,
             },
             trash_item: {
               entry_id: card2Id,

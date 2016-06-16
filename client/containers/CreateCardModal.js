@@ -10,9 +10,8 @@ import InputBox from '../components/InputBox';
 function CreateCardModal({ hideModal, dispatch, listId }) {
   function handleSuccess(payload) {
     const cardId = payload.result.card;
-    const { boardId } = payload.entities.cards[cardId];
     dispatch(addCardId(listId, cardId));
-    dispatch(incCardsLength(boardId));
+    /* dispatch(incCardsLength(boardId)); */
     hideModal();
   }
 
