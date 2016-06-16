@@ -32,6 +32,13 @@ const Card = {
       );
   },
 
+  addColor(cardId, colorId) {
+    return db.none(
+      `UPDATE cards SET colors = array_append(colors, $2)`,
+      [cardId, colorId]
+    );
+  },
+
   validate(props) {
     return validator.validate(props, {
       text: [{

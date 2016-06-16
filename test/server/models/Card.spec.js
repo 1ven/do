@@ -164,6 +164,21 @@ describe('Card', () => {
         });
     });
   });
+
+  describe('addColor', () => {
+    it('should add color id to card', () => {
+      return Card.addColor(cardId, 2)
+        .then(() => {
+          return db.one(
+            `SELECT colors FROM cards WHERE id = $1`,
+            [cardId]
+          );
+        })
+        .then(({ colors }) => {
+          assert.deepEqual(colors, [2]);
+        });
+    });
+  });
 });
 
 function setup() {
