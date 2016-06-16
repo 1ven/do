@@ -1,5 +1,5 @@
 import React, { PropTypes, Component } from 'react';
-import assign from 'lodash/assign';
+import pick from 'lodash/pick';
 import { connect } from 'react-redux';
 import Cards from '../components/Cards';
 import { removeCard } from '../actions/cardsActions';
@@ -73,11 +73,14 @@ function mapStateToProps(state, ownProps) {
   const cardsIds = ownProps.cardsIds || [];
 
   return {
-    cards: cardsIds.map(cardId =>
-      assign({}, cards[cardId], {
-        href: cards[cardId].link,
-      })
-    ),
+    cards: cardsIds.map(cardId => {
+      const card = cards[cardId];
+      const colors = card.colors.filter(c => c.active).map(c => c.color);
+      return {
+        ...pick(card, ['id', 'text', 'link']),
+        colors,
+      };
+    }),
   };
 }
 

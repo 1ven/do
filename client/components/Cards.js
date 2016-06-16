@@ -15,9 +15,8 @@ function Cards({
           className="b-cards__item"
         >
           <Card
-            data={card}
+            {...card}
             onRemoveClick={onCardRemoveClick}
-            href={card.href}
           />
         </div>
       )}

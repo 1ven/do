@@ -10,6 +10,16 @@
   line-height: 1.35;
   cursor: pointer;
   transition: all .2s;
+  &__colors {
+    display: flex;
+    margin: 4px -2px 0;
+  }
+  &__color {
+    width: 30px;
+    height: 6px;
+    border-radius: 2px;
+    margin: 0 2px;
+  }
   &:hover {
     background-color: darken($white, 1)
   }
