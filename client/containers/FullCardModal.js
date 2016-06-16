@@ -2,10 +2,16 @@ import React, { PropTypes, Component } from 'react';
 import { browserHistory } from 'react-router';
 import map from 'lodash/map';
 import { connect } from 'react-redux';
-import { updateCard, getCard, addCommentId } from '../actions/cardsActions';
 import { createComment } from '../actions/commentsActions';
 import FullCard from '../components/FullCard';
 import Modal from '../components/Modal';
+import {
+  updateCard,
+  getCard,
+  addCommentId,
+  addColor,
+  removeColor,
+} from '../actions/cardsActions';
 
 class FullCardModal extends Component {
   componentWillMount() {
@@ -24,6 +30,7 @@ class FullCardModal extends Component {
       card,
       onEditCardFormSubmit,
       onSendCommentSubmit,
+      onColorClick,
     } = this.props;
 
     return card ? (
@@ -35,6 +42,7 @@ class FullCardModal extends Component {
           card={card}
           onEditCardFormSubmit={onEditCardFormSubmit}
           onSendCommentSubmit={onSendCommentSubmit}
+          onColorClick={onColorClick}
         />
       </Modal>
     ) : null;
@@ -77,6 +85,14 @@ function mapDispatchToProps(dispatch, ownProps) {
             dispatch(addCommentId(cardId, action.payload.result));
           }
         });
+    },
+
+    onColorClick(colorId, active) {
+      if (active) {
+        dispatch(addColor(cardId, colorId));
+      } else {
+        dispatch(removeColor(cardId, colorId));
+      }
     },
 
     loadCard() {

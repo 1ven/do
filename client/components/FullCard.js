@@ -34,7 +34,11 @@ class FullCard extends Component {
 
   render() {
     const { isEditing } = this.state;
-    const { card, onSendCommentSubmit } = this.props;
+    const {
+      card,
+      onSendCommentSubmit,
+      onColorClick,
+    } = this.props;
 
     return (
       <div className="b-full-card">
@@ -64,24 +68,8 @@ class FullCard extends Component {
             Colors:
           </span>
           <CardColors
-            colors={[{
-              id: 1,
-              color: '#ddd',
-              active: false,
-            }, {
-              id: 2,
-              color: '#ddd',
-              active: false,
-            }, {
-              id: 3,
-              color: '#ddd',
-              active: true,
-            }, {
-              id: 4,
-              color: '#ddd',
-              active: false,
-            }]}
-            onColorClick={(id, active) => console.log(id, active)}
+            colors={card.colors}
+            onColorClick={onColorClick}
           />
         </div>
         <div className="b-full-card__comments">
@@ -103,6 +91,7 @@ FullCard.propTypes = {
   }),
   onEditCardFormSubmit: PropTypes.func.isRequired,
   onSendCommentSubmit: PropTypes.func.isRequired,
+  onColorClick: PropTypes.func.isRequired,
 };
 
 export default FullCard;
