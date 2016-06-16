@@ -39,6 +39,13 @@ const Card = {
     );
   },
 
+  removeColor(cardId, colorId) {
+    return db.none(
+      `UPDATE cards SET colors = array_remove(colors, $2)`,
+      [cardId, colorId]
+    );
+  },
+
   validate(props) {
     return validator.validate(props, {
       text: [{

@@ -179,6 +179,29 @@ describe('Card', () => {
         });
     });
   });
+
+  describe('removeColor', () => {
+    it('should remove color id from card', () => {
+      const cardId = shortid.generate();
+      return db.none(
+        `INSERT INTO cards(id, text, colors)
+        VALUES ($1, 'test card', array[1, 3])`,
+        [cardId]
+      )
+        .then(() => {
+          return Card.removeColor(cardId, 3);
+        })
+        .then(() => {
+          return db.one(
+            `SELECT colors FROM cards WHERE id = $1`,
+            [cardId]
+          );
+        })
+        .then(({ colors }) => {
+          assert.deepEqual(colors, [1]);
+        });
+    });
+  });
 });
 
 function setup() {
