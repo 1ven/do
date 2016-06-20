@@ -1,34 +1,34 @@
 import * as types from '../../constants/actionTypes';
 
-export default function lists(state = {}, action) {
-  const payload = action.payload;
+function list(state = {}, action) {
+  const { payload } = action;
 
   switch (action.type) {
-    case types.LISTS_ADD_CARD_ID: {
-      // TODO: Remove variables duplicating.
-      const { listId, cardId } = payload;
-      const cards = state[listId].cards || [];
-
+    case types.LISTS_ADD_CARD_ID:
       return {
         ...state,
-        [listId]: {
-          ...state[listId],
-          cards: [...cards, cardId],
-        },
+        cards: [...state.cards, payload.cardId],
       };
-    }
-    case types.LISTS_REMOVE_CARD_ID: {
-      const { listId, cardId } = payload;
-      const cards = state[listId].cards || [];
-
+    case types.LISTS_REMOVE_CARD_ID:
       return {
         ...state,
-        [listId]: {
-          ...state[listId],
-          cards: without(cards, cardId),
-        },
+        cards: without(state.cards, payload.cardId),
       };
-    }
+    default:
+      return state;
+  }
+}
+
+export default function lists(state = {}, action) {
+  const { payload } = action;
+
+  switch (action.type) {
+    case types.LISTS_ADD_CARD_ID:
+    case types.LISTS_REMOVE_CARD_ID:
+      return {
+        ...state,
+        [payload.listId]: list(state[payload.listId], action),
+      };
     default:
       return state;
   }

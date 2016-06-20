@@ -1,21 +1,28 @@
 import * as types from '../../constants/actionTypes';
 
-export default function cards(state = {}, action) {
-  const payload = action.payload;
+function card(state = {}, action) {
+  const { payload } = action;
 
   switch (action.type) {
-    case types.CARDS_ADD_COMMENT_ID: {
-      const { cardId, commentId } = payload;
-      // possible replace with _.union
-      const comments = state[cardId].comments || [];
-
+    case types.CARDS_ADD_COMMENT_ID:
       return {
         ...state,
-        [cardId]: {
-          comments: [...comments, commentId],
-        },
+        comments: [...state.comments, payload.commentId],
       };
-    }
+    default:
+      return state;
+  }
+}
+
+export default function cards(state = {}, action) {
+  const { payload } = action;
+
+  switch (action.type) {
+    case types.CARDS_ADD_COMMENT_ID:
+      return {
+        ...state,
+        [payload.cardId]: card(state[payload.cardId], action),
+      };
     default:
       return state;
   }
