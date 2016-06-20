@@ -26,7 +26,7 @@
     "lodash": "^4.6.1",
     "moment": "^2.13.0",
     "normalize.css": "^4.1.1",
-    "normalizr": "^2.0.1",
+    "normalizr": "github:roaiven/normalizr",
     "passport": "^0.3.2",
     "passport-local": "^1.0.0",
     "pg": "^4.5.5",
