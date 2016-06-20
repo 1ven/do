@@ -1,82 +1,59 @@
 import * as types from '../../constants/actionTypes';
 import without from 'lodash/without';
 
+function board(state = {}, action) {
+  const payload = action.payload;
+
+  switch (action.type) {
+    case types.BOARDS_ADD_LIST_ID:
+      return {
+        ...state,
+        lists: [...state.lists, payload.listId],
+      };
+    case types.BOARDS_REMOVE_LIST_ID:
+      return {
+        ...state,
+        lists: without(state.lists, payload.listId),
+      };
+    case types.BOARDS_INC_LISTS_LENGTH:
+      return {
+        ...state,
+        listsLength: state.listsLength + 1,
+      };
+    case types.BOARDS_DEC_LISTS_LENGTH:
+      return {
+        ...state,
+        listsLength: state.listsLength - 1,
+      };
+    case types.BOARDS_INC_CARDS_LENGTH:
+      return {
+        ...state,
+        cardsLength: state.cardsLength + 1,
+      };
+    case types.BOARDS_DEC_CARDS_LENGTH:
+      return {
+        ...state,
+        cardsLength: state.cardsLength - 1,
+      };
+    default:
+      return state;
+  }
+}
+
 export default function boards(state = {}, action) {
   const payload = action.payload;
 
   switch (action.type) {
-    case types.BOARDS_ADD_LIST_ID: {
-      const { boardId, listId } = payload;
-      const lists = state[boardId].lists || [];
-
+    case types.BOARDS_ADD_LIST_ID:
+    case types.BOARDS_REMOVE_LIST_ID:
+    case types.BOARDS_INC_LISTS_LENGTH:
+    case types.BOARDS_DEC_LISTS_LENGTH:
+    case types.BOARDS_INC_CARDS_LENGTH:
+    case types.BOARDS_DEC_CARDS_LENGTH:
       return {
         ...state,
-        [boardId]: {
-          ...state[boardId],
-          lists: [...lists, listId]
-        },
+        [payload.boardId]: board(state[payload.boardId], action),
       };
-    }
-    case types.BOARDS_REMOVE_LIST_ID: {
-      const { boardId, listId } = payload;
-      const lists = state[boardId].lists || [];
-
-      return {
-        ...state,
-        [boardId]: {
-          ...state[boardId],
-          lists: without(lists, listId)
-        },
-      };
-    }
-    case types.BOARDS_INC_LISTS_LENGTH: {
-      const { boardId } = payload;
-      const board = state[boardId];
-
-      return {
-        ...state,
-        [boardId]: {
-          ...board,
-          listsLength: board.listsLength + 1,
-        },
-      };
-    }
-    case types.BOARDS_DEC_LISTS_LENGTH: {
-      const { boardId } = payload;
-      const board = state[boardId];
-
-      return {
-        ...state,
-        [boardId]: {
-          ...board,
-          listsLength: board.listsLength - 1,
-        },
-      };
-    }
-    case types.BOARDS_INC_CARDS_LENGTH: {
-      const { boardId } = payload;
-      const board = state[boardId];
-
-      return {
-        ...state,
-        [boardId]: {
-          ...board,
-          cardsLength: board.cardsLength + 1,
-        },
-      };
-    }
-    case types.BOARDS_DEC_CARDS_LENGTH: {
-      const { boardId } = payload;
-      const board = state[boardId];
-
-      return {
-        ...state,
-        [boardId]: {
-          ...board,
-          cardsLength: board.cardsLength -1,
-        },
-      };
-    }
     default:
       return state;
   }
