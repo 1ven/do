@@ -151,16 +151,7 @@ IndexPage.propTypes = {
 function mapStateToProps(state) {
   const { boards } = state.entities;
   const { ids, isFetching, lastUpdated } = state.pages.main;
-  const items = ids.map(id => {
-    const board = boards[id];
-    const { cardsLength, listsLength, starred } = board;
-    return {
-      ...board,
-      cardsLength: cardsLength || 0,
-      listsLength: listsLength || 0,
-      starred: starred || false,
-    };
-  });
+  const items = ids.map(id => boards[id]);
 
   return {
     groups: [
