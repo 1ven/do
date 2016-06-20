@@ -9,13 +9,6 @@ export default function trash(state = {
 }, action) {
   const { payload } = action;
 
-  if (payload && payload.result && payload.result.trashItem) {
-    return {
-      ...state,
-      ids: [payload.result.trashItem, ...state.ids],
-    };
-  }
-
   switch (action.type) {
     case types.TRASH_FETCH_REQUEST:
       return {
@@ -36,6 +29,13 @@ export default function trash(state = {
         ...state,
         isFetching: false,
         error: true,
+      };
+    case types.BOARDS_REMOVE_SUCCESS:
+    case types.LISTS_REMOVE_SUCCESS:
+    case types.CARDS_REMOVE_SUCCESS:
+      return {
+        ...state,
+        ids: [payload.result.trashItem, ...state.ids],
       };
     default:
       return state;

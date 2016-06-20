@@ -6,7 +6,7 @@ export default function main(state = {
   isFetching: false,
   lastUpdated: undefined,
 }, action) {
-  const payload = action.payload;
+  const { payload } = action;
 
   switch (action.type) {
     case types.BOARDS_GET_ALL_REQUEST:
