@@ -5,7 +5,7 @@ const defaults = {
   type: 'info',
 };
 
-export default function notificationsReducer(state = [], action) {
+export default function notifications(state = [], action) {
   const notification = action.payload;
 
   switch (action.type) {

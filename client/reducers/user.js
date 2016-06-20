@@ -1,6 +1,6 @@
 import * as types from '../constants/actionTypes';
 
-function userReducer(state = {
+export default function user(state = {
   id: undefined,
   isFetching: false,
   lastUpdated: undefined,
@@ -27,5 +27,3 @@ function userReducer(state = {
       return state;
   }
 }
-
-export default userReducer;

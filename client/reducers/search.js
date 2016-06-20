@@ -1,6 +1,6 @@
 import * as types from '../constants/actionTypes';
 
-function searchReducer(state = {
+export default function search(state = {
   results: [],
 }, action) {
   switch (action.type) {
@@ -12,5 +12,3 @@ function searchReducer(state = {
       return state;
   }
 }
-
-export default searchReducer;

@@ -150,7 +150,7 @@ IndexPage.propTypes = {
 
 function mapStateToProps(state) {
   const { boards } = state.entities;
-  const { ids, isFetching, lastUpdated } = state.pages.index;
+  const { ids, isFetching, lastUpdated } = state.pages.main;
   const items = ids.map(id => {
     const board = boards[id];
     const { cardsLength, listsLength, starred } = board;

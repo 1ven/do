@@ -1,22 +1,20 @@
 import { combineReducers } from 'redux';
-import { routerReducer } from 'react-router-redux';
-import entitiesReducer from './entitiesReducer';
-import pagesReducer from './pagesReducer';
-import editFormReducer from './editFormReducer';
-import notificationsReducer from './notificationsReducer';
-import userReducer from './userReducer';
-import searchReducer from './searchReducer';
-import progressBarReducer from './progressBarReducer';
+import { routerReducer as routing } from 'react-router-redux';
+import entities from './entities';
+import pages from './pages';
+import notifications from './notifications';
+import user from './user';
+import search from './search';
+import progressBar from './progressBar';
 
 const rootReducer = combineReducers({
-  entities: entitiesReducer,
-  routing: routerReducer,
-  pages: pagesReducer,
-  editForm: editFormReducer,
-  notifications: notificationsReducer,
-  user: userReducer,
-  search: searchReducer,
-  progressBar: progressBarReducer,
+  entities,
+  routing,
+  pages,
+  notifications,
+  user,
+  search,
+  progressBar,
 });
 
 export default rootReducer;
