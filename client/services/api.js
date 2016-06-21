@@ -70,4 +70,13 @@ export default {
       method: 'DELETE',
     });
   },
+  updateBoard(id, props) {
+    return callApi(`/api/boards/${id}`, {
+      board: schemas.BOARD,
+      activity: schemas.ACTIVITY,
+    }, {
+      method: 'PUT',
+      body: props,
+    });
+  },
 };

@@ -1,9 +1,9 @@
 import React, { PropTypes } from 'react';
 import { connect } from 'react-redux';
-import { updateBoard } from '../actions/boardsActions';
 import FormBox from '../components/FormBox';
 import Modal from '../components/Modal';
 import InputBox from '../components/InputBox';
+import { updateBoard } from '../actions/boardsActions';
 
 function EditBoardModal({ hideModal, dispatch, board }) {
   return (
@@ -12,7 +12,9 @@ function EditBoardModal({ hideModal, dispatch, board }) {
       hideModal={hideModal}
     >
       <FormBox
-        request={formData => dispatch(updateBoard(board.id, formData))}
+        request={formData => dispatch(
+          updateBoard.request({ id: board.id, props: formData })
+        )}
         onCancelClick={hideModal}
         onSuccess={hideModal}
         rows={[
