@@ -15,12 +15,12 @@ function board(state = {}, action) {
         ...state,
         lists: without(state.lists, payload.listId),
       };
-    case types.BOARDS_INC_LISTS_LENGTH:
+    case types.BOARD_INC_LISTS_LENGTH:
       return {
         ...state,
         listsLength: state.listsLength + 1,
       };
-    case types.BOARDS_DEC_LISTS_LENGTH:
+    case types.BOARD_DEC_LISTS_LENGTH:
       return {
         ...state,
         listsLength: state.listsLength - 1,
@@ -46,8 +46,8 @@ export default function boards(state = {}, action) {
   switch (action.type) {
     case types.BOARD_ADD_LIST_ID:
     case types.BOARD_REMOVE_LIST_ID:
-    case types.BOARDS_INC_LISTS_LENGTH:
-    case types.BOARDS_DEC_LISTS_LENGTH:
+    case types.BOARD_INC_LISTS_LENGTH:
+    case types.BOARD_DEC_LISTS_LENGTH:
     case types.BOARDS_INC_CARDS_LENGTH:
     case types.BOARDS_DEC_CARDS_LENGTH:
       return {

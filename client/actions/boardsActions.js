@@ -50,3 +50,21 @@ export function removeListId(boardId, listId) {
     },
   };
 }
+
+export function incListsLength(boardId) {
+  return {
+    type: types.BOARD_INC_LISTS_LENGTH,
+    payload: {
+      boardId,
+    },
+  };
+}
+
+export function decListsLength(boardId) {
+  return {
+    type: types.BOARD_DEC_LISTS_LENGTH,
+    payload: {
+      boardId
+    }
+  };
+}

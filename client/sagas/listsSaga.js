@@ -3,7 +3,7 @@ import types from '../constants/actionTypes';
 import { takeEvery } from 'redux-saga';
 import { call, put } from 'redux-saga/effects'
 import { createList, removeList } from '../actions/listsActions';
-import { addListId, removeListId } from '../actions/boardsActions';
+import { addListId, removeListId, incListsLength, decListsLength } from '../actions/boardsActions';
 
 function* createListTask(action) {
   const { boardId, title } = action.payload;
@@ -11,6 +11,7 @@ function* createListTask(action) {
     const payload = yield call(api.createList, boardId, title);
     yield put(createList.success(payload));
     yield put(addListId(boardId, payload.result.list));
+    yield put(incListsLength(boardId));
   } catch(err) {
     yield put(createList.failure(err.message));
   }
@@ -22,6 +23,7 @@ function* removeListTask(action) {
     const payload = yield call(api.removeList, listId);
     yield put(removeList.success(payload));
     yield put(removeListId(boardId, listId));
+    yield put(decListsLength(boardId));
   } catch(err) {
     yield put(removeList.failure(err.message));
   }
