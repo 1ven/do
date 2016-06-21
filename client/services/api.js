@@ -50,4 +50,15 @@ export default {
       method: 'GET',
     });
   },
+  createBoard(title) {
+    return callApi('/api/boards', {
+      board: schemas.BOARD,
+      activity: schemas.ACTIVITY,
+    }, {
+      method: 'POST',
+      body: {
+        title,
+      },
+    });
+  },
 };

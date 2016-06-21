@@ -28,11 +28,11 @@ export default function main(state = {
         isFetching: false,
         error: true,
       };
-    /* case types.BOARDS_CREATE_SUCCESS: */
-    /*   return { */
-    /*     ...state, */
-    /*     ids: [...state.ids, payload.result.board], */
-    /*   }; */
+    case types.BOARD_CREATE_SUCCESS:
+      return {
+        ...state,
+        ids: [...state.ids, payload.result.board],
+      };
     /* case types.BOARDS_REMOVE_SUCCESS: */
     /*   return { */
     /*     ...state, */
