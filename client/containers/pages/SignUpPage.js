@@ -1,7 +1,7 @@
 import { connect } from 'react-redux';
 import { browserHistory } from 'react-router';
-import { signUp } from '../actions/signActions';
-import SignUp from '../components/SignUp';
+/* import { signUp } from '../actions/signActions'; */
+import SignUp from '../../components/SignUp';
 
 function mapDispatchToProps(dispatch) {
   return {

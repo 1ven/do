@@ -1,11 +1,11 @@
 import React, { PropTypes, Component } from 'react';
 import { connect } from 'react-redux';
-import { startProgressBar, finishProgressBar } from '../actions/progressBarActions';
-import { getBoard } from '../actions/boardsActions';
-import Board from '../components/Board';
-import Loader from '../components/Loader';
-import CreateListModal from './CreateListModal';
-import EditBoardModal from './EditBoardModal';
+/* import { startProgressBar, finishProgressBar } from '../actions/progressBarActions'; */
+/* import { getBoard } from '../actions/boardsActions'; */
+import Board from '../../components/Board';
+import Loader from '../../components/Loader';
+import CreateListModal from '../modals/CreateListModal';
+import EditBoardModal from '../modals/EditBoardModal';
 
 function loadBoard(props) {
   const { dispatch, params: { boardId } } = props;

@@ -1,10 +1,10 @@
 import React, { PropTypes, Component } from 'react';
 import { connect } from 'react-redux';
 import moment from 'moment';
-import { getTrash, restore } from '../actions/trashActions';
-import Loader from '../components/Loader';
-import Trash from '../components/Trash';
-import TextInfo from '../components/TextInfo';
+/* import { getTrash, restore } from '../actions/trashActions'; */
+import Loader from '../../components/Loader';
+import Trash from '../../components/Trash';
+import TextInfo from '../../components/TextInfo';
 
 const inflect = require('i')();
 

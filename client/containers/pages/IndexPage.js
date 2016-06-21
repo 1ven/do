@@ -4,14 +4,14 @@ import { connect } from 'react-redux';
 /* import { getActivity } from '../actions/activityActions'; */
 /* import { getBoards, removeBoard, updateBoard, toggleStarred } from '../actions/boardsActions'; */
 /* import { startProgressBar, finishProgressBar } from '../actions/progressBarActions'; */
-import BoardsList from '../components/BoardsList.js';
-import Loader from '../components/Loader';
-import BottomBox from '../components/BottomBox';
-import Btn from '../components/Btn';
-import Animation from '../components/Animation';
-import CreateBoardModal from './CreateBoardModal';
-import EditBoardModal from './EditBoardModal';
-import { fetchBoards, removeBoard, updateBoard } from '../actions/boardsActions';
+import BoardsList from '../../components/BoardsList.js';
+import Loader from '../../components/Loader';
+import BottomBox from '../../components/BottomBox';
+import Btn from '../../components/Btn';
+import Animation from '../../components/Animation';
+import CreateBoardModal from '../modals/CreateBoardModal';
+import EditBoardModal from '../modals/EditBoardModal';
+import { fetchBoards, removeBoard, updateBoard } from '../../actions/boardsActions';
 
 class IndexPage extends Component {
   constructor(props) {
