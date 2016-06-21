@@ -91,4 +91,11 @@ export default {
       method: 'GET',
     });
   },
+  fetchTrash(pageIndex) {
+    return callApi(`/api/trash/${pageIndex}`, {
+      trash: schemas.TRASH_ITEM_ARRAY,
+    }, {
+      method: 'GET',
+    });
+  },
 };
