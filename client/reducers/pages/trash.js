@@ -30,7 +30,7 @@ export default function trash(state = {
         isFetching: false,
         error: true,
       };
-    case types.BOARDS_REMOVE_SUCCESS:
+    case types.BOARD_REMOVE_SUCCESS:
     case types.LISTS_REMOVE_SUCCESS:
     case types.CARDS_REMOVE_SUCCESS:
       return {

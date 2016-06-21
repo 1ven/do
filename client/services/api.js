@@ -61,4 +61,13 @@ export default {
       },
     });
   },
+  removeBoard(id) {
+    return callApi(`/api/boards/${id}`, {
+      board: schemas.BOARD,
+      trashItem: schemas.TRASH_ITEM,
+      activity: schemas.ACTIVITY,
+    }, {
+      method: 'DELETE',
+    });
+  },
 };

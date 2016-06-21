@@ -12,3 +12,9 @@ export const createBoard = createActions([
   types.BOARD_CREATE_SUCCESS,
   types.BOARD_CREATE_FAILURE,
 ]);
+
+export const removeBoard = createActions([
+  types.BOARD_REMOVE_REQUEST,
+  types.BOARD_REMOVE_SUCCESS,
+  types.BOARD_REMOVE_FAILURE,
+]);

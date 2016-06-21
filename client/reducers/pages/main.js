@@ -33,11 +33,11 @@ export default function main(state = {
         ...state,
         ids: [...state.ids, payload.result.board],
       };
-    /* case types.BOARDS_REMOVE_SUCCESS: */
-    /*   return { */
-    /*     ...state, */
-    /*     ids: without(state.ids, payload.result.board), */
-    /*   }; */
+    case types.BOARD_REMOVE_SUCCESS:
+      return {
+        ...state,
+        ids: without(state.ids, payload.result.board),
+      };
     default:
       return state;
   }
