@@ -13,7 +13,13 @@ function EditBoardModal({ hideModal, dispatch, board }) {
     >
       <FormBox
         request={formData => dispatch(
-          updateBoard.request({ id: board.id, props: formData })
+          updateBoard.request({
+            id: board.id,
+            props: formData,
+            params: {
+              validate: true,
+            },
+          })
         )}
         onCancelClick={hideModal}
         onSuccess={hideModal}

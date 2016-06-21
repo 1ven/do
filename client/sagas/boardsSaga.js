@@ -36,9 +36,9 @@ function* removeBoardTask(action) {
   }
 }
 
-function* updateBoardTask({ payload: { id, props } }) {
+function* updateBoardTask({ payload: { id, props, params } }) {
   try {
-    const payload = yield call(api.updateBoard, id, props);
+    const payload = yield call(api.updateBoard, id, props, params);
     yield put(updateBoard.success(payload));
   } catch(err) {
     yield put(updateBoard.failure(err.message));

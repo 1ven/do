@@ -1,4 +1,5 @@
 import camelcaseKeysDeep from 'camelcase-keys-deep';
+import qs from 'qs';
 import { normalize } from 'normalizr';
 import { headers } from '../constants/config';
 import 'isomorphic-fetch';
@@ -70,8 +71,9 @@ export default {
       method: 'DELETE',
     });
   },
-  updateBoard(id, props) {
-    return callApi(`/api/boards/${id}`, {
+  updateBoard(id, props, params) {
+    const queryString = params ? qs.stringify(params) : '';
+    return callApi(`/api/boards/${id}?${queryString}`, {
       board: schemas.BOARD,
       activity: schemas.ACTIVITY,
     }, {
