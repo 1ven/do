@@ -81,4 +81,9 @@ export default {
       body: props,
     });
   },
+  fetchActivity() {
+    return callApi('/api/activity', schemas.ACTIVITY_ARRAY, {
+      method: 'GET',
+    });
+  },
 };
