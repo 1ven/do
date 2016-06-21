@@ -3,6 +3,7 @@ import progressBarSaga from './progressBarSaga';
 import activitySaga from './activitySaga';
 import userSaga from './userSaga';
 import trashSaga from './trashSaga';
+import searchSaga from './searchSaga';
 
 export default function* rootSaga() {
   yield [
@@ -11,5 +12,6 @@ export default function* rootSaga() {
     activitySaga(),
     userSaga(),
     trashSaga(),
+    searchSaga(),
   ];
 };

@@ -110,4 +110,12 @@ export default {
       },
     });
   },
+  search(query) {
+    return callApi('/api/search', null, {
+      method: 'POST',
+      body: {
+        query,
+      },
+    });
+  },
 };
