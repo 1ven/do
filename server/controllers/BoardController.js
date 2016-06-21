@@ -47,8 +47,11 @@ exports.update = (req, res, next) => {
   const boardId = req.params.id;
   const props = sanitize(req.body);
   const activityAction = req.query.activityAction;
+  const validate = req.query.validate;
 
-  return Board.update(boardId, props)
+  const promise = validate ? Board.validateAndUpdate(boardId, props) : Board.update(boardId, props);
+
+  return promise
     .then(board => {
       return Activity.create(userId, boardId, 'boards', activityAction || 'Updated')
         .then(activity => _.assign({}, { board }, { activity }));

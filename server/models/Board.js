@@ -11,12 +11,16 @@ const Board = {
     const props = _.keys(_data).map(k => pgp.as.name(k)).join();
     const values = _.values(_data);
 
-    return this.validate(_data).then(() => {
-      return db.one(
-        `UPDATE boards SET ($2^) = ($3:csv) WHERE id = $1 RETURNING id, $2^`,
-        [boardId, props, values]
-      );
-    });
+    return db.one(
+      `UPDATE boards SET ($2^) = ($3:csv) WHERE id = $1 RETURNING id, $2^`,
+      [boardId, props, values]
+    );
+  },
+
+  validateAndUpdate(id, data) {
+    return this.validate(data).then(() =>
+      this.update(id, data)
+    );
   },
 
   drop(boardId) {
