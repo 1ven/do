@@ -2,16 +2,16 @@ import React, { PropTypes, Component } from 'react';
 import { browserHistory } from 'react-router';
 import map from 'lodash/map';
 import { connect } from 'react-redux';
-import { createComment } from '../actions/commentsActions';
-import FullCard from '../components/FullCard';
-import Modal from '../components/Modal';
-import {
-  updateCard,
-  getCard,
-  addCommentId,
-  addColor,
-  removeColor,
-} from '../actions/cardsActions';
+/* import { createComment } from '../actions/commentsActions'; */
+import FullCard from '../../components/FullCard';
+import Modal from '../../components/Modal';
+/* import { */
+/*   updateCard, */
+/*   getCard, */
+/*   addCommentId, */
+/*   addColor, */
+/*   removeColor, */
+/* } from '../actions/cardsActions'; */
 
 class FullCardModal extends Component {
   componentWillMount() {

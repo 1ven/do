@@ -1,9 +1,9 @@
 import React, { PropTypes } from 'react';
 import { connect } from 'react-redux';
-import { createBoard } from '../actions/boardsActions';
-import FormBox from '../components/FormBox';
-import Modal from '../components/Modal';
-import InputBox from '../components/InputBox';
+import { createBoard } from '../../actions/boardsActions';
+import FormBox from '../../components/FormBox';
+import Modal from '../../components/Modal';
+import InputBox from '../../components/InputBox';
 
 function CreateBoardModal({ hideModal, dispatch }) {
   return (
@@ -14,7 +14,9 @@ function CreateBoardModal({ hideModal, dispatch }) {
       <FormBox
         onSuccess={hideModal}
         onCancelClick={hideModal}
-        request={({ title }) => dispatch(createBoard(title))}
+        request={({ title }) => dispatch(
+          createBoard.request({ title })
+        )}
         rows={[
           <InputBox
             title="Title"

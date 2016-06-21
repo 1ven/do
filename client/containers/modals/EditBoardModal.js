@@ -1,9 +1,9 @@
 import React, { PropTypes } from 'react';
 import { connect } from 'react-redux';
-import FormBox from '../components/FormBox';
-import Modal from '../components/Modal';
-import InputBox from '../components/InputBox';
-import { updateBoard } from '../actions/boardsActions';
+import FormBox from '../../components/FormBox';
+import Modal from '../../components/Modal';
+import InputBox from '../../components/InputBox';
+import { updateBoard } from '../../actions/boardsActions';
 
 function EditBoardModal({ hideModal, dispatch, board }) {
   return (

@@ -1,11 +1,11 @@
 import React, { PropTypes } from 'react';
 import { connect } from 'react-redux';
-import { addCardId } from '../actions/listsActions';
-import { createCard } from '../actions/cardsActions';
-import { incCardsLength } from '../actions/boardsActions';
-import FormBox from '../components/FormBox';
-import Modal from '../components/Modal';
-import InputBox from '../components/InputBox';
+/* import { addCardId } from '../actions/listsActions'; */
+/* import { createCard } from '../actions/cardsActions'; */
+/* import { incCardsLength } from '../actions/boardsActions'; */
+import FormBox from '../../components/FormBox';
+import Modal from '../../components/Modal';
+import InputBox from '../../components/InputBox';
 
 function CreateCardModal({ hideModal, dispatch, listId }) {
   function handleSuccess(payload) {

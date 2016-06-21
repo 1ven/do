@@ -1,10 +1,10 @@
 import React, { PropTypes } from 'react';
 import { connect } from 'react-redux';
-import { createList } from '../actions/listsActions';
-import { addListId, incListsLength } from '../actions/boardsActions';
-import FormBox from '../components/FormBox';
-import Modal from '../components/Modal';
-import InputBox from '../components/InputBox';
+/* import { createList } from '../actions/listsActions'; */
+/* import { addListId, incListsLength } from '../actions/boardsActions'; */
+import FormBox from '../../components/FormBox';
+import Modal from '../../components/Modal';
+import InputBox from '../../components/InputBox';
 
 function CreateListModal({ hideModal, dispatch, boardId }) {
   function handleSuccess(payload) {
