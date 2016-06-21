@@ -86,4 +86,9 @@ export default {
       method: 'GET',
     });
   },
+  fetchUser() {
+    return callApi('/api/user', schemas.USER, {
+      method: 'GET',
+    });
+  },
 };
