@@ -1,5 +1,5 @@
 import React, { PropTypes } from 'react';
-import addModifiers from '../utils/addModifiers';
+import { addModifiers } from '../utils';
 import assign from 'lodash/assign';
 
 function Btn({
