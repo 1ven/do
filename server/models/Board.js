@@ -6,7 +6,9 @@ const validator = require('../utils/validator');
 
 const Board = {
   update(boardId, data) {
-    const _data = _.pick(data, ['title']);
+    console.log(data);
+    const _data = _.pick(data, ['title', 'starred']);
+    console.log(_data);
 
     const props = _.keys(_data).map(k => pgp.as.name(k)).join();
     const values = _.values(_data);
