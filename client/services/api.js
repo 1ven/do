@@ -106,6 +106,15 @@ export default {
       method: 'DELETE',
     })
   },
+  updateList(id, props) {
+    return callApi(`/api/lists/${id}`, {
+      list: schemas.LIST,
+      activity: schemas.ACTIVITY,
+    }, {
+      method: 'PUT',
+      body: props,
+    });
+  },
   fetchActivity() {
     return callApi('/api/activity', schemas.ACTIVITY_ARRAY, {
       method: 'GET',

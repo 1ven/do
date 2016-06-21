@@ -12,3 +12,9 @@ export const removeList = createActions([
   types.LIST_REMOVE_SUCCESS,
   types.LIST_REMOVE_FAILURE,
 ]);
+
+export const updateList = createActions([
+  types.LIST_UPDATE_REQUEST,
+  types.LIST_UPDATE_SUCCESS,
+  types.LIST_UPDATE_FAILURE,
+]);

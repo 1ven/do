@@ -2,7 +2,7 @@ import api from '../services/api';
 import types from '../constants/actionTypes';
 import { takeEvery } from 'redux-saga';
 import { call, put } from 'redux-saga/effects'
-import { createList, removeList } from '../actions/listsActions';
+import { createList, removeList, updateList } from '../actions/listsActions';
 import { addListId, removeListId, incListsLength, decListsLength } from '../actions/boardsActions';
 
 function* createListTask(action) {
@@ -29,6 +29,16 @@ function* removeListTask(action) {
   }
 }
 
+function* updateListTask(action) {
+  try {
+    const { id, props } = action.payload;
+    const payload = yield call(api.updateList, id, props);
+    yield put(updateList.success(payload));
+  } catch(err) {
+    yield put(updateList.failure(err.message));
+  }
+}
+
 function* watchCreateList() {
   yield* takeEvery(types.LIST_CREATE_REQUEST, createListTask);
 }
@@ -37,9 +47,14 @@ function* watchRemoveList() {
   yield* takeEvery(types.LIST_REMOVE_REQUEST, removeListTask);
 }
 
+function* watchUpdateList() {
+  yield* takeEvery(types.LIST_UPDATE_REQUEST, updateListTask);
+}
+
 export default function* listsSaga() {
   yield [
     watchCreateList(),
     watchRemoveList(),
+    watchUpdateList(),
   ];
 }
