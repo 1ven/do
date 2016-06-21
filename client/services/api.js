@@ -98,4 +98,16 @@ export default {
       method: 'GET',
     });
   },
+  restoreEntry(entryId, table) {
+    return callApi(`/api/trash/restore/${entryId}`, {
+      board: schemas.BOARD,
+      list: schemas.LIST,
+      card: schemas.CARD,
+    }, {
+      method: 'POST',
+      body: {
+        table,
+      },
+    });
+  },
 };
