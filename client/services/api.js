@@ -97,6 +97,15 @@ export default {
       },
     });
   },
+  removeList(id) {
+    return callApi(`/api/lists/${id}`, {
+        list: schemas.LIST,
+        activity: schemas.ACTIVITY,
+        trashItem: schemas.TRASH_ITEM,
+    }, {
+      method: 'DELETE',
+    })
+  },
   fetchActivity() {
     return callApi('/api/activity', schemas.ACTIVITY_ARRAY, {
       method: 'GET',

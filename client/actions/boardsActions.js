@@ -41,3 +41,12 @@ export function addListId(boardId, listId) {
   };
 }
 
+export function removeListId(boardId, listId) {
+  return {
+    type: types.BOARD_REMOVE_LIST_ID,
+    payload: {
+      boardId,
+      listId,
+    },
+  };
+}
