@@ -1,11 +1,11 @@
-import * as types from '../../constants/actionTypes';
+import types from '../../constants/actionTypes';
 import without from 'lodash/without';
 
 function board(state = {}, action) {
   const payload = action.payload;
 
   switch (action.type) {
-    case types.BOARDS_ADD_LIST_ID:
+    case types.BOARD_ADD_LIST_ID:
       return {
         ...state,
         lists: [...state.lists, payload.listId],
@@ -44,7 +44,7 @@ export default function boards(state = {}, action) {
   const payload = action.payload;
 
   switch (action.type) {
-    case types.BOARDS_ADD_LIST_ID:
+    case types.BOARD_ADD_LIST_ID:
     case types.BOARDS_REMOVE_LIST_ID:
     case types.BOARDS_INC_LISTS_LENGTH:
     case types.BOARDS_DEC_LISTS_LENGTH:

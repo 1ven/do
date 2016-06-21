@@ -30,3 +30,14 @@ export const updateBoard = createActions([
   types.BOARD_UPDATE_SUCCESS,
   types.BOARD_UPDATE_FAILURE,
 ]);
+
+export function addListId(boardId, listId) {
+  return {
+    type: types.BOARD_ADD_LIST_ID,
+    payload: {
+      boardId,
+      listId,
+    },
+  };
+}
+

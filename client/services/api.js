@@ -86,6 +86,17 @@ export default {
       body: props,
     });
   },
+  createList(boardId, title) {
+    return callApi(`/api/boards/${boardId}/lists`, {
+      list: schemas.LIST,
+      activity: schemas.ACTIVITY,
+    }, {
+      method: 'POST',
+      body: {
+        title,
+      },
+    });
+  },
   fetchActivity() {
     return callApi('/api/activity', schemas.ACTIVITY_ARRAY, {
       method: 'GET',

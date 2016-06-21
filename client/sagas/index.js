@@ -4,6 +4,7 @@ import activitySaga from './activitySaga';
 import userSaga from './userSaga';
 import trashSaga from './trashSaga';
 import searchSaga from './searchSaga';
+import listsSaga from './listsSaga';
 
 export default function* rootSaga() {
   yield [
@@ -13,5 +14,6 @@ export default function* rootSaga() {
     userSaga(),
     trashSaga(),
     searchSaga(),
+    listsSaga(),
   ];
 };
