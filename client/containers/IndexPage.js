@@ -11,7 +11,7 @@ import Btn from '../components/Btn';
 import Animation from '../components/Animation';
 import CreateBoardModal from './CreateBoardModal';
 import EditBoardModal from './EditBoardModal';
-import { fetchBoards, removeBoard } from '../actions/boardsActions';
+import { fetchBoards, removeBoard, updateBoard } from '../actions/boardsActions';
 
 class IndexPage extends Component {
   constructor(props) {
@@ -57,9 +57,9 @@ class IndexPage extends Component {
     this.props.dispatch(removeBoard.request({ id }));
   }
 
-  handleBoardTileToggleStarredClick(boardId, starred) {
+  handleBoardTileToggleStarredClick(id, starred) {
     this.props.dispatch(
-      toggleStarred(boardId)
+      updateBoard.request({ id, props: { starred: !starred } })
     );
   }
 
