@@ -6,6 +6,7 @@ import notifications from './notifications';
 import user from './user';
 import search from './search';
 import progressBar from './progressBar';
+import activity from './activity';
 
 const rootReducer = combineReducers({
   entities,
@@ -15,6 +16,7 @@ const rootReducer = combineReducers({
   user,
   search,
   progressBar,
+  activity,
 });
 
 export default rootReducer;
