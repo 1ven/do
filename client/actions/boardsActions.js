@@ -7,6 +7,12 @@ export const fetchBoards = createActions([
   types.BOARDS_FETCH_FAILURE,
 ]);
 
+export const fetchBoard = createActions([
+  types.BOARD_FETCH_REQUEST,
+  types.BOARD_FETCH_SUCCESS,
+  types.BOARD_FETCH_FAILURE,
+]);
+
 export const createBoard = createActions([
   types.BOARD_CREATE_REQUEST,
   types.BOARD_CREATE_SUCCESS,

@@ -1,17 +1,17 @@
-import * as types from '../../constants/actionTypes';
+import types from '../../constants/actionTypes';
 
 export default function board(state = {}, action) {
   const { payload } = action;
 
   switch (action.type) {
-    case types.BOARDS_GET_REQUEST:
+    case types.BOARD_FETCH_REQUEST:
       return {
         ...state,
         [payload.id]: {
           isFetching: true,
         },
       };
-    case types.BOARDS_GET_SUCCESS:
+    case types.BOARD_FETCH_SUCCESS:
       return {
         ...state,
         [payload.result]: {
@@ -19,7 +19,7 @@ export default function board(state = {}, action) {
           lastUpdated: payload.receivedAt,
         },
       };
-    case types.BOARDS_GET_ERROR:
+    case types.BOARD_FETCH_ERROR:
       return {
         ...state,
         [payload.result]: {

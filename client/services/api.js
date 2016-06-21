@@ -51,6 +51,11 @@ export default {
       method: 'GET',
     });
   },
+  fetchBoard(id) {
+    return callApi(`/api/boards/${id}`, schemas.BOARD, {
+      method: 'GET',
+    });
+  },
   createBoard(title) {
     return callApi('/api/boards', {
       board: schemas.BOARD,
