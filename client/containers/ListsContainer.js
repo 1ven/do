@@ -39,13 +39,14 @@ class ListsContainer extends Component {
 
   render() {
     const { modal } = this.state;
-    const { lists } = this.props;
+    const { lists, boardId } = this.props;
     return (
       <div>
         <Lists
           onListRemoveClick={this.handleListRemoveClick}
           onListEditClick={this.handleEditListClick}
           lists={lists}
+          boardId={boardId}
         />
         {modal && modal.name === 'editList' ? (
           <EditListModal

@@ -5,10 +5,6 @@ import { fetchActivity } from '../actions/activityActions';
 import App from '../components/App';
 
 class AppContainer extends Component {
-  /* constructor(props) { */
-  /*   super(props); */
-  /* } */
-
   componentWillMount() {
     this.props.dispatch(fetchUser.request());
     this.props.dispatch(fetchActivity.request());

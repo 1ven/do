@@ -1,6 +1,5 @@
 import React, { PropTypes } from 'react';
 import { connect } from 'react-redux';
-/* import { addListId, incListsLength } from '../actions/boardsActions'; */
 import FormBox from '../../components/FormBox';
 import Modal from '../../components/Modal';
 import InputBox from '../../components/InputBox';

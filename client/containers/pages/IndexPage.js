@@ -1,9 +1,6 @@
 import React, { PropTypes, Component } from 'react';
 import cookie from 'js-cookie';
 import { connect } from 'react-redux';
-/* import { getActivity } from '../actions/activityActions'; */
-/* import { getBoards, removeBoard, updateBoard, toggleStarred } from '../actions/boardsActions'; */
-/* import { startProgressBar, finishProgressBar } from '../actions/progressBarActions'; */
 import BoardsList from '../../components/BoardsList.js';
 import Loader from '../../components/Loader';
 import BottomBox from '../../components/BottomBox';

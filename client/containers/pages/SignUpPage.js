@@ -1,24 +1,18 @@
 import { connect } from 'react-redux';
-import { browserHistory } from 'react-router';
-/* import { signUp } from '../actions/signActions'; */
 import SignUp from '../../components/SignUp';
+import { signUp } from '../../actions/signActions';
 
 function mapDispatchToProps(dispatch) {
   return {
     onSubmit(formData) {
-      dispatch(signUp(formData))
-      .then(action => {
-        if (!action.payload.error) {
-          browserHistory.push('/');
-        }
-      });
+      dispatch(signUp.request({ formData }))
     },
   };
 }
 
 function mapStateToProps(state) {
   return {
-    errors: state.pages.signUp,
+    errors: state.pages.signUp.errors,
   };
 }
 

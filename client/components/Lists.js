@@ -4,6 +4,7 @@ import Masonry from 'react-masonry-component';
 
 function Lists({
   lists = [],
+  boardId,
   onListRemoveClick,
   onListEditClick,
 }) {
@@ -16,6 +17,7 @@ function Lists({
         >
           <List
             data={list}
+            boardId={boardId}
             onRemoveClick={onListRemoveClick}
             onEditClick={onListEditClick}
           />
@@ -27,6 +29,7 @@ function Lists({
 
 Lists.propTypes = {
   lists: PropTypes.array,
+  boardId: PropTypes.string.isRequired,
   onListRemoveClick: PropTypes.func.isRequired,
   onListEditClick: PropTypes.func.isRequired,
 };

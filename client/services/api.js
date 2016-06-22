@@ -210,4 +210,21 @@ export default {
       },
     });
   },
+  signIn(formData) {
+    return callApi('/auth/sign-in/local', null, {
+      method: 'POST',
+      body: formData,
+    });
+  },
+  signUp(formData) {
+    return callApi('/sign-up', null, {
+      method: 'POST',
+      body: formData,
+    });
+  },
+  signOut() {
+    return callApi('/auth/sign-out', null, {
+      method: 'POST',
+    });
+  },
 };
