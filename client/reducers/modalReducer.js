@@ -5,7 +5,7 @@ const INITIAL_STATE = {
   data: null,
 };
 
-export default function activeModal(state = INITIAL_STATE, action) {
+export default function modal(state = INITIAL_STATE, action) {
   switch (action.type) {
     case types.MODAL_SHOW:
       return {
