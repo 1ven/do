@@ -6,7 +6,6 @@ import { fetchBoards, fetchBoard, createBoard, removeBoard, updateBoard } from '
 import { startProgressBar, stopProgressBar } from '../actions/progressBarActions';
 
 function* fetchBoardsTask() {
-  // TODO: implement caching
   try {
     yield put(startProgressBar());
     const payload = yield call(api.fetchBoards);
