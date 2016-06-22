@@ -1,11 +1,19 @@
 import types from '../constants/actionTypes';
 
-export default function activeModal(state = null, action) {
+const INITIAL_STATE = {
+  name: null,
+  data: null,
+};
+
+export default function activeModal(state = INITIAL_STATE, action) {
   switch (action.type) {
     case types.MODAL_SHOW:
-      return action.payload.name;
+      return {
+        name: action.payload.name,
+        data: action.payload.data,
+      };
     case types.MODAL_HIDE:
-      return null;
+      return INITIAL_STATE;
     default:
       return state;
   }
