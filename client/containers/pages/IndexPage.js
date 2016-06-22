@@ -1,16 +1,14 @@
 import React, { PropTypes, Component } from 'react';
 import cookie from 'js-cookie';
 import { connect } from 'react-redux';
-import { getActivity } from '../actions/activityActions';
-import { getBoards, removeBoard, updateBoard, toggleStarred } from '../actions/boardsActions';
-import { startProgressBar, finishProgressBar } from '../actions/progressBarActions';
-import BoardsList from '../components/BoardsList.js';
-import Loader from '../components/Loader';
-import BottomBox from '../components/BottomBox';
-import Btn from '../components/Btn';
-import Animation from '../components/Animation';
-import CreateBoardModal from './CreateBoardModal';
-import EditBoardModal from './EditBoardModal';
+import BoardsList from '../../components/BoardsList.js';
+import Loader from '../../components/Loader';
+import BottomBox from '../../components/BottomBox';
+import Btn from '../../components/Btn';
+import Animation from '../../components/Animation';
+import CreateBoardModal from '../modals/CreateBoardModal';
+import EditBoardModal from '../modals/EditBoardModal';
+import { fetchBoards, removeBoard, updateBoard } from '../../actions/boardsActions';
 
 class IndexPage extends Component {
   constructor(props) {
@@ -28,15 +26,7 @@ class IndexPage extends Component {
   }
 
   componentWillMount() {
-    const { lastUpdated, dispatch } = this.props;
-    if (!lastUpdated) {
-      dispatch(startProgressBar());
-      dispatch(getBoards())
-        .then(() => {
-          dispatch(finishProgressBar());
-        });
-      dispatch(getActivity());
-    }
+    this.props.dispatch(fetchBoards.request());
   }
 
   shouldComponentUpdate(nextProps) {
@@ -60,15 +50,13 @@ class IndexPage extends Component {
     });
   }
 
-  handleBoardTileRemoveClick(boardId) {
-    const { dispatch, groups } = this.props;
-    const boards = groups.reduce((acc, g) => [...acc, ...g.boards ], []);
-    dispatch(removeBoard(boardId));
+  handleBoardTileRemoveClick(id) {
+    this.props.dispatch(removeBoard.request({ id }));
   }
 
-  handleBoardTileToggleStarredClick(boardId, starred) {
+  handleBoardTileToggleStarredClick(id, starred) {
     this.props.dispatch(
-      toggleStarred(boardId)
+      updateBoard.request({ id, props: { starred: !starred } })
     );
   }
 
@@ -92,6 +80,7 @@ class IndexPage extends Component {
       groups,
       isFetching,
       lastUpdated,
+      error,
     } = this.props;
     const { modal } = this.state;
 
@@ -106,18 +95,20 @@ class IndexPage extends Component {
 
     return (
       <div>
-        {isFetching || !lastUpdated ? (
+        {error ? (
+          <div>Error loading boards.</div>
+        ) : isEmpty ? (
+          <div>No result.</div>
+        ) : isFetching || !lastUpdated ? (
           <Loader />
-          ) : isEmpty ? (
-            <div>No result.</div>
-          ) : (
-            <BoardsList
-              groups={groups}
-              onBoardTileRemoveClick={this.handleBoardTileRemoveClick}
-              onBoardTileEditClick={this.handleBoardTileEditClick}
-              onBoardTileToggleStarredClick={this.handleBoardTileToggleStarredClick}
-              onGroupTitleClick={this.handleGroupTitleClick}
-            />
+        ) : (
+          <BoardsList
+            groups={groups}
+            onBoardTileRemoveClick={this.handleBoardTileRemoveClick}
+            onBoardTileEditClick={this.handleBoardTileEditClick}
+            onBoardTileToggleStarredClick={this.handleBoardTileToggleStarredClick}
+            onGroupTitleClick={this.handleGroupTitleClick}
+          />
         )}
         <BottomBox
           button={addBoardBtn}
@@ -146,11 +137,12 @@ IndexPage.propTypes = {
   dispatch: PropTypes.func.isRequired,
   isFetching: PropTypes.bool.isRequired,
   lastUpdated: PropTypes.number,
+  error: PropTypes.bool,
 };
 
 function mapStateToProps(state) {
   const { boards } = state.entities;
-  const { ids, isFetching, lastUpdated } = state.pages.main;
+  const { ids, isFetching, lastUpdated, error } = state.pages.main;
   const items = ids.map(id => boards[id]);
 
   return {
@@ -160,6 +152,7 @@ function mapStateToProps(state) {
     ],
     isFetching,
     lastUpdated,
+    error,
   };
 }
 

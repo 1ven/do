@@ -22,7 +22,7 @@ function Comments({ comments, onSendCommentSubmit }) {
                   {comment.user.username}
                 </span>
                 <time className="b-comment__date">
-                  {moment.unix(comment.created_at).format('H:m - DD MMM Y')}
+                  {moment.unix(comment.createdAt).format('H:m - DD MMM Y')}
                 </time>
               </div>
               <p className="b-comment__text">
@@ -51,7 +51,7 @@ Comments.propTypes = {
       username: PropTypes.string.isRequired,
       avatar: PropTypes.string.isRequired,
     }),
-    created_at: PropTypes.number.isRequired,
+    createdAt: PropTypes.number.isRequired,
     text: PropTypes.string.isRequired,
   })),
   onSendCommentSubmit: PropTypes.func.isRequired,

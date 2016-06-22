@@ -1,4 +1,4 @@
-import * as types from '../../constants/actionTypes';
+import types from '../../constants/actionTypes';
 
 export default function trash(state = {
   ids: [],
@@ -30,9 +30,9 @@ export default function trash(state = {
         isFetching: false,
         error: true,
       };
-    case types.BOARDS_REMOVE_SUCCESS:
-    case types.LISTS_REMOVE_SUCCESS:
-    case types.CARDS_REMOVE_SUCCESS:
+    case types.BOARD_REMOVE_SUCCESS:
+    case types.LIST_REMOVE_SUCCESS:
+    case types.CARD_REMOVE_SUCCESS:
       return {
         ...state,
         ids: [payload.result.trashItem, ...state.ids],

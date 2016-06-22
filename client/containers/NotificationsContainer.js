@@ -5,7 +5,6 @@ import Notifications from '../components/Notifications';
 function mapDispatchToProps(dispatch) {
   return {
     onNotificationClick(id) {
-      clearTimeout(id);
       dispatch(removeNotification(id));
     },
   };

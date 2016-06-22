@@ -1,15 +1,15 @@
-import * as types from '../../constants/actionTypes';
+import types from '../../constants/actionTypes';
 
 function list(state = {}, action) {
   const { payload } = action;
 
   switch (action.type) {
-    case types.LISTS_ADD_CARD_ID:
+    case types.LIST_ADD_CARD_ID:
       return {
         ...state,
         cards: [...state.cards, payload.cardId],
       };
-    case types.LISTS_REMOVE_CARD_ID:
+    case types.LIST_REMOVE_CARD_ID:
       return {
         ...state,
         cards: without(state.cards, payload.cardId),
@@ -23,8 +23,8 @@ export default function lists(state = {}, action) {
   const { payload } = action;
 
   switch (action.type) {
-    case types.LISTS_ADD_CARD_ID:
-    case types.LISTS_REMOVE_CARD_ID:
+    case types.LIST_ADD_CARD_ID:
+    case types.LIST_REMOVE_CARD_ID:
       return {
         ...state,
         [payload.listId]: list(state[payload.listId], action),

@@ -39,7 +39,7 @@ function mapStateToProps(state) {
 function mapDispatchToProps(dispatch) {
   return {
     onChange(value) {
-      dispatch(search(value));
+      dispatch(search.request({ query: value }));
     },
   };
 }

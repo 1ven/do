@@ -47,6 +47,7 @@ class List extends Component {
         <div className="b-list__body">
           <CardsContainer
             listId={id}
+            boardId={this.props.boardId}
             cardsIds={cards}
           />
         </div>
@@ -61,6 +62,7 @@ List.propTypes = {
     title: PropTypes.string.isRequired,
     cards: PropTypes.array,
   }),
+  boardId: PropTypes.string.isRequired,
   onRemoveClick: PropTypes.func.isRequired,
   onEditClick: PropTypes.func.isRequired,
 };

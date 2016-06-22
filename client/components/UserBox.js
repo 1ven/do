@@ -4,9 +4,11 @@ import Toggle from './Toggle';
 import Icon from './Icon';
 
 function UserBox({
-  username,
-  role,
-  avatar,
+  user: {
+    username,
+    role,
+    avatar,
+  },
   onSignOutClick,
   onIndexClick,
 }) {
@@ -20,7 +22,7 @@ function UserBox({
           @{username}
         </span>
         <span className="b-user-box__role">
-          {role}
+          {role || 'user'}
         </span>
       </div>
       <div className="b-user-box__right">
@@ -58,14 +60,12 @@ function UserBox({
   );
 }
 
-UserBox.defaultProps = {
-  role: 'user',
-};
-
 UserBox.propTypes = {
-  avatar: PropTypes.string.isRequired,
-  username: PropTypes.string.isRequired,
-  role: PropTypes.string.isRequired,
+  user: PropTypes.shape({
+    avatar: PropTypes.string.isRequired,
+    username: PropTypes.string.isRequired,
+    role: PropTypes.string,
+  }),
   onSignOutClick: PropTypes.func.isRequired,
   onIndexClick: PropTypes.func.isRequired,
 };

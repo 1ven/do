@@ -1,9 +1,9 @@
 import React, { PropTypes } from 'react';
 import { connect } from 'react-redux';
-import { updateList } from '../actions/listsActions';
-import FormBox from '../components/FormBox';
-import Modal from '../components/Modal';
-import InputBox from '../components/InputBox';
+import FormBox from '../../components/FormBox';
+import Modal from '../../components/Modal';
+import InputBox from '../../components/InputBox';
+import { updateList } from '../../actions/listsActions';
 
 function EditListModal({ hideModal, dispatch, list }) {
   return (
@@ -12,7 +12,9 @@ function EditListModal({ hideModal, dispatch, list }) {
       hideModal={hideModal}
     >
       <FormBox
-        request={formData => dispatch(updateList(list.id, formData))}
+        request={formData => dispatch(
+          updateList.request({ id: list.id, props: formData })
+        )}
         onCancelClick={hideModal}
         onSuccess={hideModal}
         rows={[

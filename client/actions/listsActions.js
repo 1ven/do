@@ -1,88 +1,40 @@
-import { CALL_API } from '../middlewares/api';
-import { LIST, ACTIVITY, TRASH } from '../schemas';
-import * as types from '../constants/actionTypes';
+import types from '../constants/actionTypes';
+import { createActions } from '../utils';
+
+export const createList = createActions([
+  types.LIST_CREATE_REQUEST,
+  types.LIST_CREATE_SUCCESS,
+  types.LIST_CREATE_FAILURE,
+]);
+
+export const removeList = createActions([
+  types.LIST_REMOVE_REQUEST,
+  types.LIST_REMOVE_SUCCESS,
+  types.LIST_REMOVE_FAILURE,
+]);
+
+export const updateList = createActions([
+  types.LIST_UPDATE_REQUEST,
+  types.LIST_UPDATE_SUCCESS,
+  types.LIST_UPDATE_FAILURE,
+]);
 
 export function addCardId(listId, cardId) {
   return {
-    type: types.LISTS_ADD_CARD_ID,
+    type: types.LIST_ADD_CARD_ID,
     payload: {
       listId,
       cardId,
     },
   };
-};
+}
 
 export function removeCardId(listId, cardId) {
   return {
-    type: types.LISTS_REMOVE_CARD_ID,
+    type: types.LIST_REMOVE_CARD_ID,
     payload: {
       listId,
       cardId,
-    },
-  };
-};
-
-export function createList(boardId, title) {
-  return {
-    [CALL_API]: {
-      types: [
-        types.LISTS_CREATE_REQUEST,
-        types.LISTS_CREATE_SUCCESS,
-        types.LISTS_CREATE_ERROR,
-      ],
-      endpoint: `/api/boards/${boardId}/lists`,
-      schema: {
-        list: LIST,
-        activity: ACTIVITY,
-      },
-      request: {
-        method: 'post',
-        body: {
-          title,
-        },
-      },
-    },
-  };
-};
-
-export function removeList(id) {
-  return {
-    [CALL_API]: {
-      types: [
-        types.LISTS_REMOVE_REQUEST,
-        types.LISTS_REMOVE_SUCCESS,
-        types.LISTS_REMOVE_ERROR,
-      ],
-      endpoint: `/api/lists/${id}`,
-      schema: {
-        list: LIST,
-        activity: ACTIVITY,
-        trashItem: TRASH,
-      },
-      request: {
-        method: 'delete',
-      },
-    },
-  };
-};
-
-export function updateList(id, props) {
-  return {
-    [CALL_API]: {
-      types: [
-        types.LISTS_UPDATE_REQUEST,
-        types.LISTS_UPDATE_SUCCESS,
-        types.LISTS_UPDATE_ERROR,
-      ],
-      endpoint: `/api/lists/${id}`,
-      schema: {
-        list: LIST,
-        activity: ACTIVITY,
-      },
-      request: {
-        method: 'put',
-        body: props,
-      },
     },
   };
 };

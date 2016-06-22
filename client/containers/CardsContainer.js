@@ -3,8 +3,7 @@ import pick from 'lodash/pick';
 import { connect } from 'react-redux';
 import Cards from '../components/Cards';
 import { removeCard } from '../actions/cardsActions';
-import { removeCardId } from '../actions/listsActions';
-import CreateCardModal from './CreateCardModal';
+import CreateCardModal from './modals/CreateCardModal';
 
 class CardsContainer extends Component {
   constructor(props) {
@@ -32,17 +31,11 @@ class CardsContainer extends Component {
   }
 
   handleCardRemoveClick(cardId) {
-    const { dispatch, listId } = this.props;
-    dispatch(removeCard(cardId))
-      .then(action => {
-        if (!action.payload.error) {
-          dispatch(removeCardId(listId, cardId));
-        }
-      });
+    this.props.dispatch(removeCard(cardId))
   }
 
   render() {
-    const { cards, listId } = this.props;
+    const { cards, listId, boardId } = this.props;
     const { modal } = this.state;
     return (
       <div>
@@ -55,6 +48,7 @@ class CardsContainer extends Component {
           <CreateCardModal
             hideModal={this.hideModal}
             listId={listId}
+            boardId={boardId}
           />
         ) : null}
       </div>
@@ -64,6 +58,7 @@ class CardsContainer extends Component {
 
 CardsContainer.propTypes = {
   cards: PropTypes.array.isRequired,
+  boardId: PropTypes.string.isRequired,
   listId: PropTypes.string.isRequired,
   dispatch: PropTypes.func.isRequired,
 };

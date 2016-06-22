@@ -1,8 +1,18 @@
-import * as types from '../constants/actionTypes';
+import types from '../constants/actionTypes';
 
-export function createNotification(id, text, type) {
+export function createNotification(text, type) {
   return {
     type: types.NOTIFICATIONS_CREATE,
+    payload: {
+      text,
+      type,
+    },
+  };
+}
+
+export function createNotificationWithId(id, text, type) {
+  return {
+    type: types.NOTIFICATIONS_CREATE_WITH_ID,
     payload: {
       id,
       text,
@@ -17,15 +27,5 @@ export function removeNotification(id) {
     payload: {
       id,
     },
-  };
-};
-
-export function createNotificationWithTimeout(text, type) {
-  return function (dispatch) {
-    const id = setTimeout(() => {
-      dispatch(removeNotification(id));
-    }, 5000);
-
-    dispatch(createNotification(id, text, type));
   };
 };

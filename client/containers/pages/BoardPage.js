@@ -1,18 +1,10 @@
 import React, { PropTypes, Component } from 'react';
 import { connect } from 'react-redux';
-import { startProgressBar, finishProgressBar } from '../actions/progressBarActions';
-import { getBoard } from '../actions/boardsActions';
-import Board from '../components/Board';
-import Loader from '../components/Loader';
-import CreateListModal from './CreateListModal';
-import EditBoardModal from './EditBoardModal';
-
-function loadBoard(props) {
-  const { dispatch, params: { boardId } } = props;
-  dispatch(startProgressBar())
-  dispatch(getBoard(boardId))
-    .then(() => dispatch(finishProgressBar()));
-}
+import Board from '../../components/Board';
+import Loader from '../../components/Loader';
+import CreateListModal from '../modals/CreateListModal';
+import EditBoardModal from '../modals/EditBoardModal';
+import { fetchBoard } from '../../actions/boardsActions';
 
 class BoardPage extends Component {
   constructor(props) {
@@ -28,15 +20,12 @@ class BoardPage extends Component {
   }
 
   componentWillMount() {
-    // caching
-    if (!this.props.lastUpdated) {
-      loadBoard(this.props);
-    }
+    this.props.loadBoard(this.props.params.boardId);
   }
 
   componentWillReceiveProps(nextProps) {
     if (this.props.params.boardId !== nextProps.params.boardId) {
-      loadBoard(nextProps);
+      this.props.loadBoard(nextProps.params.boardId);
     }
   }
 
@@ -110,7 +99,6 @@ BoardPage.propTypes = {
   board: PropTypes.object,
   isFetching: PropTypes.bool,
   lastUpdated: PropTypes.number,
-  dispatch: PropTypes.func.isRequired,
   children: PropTypes.node,
   params: PropTypes.object,
 };
@@ -127,6 +115,15 @@ function mapStateToProps(state, ownProps) {
   };
 }
 
+function mapDispatchToProps(dispatch) {
+  return {
+    loadBoard(id) {
+      dispatch(fetchBoard.request({ id }));
+    },
+  };
+}
+
 export default connect(
-  mapStateToProps
+  mapStateToProps,
+  mapDispatchToProps
 )(BoardPage);

@@ -2,16 +2,10 @@ import React, { PropTypes, Component } from 'react';
 import { browserHistory } from 'react-router';
 import map from 'lodash/map';
 import { connect } from 'react-redux';
-import { createComment } from '../actions/commentsActions';
-import FullCard from '../components/FullCard';
-import Modal from '../components/Modal';
-import {
-  updateCard,
-  getCard,
-  addCommentId,
-  addColor,
-  removeColor,
-} from '../actions/cardsActions';
+import FullCard from '../../components/FullCard';
+import Modal from '../../components/Modal';
+import { updateCard, fetchCard, addColor, removeColor } from '../../actions/cardsActions';
+import { createComment } from '../../actions/commentsActions';
 
 class FullCardModal extends Component {
   componentWillMount() {
@@ -70,33 +64,33 @@ function mapStateToProps(state, ownProps) {
 }
 
 function mapDispatchToProps(dispatch, ownProps) {
-  const cardId = ownProps.params.cardId;
+  const { cardId } = ownProps.params;
   return {
     onEditCardFormSubmit(formData) {
-      return dispatch(updateCard(cardId, {
-        text: formData.text,
+      return dispatch(updateCard.request({
+        id: cardId,
+        props: {
+          text: formData.text,
+        },
       }));
     },
 
     onSendCommentSubmit(formData) {
-      return dispatch(createComment(cardId, formData.text))
-        .then(action => {
-          if (!action.payload.error) {
-            dispatch(addCommentId(cardId, action.payload.result));
-          }
-        });
+      return dispatch(
+        createComment.request({ cardId, text: formData.text })
+      );
     },
 
     onColorClick(colorId, active) {
       if (active) {
-        dispatch(addColor(cardId, colorId));
+        dispatch(addColor.request({ cardId, colorId }));
       } else {
-        dispatch(removeColor(cardId, colorId));
+        dispatch(removeColor.request({ cardId, colorId }));
       }
     },
 
     loadCard() {
-      return dispatch(getCard(cardId));
+      return dispatch(fetchCard.request({ id: cardId }));
     },
   };
 }

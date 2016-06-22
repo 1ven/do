@@ -1,21 +1,8 @@
-import { CALL_API } from '../middlewares/api';
-import * as types from '../constants/actionTypes';
+import types from '../constants/actionTypes';
+import { createActions } from '../utils';
 
-export function search(query) {
-  return {
-    [CALL_API]: {
-      types: [
-        types.SEARCH_REQUEST,
-        types.SEARCH_SUCCESS,
-        types.SEARCH_ERROR,
-      ],
-      endpoint: '/api/search',
-      request: {
-        method: 'post',
-        body: {
-          query,
-        },
-      },
-    },
-  };
-};
+export const search = createActions([
+  types.SEARCH_REQUEST,
+  types.SEARCH_SUCCESS,
+  types.SEARCH_ERROR,
+]);

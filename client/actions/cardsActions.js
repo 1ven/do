@@ -1,132 +1,45 @@
-import { CALL_API } from '../middlewares/api';
-import { CARD, ACTIVITY, TRASH } from '../schemas';
-import * as types from '../constants/actionTypes';
+import types from '../constants/actionTypes';
+import { createActions } from '../utils';
 
-export function createCard(listId, text) {
-  return {
-    [CALL_API]: {
-      types: [
-        types.CARDS_CREATE_REQUEST,
-        types.CARDS_CREATE_SUCCESS,
-        types.CARDS_CREATE_ERROR,
-      ],
-      endpoint: `/api/lists/${listId}/cards`,
-      schema: {
-        card: CARD,
-        activity: ACTIVITY,
-      },
-      request: {
-        method: 'post',
-        body: {
-          text,
-        },
-      },
-    },
-  };
-};
+export const createCard = createActions([
+  types.CARD_CREATE_REQUEST,
+  types.CARD_CREATE_SUCCESS,
+  types.CARD_CREATE_FAILURE,
+]);
 
-export function removeCard(id) {
-  return {
-    [CALL_API]: {
-      types: [
-        types.CARDS_REMOVE_REQUEST,
-        types.CARDS_REMOVE_SUCCESS,
-        types.CARDS_REMOVE_ERROR,
-      ],
-      endpoint: `/api/cards/${id}`,
-      schema: {
-        card: CARD,
-        activity: ACTIVITY,
-        trashItem: TRASH,
-      },
-      request: {
-        method: 'delete',
-      },
-    },
-  };
-};
+export const removeCard = createActions([
+  types.CARD_REMOVE_REQUEST,
+  types.CARD_REMOVE_SUCCESS,
+  types.CARD_REMOVE_FAILURE,
+]);
 
-export function updateCard(id, props) {
-  return {
-    [CALL_API]: {
-      types: [
-        types.CARDS_UPDATE_REQUEST,
-        types.CARDS_UPDATE_SUCCESS,
-        types.CARDS_UPDATE_ERROR,
-      ],
-      endpoint: `/api/cards/${id}`,
-      schema: {
-        card: CARD,
-        activity: ACTIVITY,
-      },
-      request: {
-        method: 'put',
-        body: props,
-      },
-    },
-  };
-};
+export const updateCard = createActions([
+  types.CARD_UPDATE_REQUEST,
+  types.CARD_UPDATE_SUCCESS,
+  types.CARD_UPDATE_FAILURE,
+]);
 
-export function getCard(id) {
-  return {
-    [CALL_API]: {
-      types: [
-        types.CARD_GET_REQUEST,
-        types.CARD_GET_SUCCESS,
-        types.CARD_GET_ERROR,
-      ],
-      endpoint: `/api/cards/${id}`,
-      schema: CARD,
-      request: {
-        method: 'get',
-      },
-    },
-  };
-};
+export const fetchCard = createActions([
+  types.CARD_FETCH_REQUEST,
+  types.CARD_FETCH_SUCCESS,
+  types.CARD_FETCH_FAILURE,
+]);
 
-export function addColor(cardId, colorId) {
-  return {
-    [CALL_API]: {
-      types: [
-        types.CARDS_ADD_COLOR_REQUEST,
-        types.CARDS_ADD_COLOR_SUCCESS,
-        types.CARDS_ADD_COLOR_ERROR,
-      ],
-      endpoint: `/api/cards/${cardId}/addColor`,
-      schema: CARD,
-      request: {
-        method: 'post',
-        body: {
-          color_id: colorId,
-        },
-      },
-    },
-  };
-};
+export const addColor = createActions([
+  types.CARD_ADD_COLOR_REQUEST,
+  types.CARD_ADD_COLOR_SUCCESS,
+  types.CARD_ADD_COLOR_FAILURE,
+]);
 
-export function removeColor(cardId, colorId) {
-  return {
-    [CALL_API]: {
-      types: [
-        types.CARDS_REMOVE_COLOR_REQUEST,
-        types.CARDS_REMOVE_COLOR_SUCCESS,
-        types.CARDS_REMOVE_COLOR_ERROR,
-      ],
-      endpoint: `/api/cards/${cardId}/removeColor`,
-      schema: CARD,
-      request: {
-        method: 'post',
-        body: {
-          color_id: colorId,
-        },
-      },
-    },
-  };
-};
+export const removeColor = createActions([
+  types.CARD_REMOVE_COLOR_REQUEST,
+  types.CARD_REMOVE_COLOR_SUCCESS,
+  types.CARD_REMOVE_COLOR_FAILURE,
+]);
 
 export function addCommentId(cardId, commentId) {
   return {
-    type: types.CARDS_ADD_COMMENT_ID,
+    type: types.CARD_ADD_COMMENT_ID,
     payload: {
       cardId,
       commentId,

@@ -1,21 +1,27 @@
 import { createStore, applyMiddleware, compose } from 'redux';
+import createSagaMiddleware from 'redux-saga';
+import createLogger from 'redux-logger';
+import rootSaga from '../sagas';
 import rootReducer from '../reducers';
-import { thunk, logger, api } from '../middlewares';
 import DevTools from '../containers/DevTools';
 
-const enhancer = compose(
-  applyMiddleware(
-    api,
-    thunk,
-    logger
-  ),
-  DevTools.instrument()
-);
-
 export default function configureStore(initialState) {
-  return createStore(
+  const sagaMiddleware = createSagaMiddleware();
+  const logger = createLogger();
+
+  const store = createStore(
     rootReducer,
     initialState,
-    enhancer
+    compose(
+      applyMiddleware(
+        sagaMiddleware,
+        logger
+      ),
+      DevTools.instrument()
+    )
   );
+
+  sagaMiddleware.run(rootSaga);
+
+  return store;
 }

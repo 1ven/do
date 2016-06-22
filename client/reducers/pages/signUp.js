@@ -1,11 +1,19 @@
-import * as types from '../../constants/actionTypes';
+import types from '../../constants/actionTypes';
 
-export default function signUp(state = [], action) {
+const INITIAL_STATE = {
+  message: undefined,
+  errors: [],
+};
+
+export default function signUp(state = INITIAL_STATE, action) {
   switch (action.type) {
     case types.SIGN_UP_SUCCESS:
-      return [];
-    case types.SIGN_UP_ERROR:
-      return action.payload.result;
+      return INITIAL_STATE;
+    case types.SIGN_UP_FAILURE:
+      return {
+        message: action.payload.message,
+        errors: action.payload.errors,
+      };
     default:
       return state;
   }

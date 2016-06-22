@@ -1,56 +1,40 @@
-import { CALL_API } from '../middlewares/api';
-import * as types from '../constants/actionTypes';
+import types from '../constants/actionTypes';
+import { createActions } from '../utils';
 
-export function signIn({ username, password, remember }) {
-  return {
-    [CALL_API]: {
-      types: [
-        types.SIGN_IN_REQUEST,
-        types.SIGN_IN_SUCCESS,
-        types.SIGN_IN_ERROR,
-      ],
-      endpoint: '/auth/sign-in/local',
-      request: {
-        method: 'post',
-        body: {
-          username,
-          password,
-          remember,
-        },
-      },
-    },
-  };
-};
+export const signIn = createSignActions([
+  types.SIGN_IN_REQUEST,
+  types.SIGN_IN_SUCCESS,
+  types.SIGN_IN_FAILURE,
+]);
 
-export function signUp(formData) {
-  return {
-    [CALL_API]: {
-      types: [
-        types.SIGN_UP_REQUEST,
-        types.SIGN_UP_SUCCESS,
-        types.SIGN_UP_ERROR,
-      ],
-      endpoint: '/sign-up',
-      request: {
-        method: 'post',
-        body: formData,
-      },
-    },
-  };
-};
+export const signUp = createSignActions([
+  types.SIGN_UP_REQUEST,
+  types.SIGN_UP_SUCCESS,
+  types.SIGN_UP_FAILURE,
+]);
 
-export function signOut() {
+export const signOut = createActions([
+  types.SIGN_OUT_REQUEST,
+  types.SIGN_OUT_SUCCESS,
+  types.SIGN_OUT_FAILURE,
+]);
+
+function createSignActions(types) {
   return {
-    [CALL_API]: {
-      types: [
-        types.SIGN_OUT_REQUEST,
-        types.SIGN_OUT_SUCCESS,
-        types.SIGN_OUT_ERROR,
-      ],
-      endpoint: '/auth/sign-out',
-      request: {
-        method: 'post',
+    request: (payload) => ({
+      type: types[0],
+      payload,
+    }),
+    success: (payload) => ({
+      type: types[1],
+      payload,
+    }),
+    failure: (message, errors) => ({
+      type: types[2],
+      payload: {
+        message,
+        errors,
       },
-    },
+    }),
   };
-};
+}

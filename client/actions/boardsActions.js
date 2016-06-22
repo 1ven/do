@@ -1,128 +1,39 @@
-import { CALL_API } from '../middlewares/api';
-import { BOARD_ARRAY, BOARD, ACTIVITY, TRASH } from '../schemas';
-import * as types from '../constants/actionTypes';
+import types from '../constants/actionTypes';
+import { createActions } from '../utils';
 
-export function getBoards() {
-  return {
-    [CALL_API]: {
-      types: [
-        types.BOARDS_GET_ALL_REQUEST,
-        types.BOARDS_GET_ALL_SUCCESS,
-        types.BOARDS_GET_ALL_ERROR
-      ],
-      endpoint: '/api/boards',
-      schema: BOARD_ARRAY,
-      request: {
-        method: 'get',
-      }
-    }
-  };
-}
+export const fetchBoards = createActions([
+  types.BOARDS_FETCH_REQUEST,
+  types.BOARDS_FETCH_SUCCESS,
+  types.BOARDS_FETCH_FAILURE,
+]);
 
-export function getBoard(id) {
-  return {
-    [CALL_API]: {
-      types: [
-        types.BOARDS_GET_REQUEST,
-        types.BOARDS_GET_SUCCESS,
-        types.BOARDS_GET_ERROR
-      ],
-      endpoint: '/api/boards/' + id,
-      schema: BOARD,
-      requestPayload: { id },
-      request: {
-        method: 'get',
-      }
-    }
-  };
-}
+export const fetchBoard = createActions([
+  types.BOARD_FETCH_REQUEST,
+  types.BOARD_FETCH_SUCCESS,
+  types.BOARD_FETCH_FAILURE,
+]);
 
-export function createBoard(title) {
-  return {
-    [CALL_API]: {
-      types: [
-        types.BOARDS_CREATE_REQUEST,
-        types.BOARDS_CREATE_SUCCESS,
-        types.BOARDS_CREATE_ERROR
-      ],
-      endpoint: '/api/boards',
-      schema: {
-        board: BOARD,
-        activity: ACTIVITY,
-      },
-      request: {
-        method: 'post',
-        body: {
-          title
-        },
-      },
-    },
-  };
-}
+export const createBoard = createActions([
+  types.BOARD_CREATE_REQUEST,
+  types.BOARD_CREATE_SUCCESS,
+  types.BOARD_CREATE_FAILURE,
+]);
 
-export function removeBoard(id) {
-  return {
-    [CALL_API]: {
-      types: [
-        types.BOARDS_REMOVE_REQUEST,
-        types.BOARDS_REMOVE_SUCCESS,
-        types.BOARDS_REMOVE_ERROR,
-      ],
-      endpoint: '/api/boards/' + id,
-      schema: {
-        board: BOARD,
-        trashItem: TRASH,
-        activity: ACTIVITY,
-      },
-      request: {
-        method: 'delete',
-      },
-    },
-  };
-}
+export const removeBoard = createActions([
+  types.BOARD_REMOVE_REQUEST,
+  types.BOARD_REMOVE_SUCCESS,
+  types.BOARD_REMOVE_FAILURE,
+]);
 
-export function updateBoard(id, props, activityAction) {
-  const queryParams = activityAction ? '?activityAction=' + activityAction : '';
-  return {
-    [CALL_API]: {
-      types: [
-        types.BOARDS_UPDATE_REQUEST,
-        types.BOARDS_UPDATE_SUCCESS,
-        types.BOARDS_UPDATE_ERROR,
-      ],
-      endpoint: `/api/boards/${id}${queryParams}`,
-      schema: {
-        board: BOARD,
-        activity: ACTIVITY,
-      },
-      request: {
-        method: 'put',
-        body: props
-      },
-    },
-  };
-}
-
-export function toggleStarred(boardId) {
-  return {
-    [CALL_API]: {
-      types: [
-        types.BOARDS_TOGGLE_STARRED_REQUEST,
-        types.BOARDS_TOGGLE_STARRED_SUCCESS,
-        types.BOARDS_TOGGLE_STARRED_ERROR,
-      ],
-      endpoint: `/api/boards/${boardId}/toggleStarred`,
-      schema: BOARD,
-      request: {
-        method: 'POST'
-      },
-    },
-  };
-}
+export const updateBoard = createActions([
+  types.BOARD_UPDATE_REQUEST,
+  types.BOARD_UPDATE_SUCCESS,
+  types.BOARD_UPDATE_FAILURE,
+]);
 
 export function addListId(boardId, listId) {
   return {
-    type: types.BOARDS_ADD_LIST_ID,
+    type: types.BOARD_ADD_LIST_ID,
     payload: {
       boardId,
       listId,
@@ -132,7 +43,7 @@ export function addListId(boardId, listId) {
 
 export function removeListId(boardId, listId) {
   return {
-    type: types.BOARDS_REMOVE_LIST_ID,
+    type: types.BOARD_REMOVE_LIST_ID,
     payload: {
       boardId,
       listId,
@@ -142,7 +53,7 @@ export function removeListId(boardId, listId) {
 
 export function incListsLength(boardId) {
   return {
-    type: types.BOARDS_INC_LISTS_LENGTH,
+    type: types.BOARD_INC_LISTS_LENGTH,
     payload: {
       boardId,
     },
@@ -151,7 +62,7 @@ export function incListsLength(boardId) {
 
 export function decListsLength(boardId) {
   return {
-    type: types.BOARDS_DEC_LISTS_LENGTH,
+    type: types.BOARD_DEC_LISTS_LENGTH,
     payload: {
       boardId
     }
@@ -160,18 +71,19 @@ export function decListsLength(boardId) {
 
 export function incCardsLength(boardId) {
   return {
-    type: types.BOARDS_INC_CARDS_LENGTH,
+    type: types.BOARD_INC_CARDS_LENGTH,
     payload: {
-      boardId
+      boardId,
     }
   };
 }
 
-export function decCardsLength(boardId) {
+export function decCardsLength(boardId, count) {
   return {
-    type: types.BOARDS_DEC_CARDS_LENGTH,
+    type: types.BOARD_DEC_CARDS_LENGTH,
     payload: {
       boardId,
+      count,
     },
   };
 }

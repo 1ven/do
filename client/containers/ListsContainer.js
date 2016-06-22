@@ -1,9 +1,8 @@
 import React, { PropTypes, Component } from 'react';
 import { connect } from 'react-redux';
 import Lists from '../components/Lists';
+import EditListModal from './modals/EditListModal';
 import { removeList } from '../actions/listsActions';
-import { removeListId, decListsLength } from '../actions/boardsActions';
-import EditListModal from './EditListModal';
 
 class ListsContainer extends Component {
   constructor(props) {
@@ -32,25 +31,22 @@ class ListsContainer extends Component {
   }
 
   handleListRemoveClick(listId) {
-    const { dispatch, boardId, lists } = this.props;
-    dispatch(removeList(listId))
-    .then(action => {
-      if (!action.payload.error) {
-        dispatch(removeListId(boardId, listId));
-        dispatch(decListsLength(boardId));
-      }
-    });
+    this.props.dispatch(removeList.request({
+      boardId: this.props.boardId,
+      listId,
+    }));
   }
 
   render() {
     const { modal } = this.state;
-    const { lists } = this.props;
+    const { lists, boardId } = this.props;
     return (
       <div>
         <Lists
           onListRemoveClick={this.handleListRemoveClick}
           onListEditClick={this.handleEditListClick}
           lists={lists}
+          boardId={boardId}
         />
         {modal && modal.name === 'editList' ? (
           <EditListModal

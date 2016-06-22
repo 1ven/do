@@ -1,4 +1,4 @@
-import * as types from '../constants/actionTypes';
+import types from '../constants/actionTypes';
 import merge from 'lodash/merge';
 
 const defaults = {
@@ -9,7 +9,7 @@ export default function notifications(state = [], action) {
   const notification = action.payload;
 
   switch (action.type) {
-    case types.NOTIFICATIONS_CREATE:
+    case types.NOTIFICATIONS_CREATE_WITH_ID:
       return [...state, merge({}, defaults, notification)];
     case types.NOTIFICATIONS_REMOVE:
       return state.filter(n => n.id !== notification.id);

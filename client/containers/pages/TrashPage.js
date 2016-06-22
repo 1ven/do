@@ -1,10 +1,10 @@
 import React, { PropTypes, Component } from 'react';
 import { connect } from 'react-redux';
 import moment from 'moment';
-import { getTrash, restore } from '../actions/trashActions';
-import Loader from '../components/Loader';
-import Trash from '../components/Trash';
-import TextInfo from '../components/TextInfo';
+import Loader from '../../components/Loader';
+import Trash from '../../components/Trash';
+import TextInfo from '../../components/TextInfo';
+import { fetchTrash, restoreEntry } from '../../actions/trashActions';
 
 const inflect = require('i')();
 
@@ -17,29 +17,28 @@ class TrashPage  extends Component {
 
   componentWillMount() {
     const {
-      lastUpdated,
       dispatch,
       params: {
         pageIndex,
       },
     } = this.props;
 
-    if (!lastUpdated) {
-      dispatch(getTrash(pageIndex));
-    }
+    dispatch(fetchTrash.request({ pageIndex }));
   }
 
   componentWillReceiveProps(nextProps) {
     const nextPageIndex = nextProps.params.pageIndex;
     if (this.props.params.pageIndex !== nextPageIndex) {
-      this.props.dispatch(getTrash(nextPageIndex));
+      this.props.dispatch(fetchTrash.request({
+        pageIndex: nextPageIndex,
+      }));
     }
   }
 
   handleRestoreClick(entryId, type) {
     const table = inflect.pluralize(type);
     this.props.dispatch(
-      restore(entryId, table)
+      restoreEntry.request({ entryId, table })
     );
   }
 

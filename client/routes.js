@@ -2,13 +2,13 @@ import React from 'react';
 import cookie from 'js-cookie';
 import { Route, IndexRoute } from 'react-router';
 import Sign from './components/Sign';
-import App from './components/App';
-import IndexPage from './containers/IndexPage';
-import BoardPage from './containers/BoardPage';
-import TrashPage from './containers/TrashPage';
-import SignInPage from './containers/SignInPage';
-import SignUpPage from './containers/SignUpPage';
-import FullCardModal from './containers/FullCardModal';
+import AppContainer from './containers/AppContainer';
+import IndexPage from './containers/pages/IndexPage';
+import BoardPage from './containers/pages/BoardPage';
+import TrashPage from './containers/pages/TrashPage';
+import SignInPage from './containers/pages/SignInPage';
+import SignUpPage from './containers/pages/SignUpPage';
+import FullCardModal from './containers/modals/FullCardModal';
 
 function ensureSignedIn(nextState, replace) {
   if (!cookie.get('authenticated')) {
@@ -26,7 +26,7 @@ export default (
   <Route path="/">
     <Route
       onEnter={ensureSignedIn}
-      component={App}
+      component={AppContainer}
     >
       <IndexRoute
         component={IndexPage}
