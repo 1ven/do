@@ -8,6 +8,7 @@ import listsSaga from './listsSaga';
 import cardsSaga from './cardsSaga';
 import commentsSaga from './commentsSaga';
 import signSaga from './signSaga';
+import notificationsSaga from './notificationsSaga';
 
 export default function* rootSaga() {
   yield [
@@ -21,5 +22,6 @@ export default function* rootSaga() {
     searchSaga(),
     commentsSaga(),
     signSaga(),
+    notificationsSaga(),
   ];
 };

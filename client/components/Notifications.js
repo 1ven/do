@@ -37,7 +37,7 @@ function Notifications({
 
 Notifications.propTypes = {
   items: PropTypes.arrayOf(PropTypes.shape({
-    id: PropTypes.number.isRequired,
+    id: PropTypes.string.isRequired,
     text: PropTypes.string.isRequired,
     type: PropTypes.string.isRequired,
   })).isRequired,
