@@ -126,6 +126,15 @@ export default {
       },
     });
   },
+  removeCard(id) {
+    return callApi(`/api/cards/${id}`, {
+      card: schemas.CARD,
+      activity: schemas.ACTIVITY,
+      trashItem: schemas.TRASH,
+    }, {
+      method: 'DELETE',
+    });
+  },
   fetchActivity() {
     return callApi('/api/activity', schemas.ACTIVITY_ARRAY, {
       method: 'GET',

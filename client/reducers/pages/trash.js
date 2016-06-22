@@ -31,8 +31,8 @@ export default function trash(state = {
         error: true,
       };
     case types.BOARD_REMOVE_SUCCESS:
-    case types.LISTS_REMOVE_SUCCESS:
-    case types.CARDS_REMOVE_SUCCESS:
+    case types.LIST_REMOVE_SUCCESS:
+    case types.CARD_REMOVE_SUCCESS:
       return {
         ...state,
         ids: [payload.result.trashItem, ...state.ids],

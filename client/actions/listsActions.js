@@ -28,3 +28,13 @@ export function addCardId(listId, cardId) {
     },
   };
 }
+
+export function removeCardId(listId, cardId) {
+  return {
+    type: types.LIST_REMOVE_CARD_ID,
+    payload: {
+      listId,
+      cardId,
+    },
+  };
+};

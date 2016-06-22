@@ -77,3 +77,13 @@ export function incCardsLength(boardId) {
     }
   };
 }
+
+export function decCardsLength(boardId, count) {
+  return {
+    type: types.BOARD_DEC_CARDS_LENGTH,
+    payload: {
+      boardId,
+      count,
+    },
+  };
+}
