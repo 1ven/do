@@ -18,3 +18,13 @@ export const updateList = createActions([
   types.LIST_UPDATE_SUCCESS,
   types.LIST_UPDATE_FAILURE,
 ]);
+
+export function addCardId(listId, cardId) {
+  return {
+    type: types.LIST_ADD_CARD_ID,
+    payload: {
+      listId,
+      cardId,
+    },
+  };
+}

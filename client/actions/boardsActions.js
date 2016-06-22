@@ -68,3 +68,12 @@ export function decListsLength(boardId) {
     }
   };
 }
+
+export function incCardsLength(boardId) {
+  return {
+    type: types.BOARD_INC_CARDS_LENGTH,
+    payload: {
+      boardId,
+    }
+  };
+}

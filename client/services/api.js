@@ -115,6 +115,17 @@ export default {
       body: props,
     });
   },
+  createCard(listId, text) {
+    return callApi(`/api/lists/${listId}/cards/`, {
+      card: schemas.CARD,
+      activity: schemas.ACTIVITY,
+    }, {
+      method: 'POST',
+      body: {
+        text,
+      },
+    });
+  },
   fetchActivity() {
     return callApi('/api/activity', schemas.ACTIVITY_ARRAY, {
       method: 'GET',
