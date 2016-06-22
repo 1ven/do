@@ -4,6 +4,7 @@ import { takeEvery } from 'redux-saga';
 import { call, put } from 'redux-saga/effects'
 import { fetchBoards, fetchBoard, createBoard, removeBoard, updateBoard } from '../actions/boardsActions';
 import { startProgressBar, stopProgressBar } from '../actions/progressBarActions';
+import { hideModal } from '../actions/modalActions';
 
 function* fetchBoardsTask() {
   try {
@@ -33,6 +34,7 @@ function* createBoardTask(action) {
   try {
     const payload = yield call(api.createBoard, action.payload.title);
     yield put(createBoard.success(payload));
+    yield put(hideModal());
   } catch(err) {
     yield put(createBoard.failure(err.message));
   }
@@ -51,6 +53,7 @@ function* updateBoardTask({ payload: { id, props, params } }) {
   try {
     const payload = yield call(api.updateBoard, id, props, params);
     yield put(updateBoard.success(payload));
+    yield put(hideModal());
   } catch(err) {
     yield put(updateBoard.failure(err.message));
   }

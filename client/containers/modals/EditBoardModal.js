@@ -4,12 +4,13 @@ import FormBox from '../../components/FormBox';
 import Modal from '../../components/Modal';
 import InputBox from '../../components/InputBox';
 import { updateBoard } from '../../actions/boardsActions';
+import { hideModal } from '../../actions/modalActions'; 
 
-function EditBoardModal({ hideModal, dispatch, board }) {
+function EditBoardModal({ dispatch, board }) {
   return (
     <Modal
       title="Edit board"
-      hideModal={hideModal}
+      onCloseClick={() => dispatch(hideModal())}
     >
       <FormBox
         request={formData => dispatch(
@@ -21,8 +22,7 @@ function EditBoardModal({ hideModal, dispatch, board }) {
             },
           })
         )}
-        onCancelClick={hideModal}
-        onSuccess={hideModal}
+        onCancelClick={() => dispatch(hideModal())}
         rows={[
           <InputBox
             name="title"
@@ -43,9 +43,16 @@ function EditBoardModal({ hideModal, dispatch, board }) {
 // But specifically in this case it's not necessary.
 
 EditBoardModal.propTypes = {
-  board: PropTypes.object.isRequired,
-  hideModal: PropTypes.func.isRequired,
+  boardId: PropTypes.string.isRequired,
   dispatch: PropTypes.func.isRequired,
 };
 
-export default connect()(EditBoardModal);
+function mapStateToProps(state, ownProps) {
+  return {
+    board: state.entities.boards[ownProps.boardId],
+  };
+}
+
+export default connect(
+  mapStateToProps
+)(EditBoardModal);

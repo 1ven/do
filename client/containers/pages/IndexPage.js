@@ -1,28 +1,23 @@
 import React, { PropTypes, Component } from 'react';
 import cookie from 'js-cookie';
 import { connect } from 'react-redux';
+import modalsNames from '../../constants/modalsNames';
 import BoardsList from '../../components/BoardsList.js';
 import Loader from '../../components/Loader';
 import BottomBox from '../../components/BottomBox';
 import Btn from '../../components/Btn';
 import Animation from '../../components/Animation';
-import CreateBoardModal from '../modals/CreateBoardModal';
-import EditBoardModal from '../modals/EditBoardModal';
 import { fetchBoards, removeBoard, updateBoard } from '../../actions/boardsActions';
+import { showModal } from '../../actions/modalActions';
 
 class IndexPage extends Component {
   constructor(props) {
     super(props);
 
-    this.state = {
-      modal: null,
-    };
-
     this.handleAddBoardBtnClick = this.handleAddBoardBtnClick.bind(this);
     this.handleBoardTileEditClick = this.handleBoardTileEditClick.bind(this);
     this.handleBoardTileRemoveClick = this.handleBoardTileRemoveClick.bind(this);
     this.handleBoardTileToggleStarredClick = this.handleBoardTileToggleStarredClick.bind(this);
-    this.hideModal = this.hideModal.bind(this);
   }
 
   componentWillMount() {
@@ -34,20 +29,17 @@ class IndexPage extends Component {
   }
 
   handleAddBoardBtnClick() {
-    this.setState({
-      modal: {
-        name: 'createBoard',
-      },
-    });
+    this.props.dispatch(
+      showModal(modalsNames.CREATE_BOARD)
+    );
   }
 
-  handleBoardTileEditClick(board) {
-    this.setState({
-      modal: {
-        name: 'editBoard',
-        data: board,
-      },
-    });
+  handleBoardTileEditClick(boardId) {
+    this.props.dispatch(
+      showModal(modalsNames.EDIT_BOARD, {
+        boardId,
+      })
+    );
   }
 
   handleBoardTileRemoveClick(id) {
@@ -69,12 +61,6 @@ class IndexPage extends Component {
     }
   }
 
-  hideModal() {
-    this.setState({
-      modal: null,
-    });
-  }
-
   render() {
     const {
       groups,
@@ -82,7 +68,6 @@ class IndexPage extends Component {
       lastUpdated,
       error,
     } = this.props;
-    const { modal } = this.state;
 
     const isEmpty = groups.length === 0;
 
@@ -113,20 +98,6 @@ class IndexPage extends Component {
         <BottomBox
           button={addBoardBtn}
         />
-        <div>
-          <Animation name="a-fade-in">
-            {modal && modal.name === 'createBoard' ? (
-              <CreateBoardModal
-                hideModal={this.hideModal}
-              />
-              ) : modal && modal.name === 'editBoard' ? (
-                <EditBoardModal
-                  hideModal={this.hideModal}
-                  board={modal.data}
-                />
-            ) : null}
-          </Animation>
-        </div>
       </div>
     );
   }

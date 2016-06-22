@@ -9,8 +9,6 @@ class FormBox extends Component {
     this.state = {
       errors: [],
     };
-
-    this.handleSubmit = this.handleSubmit.bind(this);
   }
 
   getError(name) {
@@ -18,26 +16,13 @@ class FormBox extends Component {
     return error ? error.message : null;
   }
 
-  handleSubmit(formData) {
-    this.props.request(formData)
-      .then(action => {
-        if (!action.payload.error) {
-          return this.props.onSuccess(action.payload);
-        }
-        // check validation flag
-        this.setState({
-          errors: action.payload.result,
-        });
-      });
-  }
-
   render() {
-    const { rows, onCancelClick } = this.props;
+    const { rows, onCancelClick, request } = this.props;
 
     return (
       <Form
         className="b-form-box"
-        onSubmit={this.handleSubmit}
+        onSubmit={request}
       >
         <div className="b-form-box__rows">
           {rows.map((row, i) => (
@@ -78,7 +63,6 @@ class FormBox extends Component {
 FormBox.propTypes = {
   rows: PropTypes.array.isRequired,
   request: PropTypes.func.isRequired,
-  onSuccess: PropTypes.func.isRequired,
   onCancelClick: PropTypes.func.isRequired,
 };
 

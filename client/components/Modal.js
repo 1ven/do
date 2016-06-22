@@ -1,11 +1,7 @@
 import React, { PropTypes } from 'react';
 import Icon from './Icon';
 
-function Modal({
-  title,
-  children,
-  hideModal,
-}) {
+function Modal({ title, children, onCloseClick }) {
   return (
     <div className="b-modal">
       <div className="b-modal__box">
@@ -16,7 +12,7 @@ function Modal({
             </span>
             <a
               className="b-modal-box__close"
-              onClick={hideModal}
+              onClick={onCloseClick}
             >
               <Icon name="cross" />
             </a>
@@ -33,7 +29,7 @@ function Modal({
 Modal.propTypes = {
   title: PropTypes.string.isRequired,
   children: PropTypes.node.isRequired,
-  hideModal: PropTypes.func.isRequired,
+  onCloseClick: PropTypes.func.isRequired,
 };
 
 export default Modal;

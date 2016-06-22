@@ -24,7 +24,7 @@ function BoardTile({
       modifiers={['sm']}
       items={[{
         title: 'Edit',
-        onClick: () => onEditClick(data),
+        onClick: () => onEditClick(id),
       }, {
         title: 'Remove',
         onClick: () => onRemoveClick(id),

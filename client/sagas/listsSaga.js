@@ -4,6 +4,7 @@ import { takeEvery } from 'redux-saga';
 import { call, put } from 'redux-saga/effects'
 import { createList, removeList, updateList } from '../actions/listsActions';
 import { addListId, removeListId, incListsLength, decListsLength } from '../actions/boardsActions';
+import { hideModal } from '../actions/modalActions';
 
 function* createListTask(action) {
   const { boardId, title } = action.payload;
@@ -12,6 +13,7 @@ function* createListTask(action) {
     yield put(createList.success(payload));
     yield put(addListId(boardId, payload.result.list));
     yield put(incListsLength(boardId));
+    yield put(hideModal());
   } catch(err) {
     yield put(createList.failure(err.message));
   }
@@ -34,6 +36,7 @@ function* updateListTask(action) {
     const { id, props } = action.payload;
     const payload = yield call(api.updateList, id, props);
     yield put(updateList.success(payload));
+    yield put(hideModal());
   } catch(err) {
     yield put(updateList.failure(err.message));
   }

@@ -4,18 +4,19 @@ import FormBox from '../../components/FormBox';
 import Modal from '../../components/Modal';
 import InputBox from '../../components/InputBox';
 import { createCard } from '../../actions/cardsActions';
+import { hideModal } from '../../actions/modalActions'; 
 
-function CreateCardModal({ hideModal, dispatch, boardId, listId }) {
+function CreateCardModal({ dispatch, boardId, listId }) {
   return (
     <Modal
       title="Create card"
-      hideModal={hideModal}
+      onCloseClick={() => dispatch(hideModal())}
     >
       <FormBox
         request={({ text }) => dispatch(
           createCard.request({ boardId, listId, text })
         )}
-        onCancelClick={hideModal}
+        onCancelClick={() => dispatch(hideModal())}
         rows={[
           <InputBox
             name="text"
@@ -29,7 +30,6 @@ function CreateCardModal({ hideModal, dispatch, boardId, listId }) {
 }
 
 CreateCardModal.propTypes = {
-  hideModal: PropTypes.func.isRequired,
   dispatch: PropTypes.func.isRequired,
   listId: PropTypes.string.isRequired,
   boardId: PropTypes.string.isRequired,

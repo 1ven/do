@@ -4,19 +4,19 @@ import FormBox from '../../components/FormBox';
 import Modal from '../../components/Modal';
 import InputBox from '../../components/InputBox';
 import { updateList } from '../../actions/listsActions';
+import { hideModal } from '../../actions/modalActions'; 
 
-function EditListModal({ hideModal, dispatch, list }) {
+function EditListModal({ dispatch, list }) {
   return (
     <Modal
       title="Edit list"
-      hideModal={hideModal}
+      onCloseClick={() => dispatch(hideModal())}
     >
       <FormBox
         request={formData => dispatch(
           updateList.request({ id: list.id, props: formData })
         )}
-        onCancelClick={hideModal}
-        onSuccess={hideModal}
+        onCancelClick={() => dispatch(hideModal())}
         rows={[
           <InputBox
             name="title"
@@ -33,7 +33,6 @@ function EditListModal({ hideModal, dispatch, list }) {
 EditListModal.propTypes = {
   list: PropTypes.object.isRequired,
   dispatch: PropTypes.func.isRequired,
-  hideModal: PropTypes.func.isRequired,
 };
 
 export default connect()(EditListModal);

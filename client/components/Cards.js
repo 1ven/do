@@ -40,6 +40,8 @@ Cards.propTypes = {
     id: PropTypes.string,
     text: PropTypes.string,
   })),
+  boardId: PropTypes.string.isRequired,
+  listId: PropTypes.string.isRequired,
   onAddCardBtnClick: PropTypes.func.isRequired,
   onCardRemoveClick: PropTypes.func.isRequired,
 };

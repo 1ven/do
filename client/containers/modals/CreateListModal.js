@@ -4,15 +4,16 @@ import FormBox from '../../components/FormBox';
 import Modal from '../../components/Modal';
 import InputBox from '../../components/InputBox';
 import { createList } from '../../actions/listsActions';
+import { hideModal } from '../../actions/modalActions'; 
 
-function CreateListModal({ hideModal, dispatch, boardId }) {
+function CreateListModal({ dispatch, boardId }) {
   return (
     <Modal
       title="Edit list"
-      hideModal={hideModal}
+      onCloseClick={() => dispatch(hideModal())}
     >
       <FormBox
-        onCancelClick={hideModal}
+        onCancelClick={() => dispatch(hideModal())}
         request={({ title }) => dispatch(createList.request({ boardId, title }))}
         rows={[
           <InputBox
@@ -29,7 +30,6 @@ function CreateListModal({ hideModal, dispatch, boardId }) {
 CreateListModal.propTypes = {
   boardId: PropTypes.string.isRequired,
   dispatch: PropTypes.func.isRequired,
-  hideModal: PropTypes.func.isRequired,
 };
 
 export default connect()(CreateListModal);

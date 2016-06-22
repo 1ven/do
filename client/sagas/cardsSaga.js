@@ -5,6 +5,7 @@ import { call, put } from 'redux-saga/effects'
 import { createCard, removeCard, fetchCard, updateCard, addColor, removeColor } from '../actions/cardsActions';
 import { incCardsLength, decCardsLength } from '../actions/boardsActions';
 import { addCardId, removeCardId } from '../actions/listsActions';
+import { hideModal } from '../actions/modalActions';
 
 function* createCardTask(action) {
   const { boardId, listId, text } = action.payload;
@@ -13,6 +14,7 @@ function* createCardTask(action) {
     yield put(createCard.success(payload));
     yield put(incCardsLength(boardId));
     yield put(addCardId(listId, payload.result.card));
+    yield put(hideModal());
   } catch(err) {
     yield put(createCard.failure(err.message));
   }
