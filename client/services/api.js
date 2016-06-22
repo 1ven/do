@@ -165,6 +165,14 @@ export default {
       method: 'GET',
     });
   },
+  createComment(cardId, text) {
+    return callApi(`/api/cards/${cardId}/comments`, schemas.COMMENT, {
+      method: 'POST',
+      body: {
+        text,
+      },
+    });
+  },
   fetchActivity() {
     return callApi('/api/activity', schemas.ACTIVITY_ARRAY, {
       method: 'GET',

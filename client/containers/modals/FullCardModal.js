@@ -2,10 +2,10 @@ import React, { PropTypes, Component } from 'react';
 import { browserHistory } from 'react-router';
 import map from 'lodash/map';
 import { connect } from 'react-redux';
-/* import { createComment } from '../actions/commentsActions'; */
 import FullCard from '../../components/FullCard';
 import Modal from '../../components/Modal';
 import { updateCard, fetchCard, addColor, removeColor } from '../../actions/cardsActions';
+import { createComment } from '../../actions/commentsActions';
 
 class FullCardModal extends Component {
   componentWillMount() {
@@ -76,12 +76,9 @@ function mapDispatchToProps(dispatch, ownProps) {
     },
 
     onSendCommentSubmit(formData) {
-      return dispatch(createComment(cardId, formData.text))
-        .then(action => {
-          if (!action.payload.error) {
-            dispatch(addCommentId(cardId, action.payload.result));
-          }
-        });
+      return dispatch(
+        createComment.request({ cardId, text: formData.text })
+      );
     },
 
     onColorClick(colorId, active) {

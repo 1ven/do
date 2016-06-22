@@ -36,3 +36,13 @@ export const removeColor = createActions([
   types.CARD_REMOVE_COLOR_SUCCESS,
   types.CARD_REMOVE_COLOR_FAILURE,
 ]);
+
+export function addCommentId(cardId, commentId) {
+  return {
+    type: types.CARD_ADD_COMMENT_ID,
+    payload: {
+      cardId,
+      commentId,
+    },
+  };
+};
