@@ -86,9 +86,9 @@ function mapDispatchToProps(dispatch, ownProps) {
 
     onColorClick(colorId, active) {
       if (active) {
-        dispatch(addColor(cardId, colorId));
+        dispatch(addColor.request({ cardId, colorId }));
       } else {
-        dispatch(removeColor(cardId, colorId));
+        dispatch(removeColor.request({ cardId, colorId }));
       }
     },
 

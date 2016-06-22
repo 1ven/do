@@ -144,6 +144,22 @@ export default {
       body: props,
     });
   },
+  addColorToCard(cardId, colorId) {
+    return callApi(`/api/cards/${cardId}/addColor`, schemas.CARD, {
+      method: 'POST',
+      body: {
+        color_id: colorId,
+      },
+    });
+  },
+  removeColorFromCard(cardId, colorId) {
+    return callApi(`/api/cards/${cardId}/removeColor`, schemas.CARD, {
+      method: 'POST',
+      body: {
+        color_id: colorId,
+      },
+    });
+  },
   fetchCard(id) {
     return callApi(`/api/cards/${id}`, schemas.CARD, {
       method: 'GET',

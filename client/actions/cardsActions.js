@@ -24,3 +24,15 @@ export const fetchCard = createActions([
   types.CARD_FETCH_SUCCESS,
   types.CARD_FETCH_FAILURE,
 ]);
+
+export const addColor = createActions([
+  types.CARD_ADD_COLOR_REQUEST,
+  types.CARD_ADD_COLOR_SUCCESS,
+  types.CARD_ADD_COLOR_FAILURE,
+]);
+
+export const removeColor = createActions([
+  types.CARD_REMOVE_COLOR_REQUEST,
+  types.CARD_REMOVE_COLOR_SUCCESS,
+  types.CARD_REMOVE_COLOR_FAILURE,
+]);
