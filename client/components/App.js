@@ -2,6 +2,7 @@ import React, { PropTypes } from 'react';
 import Header from './Header';
 import NotificationsContainer from '../containers/NotificationsContainer';
 import ProgressBarContainer from '../containers/ProgressBarContainer';
+import ModalContainer from '../containers/ModalContainer';
 import Scrollbar from './Scrollbar';
 
 function App({ children }) {
@@ -14,6 +15,7 @@ function App({ children }) {
           {children}
         </div>
         <NotificationsContainer />
+        <ModalContainer />
       </div>
     </Scrollbar>
   );

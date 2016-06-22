@@ -1,19 +1,19 @@
 import React, { PropTypes } from 'react';
 import { connect } from 'react-redux';
-import { createBoard } from '../../actions/boardsActions';
 import FormBox from '../../components/FormBox';
 import Modal from '../../components/Modal';
 import InputBox from '../../components/InputBox';
+import { createBoard } from '../../actions/boardsActions';
+import { hideModal } from '../../actions/modalActions'; 
 
-function CreateBoardModal({ hideModal, dispatch }) {
+function CreateBoardModal({ dispatch }) {
   return (
     <Modal
       title="Create board"
-      hideModal={hideModal}
+      onCloseClick={() => dispatch(hideModal())}
     >
       <FormBox
-        onSuccess={hideModal}
-        onCancelClick={hideModal}
+        onCancelClick={() => dispatch(hideModal())}
         request={({ title }) => dispatch(
           createBoard.request({ title })
         )}
@@ -31,7 +31,6 @@ function CreateBoardModal({ hideModal, dispatch }) {
 
 CreateBoardModal.propTypes = {
   dispatch: PropTypes.func.isRequired,
-  hideModal: PropTypes.func.isRequired,
 };
 
 export default connect()(CreateBoardModal);

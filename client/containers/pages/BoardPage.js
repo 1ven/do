@@ -1,24 +1,12 @@
 import React, { PropTypes, Component } from 'react';
 import { connect } from 'react-redux';
+import modalsNames from '../../constants/modalsNames';
 import Board from '../../components/Board';
 import Loader from '../../components/Loader';
-import CreateListModal from '../modals/CreateListModal';
-import EditBoardModal from '../modals/EditBoardModal';
 import { fetchBoard } from '../../actions/boardsActions';
+import { showModal } from '../../actions/modalActions';
 
 class BoardPage extends Component {
-  constructor(props) {
-    super(props);
-
-    this.state = {
-      modal: null,
-    };
-
-    this.handleAddListBtnClick = this.handleAddListBtnClick.bind(this);
-    this.handleEditBoardClick = this.handleEditBoardClick.bind(this);
-    this.hideModal = this.hideModal.bind(this);
-  }
-
   componentWillMount() {
     this.props.loadBoard(this.props.params.boardId);
   }
@@ -33,37 +21,15 @@ class BoardPage extends Component {
     return !(!this.props.isFetching && !this.props.lastUpdated && nextProps.isFetching);
   }
 
-  handleAddListBtnClick() {
-    this.setState({
-      modal: {
-        name: 'createList',
-      },
-    });
-  }
-
-  handleEditBoardClick() {
-    const { board } = this.props;
-
-    this.setState({
-      modal: {
-        name: 'editBoard',
-        data: board,
-      },
-    });
-  }
-
-  hideModal() {
-    this.setState({ modal: null });
-  }
-
   render() {
     const {
       board,
       isFetching,
       lastUpdated,
       children,
+      onAddListBtnClick,
+      onEditBoardClick,
     } = this.props;
-    const { modal } = this.state;
 
     return (
       <div>
@@ -74,21 +40,10 @@ class BoardPage extends Component {
           ) : (
             <Board
               data={board}
-              onAddListBtnClick={this.handleAddListBtnClick}
-              onEditBoardClick={this.handleEditBoardClick}
+              onAddListBtnClick={onAddListBtnClick}
+              onEditBoardClick={onEditBoardClick}
             />
         )}
-        {modal && modal.name === 'editBoard' ? (
-          <EditBoardModal
-            board={modal.data}
-            hideModal={this.hideModal}
-          />
-          ) : modal && modal.name === 'createList' ? (
-            <CreateListModal
-              boardId={board.id}
-              hideModal={this.hideModal}
-            />
-        ) : null}
         {children}
       </div>
     );
@@ -104,7 +59,7 @@ BoardPage.propTypes = {
 };
 
 function mapStateToProps(state, ownProps) {
-  const boardId = ownProps.params.boardId;
+  const { boardId } = ownProps.params;
   const { isFetching, lastUpdated } = state.pages.board[boardId] || {};
   const board = state.entities.boards[boardId];
 
@@ -115,10 +70,26 @@ function mapStateToProps(state, ownProps) {
   };
 }
 
-function mapDispatchToProps(dispatch) {
+function mapDispatchToProps(dispatch, ownProps) {
   return {
     loadBoard(id) {
       dispatch(fetchBoard.request({ id }));
+    },
+
+    onAddListBtnClick() {
+      dispatch(
+        showModal(modalsNames.CREATE_LIST, {
+          boardId: ownProps.params.boardId,
+        })
+      );
+    },
+
+    onEditBoardClick() {
+      dispatch(
+        showModal(modalsNames.EDIT_BOARD, {
+          boardId: ownProps.params.boardId,
+        })
+      );
     },
   };
 }

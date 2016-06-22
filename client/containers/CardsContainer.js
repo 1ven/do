@@ -1,67 +1,10 @@
 import React, { PropTypes, Component } from 'react';
 import pick from 'lodash/pick';
 import { connect } from 'react-redux';
+import modalsNames from '../constants/modalsNames';
 import Cards from '../components/Cards';
 import { removeCard } from '../actions/cardsActions';
-import CreateCardModal from './modals/CreateCardModal';
-
-class CardsContainer extends Component {
-  constructor(props) {
-    super(props);
-
-    this.state = {
-      modal: null,
-    };
-
-    this.handleCardRemoveClick = this.handleCardRemoveClick.bind(this);
-    this.handleAddCardBtnClick = this.handleAddCardBtnClick.bind(this);
-    this.hideModal = this.hideModal.bind(this);
-  }
-
-  hideModal() {
-    this.setState({ modal: null });
-  }
-
-  handleAddCardBtnClick() {
-    this.setState({
-      modal: {
-        name: 'createCard',
-      },
-    });
-  }
-
-  handleCardRemoveClick(cardId) {
-    this.props.dispatch(removeCard(cardId))
-  }
-
-  render() {
-    const { cards, listId, boardId } = this.props;
-    const { modal } = this.state;
-    return (
-      <div>
-        <Cards
-          cards={cards}
-          onCardRemoveClick={this.handleCardRemoveClick}
-          onAddCardBtnClick={this.handleAddCardBtnClick}
-        />
-        {modal && modal.name === 'createCard' ? (
-          <CreateCardModal
-            hideModal={this.hideModal}
-            listId={listId}
-            boardId={boardId}
-          />
-        ) : null}
-      </div>
-    );
-  }
-}
-
-CardsContainer.propTypes = {
-  cards: PropTypes.array.isRequired,
-  boardId: PropTypes.string.isRequired,
-  listId: PropTypes.string.isRequired,
-  dispatch: PropTypes.func.isRequired,
-};
+import { showModal } from '../actions/modalActions';
 
 function mapStateToProps(state, ownProps) {
   const { cards } = state.entities;
@@ -79,6 +22,24 @@ function mapStateToProps(state, ownProps) {
   };
 }
 
+function mapDispatchToProps(dispatch, ownProps) {
+  return {
+    onCardRemoveClick(cardId) {
+      dispatch(removeCard(cardId));
+    },
+
+    onAddCardBtnClick() {
+      dispatch(
+        showModal(modalsNames.CREATE_CARD, {
+          boardId: ownProps.boardId,
+          listId: ownProps.listId,
+        })
+      );
+    },
+  };
+}
+
 export default connect(
-  mapStateToProps
-)(CardsContainer);
+  mapStateToProps,
+  mapDispatchToProps
+)(Cards);

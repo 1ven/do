@@ -8,13 +8,17 @@ import { updateCard, fetchCard, addColor, removeColor } from '../../actions/card
 import { createComment } from '../../actions/commentsActions';
 
 class FullCardModal extends Component {
-  componentWillMount() {
-    this.props.loadCard();
+  constructor(props) {
+    super(props);
 
-    this.hideModal = this.hideModal.bind(this);
+    this.handleCancelClick = this.handleCancelClick.bind(this);
   }
 
-  hideModal() {
+  componentWillMount() {
+    this.props.loadCard();
+  }
+
+  handleCancelClick() {
     const { boardId } = this.props.params;
     browserHistory.push(`/boards/${boardId}`);
   }
@@ -30,7 +34,7 @@ class FullCardModal extends Component {
     return card ? (
       <Modal
         title="Card"
-        hideModal={this.hideModal}
+        onCloseClick={this.handleCancelClick}
       >
         <FullCard
           card={card}

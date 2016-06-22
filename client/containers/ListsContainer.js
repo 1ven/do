@@ -1,33 +1,22 @@
 import React, { PropTypes, Component } from 'react';
 import { connect } from 'react-redux';
+import modalsNames from '../constants/modalsNames';
 import Lists from '../components/Lists';
-import EditListModal from './modals/EditListModal';
 import { removeList } from '../actions/listsActions';
+import { showModal } from '../actions/modalActions';
 
 class ListsContainer extends Component {
   constructor(props) {
     super(props);
 
-    this.state = {
-      modal: null,
-    };
-
     this.handleEditListClick = this.handleEditListClick.bind(this);
     this.handleListRemoveClick = this.handleListRemoveClick.bind(this);
-    this.hideModal = this.hideModal.bind(this);
-  }
-
-  hideModal() {
-    this.setState({ modal: null });
   }
 
   handleEditListClick(list) {
-    this.setState({
-      modal: {
-        name: 'editList',
-        data: list,
-      },
-    });
+    this.props.dispatch(
+      showModal(modalsNames.EDIT_LIST, { list })
+    );
   }
 
   handleListRemoveClick(listId) {
@@ -38,7 +27,6 @@ class ListsContainer extends Component {
   }
 
   render() {
-    const { modal } = this.state;
     const { lists, boardId } = this.props;
     return (
       <div>
@@ -48,12 +36,6 @@ class ListsContainer extends Component {
           lists={lists}
           boardId={boardId}
         />
-        {modal && modal.name === 'editList' ? (
-          <EditListModal
-            list={modal.data}
-            hideModal={this.hideModal}
-          />
-        ) : null}
       </div>
     );
   }
