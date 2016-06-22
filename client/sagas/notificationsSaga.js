@@ -24,12 +24,27 @@ function* createNotificationTask(action) {
   }
 }
 
+function* createFromAction(action) {
+  if (action && action.payload && action.payload.notification) {
+    const { message, type } = action.payload.notification;
+    yield put(createNotification(
+      message,
+      type
+    ));
+  }
+}
+
 function* watchCreate() {
   yield* takeEvery(types.NOTIFICATIONS_CREATE, createNotificationTask);
+}
+
+function* watchNotifications() {
+  yield takeEvery('*', createFromAction);
 }
 
 export default function* notificationsSaga() {
   yield [
     watchCreate(),
+    watchNotifications(),
   ];
 }
