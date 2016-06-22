@@ -10,5 +10,17 @@ export const createCard = createActions([
 export const removeCard = createActions([
   types.CARD_REMOVE_REQUEST,
   types.CARD_REMOVE_SUCCESS,
-  types.CARD_REMOVE_ERROR,
+  types.CARD_REMOVE_FAILURE,
+]);
+
+export const updateCard = createActions([
+  types.CARD_UPDATE_REQUEST,
+  types.CARD_UPDATE_SUCCESS,
+  types.CARD_UPDATE_FAILURE,
+]);
+
+export const fetchCard = createActions([
+  types.CARD_FETCH_REQUEST,
+  types.CARD_FETCH_SUCCESS,
+  types.CARD_FETCH_FAILURE,
 ]);

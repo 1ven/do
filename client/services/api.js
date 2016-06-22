@@ -135,6 +135,20 @@ export default {
       method: 'DELETE',
     });
   },
+  updateCard(id, props) {
+    return callApi(`/api/cards/${id}`, {
+      card: schemas.CARD,
+      activity: schemas.ACTIVITY,
+    }, {
+      method: 'PUT',
+      body: props,
+    });
+  },
+  fetchCard(id) {
+    return callApi(`/api/cards/${id}`, schemas.CARD, {
+      method: 'GET',
+    });
+  },
   fetchActivity() {
     return callApi('/api/activity', schemas.ACTIVITY_ARRAY, {
       method: 'GET',

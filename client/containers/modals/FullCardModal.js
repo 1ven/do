@@ -5,13 +5,7 @@ import { connect } from 'react-redux';
 /* import { createComment } from '../actions/commentsActions'; */
 import FullCard from '../../components/FullCard';
 import Modal from '../../components/Modal';
-/* import { */
-/*   updateCard, */
-/*   getCard, */
-/*   addCommentId, */
-/*   addColor, */
-/*   removeColor, */
-/* } from '../actions/cardsActions'; */
+import { updateCard, fetchCard, addColor, removeColor } from '../../actions/cardsActions';
 
 class FullCardModal extends Component {
   componentWillMount() {
@@ -70,11 +64,14 @@ function mapStateToProps(state, ownProps) {
 }
 
 function mapDispatchToProps(dispatch, ownProps) {
-  const cardId = ownProps.params.cardId;
+  const { cardId } = ownProps.params;
   return {
     onEditCardFormSubmit(formData) {
-      return dispatch(updateCard(cardId, {
-        text: formData.text,
+      return dispatch(updateCard.request({
+        id: cardId,
+        props: {
+          text: formData.text,
+        },
       }));
     },
 
@@ -96,7 +93,7 @@ function mapDispatchToProps(dispatch, ownProps) {
     },
 
     loadCard() {
-      return dispatch(getCard(cardId));
+      return dispatch(fetchCard.request({ id: cardId }));
     },
   };
 }

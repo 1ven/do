@@ -2,7 +2,7 @@ import api from '../services/api';
 import types from '../constants/actionTypes';
 import { takeEvery } from 'redux-saga';
 import { call, put } from 'redux-saga/effects'
-import { createCard, removeCard } from '../actions/cardsActions';
+import { createCard, removeCard, fetchCard, updateCard } from '../actions/cardsActions';
 import { incCardsLength, decCardsLength } from '../actions/boardsActions';
 import { addCardId, removeCardId } from '../actions/listsActions';
 
@@ -30,6 +30,25 @@ function* removeCardTask(action) {
   }
 }
 
+function* fetchCardTask(action) {
+  try {
+    const payload = yield call(api.fetchCard, action.payload.id);
+    yield put(fetchCard.success(payload));
+  } catch(err) {
+    yield put(fetchCard.failure(err.message));
+  }
+}
+
+function* updateCardTask(action) {
+  const { id, props } = action.payload;
+  try {
+    const payload = yield call(api.updateCard, id, props);
+    yield put(updateCard.success(payload));
+  } catch(err) {
+    yield put(updateCard.failure(err.message));
+  }
+}
+
 function* watchCreateCard() {
   yield* takeEvery(types.CARD_CREATE_REQUEST, createCardTask);
 }
@@ -38,9 +57,19 @@ function* watchRemoveCard() {
   yield* takeEvery(types.CARD_REMOVE_REQUEST, removeCardTask);
 }
 
+function* watchFetchCard() {
+  yield* takeEvery(types.CARD_FETCH_REQUEST, fetchCardTask);
+}
+
+function* watchUpdateCard() {
+  yield* takeEvery(types.CARD_UPDATE_REQUEST, updateCardTask);
+}
+
 export default function* cardsSaga() {
   yield [
     watchCreateCard(),
     watchRemoveCard(),
+    watchFetchCard(),
+    watchUpdateCard(),
   ];
 }
