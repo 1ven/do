@@ -2,11 +2,12 @@ import React, { PropTypes } from 'react';
 import { connect } from 'react-redux';
 import { handleReduxFormSubmit } from '../../utils';
 import Modal from '../../components/Modal';
-import ListForm from '../forms/ListForm';
+import _ListForm from '../forms/ListForm';
 import { createList } from '../../actions/listsActions';
 import { hideModal } from '../../actions/modalActions'; 
 
 function CreateListModal({ dispatch, boardId }) {
+  const ListForm = _ListForm();
   return (
     <Modal
       title="Edit list"

@@ -1,37 +1,43 @@
 import React, { PropTypes } from 'react';
 import { connect } from 'react-redux';
-import FormBox from '../../components/FormBox';
 import Modal from '../../components/Modal';
-import InputBox from '../../components/InputBox';
+import _ListForm from '../forms/ListForm';
 import { updateList } from '../../actions/listsActions';
 import { hideModal } from '../../actions/modalActions'; 
 
-function EditListModal({ dispatch, list }) {
+function EditListModal({ dispatch, listId }) {
+  const ListForm = _ListForm(state => ({
+    initialValues: {
+      title: state.entities.lists[listId].title,
+    },
+  }));
+
+  function handleSubmit(values) {
+    return new Promise((resolve, reject) => {
+      dispatch(updateList.request({
+        id: listId,
+        props: values,
+        resolve,
+        reject,
+      }));
+    });
+  }
+
   return (
     <Modal
       title="Edit list"
       onCloseClick={() => dispatch(hideModal())}
     >
-      <FormBox
-        request={formData => dispatch(
-          updateList.request({ id: list.id, props: formData })
-        )}
-        onCancelClick={() => dispatch(hideModal())}
-        rows={[
-          <InputBox
-            name="title"
-            title="Title"
-            placeholder="Enter list title"
-            value={list.title}
-          />,
-        ]}
+      <ListForm
+        onSubmit={handleSubmit}
+        onFormBoxCancelClick={() => dispatch(hideModal())}
       />
     </Modal>
   );
 }
 
 EditListModal.propTypes = {
-  list: PropTypes.object.isRequired,
+  listId: PropTypes.string.isRequired,
   dispatch: PropTypes.func.isRequired,
 };
 

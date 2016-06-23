@@ -43,8 +43,10 @@ function validate(values) {
   return errors;
 }
 
-export default reduxForm({
-  form: 'list',
-  fields: ['title'],
-  validate,
-})(ListForm);
+export default function(mapStateToProps) {
+  return reduxForm({
+    form: 'list',
+    fields: ['title'],
+    validate,
+  }, mapStateToProps)(ListForm);
+}

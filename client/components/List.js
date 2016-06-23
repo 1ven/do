@@ -18,7 +18,7 @@ class List extends Component {
 
   handleEditClick() {
     const { onEditClick, data } = this.props;
-    onEditClick(data);
+    onEditClick(data.id);
   }
 
   render() {

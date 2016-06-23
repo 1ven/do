@@ -16,9 +16,9 @@ function mapStateToProps(state, ownProps) {
 
 function mapDispatchToProps(dispatch, ownProps) {
   return {
-    onListEditClick(list) {
+    onListEditClick(listId) {
       dispatch(
-        showModal(modalsNames.EDIT_LIST, { list })
+        showModal(modalsNames.EDIT_LIST, { listId })
       );
     },
 
