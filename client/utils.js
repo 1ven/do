@@ -44,10 +44,10 @@ export function handleReduxFormError(prop) {
   return prop.error && prop.touched ? prop.error : null;
 }
 
-export function handleReduxFormSubmit(dispatch, action) {
+export function handleReduxFormSubmit(dispatch, action, args) {
   return function(values) {
     return new Promise((resolve, reject) => {
-      dispatch(action({ ...values, resolve, reject }));
+      dispatch(action({ ...values, ...args, resolve, reject }));
     });
   };
 }
