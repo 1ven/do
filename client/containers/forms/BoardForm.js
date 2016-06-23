@@ -44,7 +44,7 @@ function validate(values) {
 }
 
 export default reduxForm({
-  form: 'create-board',
+  form: 'board',
   fields: ['title'],
   validate,
 })(BoardForm);
