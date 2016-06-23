@@ -2,7 +2,7 @@ import React, { PropTypes } from 'react';
 import { connect } from 'react-redux';
 import { handleReduxFormSubmit } from '../../utils';
 import Modal from '../../components/Modal';
-import CreateBoardForm from '../forms/CreateBoardForm';
+import BoardForm from '../forms/BoardForm';
 import { createBoard } from '../../actions/boardsActions';
 import { hideModal } from '../../actions/modalActions'; 
 
@@ -12,7 +12,7 @@ function CreateBoardModal({ dispatch }) {
       title="Create board"
       onCloseClick={() => dispatch(hideModal())}
     >
-      <CreateBoardForm
+      <BoardForm
         onSubmit={handleReduxFormSubmit(dispatch, createBoard.request)}
         onFormBoxCancelClick={() => dispatch(hideModal())}
       />

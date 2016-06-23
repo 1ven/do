@@ -4,7 +4,7 @@ import { handleReduxFormError } from '../../utils';
 import FormBox from '../../components/FormBox';
 import InputBox from '../../components/InputBox';
 
-function CreateBoardForm({
+function BoardForm({
   fields: {
     title,
   },
@@ -31,7 +31,7 @@ function CreateBoardForm({
   );
 }
 
-CreateBoardForm.propTypes = {
+BoardForm.propTypes = {
   onFormBoxCancelClick: PropTypes.func.isRequired,
 };
 
@@ -47,4 +47,4 @@ export default reduxForm({
   form: 'create-board',
   fields: ['title'],
   validate,
-})(CreateBoardForm);
+})(BoardForm);
