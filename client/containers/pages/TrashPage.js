@@ -9,37 +9,15 @@ import { fetchTrash, restoreEntry } from '../../actions/trashActions';
 const inflect = require('i')();
 
 class TrashPage  extends Component {
-  constructor(props) {
-    super(props);
-
-    this.handleRestoreClick = this.handleRestoreClick.bind(this);
-  }
-
   componentWillMount() {
-    const {
-      dispatch,
-      params: {
-        pageIndex,
-      },
-    } = this.props;
-
-    dispatch(fetchTrash.request({ pageIndex }));
+    this.props.fetchTrash();
   }
 
   componentWillReceiveProps(nextProps) {
     const nextPageIndex = nextProps.params.pageIndex;
     if (this.props.params.pageIndex !== nextPageIndex) {
-      this.props.dispatch(fetchTrash.request({
-        pageIndex: nextPageIndex,
-      }));
+      this.props.fetchTrash(nextPageIndex);
     }
-  }
-
-  handleRestoreClick(entryId, type) {
-    const table = inflect.pluralize(type);
-    this.props.dispatch(
-      restoreEntry.request({ entryId, table })
-    );
   }
 
   render() {
@@ -49,6 +27,7 @@ class TrashPage  extends Component {
       error,
       isFetching,
       lastUpdated,
+      onRestoreClick,
     } = this.props;
     const isEmpty = items.length === 0;
     const pageIndex = parseInt(this.props.params.pageIndex);
@@ -64,7 +43,7 @@ class TrashPage  extends Component {
         items={items}
         pageIndex={pageIndex}
         pagesLength={pagesLength}
-        onRestoreClick={this.handleRestoreClick}
+        onRestoreClick={onRestoreClick}
       />
     );
   }
@@ -78,7 +57,6 @@ TrashPage.propTypes = {
   pagesLength: PropTypes.number.isRequired,
   isFetching: PropTypes.bool.isRequired,
   lastUpdated: PropTypes.number,
-  dispatch: PropTypes.func.isRequired,
 };
 
 function mapStateToProps(state, ownProps) {
@@ -107,6 +85,24 @@ function mapStateToProps(state, ownProps) {
   };
 }
 
+function mapDispatchToProps(dispatch, ownProps) {
+  return {
+    onRestoreClick(entryId, type) {
+      dispatch(
+        restoreEntry.request({
+          table: inflect.pluralize(type),
+          entryId,
+        })
+      );
+    },
+
+    fetchTrash(pageIndex = ownProps.params.pageIndex) {
+      dispatch(fetchTrash.request({ pageIndex }));
+    },
+  };
+}
+
 export default connect(
-  mapStateToProps
+  mapStateToProps,
+  mapDispatchToProps
 )(TrashPage);

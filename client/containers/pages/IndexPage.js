@@ -11,45 +11,12 @@ import { fetchBoards, removeBoard, updateBoard } from '../../actions/boardsActio
 import { showModal } from '../../actions/modalActions';
 
 class IndexPage extends Component {
-  constructor(props) {
-    super(props);
-
-    this.handleAddBoardBtnClick = this.handleAddBoardBtnClick.bind(this);
-    this.handleBoardTileEditClick = this.handleBoardTileEditClick.bind(this);
-    this.handleBoardTileRemoveClick = this.handleBoardTileRemoveClick.bind(this);
-    this.handleBoardTileToggleStarredClick = this.handleBoardTileToggleStarredClick.bind(this);
-  }
-
   componentWillMount() {
-    this.props.dispatch(fetchBoards.request());
+    this.props.fetchBoards();
   }
 
   shouldComponentUpdate(nextProps) {
     return !(!this.props.isFetching && !this.props.lastUpdated && nextProps.isFetching);
-  }
-
-  handleAddBoardBtnClick() {
-    this.props.dispatch(
-      showModal(modalsNames.CREATE_BOARD)
-    );
-  }
-
-  handleBoardTileEditClick(boardId) {
-    this.props.dispatch(
-      showModal(modalsNames.EDIT_BOARD, {
-        boardId,
-      })
-    );
-  }
-
-  handleBoardTileRemoveClick(id) {
-    this.props.dispatch(removeBoard.request({ id }));
-  }
-
-  handleBoardTileToggleStarredClick(id, starred) {
-    this.props.dispatch(
-      updateBoard.request({ id, props: { starred: !starred } })
-    );
   }
 
   handleGroupTitleClick(groupTitle, isActive) {
@@ -67,16 +34,13 @@ class IndexPage extends Component {
       isFetching,
       lastUpdated,
       error,
+      onBoardTileRemoveClick,
+      onBoardTileEditClick,
+      onBoardTileToggleStarredClick,
+      onAddBoardBtnClick,
     } = this.props;
 
     const isEmpty = groups.length === 0;
-
-    const addBoardBtn = (
-      <Btn
-        text="Add new board"
-        onClick={this.handleAddBoardBtnClick}
-      />
-    );
 
     return (
       <div>
@@ -89,14 +53,19 @@ class IndexPage extends Component {
         ) : (
           <BoardsList
             groups={groups}
-            onBoardTileRemoveClick={this.handleBoardTileRemoveClick}
-            onBoardTileEditClick={this.handleBoardTileEditClick}
-            onBoardTileToggleStarredClick={this.handleBoardTileToggleStarredClick}
+            onBoardTileRemoveClick={onBoardTileRemoveClick}
+            onBoardTileEditClick={onBoardTileEditClick}
+            onBoardTileToggleStarredClick={onBoardTileToggleStarredClick}
             onGroupTitleClick={this.handleGroupTitleClick}
           />
         )}
         <BottomBox
-          button={addBoardBtn}
+          button={
+            <Btn
+              text="Add new board"
+              onClick={onAddBoardBtnClick}
+            />
+          }
         />
       </div>
     );
@@ -105,7 +74,6 @@ class IndexPage extends Component {
 
 IndexPage.propTypes = {
   groups: PropTypes.array.isRequired,
-  dispatch: PropTypes.func.isRequired,
   isFetching: PropTypes.bool.isRequired,
   lastUpdated: PropTypes.number,
   error: PropTypes.bool,
@@ -135,6 +103,44 @@ function getGroupObject(title, boards) {
   };
 }
 
+function mapDispatchToProps(dispatch) {
+  return {
+    fetchBoards() {
+      dispatch(fetchBoards.request());
+    },
+
+    onAddBoardBtnClick() {
+      dispatch(
+        showModal(modalsNames.CREATE_BOARD)
+      );
+    },
+
+    onBoardTileEditClick(boardId) {
+      dispatch(
+        showModal(modalsNames.EDIT_BOARD, {
+          boardId,
+        })
+      );
+    },
+
+    onBoardTileRemoveClick(id) {
+      dispatch(removeBoard.request({ id }));
+    },
+
+    onBoardTileToggleStarredClick(id, starred) {
+      dispatch(
+        updateBoard.request({
+          id,
+          props: {
+            starred: !starred
+          }
+        })
+      );
+    },
+  };
+}
+
 export default connect(
-  mapStateToProps
+  mapStateToProps,
+  mapDispatchToProps
 )(IndexPage);

@@ -8,19 +8,8 @@ import { updateCard, fetchCard, addColor, removeColor } from '../../actions/card
 import { createComment } from '../../actions/commentsActions';
 
 class FullCardModal extends Component {
-  constructor(props) {
-    super(props);
-
-    this.handleCancelClick = this.handleCancelClick.bind(this);
-  }
-
   componentWillMount() {
     this.props.loadCard();
-  }
-
-  handleCancelClick() {
-    const { boardId } = this.props.params;
-    browserHistory.push(`/boards/${boardId}`);
   }
 
   render() {
@@ -29,12 +18,16 @@ class FullCardModal extends Component {
       onEditCardFormSubmit,
       onSendCommentSubmit,
       onColorClick,
+      params: {
+        boardId,
+      },
     } = this.props;
 
     return card ? (
       <Modal
         title="Card"
         onCloseClick={this.handleCancelClick}
+        onCloseClick={() => browserHistory.push(`/boards/${boardId}`)}
       >
         <FullCard
           card={card}
