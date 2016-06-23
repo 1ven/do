@@ -56,6 +56,7 @@ function SignUpForm({
           tagName="button"
           modifiers={['full-width', 'blue']}
           text="Sign up"
+          spinner={submitting}
         />
       </SignRow>
     </form>
