@@ -1,8 +1,8 @@
 import React, { PropTypes } from 'react';
 import { connect } from 'react-redux';
-import FormBox from '../../components/FormBox';
+import { handleReduxFormSubmit } from '../../utils';
 import Modal from '../../components/Modal';
-import InputBox from '../../components/InputBox';
+import CardForm from '../forms/CardForm';
 import { createCard } from '../../actions/cardsActions';
 import { hideModal } from '../../actions/modalActions'; 
 
@@ -12,18 +12,11 @@ function CreateCardModal({ dispatch, boardId, listId }) {
       title="Create card"
       onCloseClick={() => dispatch(hideModal())}
     >
-      <FormBox
-        request={({ text }) => dispatch(
-          createCard.request({ boardId, listId, text })
+      <CardForm
+        onSubmit={handleReduxFormSubmit(
+          dispatch, createCard.request, { boardId, listId }
         )}
-        onCancelClick={() => dispatch(hideModal())}
-        rows={[
-          <InputBox
-            name="text"
-            title="Text"
-            placeholder="Enter card text"
-          />,
-        ]}
+        onFormBoxCancelClick={() => dispatch(hideModal())}
       />
     </Modal>
   );
