@@ -35,8 +35,10 @@ function* createBoardTask(action) {
     const payload = yield call(api.createBoard, action.payload.title);
     yield put(createBoard.success(payload));
     yield put(hideModal());
+    action.payload.resolve();
   } catch(err) {
     yield put(createBoard.failure(err.message));
+    action.payload.reject();
   }
 }
 
