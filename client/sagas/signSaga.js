@@ -20,16 +20,19 @@ function* signInTask(action) {
 }
 
 function* signUpTask(action) {
-  const { formData } = action.payload;
+  const { values, resolve, reject } = action.payload;
   try {
-    yield call(api.signUp, formData);
+    yield call(api.signUp, values);
     yield put(signUp.success());
     browserHistory.push('/');
+    resolve();
   } catch(err) {
-    yield put(signUp.failure(
-      err.message,
-      err.result
-    ));
+    const errors = err.result ? err.result.reduce((acc, e) => ({
+      ...acc,
+      [e.name]: e.message,
+    }), {}) : null;
+    yield put(signUp.failure(err.message));
+    reject(errors);
   }
 }
 
