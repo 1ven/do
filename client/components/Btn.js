@@ -1,6 +1,6 @@
 import React, { PropTypes } from 'react';
 import { addModifiers } from '../utils';
-import Icon from './Icon';
+import Spinner from './Spinner';
 
 function Btn({
   text,
@@ -18,7 +18,7 @@ function Btn({
     <div>
       {text}
       <div className="b-btn__spinner">
-        <Icon name="spinner" />
+        <Spinner />
       </div>
     </div>
   ) : text;
