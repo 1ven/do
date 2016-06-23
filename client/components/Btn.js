@@ -1,20 +1,34 @@
 import React, { PropTypes } from 'react';
 import { addModifiers } from '../utils';
-import assign from 'lodash/assign';
+import Icon from './Icon';
 
 function Btn({
-    text,
-    tagName,
-    modifiers,
-    onClick,
-    nodeAttrs,
+  text,
+  tagName,
+  modifiers,
+  onClick,
+  nodeAttrs,
+  spinner,
 }) {
-  const className = addModifiers('b-btn', modifiers);
+  const className = addModifiers('b-btn', [
+    ...modifiers,
+    ...spinner ? ['has-spinner'] : [],
+  ]);
+  const children = spinner ? (
+    <div>
+      {text}
+      <div className="b-btn__spinner">
+        <Icon name="spinner" />
+      </div>
+    </div>
+  ) : text;
 
-  return React.createElement(tagName, assign({}, {
+  return React.createElement(tagName, {
+    ...nodeAttrs,
     className,
     onClick,
-  }, nodeAttrs), text);
+    disabled: spinner,
+  }, children);
 }
 
 Btn.defaultProps = {

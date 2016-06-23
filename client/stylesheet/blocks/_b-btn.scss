@@ -14,27 +14,41 @@
   text-decoration: none;
   outline: 0;
   @include no-select();
-  &:hover {
+  &__spinner {
+    width: 20px;
+    height: 20px;
+    position: absolute;
+    @include align()
+  }
+  &:disabled {
+    cursor: not-allowed;
+    opacity: .8;
+  }
+  &:hover:not(:disabled) {
     background-color: darken($turquoise, 5%);
   }
-  &:active {
+  &:active:not(:disabled) {
     background-color: darken($turquoise, 10%);
+  }
+  &_has-spinner {
+    position: relative;
+    color: transparent;
   }
   &_red {
     background-color: $red;
-    &:hover {
+    &:hover:not(:disabled) {
       background-color: darken($red, 5%);
     }
-    &:active {
+    &:active:not(:disabled) {
       background-color: darken($red, 10%);
     }
   }
   &_blue {
     background-color: $blue;
-    &:hover {
+    &:hover:not(:disabled) {
       background-color: darken($blue, 5%);
     }
-    &:active {
+    &:active:not(:disabled) {
       background-color: darken($blue, 10%);
     }
   }
