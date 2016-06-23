@@ -5,17 +5,17 @@ import _BoardForm from '../forms/BoardForm';
 import { updateBoard } from '../../actions/boardsActions';
 import { hideModal } from '../../actions/modalActions'; 
 
-function EditBoardModal({ dispatch, board }) {
+function EditBoardModal({ dispatch, boardId }) {
   const BoardForm = _BoardForm(state => ({
     initialValues: {
-      title: state.entities.boards[board.id].title,
+      title: state.entities.boards[boardId].title,
     },
   }));
 
   function handleSubmit(values) {
     return new Promise((resolve, reject) => {
       dispatch(updateBoard.request({
-        id: board.id,
+        id: boardId,
         props: values,
         resolve,
         reject,
@@ -41,12 +41,4 @@ EditBoardModal.propTypes = {
   dispatch: PropTypes.func.isRequired,
 };
 
-function mapStateToProps(state, ownProps) {
-  return {
-    board: state.entities.boards[ownProps.boardId],
-  };
-}
-
-export default connect(
-  mapStateToProps
-)(EditBoardModal);
+export default connect()(EditBoardModal);
