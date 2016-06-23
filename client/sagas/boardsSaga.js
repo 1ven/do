@@ -51,13 +51,16 @@ function* removeBoardTask(action) {
   }
 }
 
-function* updateBoardTask({ payload: { id, props, params } }) {
+function* updateBoardTask(action) {
+  const { id, props, params } = action.payload;
   try {
     const payload = yield call(api.updateBoard, id, props, params);
     yield put(updateBoard.success(payload));
     yield put(hideModal());
+    action.payload.resolve();
   } catch(err) {
     yield put(updateBoard.failure(err.message));
+    action.payload.reject();
   }
 }
 

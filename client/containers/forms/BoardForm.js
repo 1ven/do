@@ -43,8 +43,10 @@ function validate(values) {
   return errors;
 }
 
-export default reduxForm({
-  form: 'board',
-  fields: ['title'],
-  validate,
-})(BoardForm);
+export default function(mapStateToProps) {
+  return reduxForm({
+    form: 'board',
+    fields: ['title'],
+    validate,
+  }, mapStateToProps)(BoardForm);
+}
