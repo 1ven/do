@@ -1,11 +1,13 @@
 .b-sign {
   min-height: 100%;
+  padding: 40px 0;
   display: flex;
   align-items: center;
   justify-content: center;
   background-image: url(/static/images/sign-bg.jpg);
   background-size: cover;
   background-position: center;
+  position: relative;
   &__middle {
     position: relative;
     z-index: 1;

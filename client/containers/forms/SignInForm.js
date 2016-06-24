@@ -1,16 +1,31 @@
 import React, { PropTypes } from 'react';
-import SignForm from './SignForm';
-import Btn from './Btn';
-import Checkbox from './Checkbox';
+import { reduxForm } from 'redux-form';
+import Btn from '../../components/Btn';
+import SignRow from '../../components/SignRow';
+import Checkbox from '../../components/Checkbox';
 
-function SignIn({ onSubmit, errors }) {
+function SignIn({ fields, submitting, handleSubmit }) {
+  const rows = [
+    <input className="b-input-a" type="text" placeholder="Username" name="username" />,
+    <input className="b-input-a" type="password" placeholder="Password" name="password" />,
+  ];
   return (
-    <SignForm
-      onSubmit={onSubmit}
-      errors={errors}
-      rows={[
-        <input className="b-input-a" type="text" placeholder="Username" name="username" />,
-        <input className="b-input-a" type="password" placeholder="Password" name="password" />,
+    <form
+      className="b-sign-form"
+      onSubmit={handleSubmit}
+    >
+      {rows.map((row, i) => {
+        const value = fields[row.props.name];
+        return (
+          <SignRow
+            key={i}
+            error={value.error && value.touched ? value.error : null}
+          >
+            {React.cloneElement(row, { ...value })}
+          </SignRow>
+        );
+      })}
+      <SignRow>
         <div className="b-items">
           <div className="b-items__item">
             <Checkbox
@@ -20,26 +35,22 @@ function SignIn({ onSubmit, errors }) {
               text="Remember me"
             />
           </div>
-          <div className="b-items__item">
-            <a className="b-white-link">
-              Forgot password ?
-            </a>
-          </div>
-        </div>,
+        </div>
+      </SignRow>
+      <SignRow>
         <Btn
           type="submit"
           tagName="button"
           modifiers={['full-width', 'blue']}
           text="Sign in"
-        />,
-      ]}
-    />
+          spinner={submitting}
+        />
+      </SignRow>
+    </form>
   );
 }
 
-SignIn.propTypes = {
-  onSubmit: PropTypes.func.isRequired,
-  errors: PropTypes.array,
-};
-
-export default SignIn;
+export default reduxForm({
+  form: 'sign-in',
+  fields: ['username', 'password', 'remember'],
+})(SignIn);
