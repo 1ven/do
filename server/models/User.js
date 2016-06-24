@@ -50,20 +50,14 @@ const User = {
     return validator.validate(props, {
       username: [
         {
-          assert: value => !! value,
-          message: 'Username is required',
-        },
-        {
-          assert: value => value.length >= 3 && value.length <= 20,
-          message: 'Must be between 3 and 20 characters long',
-        },
-        {
-          assert: value => !! value.match(/^\S*$/g),
-          message: 'Must not contain spaces',
-        },
-        {
           assert: value => this.checkAvailability('username', value),
           message: 'Username is already taken',
+        },
+      ],
+      email: [
+        {
+          assert: value => this.checkAvailability('email', value),
+          message: 'Email is already taken',
         },
       ],
       password: [
@@ -84,20 +78,6 @@ const User = {
         {
           assert: value => value === props.password + '',
           message: 'Passwords not match',
-        },
-      ],
-      email: [
-        {
-          assert: value => !! value,
-          message: 'Email is required',
-        },
-        {
-          assert: value => !! value.match(/^[A-Za-z0-9._%-]+@[A-Za-z0-9.-]+[.][A-Za-z]+$/g),
-          message: 'Invalid email',
-        },
-        {
-          assert: value => this.checkAvailability('email', value),
-          message: 'Email is already taken',
         },
       ],
     });

@@ -1,22 +1,20 @@
+import React, { PropTypes } from 'react';
 import { connect } from 'react-redux';
-import SignIn from '../../components/SignIn';
+import SignInForm from '../forms/SignInForm';
 import { signIn } from '../../actions/signActions';
 
-function mapDispatchToProps(dispatch) {
-  return {
-    onSubmit(formData) {
-      dispatch(signIn.request({ formData }));
-    },
-  };
+function SignInPage({ dispatch }) {
+  function handleSubmit(values) {
+    return new Promise((resolve, reject) => {
+      dispatch(signIn.request({ values, resolve, reject }));
+    });
+  }
+
+  return (
+    <SignInForm
+      onSubmit={handleSubmit}
+    />
+  );
 }
 
-function mapStateToProps(state) {
-  return {
-    errors: state.pages.signIn.errors,
-  };
-}
-
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(SignIn);
+export default connect()(SignInPage);

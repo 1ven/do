@@ -1,27 +1,23 @@
 import React, { PropTypes } from 'react';
 import { connect } from 'react-redux';
-import FormBox from '../../components/FormBox';
+import { handleReduxFormSubmit } from '../../utils';
 import Modal from '../../components/Modal';
-import InputBox from '../../components/InputBox';
+import _ListForm from '../forms/ListForm';
 import { createList } from '../../actions/listsActions';
 import { hideModal } from '../../actions/modalActions'; 
 
 function CreateListModal({ dispatch, boardId }) {
+  const ListForm = _ListForm();
   return (
     <Modal
       title="Edit list"
       onCloseClick={() => dispatch(hideModal())}
     >
-      <FormBox
-        onCancelClick={() => dispatch(hideModal())}
-        request={({ title }) => dispatch(createList.request({ boardId, title }))}
-        rows={[
-          <InputBox
-            title="Title"
-            name="title"
-            placeholder="Enter list title"
-          />,
-        ]}
+      <ListForm
+        onSubmit={handleReduxFormSubmit(
+          dispatch, createList.request, { boardId }
+        )}
+        onFormBoxCancelClick={() => dispatch(hideModal())}
       />
     </Modal>
   );

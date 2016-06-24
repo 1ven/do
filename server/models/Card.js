@@ -2,25 +2,22 @@ const _ = require('lodash');
 const shortid = require('shortid');
 const pgp = require('pg-promise');
 const db = require('../db');
-const validator = require('../utils/validator');
 
 const Card = {
   create(listId, cardData) {
     const cardId = shortid.generate();
 
-    return this.validate(cardData).then(() => {
-      return db.one(
-        `INSERT INTO cards (id, text) VALUES ($1, $2) RETURNING id`,
-        [cardId, cardData.text]
-      )
-        .then(card => {
-          return db.one(
-            `INSERT INTO lists_cards VALUES ($1, $2);
-            SELECT id, text, link FROM cards WHERE id = $2`,
-            [listId, cardId]
-          );
-        });
-    });
+    return db.one(
+      `INSERT INTO cards (id, text) VALUES ($1, $2) RETURNING id`,
+      [cardId, cardData.text]
+    )
+      .then(card => {
+        return db.one(
+          `INSERT INTO lists_cards VALUES ($1, $2);
+          SELECT id, text, link FROM cards WHERE id = $2`,
+          [listId, cardId]
+        );
+      });
   },
 
   getColors(cardId) {
@@ -48,28 +45,17 @@ const Card = {
     );
   },
 
-  validate(props) {
-    return validator.validate(props, {
-      text: [{
-        assert: value => !! value,
-        message: 'Text is required',
-      }],
-    });
-  },
-
   update(cardId, data) {
     const _data = _.pick(data, ['text']);
 
     const props = _.keys(_data).map(k => pgp.as.name(k)).join();
     const values = _.values(_data);
 
-    return this.validate(_data).then(() => {
-      return db.one(
-        `UPDATE cards SET ($2^) = ($3:csv)
-        WHERE id = $1 RETURNING id, $2^`,
-        [cardId, props, values]
-      );
-    });
+    return db.one(
+      `UPDATE cards SET ($2^) = ($3:csv)
+      WHERE id = $1 RETURNING id, $2^`,
+      [cardId, props, values]
+    );
   },
 
   drop(cardId) {

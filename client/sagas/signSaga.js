@@ -6,30 +6,28 @@ import { call, put } from 'redux-saga/effects'
 import { signIn, signUp, signOut } from '../actions/signActions';
 
 function* signInTask(action) {
-  const { formData } = action.payload;
+  const { values, resolve, reject } = action.payload;
   try {
-    yield call(api.signIn, formData);
+    yield call(api.signIn, values);
     yield put(signIn.success());
+    resolve();
     browserHistory.push('/');
   } catch(err) {
-    yield put(signIn.failure(
-      err.message,
-      err.result
-    ));
+    yield put(signIn.failure(err.message));
+    reject(prettyErrors(err.result));
   }
 }
 
 function* signUpTask(action) {
-  const { formData } = action.payload;
+  const { values, resolve, reject } = action.payload;
   try {
-    yield call(api.signUp, formData);
+    yield call(api.signUp, values);
     yield put(signUp.success());
+    resolve();
     browserHistory.push('/');
   } catch(err) {
-    yield put(signUp.failure(
-      err.message,
-      err.result
-    ));
+    yield put(signUp.failure(err.message));
+    reject(prettyErrors(err.result));
   }
 }
 
@@ -41,6 +39,13 @@ function* signOutTask() {
   } catch(err) {
     yield put(signOut.failure(err.message));
   }
+}
+
+function prettyErrors(result) {
+  return result ? result.reduce((acc, e) => ({
+    ...acc,
+    [e.name]: e.message,
+  }), {}) : null;
 }
 
 function* watchSignIn() {

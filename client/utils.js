@@ -39,3 +39,15 @@ export function addModifiers(className, modifiers) {
 
   return className;
 }
+
+export function handleReduxFormError(prop) {
+  return prop.error && prop.touched ? prop.error : null;
+}
+
+export function handleReduxFormSubmit(dispatch, action, args) {
+  return function(values) {
+    return new Promise((resolve, reject) => {
+      dispatch(action({ ...values, ...args, resolve, reject }));
+    });
+  };
+}

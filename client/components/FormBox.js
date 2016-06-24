@@ -1,28 +1,14 @@
 import React, { PropTypes, Component } from 'react';
-import Form from './Form';
 import Btn from './Btn';
 
 class FormBox extends Component {
-  constructor(props) {
-    super(props);
-
-    this.state = {
-      errors: [],
-    };
-  }
-
-  getError(name) {
-    const error = this.state.errors.filter(e => e.name === name)[0];
-    return error ? error.message : null;
-  }
-
   render() {
-    const { rows, onCancelClick, request } = this.props;
+    const { rows, submitting, onCancelClick, onSubmit } = this.props;
 
     return (
-      <Form
+      <form
+        onSubmit={onSubmit}
         className="b-form-box"
-        onSubmit={request}
       >
         <div className="b-form-box__rows">
           {rows.map((row, i) => (
@@ -30,9 +16,7 @@ class FormBox extends Component {
               className="b-form-box__row"
               key={i}
             >
-              {React.cloneElement(row, {
-                error: this.getError(row.props.name),
-              })}
+              {row}
             </div>
           ))}
         </div>
@@ -52,18 +36,20 @@ class FormBox extends Component {
                 type: 'submit',
               }}
               modifiers={['md']}
+              spinner={submitting}
             />
           </div>
         </div>
-      </Form>
+      </form>
     );
   }
 }
 
 FormBox.propTypes = {
-  rows: PropTypes.array.isRequired,
-  request: PropTypes.func.isRequired,
   onCancelClick: PropTypes.func.isRequired,
+  onSubmit: PropTypes.func.isRequired,
+  rows: PropTypes.array.isRequired,
+  submitting: PropTypes.bool,
 };
 
 export default FormBox;

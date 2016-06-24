@@ -68,23 +68,6 @@ describe('Board', () => {
     });
   });
 
-  describe('validateAndUpdate', () => {
-    it('should throw if validation is failed', () => {
-      const promise = Board.validateAndUpdate(boardId, {});
-      return assert.isRejected(promise, /Validation error/);
-    });
-
-    it('should update board if provided data is valid', () => {
-      return Board.validateAndUpdate(boardId, { title: 'new title' })
-        .then(props => {
-          assert.deepEqual(props, {
-            id: boardId,
-            title: 'new title',
-          });
-        });
-    });
-  });
-
   describe('drop', () => {
     it('should assign to deleted prop current timestamp', () => {
       return Board.drop(board2Id)
@@ -168,25 +151,6 @@ describe('Board', () => {
             starred: true,
           });
         });
-    });
-  });
-
-  describe('validate', () => {
-    it('should not be rejected if all props are valid', () => {
-      return Board.validate({ title: 'test board' })
-        .catch(err => {
-          assert.deepEqual(err.validation, []);
-        });
-    });
-
-    describe('title', () => {
-      it('should be rejected if title is not provided', () => {
-        return Board.validate({})
-          .catch(getValidationMessages)
-          .then(messages => {
-            assert.include(messages, 'Title is required');
-          });
-      });
     });
   });
 });

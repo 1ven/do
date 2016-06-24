@@ -103,34 +103,6 @@ describe('User', () => {
     });
 
     describe('username', () => {
-      it('should be rejected, when username is not between 3 and 20 characters', () => {
-        return User.validate(_.assign({}, props, {
-          username: 'ab',
-        }))
-          .catch(getValidationMessages)
-          .then(messages => {
-            assert.include(messages, 'Must be between 3 and 20 characters long');
-          });
-      });
-
-      it('should be rejected, when username contains spaces', () => {
-        return User.validate(_.assign({}, props, {
-          username: 'i am john',
-        }))
-          .catch(getValidationMessages)
-          .then(messages => {
-            assert.include(messages, 'Must not contain spaces');
-          });
-      });
-
-      it('should be rejected, when username is not provided', () => {
-        return User.validate({})
-          .catch(getValidationMessages)
-          .then(messages => {
-            assert.include(messages, 'Username is required');
-          });
-      });
-
       it('should be rejected when username is already exists', () => {
         const id = shortid.generate();
         return db.none(
@@ -188,24 +160,6 @@ describe('User', () => {
     });
 
     describe('email', () => {
-      it('should be rejected, when email is invalid', () => {
-        return User.validate(_.assign({}, props, {
-          email: 'not valid email',
-        }))
-          .catch(getValidationMessages)
-          .then(messages => {
-            assert.include(messages, 'Invalid email');
-          });
-      });
-
-      it('should be rejected, when email is not provided', () => {
-        return User.validate({})
-          .catch(getValidationMessages)
-          .then(messages => {
-            assert.include(messages, 'Email is required');
-          });
-      });
-
       it('should be rejected when email is already exists', () => {
         const id = shortid.generate();
         return db.none(
