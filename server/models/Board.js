@@ -2,7 +2,6 @@ const _ = require('lodash');
 const shortid = require('shortid');
 const pgp = require('pg-promise');
 const db = require('../db');
-const validator = require('../utils/validator');
 
 const Board = {
   update(boardId, data) {
@@ -17,12 +16,6 @@ const Board = {
     );
   },
 
-  validateAndUpdate(id, data) {
-    return this.validate(data).then(() =>
-      this.update(id, data)
-    );
-  },
-
   drop(boardId) {
     const now = Math.round(Date.now() / 1000);
     return db.one(
@@ -32,32 +25,21 @@ const Board = {
     );
   },
 
-  validate(props) {
-    return validator.validate(props, {
-      title: [{
-        assert: value => !! value,
-        message: 'Title is required',
-      }],
-    });
-  },
-
   create(userId, props) {
     const id = shortid.generate();
 
-    return this.validate(props).then(() => {
-      return db.one(
-        `INSERT INTO boards (id, title)
-        VALUES ($1, $2) RETURNING id, title, link`,
-        [id, props.title]
-      )
-        .then(board => {
-          return db.none(
-            `INSERT INTO users_boards VALUES ($1, $2)`,
-            [userId, board.id]
-          )
-            .then(() => board);
-        });
-    });
+    return db.one(
+      `INSERT INTO boards (id, title)
+      VALUES ($1, $2) RETURNING id, title, link`,
+      [id, props.title]
+    )
+      .then(board => {
+        return db.none(
+          `INSERT INTO users_boards VALUES ($1, $2)`,
+          [userId, board.id]
+        )
+          .then(() => board);
+      });
   },
 
   findById(id) {
