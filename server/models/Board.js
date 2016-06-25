@@ -87,7 +87,8 @@ const Board = {
       FROM boards AS b
       INNER JOIN users_boards AS ub ON (user_id = $1 AND ub.board_id = b.id)
       WHERE deleted IS NULL
-      GROUP BY b.id`,
+      GROUP BY b.id, ub.board_index
+      ORDER BY ub.board_index`,
       [userId]
     );
   },
