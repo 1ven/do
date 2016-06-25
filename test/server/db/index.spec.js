@@ -99,6 +99,7 @@ describe('tables', () => {
         .then(columns => {
           assert.equal(columns.user_id, 'text');
           assert.equal(columns.board_id, 'text');
+          assert.equal(columns.board_index, 'integer');
         });
     });
 
