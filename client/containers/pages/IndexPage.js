@@ -2,12 +2,11 @@ import React, { PropTypes, Component } from 'react';
 import cookie from 'js-cookie';
 import { connect } from 'react-redux';
 import modalsNames from '../../constants/modalsNames';
-import BoardsList from '../../components/BoardsList.js';
 import Loader from '../../components/Loader';
 import BottomBox from '../../components/BottomBox';
 import Btn from '../../components/Btn';
-import Animation from '../../components/Animation';
-import { fetchBoards, removeBoard, updateBoard } from '../../actions/boardsActions';
+import BoardsGroups from '../../components/BoardsGroups';
+import { fetchBoards } from '../../actions/boardsActions';
 import { showModal } from '../../actions/modalActions';
 
 class IndexPage extends Component {
@@ -34,9 +33,6 @@ class IndexPage extends Component {
       isFetching,
       lastUpdated,
       error,
-      onBoardTileRemoveClick,
-      onBoardTileEditClick,
-      onBoardTileToggleStarredClick,
       onAddBoardBtnClick,
     } = this.props;
 
@@ -51,11 +47,8 @@ class IndexPage extends Component {
         ) : isFetching || !lastUpdated ? (
           <Loader />
         ) : (
-          <BoardsList
+          <BoardsGroups
             groups={groups}
-            onBoardTileRemoveClick={onBoardTileRemoveClick}
-            onBoardTileEditClick={onBoardTileEditClick}
-            onBoardTileToggleStarredClick={onBoardTileToggleStarredClick}
             onGroupTitleClick={this.handleGroupTitleClick}
           />
         )}
@@ -82,24 +75,16 @@ IndexPage.propTypes = {
 function mapStateToProps(state) {
   const { boards } = state.entities;
   const { ids, isFetching, lastUpdated, error } = state.pages.main;
-  const items = ids.map(id => boards[id]);
+  const starredIds = ids.filter(id => boards[id].starred);
 
   return {
     groups: [
-      getGroupObject('Starred boards', items.filter(b => b.starred)),
-      getGroupObject('My boards', items),
+      getGroupObject('Starred boards', starredIds),
+      getGroupObject('My boards', ids),
     ],
     isFetching,
     lastUpdated,
     error,
-  };
-}
-
-function getGroupObject(title, boards) {
-  return {
-    hidden: cookie.get(`${title}_accordion_hidden`),
-    title,
-    boards,
   };
 }
 
@@ -114,29 +99,14 @@ function mapDispatchToProps(dispatch) {
         showModal(modalsNames.CREATE_BOARD)
       );
     },
+  };
+}
 
-    onBoardTileEditClick(boardId) {
-      dispatch(
-        showModal(modalsNames.EDIT_BOARD, {
-          boardId,
-        })
-      );
-    },
-
-    onBoardTileRemoveClick(id) {
-      dispatch(removeBoard.request({ id }));
-    },
-
-    onBoardTileToggleStarredClick(id, starred) {
-      dispatch(
-        updateBoard.request({
-          id,
-          props: {
-            starred: !starred
-          }
-        })
-      );
-    },
+function getGroupObject(title, ids) {
+  return {
+    hidden: cookie.get(`${title}_accordion_hidden`),
+    title,
+    ids,
   };
 }
 

@@ -1,14 +1,11 @@
 import React, { PropTypes } from 'react';
-import BoardTile from './BoardTile';
 import Icon from './Icon';
 import Toggle from './Toggle';
 import Animation from './Animation';
+import BoardsContainer from '../containers/BoardsContainer';
 
-function BoardsList({
+function BoardsGroups({
   groups,
-  onBoardTileRemoveClick,
-  onBoardTileEditClick,
-  onBoardTileToggleStarredClick,
   onGroupTitleClick,
 }) {
   return (
@@ -26,7 +23,7 @@ function BoardsList({
                     {group.title}
                     &nbsp;
                     <span className="b-boards-list__count">
-                      ({group.boards.length})
+                      ({group.ids.length})
                     </span>
                   </span>
                   <span className="b-boards-list__line" />
@@ -36,30 +33,7 @@ function BoardsList({
                 </div>
               }
               content={
-                !group.boards.length ? (
-                  <div className="b-boards-list__not-found">
-                    Boards not found
-                  </div>
-                ) : (
-                  <Animation
-                    name="a-fade-in"
-                    className="b-boards-list__items"
-                  >
-                    {group.boards.map((board, i) =>
-                      <div
-                        className="b-boards-list__item"
-                        key={i}
-                      >
-                        <BoardTile
-                          data={board}
-                          onRemoveClick={onBoardTileRemoveClick}
-                          onEditClick={onBoardTileEditClick}
-                          onToggleStarredClick={onBoardTileToggleStarredClick}
-                        />
-                      </div>
-                    )}
-                  </Animation>
-                )
+                <BoardsContainer ids={group.ids} />
               }
               onLinkClick={isActive => onGroupTitleClick(group.title, isActive)}
               isActive={!group.hidden}
@@ -72,17 +46,14 @@ function BoardsList({
   );
 }
 
-BoardsList.propTypes = {
+BoardsGroups.propTypes = {
   groups: PropTypes.arrayOf(
     PropTypes.shape({
       title: PropTypes.text,
-      boards: PropTypes.array,
+      ids: PropTypes.array,
     })
   ).isRequired,
-  onBoardTileRemoveClick: PropTypes.func.isRequired,
-  onBoardTileEditClick: PropTypes.func.isRequired,
-  onBoardTileToggleStarredClick: PropTypes.func.isRequired,
   onGroupTitleClick: PropTypes.func.isRequired,
 };
 
-export default BoardsList;
+export default BoardsGroups;

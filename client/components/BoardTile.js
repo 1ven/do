@@ -1,5 +1,6 @@
 import React, { PropTypes } from 'react';
 import { Link } from 'react-router';
+import { addModifiers } from '../utils';
 import IconItem from './IconItem';
 import Icon from './Icon';
 import MenuList from './MenuList';
@@ -7,6 +8,7 @@ import ToggleMenu from './ToggleMenu';
 
 function BoardTile({
   data,
+  isEmpty,
   onRemoveClick,
   onEditClick,
   onToggleStarredClick,
@@ -19,21 +21,12 @@ function BoardTile({
     listsLength,
     cardsLength,
   } = data;
-  const menu = (
-    <MenuList
-      modifiers={['sm']}
-      items={[{
-        title: 'Edit',
-        onClick: () => onEditClick(id),
-      }, {
-        title: 'Remove',
-        onClick: () => onRemoveClick(id),
-      }]}
-    />
+  const rootClassName = addModifiers('b-board-tile',
+    isEmpty ? ['b-board-tile_empty'] : []
   );
 
   return (
-    <div className="b-board-tile">
+    <div className={rootClassName}>
       <div className="b-board-tile__top">
         <div className="b-board-tile__left">
           <span className="b-board-tile__title">{title}</span>
@@ -52,7 +45,18 @@ function BoardTile({
             </a>
           </div>
           <div className="b-board-tile__right-item">
-            <ToggleMenu menu={menu} />
+            <ToggleMenu menu={
+              <MenuList
+                modifiers={['sm']}
+                items={[{
+                  title: 'Edit',
+                  onClick: () => onEditClick(id),
+                }, {
+                  title: 'Remove',
+                  onClick: () => onRemoveClick(id),
+                }]}
+              />
+            } />
           </div>
         </div>
       </div>
@@ -99,6 +103,7 @@ BoardTile.propTypes = {
     listsLength: PropTypes.number.isRequired,
     cardsLength: PropTypes.number.isRequired,
   }),
+  isEmpty: PropTypes.bool.isRequired,
   onRemoveClick: PropTypes.func.isRequired,
   onEditClick: PropTypes.func.isRequired,
   onToggleStarredClick: PropTypes.func.isRequired,
