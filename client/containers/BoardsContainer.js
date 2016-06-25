@@ -9,7 +9,6 @@ import Boards from '../components/Boards';
 /* import HTML5Backend from 'react-dnd-html5-backend'; */
 /* import DraggableBoardTile from '../components/DraggableBoardTile'; */
 
-// change classnames
 function BoardsContainer({
   boards,
   onBoardTileRemoveClick,
@@ -17,7 +16,7 @@ function BoardsContainer({
   onBoardTileToggleStarredClick,
 }) {
   return !boards.length ? (
-    <div className="b-boards-list__not-found">
+    <div className="b-boards-not-found">
       Boards not found
     </div>
   ) : (

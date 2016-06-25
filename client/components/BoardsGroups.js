@@ -9,25 +9,25 @@ function BoardsGroups({
   onGroupTitleClick,
 }) {
   return (
-    <div className="b-boards-list">
+    <div className="b-boards-groups">
       <div className="b-container">
         {groups.map((group, i) => (
           <div
-            className="b-boards-list__group"
+            className="b-boards-groups__group"
             key={i}
           >
             <Toggle
               link={
-                <div className="b-boards-list__top">
-                  <span className="b-boards-list__group-title">
+                <div className="b-boards-groups__top">
+                  <span className="b-boards-groups__group-title">
                     {group.title}
                     &nbsp;
-                    <span className="b-boards-list__count">
+                    <span className="b-boards-groups__count">
                       ({group.ids.length})
                     </span>
                   </span>
-                  <span className="b-boards-list__line" />
-                  <div className="b-boards-list__toggle-icon">
+                  <span className="b-boards-groups__line" />
+                  <div className="b-boards-groups__toggle-icon">
                     <Icon name="chevron-down" />
                   </div>
                 </div>

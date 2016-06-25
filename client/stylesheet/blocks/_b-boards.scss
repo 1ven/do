@@ -1,0 +1,9 @@
+.b-boards {
+  display: flex;
+  flex-wrap: wrap;
+  margin: -10px;
+  &__item {
+    width: 25%;
+    padding: 10px;
+  }
+}

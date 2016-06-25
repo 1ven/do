@@ -8,10 +8,10 @@ function Boards({
   onToggleStarredClick,
 }) {
   return (
-    <div className="b-boards-list__items">
+    <div className="b-boards">
       {items.map((board, i) =>
         <div
-          className="b-boards-list__item"
+          className="b-boards__item"
           key={i}
         >
           <BoardTile
