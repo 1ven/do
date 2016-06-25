@@ -68,8 +68,7 @@ const Board = {
         GROUP BY l.id
       ) AS l ON (l.id = list_id)
       WHERE b.id = $1 AND deleted IS NULL
-      GROUP BY b.id
-      ORDER BY b.index`,
+      GROUP BY b.id`,
       [id]
     );
   },
@@ -88,8 +87,7 @@ const Board = {
       FROM boards AS b
       INNER JOIN users_boards AS ub ON (user_id = $1 AND ub.board_id = b.id)
       WHERE deleted IS NULL
-      GROUP BY b.id
-      ORDER BY b.index`,
+      GROUP BY b.id`,
       [userId]
     );
   },
@@ -101,6 +99,8 @@ const Board = {
       [boardId]
     );
   },
+
+  move(sourceId, targetId) {},
 };
 
 module.exports = Board;

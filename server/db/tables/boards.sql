@@ -1,6 +1,5 @@
 CREATE TABLE IF NOT EXISTS boards(
   id text PRIMARY KEY,
-  index serial NOT NULL UNIQUE,
   created_at integer DEFAULT extract(epoch from now()),
   title text NOT NULL CHECK (title <> ''),
   link text NOT NULL UNIQUE CHECK (
