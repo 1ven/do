@@ -1,4 +1,5 @@
 const _ = require('lodash');
+const Promise = require('bluebird');
 const shortid = require('shortid');
 const pgp = require('pg-promise');
 const db = require('../db');
@@ -101,7 +102,37 @@ const Board = {
     );
   },
 
-  move(sourceId, targetId) {},
+  move(sourceId, targetId) {
+    const query = 'SELECT board_index FROM users_boards WHERE board_index = $1';
+    return Promise.all([
+      db.one(query, [sourceId]),
+      db.one(query, [targetId]),
+    ])
+      .then(result => result.map(entry => entry.board_index))
+      .then(indexes => {
+        const sourceIndex = indexes[0];
+        const targetIndex = indexes[1];
+
+        return db.one(`SELECT max(board_index) FROM users_boards`)
+          .then(result => result.max + 10)
+          .then(tempIndex => {
+            return db.none(
+              `UPDATE users_boards SET board_index = $4
+              WHERE board_id = $3;
+              ${sourceIndex < targetIndex ?
+                `UPDATE users_boards SET board_index = board_index - 1
+                WHERE board_index > $1 AND board_index <= $2` :
+
+                `UPDATE users_boards SET board_index = board_index + 1
+                WHERE board_index < $1 AND board_index >= $2`
+              };
+              UPDATE users_boards SET board_index = $2
+              WHERE board_id = $3`,
+              [sourceIndex, targetIndex, sourceId, tempIndex]
+            );
+          })
+      });
+  },
 };
 
 module.exports = Board;

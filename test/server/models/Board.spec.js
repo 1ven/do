@@ -154,62 +154,75 @@ describe('Board', () => {
     });
   });
 
-  /* describe('move', () => { */
-  /*   beforeEach(() => recreateTables().then(() => db.none( */
-  /*     `INSERT INTO boards (id, title) VALUES */
-  /*       ('1', 'board 1'), */
-  /*       ('2', 'board 2'), */
-  /*       ('3', 'board 3'), */
-  /*       ('4', 'board 4'), */
-  /*       ('5', 'board 5')` */
-  /*   ))); */
+  describe('move', () => {
+    beforeEach(() => recreateTables().then(() => db.none(
+      `INSERT INTO users(id, username, email, hash, salt)
+      VALUES ($1, 'test', 'test@test.com', 'hash', 'salt');
+      INSERT INTO boards (id, title) VALUES
+        ('1', 'board 1'),
+        ('2', 'board 2'),
+        ('3', 'board 3'),
+        ('4', 'board 4'),
+        ('5', 'board 5');
+      INSERT INTO users_boards VALUES
+        ($1, '1'), ($1, '2'), ($1, '3'), ($1, '4'), ($1, '5')`,
+      [userId]
+    )));
 
-  /*   it('should change boards order when target index is lower than source index', () => { */
-  /*     return Board.move('4', '2') */
-  /*       .then(() => db.query(`SELECT id, index, title FROM boards ORDER by index`)) */
-  /*       .then(boards => { */
-  /*         assert.deepEqual(boards, [{ */
-  /*           id: '1', */
-  /*           title: 'board 1', */
-  /*         }, { */
-  /*           id: '4', */
-  /*           title: 'board 4', */
-  /*         }, { */
-  /*           id: '2', */
-  /*           title: 'board 2', */
-  /*         }, { */
-  /*           id: '3', */
-  /*           title: 'board 3', */
-  /*         }, { */
-  /*           id: '5', */
-  /*           title: 'board 5', */
-  /*         }]); */
-  /*       }); */
-  /*   }); */
+    const findBoards = () => db.query(
+      `SELECT id, title FROM boards AS b
+      INNER JOIN users_boards AS ub ON (user_id = $1 AND ub.board_id = b.id)
+      GROUP BY b.id, ub.board_index
+      ORDER BY ub.board_index`,
+      [userId]
+    );
 
-  /*   it('should change boards order when target index is higher that source index', () => { */
-  /*     return Board.move('2', '4') */
-  /*       .then(() => db.query(`SELECT id, index, title FROM boards ORDER by index`)) */
-  /*       .then(boards => { */
-  /*         assert.deepEqual(boards, [{ */
-  /*           id: '1', */
-  /*           title: 'board 1', */
-  /*         }, { */
-  /*           id: '3', */
-  /*           title: 'board 3', */
-  /*         }, { */
-  /*           id: '4', */
-  /*           title: 'board 4', */
-  /*         }, { */
-  /*           id: '2', */
-  /*           title: 'board 2', */
-  /*         }, { */
-  /*           id: '5', */
-  /*           title: 'board 5', */
-  /*         }]); */
-  /*       }); */
-  /*   }); */
-  /* }); */
+    it('should change boards order when target index is lower than source index', () => {
+      return Board.move('4', '2')
+        .then(findBoards)
+        .then(boards => {
+          assert.deepEqual(boards, [{
+            id: '1',
+            title: 'board 1',
+          }, {
+            id: '4',
+            title: 'board 4',
+          }, {
+            id: '2',
+            title: 'board 2',
+          }, {
+            id: '3',
+            title: 'board 3',
+          }, {
+            id: '5',
+            title: 'board 5',
+          }]);
+        });
+    });
+
+    it('should change boards order when target index is higher that source index', () => {
+      return Board.move('2', '4')
+        .then(findBoards)
+        .then(boards => {
+          assert.deepEqual(boards, [{
+            id: '1',
+            title: 'board 1',
+          }, {
+            id: '3',
+            title: 'board 3',
+          }, {
+            id: '4',
+            title: 'board 4',
+          }, {
+            id: '2',
+            title: 'board 2',
+          }, {
+            id: '5',
+            title: 'board 5',
+          }]);
+        });
+    });
+  });
 });
 
 function setup() {

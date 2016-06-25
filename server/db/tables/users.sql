@@ -19,7 +19,7 @@ CREATE TABLE IF NOT EXISTS users(
 CREATE TABLE IF NOT EXISTS users_boards(
   user_id text NOT NULL REFERENCES users ON DELETE RESTRICT,
   board_id text PRIMARY KEY REFERENCES boards ON DELETE CASCADE,
-  board_index serial UNIQUE
+  board_index serial UNIQUE DEFERRABLE
 );
 
 CREATE TABLE IF NOT EXISTS users_comments(
