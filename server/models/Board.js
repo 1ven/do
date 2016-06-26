@@ -94,6 +94,18 @@ const Board = {
     );
   },
 
+  findAllIdsByUser(userId) {
+    return db.query(
+      `SELECT b.id FROM boards AS b
+      INNER JOIN users_boards AS ub ON (ub.user_id = $1 AND ub.board_id = b.id)
+      WHERE deleted IS NULL
+      GROUP BY b.id, ub.board_index
+      ORDER BY ub.board_index`,
+      [userId]
+    )
+      .then(result => result.map(entry => entry.id));
+  },
+
   toggleStarred(boardId) {
     return db.one(
       `UPDATE boards SET starred = NOT starred

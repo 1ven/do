@@ -92,53 +92,60 @@ describe('Board', () => {
     });
   });
 
-  describe('find', () => {
-    describe('findById', () => {
-      it('should return board with nested children', () => {
-        return Board.findById(boardId)
-          .then(board => {
-            const { colors } = board.lists[0].cards[0];
+  describe('findById', () => {
+    it('should return board with nested children', () => {
+      return Board.findById(boardId)
+        .then(board => {
+          const { colors } = board.lists[0].cards[0];
 
-            assert.notEqual(colors.length, 0);
-            delete board.lists[0].cards[0].colors;
-            assert.deepEqual(board, {
-              id: boardId,
-              title: 'test board',
-              link: '/boards/' + boardId,
-              lists: [{
-                id: listId,
-                title: 'test list',
-                link: '/boards/' + boardId + '/lists/' + listId,
-                cards: [{
-                  id: cardId,
-                  text: 'test card',
-                  link: '/boards/' + boardId + '/cards/' + cardId,
-                }],
+          assert.notEqual(colors.length, 0);
+          delete board.lists[0].cards[0].colors;
+          assert.deepEqual(board, {
+            id: boardId,
+            title: 'test board',
+            link: '/boards/' + boardId,
+            lists: [{
+              id: listId,
+              title: 'test list',
+              link: '/boards/' + boardId + '/lists/' + listId,
+              cards: [{
+                id: cardId,
+                text: 'test card',
+                link: '/boards/' + boardId + '/cards/' + cardId,
               }],
-            });
+            }],
           });
-      });
-
-      it('should not return deleted boards', () => {
-        const promise = Board.findById(board3Id);
-        return assert.isRejected(promise, /No data returned/);
-      });
+        });
     });
 
-    describe('findAllByUser', () => {
-      it('should return all boards with nested children excluding deleted items', () => {
-        return Board.findAllByUser(userId)
-          .then(boards => {
-            assert.deepEqual(boards, [{
-              id: boardId,
-              title: 'test board',
-              link: '/boards/' + boardId,
-              lists_length: 1,
-              cards_length: 1,
-              starred: false,
-            }]);
-          });
-      });
+    it('should not return deleted boards', () => {
+      const promise = Board.findById(board3Id);
+      return assert.isRejected(promise, /No data returned/);
+    });
+  });
+
+  describe('findAllByUser', () => {
+    it('should return all boards, related to user, with nested children, excluding deleted items', () => {
+      return Board.findAllByUser(userId)
+        .then(boards => {
+          assert.deepEqual(boards, [{
+            id: boardId,
+            title: 'test board',
+            link: '/boards/' + boardId,
+            lists_length: 1,
+            cards_length: 1,
+            starred: false,
+          }]);
+        });
+    });
+  });
+
+  describe('findAllIdsByUser', () => {
+    it('should return all boards ids, related to user, excluding deleted items', () => {
+      return Board.findAllIdsByUser(userId)
+        .then(boards => {
+          assert.deepEqual(boards, [boardId]);
+        });
     });
   });
 
