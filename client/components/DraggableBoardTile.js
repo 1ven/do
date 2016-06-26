@@ -14,25 +14,23 @@ const boardTileSource = {
   },
 };
 
+let lastTargetId;
+
 const boardTileTarget = {
   hover(props, monitor, component) {
-    const sourceIndex = monitor.getItem().index;
-    const targetIndex = props.index;
     const sourceId = monitor.getItem().id;
     const targetId = props.boardTileProps.data.id;
 
-    if (sourceIndex === targetIndex) return;
+    if (sourceId === targetId) return;
 
     if (monitor.isOver()) return;
 
     props.onMoveTile(sourceId, targetId);
-    monitor.getItem().index = targetIndex;
-    monitor.getItem().id = targetId;
+    lastTargetId = targetId;
   },
   drop(props, monitor) {
     const sourceId = monitor.getItem().id;
-    const targetId = props.boardTileProps.data.id;
-    props.onDropTile(sourceId, targetId);
+    props.onDropTile(sourceId, lastTargetId);
   },
 };
 

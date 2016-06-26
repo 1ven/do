@@ -2,7 +2,7 @@ import api from '../services/api';
 import types from '../constants/actionTypes';
 import { takeEvery } from 'redux-saga';
 import { call, put } from 'redux-saga/effects'
-import { fetchBoards, fetchBoard, createBoard, removeBoard, updateBoard } from '../actions/boardsActions';
+import { fetchBoards, fetchBoard, createBoard, removeBoard, updateBoard, moveBoard } from '../actions/boardsActions';
 import { startProgressBar, stopProgressBar } from '../actions/progressBarActions';
 import { hideModal } from '../actions/modalActions';
 
@@ -64,6 +64,16 @@ function* updateBoardTask(action) {
   }
 }
 
+function* moveBoardTask(action) {
+  const { sourceId, targetId } = action.payload;
+  try {
+    const payload = yield call(api.moveBoard, sourceId, targetId);
+    yield put(moveBoard.success(payload));
+  } catch(err) {
+    yield put(moveBoard.failure(err.message));
+  }
+}
+
 function* watchFetchBoards() {
   yield* takeEvery(types.BOARDS_FETCH_REQUEST, fetchBoardsTask);
 }
@@ -84,6 +94,10 @@ function* watchUpdateBoard() {
   yield* takeEvery(types.BOARD_UPDATE_REQUEST, updateBoardTask);
 }
 
+function* watchMoveBoard() {
+  yield* takeEvery(types.BOARD_MOVE_REQUEST, moveBoardTask);
+}
+
 export default function* boardsSaga() {
   yield [
     watchFetchBoards(),
@@ -91,5 +105,6 @@ export default function* boardsSaga() {
     watchCreateBoard(),
     watchRemoveBoard(),
     watchUpdateBoard(),
+    watchMoveBoard(),
   ];
 }

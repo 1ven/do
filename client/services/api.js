@@ -86,6 +86,15 @@ export default {
       body: props,
     });
   },
+  moveBoard(sourceId, targetId) {
+    return callApi(`/api/boards/move`, null, {
+      method: 'POST',
+      body: {
+        sourceId,
+        targetId,
+      },
+    });
+  },
   createList(boardId, title) {
     return callApi(`/api/boards/${boardId}/lists`, {
       list: schemas.LIST,

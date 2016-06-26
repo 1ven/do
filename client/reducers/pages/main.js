@@ -57,6 +57,13 @@ export default function main(state = {
         ...state,
         isMoving: true,
       };
+    case types.BOARD_MOVE_SUCCESS:
+      return {
+        ...state,
+        isMoving: false,
+        lastUpdated: payload.receivedAt,
+        ids: payload.result,
+      };
     default:
       return state;
   }
