@@ -264,6 +264,25 @@ describe('boards routes', () => {
         });
     });
   });
+
+  it('POST /api/boards/move should respond with 200 and return sorted ids', (done) => {
+    setup().then(request => {
+      request
+        .post(`/api/boards/move`)
+        .send({
+          sourceId: boardId,
+          targetId: board3Id,
+        })
+        .expect(200)
+        .end((err, res) => {
+          if (err) { return done(err); }
+
+          assert.deepEqual(res.body.result, [board3Id, boardId]);
+
+          done();
+        });
+    });
+  });
 });
 
 function setup() {

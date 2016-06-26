@@ -100,3 +100,15 @@ exports.toggleStarred = (req, res, next) => {
       res.status(200).json({ result });
     }, next);
 };
+
+exports.move = (req, res, next) => {
+  const userId = req.user.id;
+  const sourceId = req.body.sourceId;
+  const targetId = req.body.targetId;
+
+  return Board.move(sourceId, targetId)
+    .then(() => Board.findAllIdsByUser(userId))
+    .then(result => {
+      res.status(200).json({ result });
+    });
+};

@@ -115,7 +115,7 @@ const Board = {
   },
 
   move(sourceId, targetId) {
-    const query = 'SELECT board_index FROM users_boards WHERE board_index = $1';
+    const query = 'SELECT board_index FROM users_boards WHERE board_id = $1';
     return Promise.all([
       db.one(query, [sourceId]),
       db.one(query, [targetId]),
