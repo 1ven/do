@@ -5,6 +5,7 @@ import without from 'lodash/without';
 export default function main(state = {
   ids: [],
   isFetching: false,
+  isMoving: false,
   lastUpdated: undefined,
   error: undefined,
 }, action) {
@@ -50,6 +51,11 @@ export default function main(state = {
             ],
           },
         }),
+      };
+    case types.BOARD_MOVE_REQUEST:
+      return {
+        ...state,
+        isMoving: true,
       };
     default:
       return state;

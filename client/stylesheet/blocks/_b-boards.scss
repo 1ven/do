@@ -2,8 +2,21 @@
   display: flex;
   flex-wrap: wrap;
   margin: -10px;
+  position: relative;
+  transition: opacity .3s;
   &__item {
     width: 25%;
     padding: 10px;
+  }
+  &_transparent {
+    opacity: .7;
+    &:after {
+      content: '';
+      width: 100%;
+      height: 100%;
+      top: 0;
+      left: 0;
+      position: absolute;
+    }
   }
 }
