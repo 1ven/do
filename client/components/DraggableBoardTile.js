@@ -35,19 +35,22 @@ function DraggableBoardTile({
   boardTileProps,
 }) {
   return compose(connectDragSource, connectDropTarget)(
-    <BoardTile
-      {...boardTileProps}
-      isEmpty={isDragging}
-    />
+    <div>
+      <BoardTile
+        {...boardTileProps}
+        isEmpty={isDragging}
+      />
+    </div>
   );
 }
 
 DraggableBoardTile.propTypes = {
+  index: PropTypes.number.isRequired,
+  onMoveTile: PropTypes.func.isRequired,
+  boardTileProps: PropTypes.object.isRequired,
   isDragging: PropTypes.bool.isRequired,
   connectDragSource: PropTypes.func.isRequired,
   connectDropTarget: PropTypes.func.isRequired,
-  onMoveTile: PropTypes.func.isRequired,
-  boardTileProps: PropTypes.object.isRequired,
 };
 
 export default compose(
@@ -66,4 +69,4 @@ export default compose(
       connectDropTarget: connect.dropTarget(),
     })
   )
-)()
+)(DraggableBoardTile);

@@ -1,19 +1,19 @@
 import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
+import { compose } from 'redux';
 import modalsNames from '../constants/modalsNames';
 import { removeBoard, updateBoard } from '../actions/boardsActions';
 import { showModal } from '../actions/modalActions';
-import BoardTile from '../components/BoardTile';
 import Boards from '../components/Boards';
-/* import { DragDropContext } from 'react-dnd'; */
-/* import HTML5Backend from 'react-dnd-html5-backend'; */
-/* import DraggableBoardTile from '../components/DraggableBoardTile'; */
+import { DragDropContext } from 'react-dnd';
+import HTML5Backend from 'react-dnd-html5-backend';
 
 function BoardsContainer({
   boards,
   onBoardTileRemoveClick,
   onBoardTileEditClick,
   onBoardTileToggleStarredClick,
+  onMoveTile,
 }) {
   return !boards.length ? (
     <div className="b-boards-not-found">
@@ -25,6 +25,7 @@ function BoardsContainer({
       onRemoveClick={onBoardTileRemoveClick}
       onEditClick={onBoardTileEditClick}
       onToggleStarredClick={onBoardTileToggleStarredClick}
+      onMoveTile={onMoveTile}
     />
   )
 }
@@ -67,11 +68,15 @@ function mapDispatchToProps(dispatch) {
         })
       );
     },
+
+    onMoveTile(targetId, sourceId) {},
   };
 }
 
-/* export default DragDropContext(HTML5Backend)(BoardsContainer); */
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
+export default compose(
+  DragDropContext(HTML5Backend),
+  connect(
+    mapStateToProps,
+    mapDispatchToProps
+  )
 )(BoardsContainer);
