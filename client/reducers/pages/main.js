@@ -1,3 +1,4 @@
+import update from 'react/lib/update';
 import types from '../../constants/actionTypes';
 import without from 'lodash/without';
 
@@ -37,6 +38,18 @@ export default function main(state = {
       return {
         ...state,
         ids: without(state.ids, payload.result.board),
+      };
+    case types.BOARD_MOVE_SYNC:
+      return {
+        ...state,
+        ...update(state, {
+          ids: {
+            $splice: [
+              [state.ids.indexOf(payload.sourceId), 1],
+              [state.ids.indexOf(payload.targetId), 0, payload.sourceId],
+            ],
+          },
+        }),
       };
     default:
       return state;

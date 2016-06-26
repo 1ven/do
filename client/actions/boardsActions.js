@@ -31,6 +31,22 @@ export const updateBoard = createActions([
   types.BOARD_UPDATE_FAILURE,
 ]);
 
+export const moveBoard = createActions([
+  types.BOARD_MOVE_REQUEST,
+  types.BOARD_MOVE_SUCCESS,
+  types.BOARD_MOVE_FAILURE,
+]);
+
+export function moveBoardSync(sourceId, targetId) {
+  return {
+    type: types.BOARD_MOVE_SYNC,
+    payload: {
+      sourceId,
+      targetId,
+    },
+  };
+}
+
 export function addListId(boardId, listId) {
   return {
     type: types.BOARD_ADD_LIST_ID,

@@ -45,6 +45,11 @@
     }
   }
   &_empty {
-    background-color: #797;
+    background-color: #797979;
+    .b-board-tile {
+      &__top, &__bottom {
+        opacity: 0;
+      }
+    }
   }
 }

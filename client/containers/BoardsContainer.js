@@ -2,7 +2,7 @@ import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
 import { compose } from 'redux';
 import modalsNames from '../constants/modalsNames';
-import { removeBoard, updateBoard } from '../actions/boardsActions';
+import { removeBoard, updateBoard, moveBoardSync } from '../actions/boardsActions';
 import { showModal } from '../actions/modalActions';
 import Boards from '../components/Boards';
 import { DragDropContext } from 'react-dnd';
@@ -69,7 +69,11 @@ function mapDispatchToProps(dispatch) {
       );
     },
 
-    onMoveTile(targetId, sourceId) {},
+    onMoveTile(sourceId, targetId) {
+      dispatch(
+        moveBoardSync(sourceId, targetId)
+      );
+    },
   };
 }
 

@@ -22,7 +22,7 @@ function BoardTile({
     cardsLength,
   } = data;
   const rootClassName = addModifiers('b-board-tile',
-    isEmpty ? ['b-board-tile_empty'] : []
+    isEmpty ? ['empty'] : []
   );
 
   return (

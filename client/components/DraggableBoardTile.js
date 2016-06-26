@@ -8,7 +8,7 @@ import BoardTile from './BoardTile';
 const boardTileSource = {
   beginDrag(props) {
     return {
-      id: boardTileProps.data.id,
+      id: props.boardTileProps.data.id,
       index: props.index,
     };
   },
@@ -18,14 +18,21 @@ const boardTileTarget = {
   hover(props, monitor, component) {
     const sourceIndex = monitor.getItem().index;
     const targetIndex = props.index;
+    const sourceId = monitor.getItem().id;
+    const targetId = props.boardTileProps.data.id;
 
     if (sourceIndex === targetIndex) return;
 
     if (monitor.isOver()) return;
 
-    props.onMoveTile(sourceIndex, targetIndex);
+    props.onMoveTile(sourceId, targetId);
     monitor.getItem().index = targetIndex;
-  }
+  },
+  drop(props, monitor) {
+    const sourceId = monitor.getItem().id;
+    const targetId = props.boardTileProps.data.id;
+    console.log(sourceId, targetId)
+  },
 };
 
 function DraggableBoardTile({
