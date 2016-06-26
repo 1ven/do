@@ -27,11 +27,12 @@ const boardTileTarget = {
 
     props.onMoveTile(sourceId, targetId);
     monitor.getItem().index = targetIndex;
+    monitor.getItem().id = targetId;
   },
   drop(props, monitor) {
     const sourceId = monitor.getItem().id;
     const targetId = props.boardTileProps.data.id;
-    console.log(sourceId, targetId)
+    props.onDropTile(sourceId, targetId);
   },
 };
 
@@ -54,6 +55,7 @@ function DraggableBoardTile({
 DraggableBoardTile.propTypes = {
   index: PropTypes.number.isRequired,
   onMoveTile: PropTypes.func.isRequired,
+  onDropTile: PropTypes.func.isRequired,
   boardTileProps: PropTypes.object.isRequired,
   isDragging: PropTypes.bool.isRequired,
   connectDragSource: PropTypes.func.isRequired,

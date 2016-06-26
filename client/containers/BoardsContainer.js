@@ -2,7 +2,7 @@ import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
 import { compose } from 'redux';
 import modalsNames from '../constants/modalsNames';
-import { removeBoard, updateBoard, moveBoardSync } from '../actions/boardsActions';
+import { removeBoard, updateBoard, moveBoard, moveBoardSync } from '../actions/boardsActions';
 import { showModal } from '../actions/modalActions';
 import Boards from '../components/Boards';
 import { DragDropContext } from 'react-dnd';
@@ -10,10 +10,12 @@ import HTML5Backend from 'react-dnd-html5-backend';
 
 function BoardsContainer({
   boards,
+  isMoving,
   onBoardTileRemoveClick,
   onBoardTileEditClick,
   onBoardTileToggleStarredClick,
   onMoveTile,
+  onDropTile,
 }) {
   return !boards.length ? (
     <div className="b-boards-not-found">
@@ -22,10 +24,12 @@ function BoardsContainer({
   ) : (
     <Boards
       items={boards}
+      isTransparent={isMoving}
       onRemoveClick={onBoardTileRemoveClick}
       onEditClick={onBoardTileEditClick}
       onToggleStarredClick={onBoardTileToggleStarredClick}
       onMoveTile={onMoveTile}
+      onDropTile={onDropTile}
     />
   )
 }
@@ -33,6 +37,7 @@ function BoardsContainer({
 BoardsContainer.propTypes = {
   ids: PropTypes.arrayOf(PropTypes.string).isRequired,
   boards: PropTypes.array.isRequired,
+  isMoving: PropTypes.bool.isRequired,
   onBoardTileRemoveClick: PropTypes.func.isRequired,
   onBoardTileEditClick: PropTypes.func.isRequired,
   onBoardTileToggleStarredClick: PropTypes.func.isRequired,
@@ -41,6 +46,7 @@ BoardsContainer.propTypes = {
 function mapStateToProps(state, ownProps) {
   return {
     boards: ownProps.ids.map(id => state.entities.boards[id]),
+    isMoving: state.pages.main.isMoving,
   };
 }
 
@@ -72,6 +78,12 @@ function mapDispatchToProps(dispatch) {
     onMoveTile(sourceId, targetId) {
       dispatch(
         moveBoardSync(sourceId, targetId)
+      );
+    },
+
+    onDropTile(sourceId, targetId) {
+      dispatch(
+        moveBoard.request({ sourceId, targetId })
       );
     },
   };
