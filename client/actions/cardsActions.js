@@ -37,15 +37,11 @@ export const removeColor = createActions([
   types.CARD_REMOVE_COLOR_FAILURE,
 ]);
 
-export function addCommentId(cardId, commentId) {
-  return {
-    type: types.CARD_ADD_COMMENT_ID,
-    payload: {
-      cardId,
-      commentId,
-    },
-  };
-};
+export const moveCard = createActions([
+  types.CARD_MOVE_REQUEST,
+  types.CARD_MOVE_SUCCESS,
+  types.CARD_MOVE_FAILURE,
+]);
 
 export function moveCardSync(source, target) {
   return {
@@ -56,3 +52,13 @@ export function moveCardSync(source, target) {
     },
   };
 }
+
+export function addCommentId(cardId, commentId) {
+  return {
+    type: types.CARD_ADD_COMMENT_ID,
+    payload: {
+      cardId,
+      commentId,
+    },
+  };
+};

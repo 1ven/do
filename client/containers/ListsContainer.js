@@ -5,8 +5,9 @@ import { connect } from 'react-redux';
 import { compose } from 'redux';
 import modalsNames from '../constants/modalsNames';
 import Lists from '../components/Lists';
-import { removeList } from '../actions/listsActions';
+import { removeList, addCardId, removeCardId } from '../actions/listsActions';
 import { showModal } from '../actions/modalActions';
+import { moveCard } from '../actions/cardsActions';
 
 function mapStateToProps(state, ownProps) {
   const { lists } = state.entities;
@@ -30,7 +31,18 @@ function mapDispatchToProps(dispatch, ownProps) {
         boardId: ownProps.boardId,
         listId,
       }));
-    }
+    },
+
+    onListCardMove(source, target) {
+      dispatch(removeCardId(source.listId, source.cardId));
+      dispatch(addCardId(target.listId, source.cardId));
+    },
+
+    onListCardDrop(source, target) {
+      dispatch(
+        moveCard.request({ source, target })
+      );
+    },
   };
 }
 

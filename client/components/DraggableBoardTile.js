@@ -23,12 +23,16 @@ const boardTileTarget = {
 
     if (sourceId === targetId) return;
 
+    // may be remove
     if (monitor.isOver()) return;
 
     props.onMoveTile(sourceId, targetId);
     lastTargetId = targetId;
   },
   drop(props, monitor) {
+    // may be add 
+    /* if (sourceId === targetId) return; */
+
     const sourceId = monitor.getItem().id;
     props.onDropTile(sourceId, lastTargetId);
   },

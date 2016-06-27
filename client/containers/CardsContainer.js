@@ -1,12 +1,10 @@
 import React, { PropTypes, Component } from 'react';
-import { DragDropContext } from 'react-dnd';
-import HTML5Backend from 'react-dnd-html5-backend';
 import { connect } from 'react-redux';
 import { compose } from 'redux';
 import pick from 'lodash/pick';
 import modalsNames from '../constants/modalsNames';
 import Cards from '../components/Cards';
-import { removeCard, moveCardSync } from '../actions/cardsActions';
+import { removeCard, moveCard, moveCardSync } from '../actions/cardsActions';
 import { showModal } from '../actions/modalActions';
 
 function mapStateToProps(state, ownProps) {
@@ -40,20 +38,21 @@ function mapDispatchToProps(dispatch, ownProps) {
       );
     },
 
-    onMoveCard(source, target) {
+    onCardMove(source, target) {
       dispatch(
         moveCardSync(source, target)
       );
     },
 
-    onDropCard(source, target) {},
+    onCardDrop(source, target) {
+      dispatch(
+        moveCard.request({ source, target })
+      );
+    },
   };
 }
 
-export default compose(
-  DragDropContext(HTML5Backend),
-  connect(
-    mapStateToProps,
-    mapDispatchToProps
-  )
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
 )(Cards);

@@ -4,44 +4,56 @@ import { compose } from 'redux';
 import draggableTypes from '../constants/draggableTypes';
 import Card from './Card';
 
+let lastTarget;
+
 const cardSource = {
   beginDrag(props) {
     return {
       id: props.cardProps.id,
       listId: props.listId,
+      lastListId: props.listId,
     };
   },
   isDragging(props, monitor) {
     return props.cardProps.id === monitor.getItem().id;
+  },
+  endDrag() {
+    lastTarget = undefined;
   },
 };
 
 const cardTarget = {
   hover(props, monitor, component) {
     const sourceCardId = monitor.getItem().id;
-    const sourceListId = monitor.getItem().listId;
+    const sourceListId = monitor.getItem().lastListId;
     const targetCardId = props.cardProps.id;
     const targetListId = props.listId;
 
     if (sourceCardId === targetCardId) return;
 
-    // possible remove this condition. and remove it at tile too.
-    if (monitor.isOver()) return;
-
-    props.onMoveCard({
-      cardId: sourceCardId,
-      listId: sourceListId,
-    }, {
+    lastTarget = {
       cardId: targetCardId,
       listId: targetListId,
-    });
-    /* lastTargetId = targetId; */
+    };
 
-    monitor.getItem().listId = targetListId;
+    props.onMove({
+      cardId: sourceCardId,
+      listId: sourceListId,
+    }, lastTarget);
+
+    monitor.getItem().lastListId = targetListId;
   },
   drop(props, monitor) {
-    /* props.onDropCard(sourceId, lastTargetId); */
-  },
+    const sourceCardId = monitor.getItem().id;
+    const sourceListId = monitor.getItem().listId;
+
+    if (!lastTarget || sourceCardId === lastTarget.cardId) return;
+
+    props.onDrop({
+      cardId: sourceCardId,
+      listId: sourceListId,
+    }, lastTarget);
+  }
 };
 
 function DraggableCard({
@@ -62,8 +74,8 @@ function DraggableCard({
 
 DraggableCard.propTypes = {
   listId: PropTypes.string.isRequired,
-  onMoveCard: PropTypes.func.isRequired,
-  onDropCard: PropTypes.func.isRequired,
+  onMove: PropTypes.func.isRequired,
+  onDrop: PropTypes.func.isRequired,
   cardProps: PropTypes.object.isRequired,
   isDragging: PropTypes.bool.isRequired,
   connectDragSource: PropTypes.func.isRequired,
