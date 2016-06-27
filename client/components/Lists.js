@@ -12,7 +12,7 @@ function Lists({
     <Masonry className="b-lists">
       {lists.map((list, i) => (
         <div
-          key={i}
+          key={list.id}
           className="b-lists__item"
         >
           <List

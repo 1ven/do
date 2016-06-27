@@ -10,6 +10,7 @@
   line-height: 1.35;
   cursor: pointer;
   transition: all .2s;
+  outline: none;
   &__colors {
     display: flex;
     margin: 4px -2px 0;
@@ -23,8 +24,13 @@
   &:hover {
     background-color: darken($white, 1)
   }
-  &:active {
-    transform: scale(.98);
-    box-shadow: $shadow-active;
+  &_empty {
+    background-color: rgba(58, 8, 8, .15);
+    box-shadow: inset 0px 1px 4px 0px rgba(0, 0, 0, 0.4);
+    .b-card {
+      &__text, &__colors {
+        opacity: 0;
+      }
+    }
   }
 }

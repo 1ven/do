@@ -1,10 +1,20 @@
 import React, { PropTypes } from 'react';
 import { Link } from 'react-router';
+import { addModifiers } from '../utils';
 
-function Card({ id, text, link, colors }) {
+function Card({
+  id,
+  text,
+  link,
+  colors,
+  isEmpty,
+}) {
+  const rootClassName = addModifiers('b-card',
+    isEmpty ? ['empty'] : []
+  );
   return (
     <Link
-      className="b-card"
+      className={rootClassName}
       to={link}
     >
       <div className="b-card__text">

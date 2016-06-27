@@ -46,3 +46,13 @@ export function addCommentId(cardId, commentId) {
     },
   };
 };
+
+export function moveCardSync(source, target) {
+  return {
+    type: types.CARD_MOVE_SYNC,
+    payload: {
+      source,
+      target,
+    },
+  };
+}

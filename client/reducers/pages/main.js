@@ -42,6 +42,7 @@ export default function main(state = {
       };
     case types.BOARD_MOVE_SYNC:
       return {
+        // possible should not assign `state` variable
         ...state,
         ...update(state, {
           ids: {

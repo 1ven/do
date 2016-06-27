@@ -1,12 +1,12 @@
 import React, { Component, PropTypes } from 'react';
+import { DragDropContext } from 'react-dnd';
+import HTML5Backend from 'react-dnd-html5-backend';
 import { connect } from 'react-redux';
 import { compose } from 'redux';
 import modalsNames from '../constants/modalsNames';
 import { removeBoard, updateBoard, moveBoard, moveBoardSync } from '../actions/boardsActions';
 import { showModal } from '../actions/modalActions';
 import Boards from '../components/Boards';
-import { DragDropContext } from 'react-dnd';
-import HTML5Backend from 'react-dnd-html5-backend';
 
 function BoardsContainer({
   boards,
