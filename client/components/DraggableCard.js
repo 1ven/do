@@ -12,6 +12,9 @@ const cardSource = {
       listId: props.listId,
     };
   },
+  isDragging(props, monitor) {
+    return props.cardProps.id === monitor.getItem().id;
+  },
 };
 
 const cardTarget = {
@@ -38,7 +41,6 @@ const cardTarget = {
     monitor.getItem().listId = targetListId;
   },
   drop(props, monitor) {
-    const sourceId = monitor.getItem().id;
     /* props.onDropCard(sourceId, lastTargetId); */
   },
 };
