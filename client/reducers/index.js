@@ -8,8 +8,8 @@ import user from './user';
 import search from './search';
 import progressBar from './progressBar';
 import activity from './activity';
-import modal from './modalReducer';
-import dragAndDrop from './dragAndDropReducer';
+import modal from './modal';
+import dragAndDrop from './dragAndDrop';
 
 const rootReducer = combineReducers({
   entities,
