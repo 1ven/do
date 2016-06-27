@@ -53,6 +53,16 @@ export function moveCardSync(source, target) {
   };
 }
 
+export function beginDrag(listId, cardId) {
+  return {
+    type: types.CARD_BEGIN_DRAG,
+    payload: {
+      listId,
+      cardId,
+    },
+  };
+}
+
 export function addCommentId(cardId, commentId) {
   return {
     type: types.CARD_ADD_COMMENT_ID,

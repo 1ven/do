@@ -9,6 +9,7 @@ import search from './search';
 import progressBar from './progressBar';
 import activity from './activity';
 import modal from './modalReducer';
+import dragAndDrop from './dragAndDropReducer';
 
 const rootReducer = combineReducers({
   entities,
@@ -21,6 +22,7 @@ const rootReducer = combineReducers({
   activity,
   modal,
   form,
+  dragAndDrop,
 });
 
 export default rootReducer;

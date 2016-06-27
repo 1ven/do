@@ -4,55 +4,53 @@ import { compose } from 'redux';
 import draggableTypes from '../constants/draggableTypes';
 import Card from './Card';
 
-let lastTarget;
-
 const cardSource = {
   beginDrag(props) {
+    const listId = props.listId;
+    const cardId = props.cardProps.id;
+
+    props.onBeginDrag(listId, cardId);
+
     return {
-      id: props.cardProps.id,
-      listId: props.listId,
-      lastListId: props.listId,
+      id: cardId,
+      listId,
     };
   },
   isDragging(props, monitor) {
     return props.cardProps.id === monitor.getItem().id;
-  },
-  endDrag() {
-    lastTarget = undefined;
   },
 };
 
 const cardTarget = {
   hover(props, monitor, component) {
     const sourceCardId = monitor.getItem().id;
-    const sourceListId = monitor.getItem().lastListId;
+    const sourceListId = monitor.getItem().listId;
     const targetCardId = props.cardProps.id;
     const targetListId = props.listId;
 
     if (sourceCardId === targetCardId) return;
 
-    lastTarget = {
-      cardId: targetCardId,
-      listId: targetListId,
-    };
-
     props.onMove({
       cardId: sourceCardId,
       listId: sourceListId,
-    }, lastTarget);
+    }, {
+      cardId: targetCardId,
+      listId: targetListId,
+    });
 
-    monitor.getItem().lastListId = targetListId;
+    monitor.getItem().listId = targetListId;
   },
   drop(props, monitor) {
-    const sourceCardId = monitor.getItem().id;
-    const sourceListId = monitor.getItem().listId;
+    /* console.log(monitor.getDropResult()); */
+    /* const sourceCardId = monitor.getItem().id; */
+    /* const sourceListId = monitor.getItem().listId; */
 
-    if (!lastTarget || sourceCardId === lastTarget.cardId) return;
+    /* if (!lastTarget || sourceCardId === lastTarget.cardId) return; */
 
-    props.onDrop({
-      cardId: sourceCardId,
-      listId: sourceListId,
-    }, lastTarget);
+    /* props.onDrop({ */
+    /*   cardId: sourceCardId, */
+    /*   listId: sourceListId, */
+    /* }, lastTarget); */
   }
 };
 
@@ -76,6 +74,7 @@ DraggableCard.propTypes = {
   listId: PropTypes.string.isRequired,
   onMove: PropTypes.func.isRequired,
   onDrop: PropTypes.func.isRequired,
+  onBeginDrag: PropTypes.func.isRequired,
   cardProps: PropTypes.object.isRequired,
   isDragging: PropTypes.bool.isRequired,
   connectDragSource: PropTypes.func.isRequired,

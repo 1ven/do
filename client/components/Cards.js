@@ -9,6 +9,7 @@ function Cards({
   onAddCardBtnClick,
   onCardMove,
   onCardDrop,
+  onCardBeginDrag,
 }) {
   return (
     <div className="b-cards">
@@ -20,6 +21,7 @@ function Cards({
           <DraggableCard
             onMove={onCardMove}
             onDrop={onCardDrop}
+            onBeginDrag={onCardBeginDrag}
             listId={listId}
             cardProps={{
               ...card,
@@ -54,6 +56,7 @@ Cards.propTypes = {
   onCardRemoveClick: PropTypes.func.isRequired,
   onCardMove: PropTypes.func.isRequired,
   onCardDrop: PropTypes.func.isRequired,
+  onCardBeginDrag: PropTypes.func.isRequired,
 };
 
 export default Cards;

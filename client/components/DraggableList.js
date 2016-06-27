@@ -6,7 +6,7 @@ import List from './List';
 const listTarget = {
   hover(props, monitor, component) {
     const sourceCardId = monitor.getItem().id;
-    const sourceListId = monitor.getItem().lastListId;
+    const sourceListId = monitor.getItem().listId;
     const targetListId = props.listProps.data.id;
 
     if (props.listProps.data.cards.length) return;
@@ -18,21 +18,21 @@ const listTarget = {
       listId: targetListId,
     });
 
-    monitor.getItem().lastListId = targetListId;
+    monitor.getItem().listId = targetListId;
   },
   drop(props, monitor) {
-    const sourceCardId = monitor.getItem().id;
-    const sourceListId = monitor.getItem().listId;
-    const targetListId = props.listProps.data.id;
+    /* const sourceCardId = monitor.getItem().id; */
+    /* const sourceListId = monitor.getItem().listId; */
+    /* const targetListId = props.listProps.data.id; */
 
-    if (props.listProps.data.cards.length) return;
+    /* if (props.listProps.data.cards.length) return; */
 
-    props.onCardDrop({
-      listId: sourceListId,
-      cardId: sourceCardId,
-    }, {
-      listId: targetListId,
-    });
+    /* props.onCardDrop({ */
+    /*   listId: sourceListId, */
+    /*   cardId: sourceCardId, */
+    /* }, { */
+    /*   listId: targetListId, */
+    /* }); */
   },
 };
 

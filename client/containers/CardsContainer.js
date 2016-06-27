@@ -4,7 +4,7 @@ import { compose } from 'redux';
 import pick from 'lodash/pick';
 import modalsNames from '../constants/modalsNames';
 import Cards from '../components/Cards';
-import { removeCard, moveCard, moveCardSync } from '../actions/cardsActions';
+import { removeCard, moveCard, moveCardSync, beginDrag } from '../actions/cardsActions';
 import { showModal } from '../actions/modalActions';
 
 function mapStateToProps(state, ownProps) {
@@ -49,10 +49,20 @@ function mapDispatchToProps(dispatch, ownProps) {
         moveCard.request({ source, target })
       );
     },
+
+    onCardBeginDrag(listId, cardId) {
+      dispatch(
+        beginDrag(listId, cardId)
+      );
+    },
   };
+}
+
+function mergeProps(stateProps, dispatchProps, ownProps) {
 }
 
 export default connect(
   mapStateToProps,
   mapDispatchToProps
+  /* mergeProps, */
 )(Cards);
