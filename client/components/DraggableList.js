@@ -21,18 +21,6 @@ const listTarget = {
     monitor.getItem().listId = targetListId;
   },
   drop(props, monitor) {
-    /* const sourceCardId = monitor.getItem().id; */
-    /* const sourceListId = monitor.getItem().listId; */
-    /* const targetListId = props.listProps.data.id; */
-
-    /* if (props.listProps.data.cards.length) return; */
-
-    /* props.onCardDrop({ */
-    /*   listId: sourceListId, */
-    /*   cardId: sourceCardId, */
-    /* }, { */
-    /*   listId: targetListId, */
-    /* }); */
   },
 };
 

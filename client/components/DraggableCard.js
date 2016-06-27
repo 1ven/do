@@ -23,34 +23,24 @@ const cardSource = {
 
 const cardTarget = {
   hover(props, monitor, component) {
-    const sourceCardId = monitor.getItem().id;
     const sourceListId = monitor.getItem().listId;
-    const targetCardId = props.cardProps.id;
+    const sourceCardId = monitor.getItem().id;
     const targetListId = props.listId;
+    const targetCardId = props.cardProps.id;
 
     if (sourceCardId === targetCardId) return;
 
     props.onMove({
-      cardId: sourceCardId,
       listId: sourceListId,
+      cardId: sourceCardId,
     }, {
-      cardId: targetCardId,
       listId: targetListId,
+      cardId: targetCardId,
     });
 
     monitor.getItem().listId = targetListId;
   },
   drop(props, monitor) {
-    /* console.log(monitor.getDropResult()); */
-    /* const sourceCardId = monitor.getItem().id; */
-    /* const sourceListId = monitor.getItem().listId; */
-
-    /* if (!lastTarget || sourceCardId === lastTarget.cardId) return; */
-
-    /* props.onDrop({ */
-    /*   cardId: sourceCardId, */
-    /*   listId: sourceListId, */
-    /* }, lastTarget); */
   }
 };
 
