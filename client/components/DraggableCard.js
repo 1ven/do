@@ -1,5 +1,4 @@
 import React, { Component, PropTypes } from 'react';
-import { findDOMNode } from 'react-dom';
 import { DragSource, DropTarget } from 'react-dnd';
 import { compose } from 'redux';
 import draggableTypes from '../constants/draggableTypes';

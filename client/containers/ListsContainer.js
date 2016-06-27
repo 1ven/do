@@ -1,5 +1,8 @@
 import React, { PropTypes, Component } from 'react';
+import { DragDropContext } from 'react-dnd';
+import HTML5Backend from 'react-dnd-html5-backend';
 import { connect } from 'react-redux';
+import { compose } from 'redux';
 import modalsNames from '../constants/modalsNames';
 import Lists from '../components/Lists';
 import { removeList } from '../actions/listsActions';
@@ -31,7 +34,10 @@ function mapDispatchToProps(dispatch, ownProps) {
   };
 }
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
+export default compose(
+  DragDropContext(HTML5Backend),
+  connect(
+    mapStateToProps,
+    mapDispatchToProps
+  )
 )(Lists);

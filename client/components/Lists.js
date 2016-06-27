@@ -1,4 +1,5 @@
 import React, { PropTypes } from 'react';
+import DraggableList from './DraggableList';
 import List from './List';
 import Masonry from 'react-masonry-component';
 
@@ -15,11 +16,13 @@ function Lists({
           key={list.id}
           className="b-lists__item"
         >
-          <List
-            data={list}
-            boardId={boardId}
-            onRemoveClick={onListRemoveClick}
-            onEditClick={onListEditClick}
+          <DraggableList
+            listProps={{
+              data: list,
+              boardId: boardId,
+              onRemoveClick: onListRemoveClick,
+              onEditClick: onListEditClick,
+            }}
           />
         </div>
       ))}
