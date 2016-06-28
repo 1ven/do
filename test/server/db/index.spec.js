@@ -185,6 +185,7 @@ describe('tables', () => {
         .then(columns => {
           assert.equal(columns.list_id, 'text');
           assert.equal(columns.card_id, 'text');
+          assert.equal(columns.card_index, 'integer');
         });
     });
 
@@ -216,7 +217,6 @@ describe('tables', () => {
         .then(prettyColumnsInfo)
         .then(columns => {
           assert.equal(columns.id, 'text');
-          assert.equal(columns.index, 'integer');
           assert.equal(columns.created_at, 'integer');
           assert.equal(columns.text, 'text');
           assert.equal(columns.link, 'text');
