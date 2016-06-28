@@ -20,8 +20,6 @@ const listTarget = {
 
     monitor.getItem().listId = targetListId;
   },
-  drop(props, monitor) {
-  },
 };
 
 function DraggableList({
@@ -41,7 +39,6 @@ DraggableList.propTypes = {
   listProps: PropTypes.object.isRequired,
   connectDropTarget: PropTypes.func.isRequired,
   onCardMove: PropTypes.func.isRequired,
-  onCardDrop: PropTypes.func.isRequired,
 };
 
 export default DropTarget(

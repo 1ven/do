@@ -9,7 +9,6 @@ function Lists({
   onListRemoveClick,
   onListEditClick,
   onListCardMove,
-  onListCardDrop,
 }) {
   return (
     <Masonry className="b-lists">
@@ -20,7 +19,6 @@ function Lists({
         >
           <DraggableList
             onCardMove={onListCardMove}
-            onCardDrop={onListCardDrop}
             listProps={{
               data: list,
               boardId: boardId,
@@ -40,7 +38,6 @@ Lists.propTypes = {
   onListRemoveClick: PropTypes.func.isRequired,
   onListEditClick: PropTypes.func.isRequired,
   onListCardMove: PropTypes.func.isRequired,
-  onListCardDrop: PropTypes.func.isRequired,
 };
 
 export default Lists;

@@ -37,12 +37,6 @@ function mapDispatchToProps(dispatch, ownProps) {
       dispatch(removeCardId(source.listId, source.cardId));
       dispatch(addCardId(target.listId, source.cardId));
     },
-
-    onListCardDrop(source, target) {
-      dispatch(
-        moveCard.request({ source, target })
-      );
-    },
   };
 }
 
