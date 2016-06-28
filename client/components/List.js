@@ -1,4 +1,5 @@
 import React, { PropTypes, Component } from 'react';
+import { addModifiers } from '../utils';
 import CardsContainer from '../containers/CardsContainer';
 import MenuList from './MenuList';
 import ToggleMenu from './ToggleMenu';
@@ -22,26 +23,27 @@ class List extends Component {
   }
 
   render() {
-    const { id, title, cards } = this.props.data;
-
-    const menu = (
-      <MenuList
-        modifiers={['sm']}
-        items={[
-          { title: 'Edit', onClick: this.handleEditClick },
-          { title: 'Remove', onClick: this.handleRemoveClick },
-        ]}
-      />
+    const { id, title, cards, isMoving } = this.props.data;
+    const rootClassName = addModifiers('b-list',
+      isMoving ? ['spinner'] : []
     );
 
     return (
-      <div className="b-list">
+      <div className={rootClassName}>
         <div className="b-list__top">
           <span className="b-list__title">
             {title}
           </span>
           <div className="b-list__menu">
-            <ToggleMenu menu={menu} />
+            <ToggleMenu menu={
+              <MenuList
+                modifiers={['sm']}
+                items={[
+                  { title: 'Edit', onClick: this.handleEditClick },
+                  { title: 'Remove', onClick: this.handleRemoveClick },
+                ]}
+              />
+            } />
           </div>
         </div>
         <div className="b-list__body">
