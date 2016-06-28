@@ -81,6 +81,7 @@ export default createConstants(
   'CARD_MOVE_SYNC',
 
   'CARD_BEGIN_DRAG',
+  'CARD_END_DRAG',
 
   'CARD_ADD_COMMENT_ID',
 

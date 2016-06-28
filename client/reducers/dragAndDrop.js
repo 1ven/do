@@ -1,7 +1,7 @@
 import { combineReducers } from 'redux';
 import types from '../constants/actionTypes';
 
-function cards(state = {
+const INITIAL_STATE = {
   source: {
     listId: undefined,
     cardId: undefined,
@@ -10,7 +10,9 @@ function cards(state = {
     listId: undefined,
     cardId: undefined,
   },
-}, action) {
+};
+
+function cards(state = INITIAL_STATE, action) {
   const { payload } = action;
   switch (action.type) {
     case types.CARD_BEGIN_DRAG:
@@ -21,6 +23,8 @@ function cards(state = {
           cardId: payload.cardId,
         },
       };
+    case types.CARD_END_DRAG:
+      return INITIAL_STATE;
     case types.CARD_MOVE_SYNC:
       return {
         ...state,

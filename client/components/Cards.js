@@ -8,7 +8,7 @@ function Cards({
   onCardRemoveClick,
   onAddCardBtnClick,
   onCardMove,
-  onCardDrop,
+  onCardEndDrag,
   onCardBeginDrag,
 }) {
   return (
@@ -20,7 +20,7 @@ function Cards({
         >
           <DraggableCard
             onMove={onCardMove}
-            onDrop={onCardDrop}
+            onEndDrag={onCardEndDrag}
             onBeginDrag={onCardBeginDrag}
             listId={listId}
             cardProps={{
@@ -55,7 +55,7 @@ Cards.propTypes = {
   onAddCardBtnClick: PropTypes.func.isRequired,
   onCardRemoveClick: PropTypes.func.isRequired,
   onCardMove: PropTypes.func.isRequired,
-  onCardDrop: PropTypes.func.isRequired,
+  onCardEndDrag: PropTypes.func.isRequired,
   onCardBeginDrag: PropTypes.func.isRequired,
 };
 

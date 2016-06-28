@@ -63,6 +63,12 @@ export function beginDrag(listId, cardId) {
   };
 }
 
+export function endDrag() {
+  return {
+    type: types.CARD_END_DRAG,
+  };
+}
+
 export function addCommentId(cardId, commentId) {
   return {
     type: types.CARD_ADD_COMMENT_ID,

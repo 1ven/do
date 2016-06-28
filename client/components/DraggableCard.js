@@ -19,6 +19,9 @@ const cardSource = {
   isDragging(props, monitor) {
     return props.cardProps.id === monitor.getItem().id;
   },
+  endDrag(props, monitor) {
+    props.onEndDrag();
+  },
 };
 
 const cardTarget = {
@@ -40,8 +43,6 @@ const cardTarget = {
 
     monitor.getItem().listId = targetListId;
   },
-  drop(props, monitor) {
-  }
 };
 
 function DraggableCard({
@@ -63,7 +64,7 @@ function DraggableCard({
 DraggableCard.propTypes = {
   listId: PropTypes.string.isRequired,
   onMove: PropTypes.func.isRequired,
-  onDrop: PropTypes.func.isRequired,
+  onEndDrag: PropTypes.func.isRequired,
   onBeginDrag: PropTypes.func.isRequired,
   cardProps: PropTypes.object.isRequired,
   isDragging: PropTypes.bool.isRequired,
