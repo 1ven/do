@@ -21,7 +21,8 @@ CREATE TRIGGER boards_insert_link BEFORE INSERT OR UPDATE ON boards FOR EACH ROW
 
 CREATE TABLE IF NOT EXISTS boards_lists(
   board_id text NOT NULL REFERENCES boards ON DELETE RESTRICT,
-  list_id text PRIMARY KEY REFERENCES lists ON DELETE CASCADE
+  list_id text PRIMARY KEY REFERENCES lists ON DELETE CASCADE,
+  list_index serial UNIQUE DEFERRABLE
 );
 
 CREATE OR REPLACE FUNCTION lists_insert_link() RETURNS trigger AS $$

@@ -137,6 +137,7 @@ describe('tables', () => {
         .then(prettyColumnsInfo)
         .then(columns => {
           assert.equal(columns.board_id, 'text');
+          assert.equal(columns.list_index, 'integer');
           assert.equal(columns.list_id, 'text');
         });
     });
@@ -169,7 +170,6 @@ describe('tables', () => {
         .then(prettyColumnsInfo)
         .then(columns => {
           assert.equal(columns.id, 'text');
-          assert.equal(columns.index, 'integer');
           assert.equal(columns.created_at, 'integer');
           assert.equal(columns.title, 'text');
           assert.equal(columns.link, 'text');

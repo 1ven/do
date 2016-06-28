@@ -65,8 +65,10 @@ const Board = {
           WHERE deleted IS NULL
           GROUP BY c.id
         ) AS c ON (c.id = lc.card_id)
+        INNER JOIN boards_lists AS bl ON (bl.list_id = l.id)
         WHERE deleted IS NULL
-        GROUP BY l.id
+        GROUP BY l.id, bl.list_index
+        ORDER BY bl.list_index
       ) AS l ON (l.id = list_id)
       WHERE b.id = $1 AND deleted IS NULL
       GROUP BY b.id`,
