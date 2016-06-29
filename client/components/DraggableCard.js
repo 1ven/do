@@ -4,23 +4,22 @@ import { compose } from 'redux';
 import draggableTypes from '../constants/draggableTypes';
 import Card from './Card';
 
+let initialListId;
+
 const cardSource = {
   beginDrag(props) {
-    const listId = props.listId;
-    const cardId = props.cardProps.id;
-
-    props.onBeginDrag(listId, cardId);
-
+    initialListId = props.listId;
     return {
-      id: cardId,
-      listId,
+      id: props.cardProps.id,
+      listId: props.listId,
     };
   },
   isDragging(props, monitor) {
     return props.cardProps.id === monitor.getItem().id;
   },
   endDrag(props, monitor) {
-    props.onEndDrag();
+    const targetListId = monitor.getItem().listId;
+    props.onEndDrag(initialListId, targetListId);
   },
 };
 
@@ -65,7 +64,6 @@ DraggableCard.propTypes = {
   listId: PropTypes.string.isRequired,
   onMove: PropTypes.func.isRequired,
   onEndDrag: PropTypes.func.isRequired,
-  onBeginDrag: PropTypes.func.isRequired,
   cardProps: PropTypes.object.isRequired,
   isDragging: PropTypes.bool.isRequired,
   connectDragSource: PropTypes.func.isRequired,
