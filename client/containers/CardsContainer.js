@@ -45,35 +45,15 @@ function mapDispatchToProps(dispatch, ownProps) {
       );
     },
 
-    onCardBeginDrag(listId, cardId) {
+    onCardEndDrag(sourceListId, targetListId) {
       dispatch(
-        beginDrag(listId, cardId)
+        moveCard.request({ sourceListId, targetListId })
       );
-    },
-  };
-}
-
-function mergeProps(state, { dispatch }, ownProps) {
-  const { source, target } = state.dragAndDrop.cards;
-
-  const stateProps = mapStateToProps(state, ownProps);
-  const dispatchProps = mapDispatchToProps(dispatch, ownProps);
-
-  return {
-    ...stateProps,
-    ...dispatchProps,
-    ...ownProps,
-    onCardEndDrag: () => {
-      dispatch(
-        moveCard.request({ source, target })
-      );
-      dispatch(endDrag());
     },
   };
 }
 
 export default connect(
-  state => state,
-  null,
-  mergeProps
+  mapStateToProps,
+  mapDispatchToProps
 )(Cards);

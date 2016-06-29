@@ -174,6 +174,15 @@ export default {
       method: 'GET',
     });
   },
+  moveCard(sourceCardsIds, targetCardsIds) {
+    return callApi(`/api/cards/move`, null, {
+      method: 'POST',
+      body: {
+        sourceCardsIds,
+        targetCardsIds,
+      },
+    });
+  },
   createComment(cardId, text) {
     return callApi(`/api/cards/${cardId}/comments`, schemas.COMMENT, {
       method: 'POST',

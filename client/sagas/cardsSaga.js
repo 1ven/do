@@ -1,8 +1,8 @@
 import api from '../services/api';
 import types from '../constants/actionTypes';
 import { takeEvery } from 'redux-saga';
-import { call, put } from 'redux-saga/effects'
-import { createCard, removeCard, fetchCard, updateCard, addColor, removeColor } from '../actions/cardsActions';
+import { call, put, select } from 'redux-saga/effects'
+import { createCard, removeCard, fetchCard, updateCard, addColor, removeColor, moveCard } from '../actions/cardsActions';
 import { incCardsLength, decCardsLength } from '../actions/boardsActions';
 import { addCardId, removeCardId } from '../actions/listsActions';
 import { hideModal } from '../actions/modalActions';
@@ -71,6 +71,23 @@ function* removeColorTask(action) {
   }
 }
 
+function* moveCardTask(action) {
+  const { sourceListId, targetListId } = action.payload;
+  const lists = yield select(state => state.entities.lists);
+  
+  const sourceCardsIds = lists[sourceListId].cards;
+  const targetCardsIds = lists[targetListId].cards;
+
+  console.log(sourceCardsIds, targetCardsIds);
+
+  /* try { */
+  /*   yield call(api.moveCard(sourceCardsIds, targetCardsIds)); */
+  /*   yield put(moveCard.success()); */
+  /* } catch(err) { */
+  /*   yield put(moveCard.failure(err.message)); */
+  /* } */
+}
+
 function* watchCreateCard() {
   yield* takeEvery(types.CARD_CREATE_REQUEST, createCardTask);
 }
@@ -95,6 +112,10 @@ function* watchRemoveColor() {
   yield* takeEvery(types.CARD_REMOVE_COLOR_REQUEST, removeColorTask);
 }
 
+function* watchMoveCard() {
+  yield* takeEvery(types.CARD_MOVE_REQUEST, moveCardTask);
+}
+
 export default function* cardsSaga() {
   yield [
     watchCreateCard(),
@@ -103,5 +124,6 @@ export default function* cardsSaga() {
     watchUpdateCard(),
     watchAddColor(),
     watchRemoveColor(),
+    watchMoveCard(),
   ];
 }
