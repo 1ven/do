@@ -89,13 +89,14 @@ const Card = {
   },
 
   move(sourceList, targetList) {
+    const lists = sourceList.id === targetList.id ? [sourceList] : [sourceList, targetList];
     return db.tx(function() {
       return this.none(
         `DELETE FROM lists_cards WHERE list_id = $1 OR list_id = $2`,
         [sourceList.id, targetList.id]
       )
         .then(() =>
-          Promise.each([sourceList, targetList], list => {
+          Promise.each(lists, list => {
             return Promise.each(list.cards, cardId => {
               return this.none(
                 `INSERT INTO lists_cards VALUES ($1, $2)`,

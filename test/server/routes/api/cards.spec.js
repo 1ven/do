@@ -237,11 +237,11 @@ describe('cards routes', () => {
         .send({
           sourceList: {
             id: listId,
-            cards: [card2Id],
+            cards: [card2Id, cardId],
           },
           targetList: {
             id: listId,
-            cards: [cardId],
+            cards: [card2Id, cardId],
           },
         })
         .expect(200)
