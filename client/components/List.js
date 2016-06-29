@@ -23,13 +23,10 @@ class List extends Component {
   }
 
   render() {
-    const { id, title, cards, isMoving } = this.props.data;
-    const rootClassName = addModifiers('b-list',
-      isMoving ? ['spinner'] : []
-    );
+    const { id, title, cards } = this.props.data;
 
     return (
-      <div className={rootClassName}>
+      <div className="b-list">
         <div className="b-list__top">
           <span className="b-list__title">
             {title}

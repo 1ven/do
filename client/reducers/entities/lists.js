@@ -56,30 +56,6 @@ export default function lists(state = {}, action) {
 
       return stateAfterTarget;
     }
-    case types.CARD_MOVE_REQUEST:
-      return {
-        ...state,
-        [payload.sourceListId]: {
-          ...state[payload.sourceListId],
-          isMoving: true,
-        },
-        [payload.targetListId]: {
-          ...state[payload.targetListId],
-          isMoving: true,
-        },
-      };
-    case types.CARD_MOVE_SUCCESS:
-      return {
-        ...state,
-        [payload.sourceListId]: {
-          ...state[payload.sourceListId],
-          isMoving: false,
-        },
-        [payload.targetListId]: {
-          ...state[payload.targetListId],
-          isMoving: false,
-        },
-      };
     default:
       return state;
   }
