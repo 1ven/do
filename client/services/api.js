@@ -174,12 +174,12 @@ export default {
       method: 'GET',
     });
   },
-  moveCard(sourceCardsIds, targetCardsIds) {
+  moveCard(sourceList, targetList) {
     return callApi(`/api/cards/move`, null, {
       method: 'POST',
       body: {
-        sourceCardsIds,
-        targetCardsIds,
+        sourceList,
+        targetList,
       },
     });
   },

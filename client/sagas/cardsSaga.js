@@ -74,14 +74,20 @@ function* removeColorTask(action) {
 function* moveCardTask(action) {
   const { sourceListId, targetListId } = action.payload;
   const lists = yield select(state => state.entities.lists);
-  
-  const sourceCardsIds = lists[sourceListId].cards;
-  const targetCardsIds = lists[targetListId].cards;
 
-  console.log(sourceCardsIds, targetCardsIds);
+  const sourceList = {
+    id: sourceListId,
+    cards: lists[sourceListId].cards,
+  };
+  const targetList = {
+    id: targetListId,
+    cards: lists[targetListId].cards,
+  };
+
+  console.log(sourceList, targetList);
 
   /* try { */
-  /*   yield call(api.moveCard(sourceCardsIds, targetCardsIds)); */
+  /*   yield call(api.moveCard(sourceList, targetList)); */
   /*   yield put(moveCard.success()); */
   /* } catch(err) { */
   /*   yield put(moveCard.failure(err.message)); */
