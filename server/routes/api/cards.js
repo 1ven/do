@@ -7,6 +7,7 @@ router.put('/:id', CardController.update);
 router.delete('/:id', CardController.drop);
 router.post('/:id/addColor', CardController.addColor);
 router.post('/:id/removeColor', CardController.removeColor);
+router.post('/move', CardController.move);
 router.post('/:id/comments', CommentController.create);
 
 module.exports = router;

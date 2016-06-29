@@ -234,17 +234,17 @@ describe('Card', () => {
           card_id: '2',
         }]))
     });
-  });
 
-  it('should return lists with updated cards', () => {
-    return Card.move(sourceList, targetList)
-      .then(result => assert.deepEqual(result, [{
-        id: listId,
-        cards: [card2Id],
-      }, {
-        id: listId,
-        cards: [cardId],
-      }]));
+    it('should return lists with updated cards', () => {
+      return Card.move(sourceList, targetList)
+        .then(result => assert.deepEqual(result, [{
+          id: '1',
+          cards: ['1'],
+        }, {
+          id: '2',
+          cards: ['3', '2'],
+        }]));
+    });
   });
 });
 

@@ -229,6 +229,34 @@ describe('cards routes', () => {
         });
     }).catch(done);
   });
+
+  it('POST /api/cards/move should respond with 200 return updated lists and move cards', (done) => {
+    setup().then(request => {
+      request
+        .post(`/api/cards/move`)
+        .send({
+          sourceList: {
+            id: listId,
+            cards: [card2Id],
+          },
+          targetList: {
+            id: listId,
+            cards: [cardId],
+          },
+        })
+        .expect(200)
+        .end((err, res) => {
+          if (err) { return done(err); }
+
+          assert.deepEqual(res.body.result, [{
+            id: listId,
+            cards: [card2Id, cardId],
+          }]);
+
+          done();
+        });
+    }).catch(done);
+  });
 });
 
 function setup() {

@@ -100,7 +100,7 @@ exports.addColor = (req, res, next) => {
           colors,
         },
       });
-    });
+    }, next);
 };
 
 exports.removeColor = (req, res, next) => {
@@ -116,5 +116,15 @@ exports.removeColor = (req, res, next) => {
           colors,
         },
       });
-    });
+    }, next);
+};
+
+exports.move = (req, res, next) => {
+  const sourceList = req.body.sourceList;
+  const targetList = req.body.targetList;
+
+  return Card.move(sourceList, targetList)
+    .then(result => {
+      res.status(200).json({ result });
+    }, next);
 };

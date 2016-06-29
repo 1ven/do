@@ -107,7 +107,7 @@ const Card = {
         .then(() => this.query(
           `SELECT list_id AS id, json_agg(card_id) AS cards FROM lists_cards
           WHERE list_id = $1 OR list_id = $2
-          GROUP BY card_id`,
+          GROUP BY list_id`,
           [sourceList.id, targetList.id]
         ));
     });
