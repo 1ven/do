@@ -84,14 +84,12 @@ function* moveCardTask(action) {
     cards: lists[targetListId].cards,
   };
 
-  console.log(sourceList, targetList);
-
-  /* try { */
-  /*   yield call(api.moveCard(sourceList, targetList)); */
-  /*   yield put(moveCard.success()); */
-  /* } catch(err) { */
-  /*   yield put(moveCard.failure(err.message)); */
-  /* } */
+  try {
+    yield call(api.moveCard, sourceList, targetList);
+    yield put(moveCard.success({ sourceListId, targetListId }));
+  } catch(err) {
+    yield put(moveCard.failure(err.message));
+  }
 }
 
 function* watchCreateCard() {
