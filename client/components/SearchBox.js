@@ -64,12 +64,9 @@ class SearchBox extends Component {
             value={this.state.value}
             onChange={this.handleInputChange}
           />
-          <button
-            className="b-search-box__submit"
-            type="submit"
-          >
+          <span className="b-search-box__submit">
             <Icon name="magnifier" />
-          </button>
+          </span>
         </form>
         {results.length && isVisible ? (
           <div className="b-search-box__results">
