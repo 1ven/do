@@ -202,6 +202,39 @@ describe('Card', () => {
         });
     });
   });
+
+  describe('move', () => {
+    beforeEach(() => recreateTables().then(() => db.none(
+      `INSERT INTO lists(id, title) VALUES ('1', 'list 1'), ('2', 'list 2');
+      INSERT INTO cards(id, text)
+      VALUES ('1', 'card 1'), ('2', 'card 2'), ('3', 'card 3');
+      INSERT INTO lists_cards
+      VALUES ('1', '1'), ('1', '2'), ('2', '3')`
+    )));
+
+    const sourceList = {
+      id: '1',
+      cards: ['1'],
+    };
+    const targetList = {
+      id: '2',
+      cards: ['3', '2'],
+    };
+
+    it('should set new cards ids according to provided data', () => {
+      return Card.move(sourceList, targetList)
+        .then(() => db.query(`SELECT card_id FROM lists_cards WHERE list_id = '1' ORDER BY card_index`))
+        .then(ids => assert.deepEqual(ids, [{
+          card_id: '1',
+        }]))
+        .then(() => db.query(`SELECT card_id FROM lists_cards WHERE list_id = '2' ORDER BY card_index`))
+        .then(ids => assert.deepEqual(ids, [{
+          card_id: '3',
+        }, {
+          card_id: '2',
+        }]))
+    });
+  });
 });
 
 function setup() {

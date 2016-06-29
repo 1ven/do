@@ -1,4 +1,5 @@
 const _ = require('lodash');
+const Promise = require('bluebird');
 const shortid = require('shortid');
 const pgp = require('pg-promise');
 const db = require('../db');
@@ -85,6 +86,25 @@ const Card = {
       GROUP BY cr.id, bl.board_id`,
       [cardId]
     );
+  },
+
+  move(sourceList, targetList) {
+    return db.tx(function() {
+      return this.none(
+        `DELETE FROM lists_cards WHERE list_id = $1 OR list_id = $2`,
+        [sourceList.id, targetList.id]
+      )
+        .then(() =>
+          Promise.each([sourceList, targetList], list => {
+            return Promise.each(list.cards, cardId => {
+              return this.none(
+                `INSERT INTO lists_cards VALUES ($1, $2)`,
+                [list.id, cardId]
+              );
+            });
+          })
+        );
+    });
   },
 };
 
