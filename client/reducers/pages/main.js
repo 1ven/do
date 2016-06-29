@@ -5,7 +5,6 @@ import without from 'lodash/without';
 export default function main(state = {
   ids: [],
   isFetching: false,
-  isMoving: false,
   lastUpdated: undefined,
   error: undefined,
 }, action) {
@@ -53,15 +52,9 @@ export default function main(state = {
           },
         }),
       };
-    case types.BOARD_MOVE_REQUEST:
-      return {
-        ...state,
-        isMoving: true,
-      };
     case types.BOARD_MOVE_SUCCESS:
       return {
         ...state,
-        isMoving: false,
         lastUpdated: payload.receivedAt,
         ids: payload.result,
       };

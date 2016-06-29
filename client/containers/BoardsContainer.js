@@ -10,7 +10,6 @@ import Boards from '../components/Boards';
 
 function BoardsContainer({
   boards,
-  isMoving,
   onBoardTileRemoveClick,
   onBoardTileEditClick,
   onBoardTileToggleStarredClick,
@@ -24,7 +23,6 @@ function BoardsContainer({
   ) : (
     <Boards
       items={boards}
-      isTransparent={isMoving}
       onRemoveClick={onBoardTileRemoveClick}
       onEditClick={onBoardTileEditClick}
       onToggleStarredClick={onBoardTileToggleStarredClick}
@@ -37,7 +35,6 @@ function BoardsContainer({
 BoardsContainer.propTypes = {
   ids: PropTypes.arrayOf(PropTypes.string).isRequired,
   boards: PropTypes.array.isRequired,
-  isMoving: PropTypes.bool.isRequired,
   onBoardTileRemoveClick: PropTypes.func.isRequired,
   onBoardTileEditClick: PropTypes.func.isRequired,
   onBoardTileToggleStarredClick: PropTypes.func.isRequired,
@@ -46,7 +43,6 @@ BoardsContainer.propTypes = {
 function mapStateToProps(state, ownProps) {
   return {
     boards: ownProps.ids.map(id => state.entities.boards[id]),
-    isMoving: state.pages.main.isMoving,
   };
 }
 

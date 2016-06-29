@@ -4,16 +4,14 @@ import DraggableBoardTile from './DraggableBoardTile';
 
 function Boards({
   items = [],
-  isTransparent,
   onRemoveClick,
   onEditClick,
   onToggleStarredClick,
   onMoveTile,
   onDropTile,
 }) {
-  const rootClassName = addModifiers('b-boards', isTransparent ? ['transparent'] : []);
   return (
-    <div className={rootClassName}>
+    <div className="b-boards">
       {items.map((board, i) =>
         <div
           className="b-boards__item"
@@ -38,7 +36,6 @@ function Boards({
 
 Boards.propTypes = {
   items: PropTypes.array.isRequired,
-  isTransparent: PropTypes.bool,
   onRemoveClick: PropTypes.func.isRequired,
   onEditClick: PropTypes.func.isRequired,
   onToggleStarredClick: PropTypes.func.isRequired,
