@@ -85,8 +85,8 @@ function* moveCardTask(action) {
   };
 
   try {
-    yield call(api.moveCard, sourceList, targetList);
-    yield put(moveCard.success({ sourceListId, targetListId }));
+    const payload = yield call(api.moveCard, sourceList, targetList);
+    yield put(moveCard.success(payload));
   } catch(err) {
     yield put(moveCard.failure(err.message));
   }
