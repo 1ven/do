@@ -235,6 +235,17 @@ describe('Card', () => {
         }]))
     });
   });
+
+  it('should return lists with updated cards', () => {
+    return Card.move(sourceList, targetList)
+      .then(result => assert.deepEqual(result, [{
+        id: listId,
+        cards: [card2Id],
+      }, {
+        id: listId,
+        cards: [cardId],
+      }]));
+  });
 });
 
 function setup() {
