@@ -7,7 +7,7 @@ import RoundSpinner from './RoundSpinner';
 function SearchBox({
   results,
   query,
-  isFetching,
+  isWaiting,
   onChange,
   onItemClick,
 }) {
@@ -37,7 +37,7 @@ function SearchBox({
         />
         <div className="b-search-box__right">
           <Animation name="a-fade-in">
-            {isFetching ? (
+            {isWaiting ? (
               <div className="b-search-box__right-item">
                 <RoundSpinner
                   size="12px"
@@ -110,7 +110,7 @@ SearchBox.propTypes = {
       ),
     })
   ),
-  isFetching: PropTypes.bool,
+  isWaiting: PropTypes.bool,
   onChange: PropTypes.func.isRequired,
   onItemClick: PropTypes.func.isRequired,
 };

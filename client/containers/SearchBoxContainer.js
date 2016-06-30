@@ -33,7 +33,7 @@ function mapStateToProps(state) {
   const { results } = state.search;
   return {
     results: results ? prettyResults(results) : results,
-    isFetching: state.search.isFetching,
+    isWaiting: state.search.isFetching,
     query: state.search.query,
   };
 }
