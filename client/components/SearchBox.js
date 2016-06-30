@@ -1,6 +1,7 @@
 import React, { PropTypes, Component } from 'react';
 import { Link } from 'react-router';
 import Icon from './Icon';
+import Animation from './Animation';
 
 function SearchBox({
   results,
@@ -36,42 +37,44 @@ function SearchBox({
           <Icon name="magnifier" />
         </span>
       </div>
-      {query && results ? (
-        <div className="b-search-box__results">
-          {results.length ? (
-            results.map((result, i) => (
-              <div
-                className="b-search-box__group"
-                key={i}
-              >
-                <span className="b-search-box__group-title">
-                  {result.type}
-                </span>
-                <div className="b-search-box__group-items">
-                  {result.items.map((item, i) => (
-                    <div
-                      className="b-search-box__item"
-                      key={i}
-                    >
-                      <Link
-                        className="b-search-box__group-link"
-                        onClick={onItemClick}
-                        to={item.link}
+      <Animation name="a-fade-in">
+        {query && results ? (
+          <div className="b-search-box__results">
+            {results.length ? (
+              results.map((result, i) => (
+                <div
+                  className="b-search-box__group"
+                  key={i}
+                >
+                  <span className="b-search-box__group-title">
+                    {result.type}
+                  </span>
+                  <div className="b-search-box__group-items">
+                    {result.items.map((item, i) => (
+                      <div
+                        className="b-search-box__item"
+                        key={i}
                       >
-                        {highlight(item.title)}
-                      </Link>
-                    </div>
-                  ))}
+                        <Link
+                          className="b-search-box__group-link"
+                          onClick={onItemClick}
+                          to={item.link}
+                        >
+                          {highlight(item.title)}
+                        </Link>
+                      </div>
+                    ))}
+                  </div>
                 </div>
-              </div>
-            ))
-          ) : (
-            <span className="b-search-box__not-found">
-              Entries not found.
-            </span>
-          )}
-        </div>
-      ) : null}
+              ))
+            ) : (
+              <span className="b-search-box__not-found">
+                Entries not found.
+              </span>
+            )}
+          </div>
+        ) : null}
+      </Animation>
     </div>
   );
 }
