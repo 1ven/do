@@ -20,6 +20,7 @@ function CardForm({
           inputProps={{
             ...text,
             placeholder: 'Enter card text',
+            focus: true,
           }}
           error={handleReduxFormError(text)}
         />

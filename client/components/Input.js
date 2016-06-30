@@ -1,5 +1,4 @@
 import React, { PropTypes, Component } from 'react';
-import ReactDOM from 'react-dom';
 
 class Input extends Component {
   constructor(props) {
@@ -14,8 +13,15 @@ class Input extends Component {
 
   componentDidMount() {
     const { focus } = this.props;
+    const length = this.state.value.length;
 
-    if (focus) ReactDOM.findDOMNode(this.refs.input).focus();
+    if (focus) {
+      this.node.focus();
+    }
+
+    if (focus && this.node.setSelectionRange) {
+      this.node.setSelectionRange(length, length);
+    }
   }
 
   handleChange(e) {
@@ -35,7 +41,7 @@ class Input extends Component {
         {...this.props}
         className="b-input"
         type="text"
-        ref="input"
+        ref={node => this.node = node}
         value={value}
         onChange={this.handleChange}
       />

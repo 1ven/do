@@ -20,6 +20,7 @@ function ListForm({
           inputProps={{
             ...title,
             placeholder: 'Enter board title',
+            focus: true,
           }}
           error={handleReduxFormError(title)}
         />
