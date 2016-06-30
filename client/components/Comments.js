@@ -5,34 +5,36 @@ import SendCommentForm from './SendCommentForm';
 function Comments({ comments, onSendCommentSubmit }) {
   return (
     <div className="b-comments">
-      {comments.map((comment, i) => (
-        <div
-          className="b-comments__item"
-          key={i}
-        >
-          <div className="b-comment">
-            <img
-              alt="Avatar"
-              className="b-comment__avatar"
-              src={comment.user.avatar}
-            />
-            <div className="b-comment__content">
-              <div className="b-comment__top">
-                <span className="b-comment__username">
-                  {comment.user.username}
-                </span>
-                <time className="b-comment__date">
-                  {moment.unix(comment.createdAt).format('H:m - DD MMM Y')}
-                </time>
+      <div className="b-comments__items">
+        {comments.map((comment, i) => (
+          <div
+            className="b-comments__item"
+            key={i}
+          >
+            <div className="b-comment">
+              <img
+                alt="Avatar"
+                className="b-comment__avatar"
+                src={comment.user.avatar}
+              />
+              <div className="b-comment__content">
+                <div className="b-comment__top">
+                  <span className="b-comment__username">
+                    {comment.user.username}
+                  </span>
+                  <time className="b-comment__date">
+                    {moment.unix(comment.createdAt).format('H:m - DD MMM Y')}
+                  </time>
+                </div>
+                <p className="b-comment__text">
+                  {comment.text}
+                </p>
               </div>
-              <p className="b-comment__text">
-                {comment.text}
-              </p>
             </div>
           </div>
-        </div>
-      ))}
-      <div className="b-comments__item">
+        ))}
+      </div>
+      <div className="b-comments__form">
         <SendCommentForm
           onSubmit={onSendCommentSubmit}
         />

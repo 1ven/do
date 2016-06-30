@@ -4,9 +4,23 @@
     margin-bottom: 15px;
     border-bottom: 1px solid $gray;
     &:last-child {
-      padding-bottom: 0;
-      margin-bottom: 0;
       border-bottom: 0;
+    }
+  }
+  &__items {
+    max-height: 230px;
+    overflow-y: auto;
+  }
+  &__form {
+    position: relative;
+    &:before {
+      content: '';
+      background: linear-gradient(to bottom, rgba(255,255,255,0) 0%,rgba(255,255,255,1) 100%);
+      height: 30px;
+      width: 100%;
+      top: -30px;
+      left: 0;
+      position: absolute;
     }
   }
 }
