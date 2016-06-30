@@ -3,6 +3,7 @@ import cookie from 'js-cookie';
 import { connect } from 'react-redux';
 import modalsNames from '../../constants/modalsNames';
 import Loader from '../../components/Loader';
+import TextInfo from '../../components/TextInfo';
 import BottomBox from '../../components/BottomBox';
 import Btn from '../../components/Btn';
 import BoardsGroups from '../../components/BoardsGroups';
@@ -43,11 +44,11 @@ class IndexPage extends Component {
     return (
       <div>
         {error ? (
-          <div>Error loading boards.</div>
-        ) : isEmpty ? (
-          <div>No result.</div>
+          <TextInfo>Error loading boards.</TextInfo>
         ) : isFetching || !lastUpdated ? (
           <Loader />
+        ) : isEmpty ? (
+          <TextInfo>No result.</TextInfo>
         ) : (
           <BoardsGroups
             groups={groups}

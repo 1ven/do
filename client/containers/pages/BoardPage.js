@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import modalsNames from '../../constants/modalsNames';
 import Board from '../../components/Board';
 import Loader from '../../components/Loader';
+import TextInfo from '../../components/TextInfo';
 import { fetchBoard } from '../../actions/boardsActions';
 import { showModal } from '../../actions/modalActions';
 
@@ -38,11 +39,11 @@ class BoardPage extends Component {
     return (
       <div>
         {error ? (
-          <div>Error loading board.</div>
+          <TextInfo>Error loading board.</TextInfo>
         ) : isFetching || !lastUpdated ? (
-        <Loader />
+          <Loader />
         ) : !board ? (
-          <div>Board not found.</div>
+          <TextInfo>Board not found.</TextInfo>
         ) : (
           <Board
             data={board}
