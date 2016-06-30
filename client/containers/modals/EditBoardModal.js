@@ -26,7 +26,7 @@ function EditBoardModal({ dispatch, boardId }) {
   return (
     <Modal
       title="Edit board"
-      onCloseClick={() => dispatch(hideModal())}
+      onClose={() => dispatch(hideModal())}
     >
       <BoardForm
         onSubmit={handleSubmit}

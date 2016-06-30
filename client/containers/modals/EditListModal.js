@@ -26,7 +26,7 @@ function EditListModal({ dispatch, listId }) {
   return (
     <Modal
       title="Edit list"
-      onCloseClick={() => dispatch(hideModal())}
+      onClose={() => dispatch(hideModal())}
     >
       <ListForm
         onSubmit={handleSubmit}

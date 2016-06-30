@@ -11,7 +11,7 @@ function CreateBoardModal({ dispatch }) {
   return (
     <Modal
       title="Create board"
-      onCloseClick={() => dispatch(hideModal())}
+      onClose={() => dispatch(hideModal())}
     >
       <BoardForm
         onSubmit={handleReduxFormSubmit(dispatch, createBoard.request)}

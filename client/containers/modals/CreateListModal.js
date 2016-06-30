@@ -11,7 +11,7 @@ function CreateListModal({ dispatch, boardId }) {
   return (
     <Modal
       title="Create list"
-      onCloseClick={() => dispatch(hideModal())}
+      onClose={() => dispatch(hideModal())}
     >
       <ListForm
         onSubmit={handleReduxFormSubmit(

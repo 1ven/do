@@ -7,6 +7,7 @@ class Modal extends Component {
     super(props);
 
     this.onEscapeKeyUp = this.onEscapeKeyUp.bind(this);
+    this.onDocumentClick = this.onDocumentClick.bind(this);
   }
 
   componentDidMount() {
@@ -19,8 +20,12 @@ class Modal extends Component {
 
   onEscapeKeyUp(e) {
     if (e.keyCode === 27) {
-      this.props.onCloseClick();
+      this.props.onClose();
     }
+  }
+
+  onDocumentClick(e) {
+    
   }
 
   render() {
@@ -28,7 +33,7 @@ class Modal extends Component {
       title,
       children,
       isWaiting,
-      onCloseClick,
+      onClose,
     } = this.props;
     return (
       <div className="b-modal">
@@ -47,7 +52,7 @@ class Modal extends Component {
                 </span>
                 <a
                   className="b-modal-box__close"
-                  onClick={onCloseClick}
+                  onClick={onClose}
                 >
                   <Icon name="cross" />
                 </a>
@@ -66,7 +71,7 @@ class Modal extends Component {
 Modal.propTypes = {
   title: PropTypes.string.isRequired,
   children: PropTypes.node.isRequired,
-  onCloseClick: PropTypes.func.isRequired,
+  onClose: PropTypes.func.isRequired,
 };
 
 export default Modal;

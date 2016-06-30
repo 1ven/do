@@ -32,8 +32,7 @@ class FullCardModal extends Component {
       <Modal
         title="Card"
         isWaiting={isFetching || !lastUpdated}
-        onCloseClick={this.handleCancelClick}
-        onCloseClick={() => browserHistory.push(`/boards/${boardId}`)}
+        onClose={() => browserHistory.push(`/boards/${boardId}`)}
       >
         <FullCard
           card={card}

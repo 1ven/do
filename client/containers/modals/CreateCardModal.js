@@ -10,7 +10,7 @@ function CreateCardModal({ dispatch, boardId, listId }) {
   return (
     <Modal
       title="Create card"
-      onCloseClick={() => dispatch(hideModal())}
+      onClose={() => dispatch(hideModal())}
     >
       <CardForm
         onSubmit={handleReduxFormSubmit(
