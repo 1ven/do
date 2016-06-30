@@ -1,5 +1,5 @@
 import React, { PropTypes } from 'react';
-import { addModifiers } from '../utils';
+import Notification from './Notification';
 import Animation from './Animation';
 
 function Notifications({
@@ -11,22 +11,18 @@ function Notifications({
       name="a-fade-in"
       className="b-notifications"
     >
-      {items.map((notification, i) =>
+      {items.map((n, i) =>
         <div
           className="b-notifications__item"
-          key={i}
+          key={n.id}
         >
-          <div
-            className={
-              addModifiers(
-                'b-notification',
-                [`type_${notification.type}`]
-              )
-            }
-            onClick={() => onNotificationClick(notification.id)}
-          >
-            {notification.text}
-          </div>
+          <Notification
+            id={n.id}
+            text={n.text}
+            type={n.type}
+            subtitle={n.type === 'tip' ? 'Tip' : null}
+            onClick={onNotificationClick}
+          />
         </div>
       )}
     </Animation>
