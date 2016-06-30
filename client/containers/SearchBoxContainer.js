@@ -32,6 +32,8 @@ function prettyResults(results) {
 function mapStateToProps(state) {
   return {
     results: prettyResults(state.search.results),
+    lastUpdated: state.search.lastUpdated,
+    isFetching: state.search.isFetching,
   };
 }
 

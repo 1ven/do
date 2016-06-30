@@ -48,8 +48,8 @@ class SearchBox extends Component {
   }
 
   render() {
-    const { onSubmit, results } = this.props;
-    const { isVisible } = this.state;
+    const { onSubmit, results, lastUpdated, isFetching } = this.props;
+    const { isVisible, value } = this.state;
     return (
       <div className="b-search-box">
         <form
@@ -68,7 +68,13 @@ class SearchBox extends Component {
             <Icon name="magnifier" />
           </span>
         </form>
-        {results.length && isVisible ? (
+        {!results.length && value && !isFetching ? (
+          <div className="b-search-box__results">
+            <span className="b-search-box__not-found">
+              Entries not found.
+            </span>
+          </div>
+        ) : results.length && isVisible ? (
           <div className="b-search-box__results">
             {results.map((result, i) => (
               <div
