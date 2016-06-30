@@ -39,11 +39,18 @@ function* removeCardTask(action) {
 }
 
 function* fetchCardTask(action) {
+  const request = action.payload;
   try {
-    const payload = yield call(api.fetchCard, action.payload.id);
-    yield put(fetchCard.success(payload));
+    const payload = yield call(api.fetchCard, request.cardId);
+    yield put(fetchCard.success({
+      ...payload,
+      request,
+    }));
   } catch(err) {
-    yield put(fetchCard.failure(err.message));
+    yield put(fetchCard.failure({
+      message: err.message,
+      request,
+    }));
   }
 }
 

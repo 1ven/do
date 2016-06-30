@@ -61,7 +61,7 @@ function mapStateToProps(state, ownProps) {
 }
 
 function mapDispatchToProps(dispatch, ownProps) {
-  const { cardId } = ownProps.params;
+  const { boardId, cardId } = ownProps.params;
   return {
     onEditCardFormSubmit(formData) {
       return dispatch(updateCard.request({
@@ -87,7 +87,7 @@ function mapDispatchToProps(dispatch, ownProps) {
     },
 
     loadCard() {
-      return dispatch(fetchCard.request({ id: cardId }));
+      return dispatch(fetchCard.request({ boardId, cardId }));
     },
   };
 }
