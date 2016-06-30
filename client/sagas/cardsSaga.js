@@ -6,6 +6,7 @@ import { createCard, removeCard, fetchCard, updateCard, addColor, removeColor, m
 import { incCardsLength, decCardsLength } from '../actions/boardsActions';
 import { addCardId, removeCardId } from '../actions/listsActions';
 import { hideModal } from '../actions/modalActions';
+import { createNotification } from '../actions/notificationsActions';
 
 function* createCardTask(action) {
   const { boardId, listId, text } = action.payload;
@@ -15,6 +16,11 @@ function* createCardTask(action) {
     yield put(incCardsLength(boardId));
     yield put(addCardId(listId, payload.result.card));
     yield put(hideModal());
+    yield put(createNotification(
+      'You can remove card, by dragging it to the bottom of the screen',
+      'tip',
+      10000
+    ));
   } catch(err) {
     yield put(createCard.failure(err.message));
   }
