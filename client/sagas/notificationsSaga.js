@@ -5,16 +5,16 @@ import { call, put, take, fork, cancel, select } from 'redux-saga/effects'
 import { createNotification, createNotificationWithId, removeNotification } from '../actions/notificationsActions';
 import shortId from 'shortid';
 
-function* removeWithDelay(id) {
-  yield delay(5000);
+function* removeWithDelay(id, timeout) {
+  yield delay(timeout);
   yield put(removeNotification(id));
 }
 
 function* createNotificationTask(action) {
-  const { text, type } = action.payload;
+  const { text, type, timeout } = action.payload;
   const id = shortId.generate();
   yield put(createNotificationWithId(id, text, type));
-  const task = yield fork(removeWithDelay, id);
+  const task = yield fork(removeWithDelay, id, timeout);
 
   while (true) {
     const removeAction = yield take(types.NOTIFICATIONS_REMOVE);

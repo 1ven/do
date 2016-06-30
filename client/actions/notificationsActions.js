@@ -1,11 +1,12 @@
 import types from '../constants/actionTypes';
 
-export function createNotification(text, type) {
+export function createNotification(text, type, timeout = 5000) {
   return {
     type: types.NOTIFICATIONS_CREATE,
     payload: {
       text,
       type,
+      timeout,
     },
   };
 }
