@@ -28,8 +28,8 @@ class FullCard extends Component {
   }
 
   handleEditCardFormSubmit(formData) {
-    this.props.onEditCardFormSubmit(formData)
-      .then(() => this.hideEditForm());
+    this.props.onEditCardFormSubmit(formData);
+    this.hideEditForm();
   }
 
   render() {
