@@ -8,7 +8,10 @@ import { showModal } from '../../actions/modalActions';
 
 class BoardPage extends Component {
   componentWillMount() {
-    this.props.loadBoard(this.props.params.boardId);
+    const { loadBoard, lastUpdated, params: { boardId } } = this.props;
+    if (!lastUpdated) {
+      loadBoard(boardId);
+    }
   }
 
   componentWillReceiveProps(nextProps) {
