@@ -10,28 +10,37 @@ class AppContainer extends Component {
     this.props.dispatch(fetchActivity.request());
   }
 
+  componentDidUpdate() {
+    if (this.props.loaded) {
+      this.hidePreloader();
+    }
+  }
+
+  hidePreloader() {
+    const preloader = document.querySelector('.b-preloader');
+    preloader.classList.add('b-preloader_hidden');
+    setTimeout(() => preloader.style.display = 'none', 1050);
+  }
+
   render() {
-    const { children, isFetching, didUpdated } = this.props;
-    return !didUpdated || isFetching ? (
-      <div>Loading...</div>
-    ) : (
+    const { children, loaded } = this.props;
+    return loaded ? (
       <App>
         {children}
       </App>
-    );
+    ) : <div />;
   }
 };
 
 AppContainer.propTypes = {
   children: PropTypes.node.isRequired,
-  isFetching: PropTypes.bool.isRequired,
+  loaded: PropTypes.bool.isRequired,
   dispatch: PropTypes.func.isRequired,
 };
 
 function mapStateToProps(state) {
   return {
-    isFetching: state.activity.isFetching || state.user.isFetching,
-    didUpdated: state.activity.lastUpdated && state.user.lastUpdated,
+    loaded: !! (state.activity.lastUpdated && state.user.lastUpdated),
   };
 }
 
