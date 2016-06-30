@@ -2,6 +2,7 @@ import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
 import { fetchUser } from '../actions/userActions';
 import { fetchActivity } from '../actions/activityActions';
+import { hidePreloader } from '../utils';
 import App from '../components/App';
 
 class AppContainer extends Component {
@@ -12,14 +13,8 @@ class AppContainer extends Component {
 
   componentDidUpdate() {
     if (this.props.loaded) {
-      this.hidePreloader();
+      hidePreloader();
     }
-  }
-
-  hidePreloader() {
-    const preloader = document.querySelector('.b-preloader');
-    preloader.classList.add('b-preloader_hidden');
-    setTimeout(() => preloader.style.display = 'none', 1050);
   }
 
   render() {
