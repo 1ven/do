@@ -11,7 +11,9 @@ import { showModal } from '../../actions/modalActions';
 
 class IndexPage extends Component {
   componentWillMount() {
-    this.props.fetchBoards();
+    if (!this.props.lastUpdated) {
+      this.props.fetchBoards();
+    }
   }
 
   shouldComponentUpdate(nextProps) {
