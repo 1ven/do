@@ -16,7 +16,7 @@ class UpdateMessage extends Component {
           <div className="b-update-message__text">
             Your browser is <i>out of date</i>.<br />
             To use our application, you should
-            &nbsp;<a className="b-link" href="https://browser-update.org/update-browser.html#18:browser-update.org">update</a>&nbsp;
+            &nbsp;<a className="b-link" target="_blank" href="https://browser-update.org/update-browser.html#18:browser-update.org">update</a>&nbsp;
             your browser.
           </div>
         </div>
