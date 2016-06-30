@@ -10,7 +10,7 @@ function CreateListModal({ dispatch, boardId }) {
   const ListForm = _ListForm();
   return (
     <Modal
-      title="Edit list"
+      title="Create list"
       onCloseClick={() => dispatch(hideModal())}
     >
       <ListForm
