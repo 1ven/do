@@ -13,15 +13,7 @@ function Activity({ items }) {
           >
             <div className="b-activity__item-text">
               {item.action} &nbsp;
-              {!item.noLink ?
-                <Link
-                  className="b-activity__entry"
-                  to={item.entry.link}
-                >
-                  {item.entry.title}
-                </Link> :
-                item.entry.title
-              }
+              '{item.entry.title}'
               &nbsp;
               {item.type}
             </div>
