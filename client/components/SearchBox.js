@@ -2,10 +2,12 @@ import React, { PropTypes, Component } from 'react';
 import { Link } from 'react-router';
 import Icon from './Icon';
 import Animation from './Animation';
+import RoundSpinner from './RoundSpinner';
 
 function SearchBox({
   results,
   query,
+  isFetching,
   onChange,
   onItemClick,
 }) {
@@ -33,9 +35,24 @@ function SearchBox({
           value={query}
           onChange={e => onChange(e.target.value)}
         />
-        <span className="b-search-box__submit">
-          <Icon name="magnifier" />
-        </span>
+        <div className="b-search-box__right">
+          <Animation name="a-fade-in">
+            {isFetching ? (
+              <div className="b-search-box__right-item">
+                <RoundSpinner
+                  size="12px"
+                  color="#000"
+                  thickness="1px"
+                />
+              </div>
+            ) : <div />}
+          </Animation>
+          <div className="b-search-box__right-item">
+            <div className="b-search-box__magnifier">
+              <Icon name="magnifier" />
+            </div>
+          </div>
+        </div>
       </div>
       <Animation name="a-fade-in">
         {query && results ? (
@@ -93,6 +110,7 @@ SearchBox.propTypes = {
       ),
     })
   ),
+  isFetching: PropTypes.bool,
   onChange: PropTypes.func.isRequired,
   onItemClick: PropTypes.func.isRequired,
 };

@@ -58,7 +58,7 @@
       @include placeholder {
         color: $black;
       }
-      & + .b-search-box__magnifier {
+      & + .b-search-box__right .b-search-box__magnifier {
         path {
           transition-duration: .3s;
           fill: $black;
@@ -66,22 +66,19 @@
       }
     }
   }
-  &__magnifier {
-    background-color: transparent;
-    border: 0;
+  &__right {
     position: absolute;
     top: 0;
-    bottom: 0;
-    right: 10px;
-    margin: auto 0;
-    padding: 0;
-    width: 14px;
-    outline: 0;
+    right: 0;
+    height: 100%;
     display: flex;
     align-items: center;
-    i {
-      width: 14px;
-    }
+  }
+  &__right-item {
+    margin-right: 10px;
+  }
+  &__magnifier {
+    width: 14px;
     path {
       fill: $white;
       transition: fill .2s;
