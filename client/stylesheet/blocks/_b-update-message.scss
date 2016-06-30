@@ -1,0 +1,27 @@
+.b-update-message {
+  background-color: $bg;
+  height: 100%;
+  text-align: center;
+  color: $white;
+  &:before {
+    content: '';
+    display: inline-block;
+    vertical-align: middle;
+    height: 100%;
+  }
+  &__middle {
+    display: inline-block;
+    vertical-align: middle;
+    text-align: left;
+  }
+  &__oops {
+    font-family: 'Lobster', sans-serif;
+    font-size: 42px;
+    display: block;
+    margin-bottom: 10px;
+  }
+  &__text {
+    font-size: 14px;
+    line-height: 1.4;
+  }
+}

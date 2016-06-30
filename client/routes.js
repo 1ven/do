@@ -2,6 +2,7 @@ import React from 'react';
 import cookie from 'js-cookie';
 import { Route, IndexRoute } from 'react-router';
 import Sign from './components/Sign';
+import UpdateMessage from './components/UpdateMessage';
 import AppContainer from './containers/AppContainer';
 import IndexPage from './containers/pages/IndexPage';
 import BoardPage from './containers/pages/BoardPage';
@@ -21,6 +22,8 @@ function ensureSignedOut(nextState, replace) {
     replace('/');
   }
 }
+
+function ensureBrowserIsUpdated() {}
 
 export default (
   <Route path="/">
@@ -59,5 +62,9 @@ export default (
         component={SignUpPage}
       />
     </Route>
+    <Route
+      path="update"
+      component={UpdateMessage}
+    />
   </Route>
 );
