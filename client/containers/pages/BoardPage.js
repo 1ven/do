@@ -29,6 +29,7 @@ class BoardPage extends Component {
       board,
       isFetching,
       lastUpdated,
+      error,
       children,
       onAddListBtnClick,
       onEditBoardClick,
@@ -36,16 +37,18 @@ class BoardPage extends Component {
 
     return (
       <div>
-        {isFetching || !lastUpdated ? (
-          <Loader />
-          ) : !board ? (
-            <div>Board not found</div>
-          ) : (
-            <Board
-              data={board}
-              onAddListBtnClick={onAddListBtnClick}
-              onEditBoardClick={onEditBoardClick}
-            />
+        {error ? (
+          <div>Error loading board.</div>
+        ) : isFetching || !lastUpdated ? (
+        <Loader />
+        ) : !board ? (
+          <div>Board not found.</div>
+        ) : (
+          <Board
+            data={board}
+            onAddListBtnClick={onAddListBtnClick}
+            onEditBoardClick={onEditBoardClick}
+          />
         )}
         {children}
       </div>

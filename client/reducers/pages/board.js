@@ -23,6 +23,7 @@ export default function board(state = {}, action) {
       return {
         ...state,
         [payload.result]: {
+          error: true,
           isFetching: false,
         },
       };
