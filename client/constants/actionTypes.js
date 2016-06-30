@@ -130,5 +130,7 @@ export default createConstants(
 
   'SEARCH_REQUEST',
   'SEARCH_SUCCESS',
-  'SEARCH_ERROR'
+  'SEARCH_ERROR',
+
+  'SEARCH_RESET'
 );

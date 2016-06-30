@@ -6,3 +6,9 @@ export const search = createActions([
   types.SEARCH_SUCCESS,
   types.SEARCH_ERROR,
 ]);
+
+export function resetSearch() {
+  return {
+    type: types.SEARCH_RESET,
+  };
+}

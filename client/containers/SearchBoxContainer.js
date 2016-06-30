@@ -1,6 +1,6 @@
 import { connect } from 'react-redux';
 import SearchBox from '../components/SearchBox';
-import { search } from '../actions/searchActions';
+import { search, resetSearch } from '../actions/searchActions';
 
 function prettyResults(results) {
   return results.reduce((acc, result) => {
@@ -30,9 +30,9 @@ function prettyResults(results) {
 }
 
 function mapStateToProps(state) {
+  const { results } = state.search;
   return {
-    results: prettyResults(state.search.results),
-    lastUpdated: state.search.lastUpdated,
+    results: results ? prettyResults(results) : results,
     isFetching: state.search.isFetching,
   };
 }
@@ -40,6 +40,9 @@ function mapStateToProps(state) {
 function mapDispatchToProps(dispatch) {
   return {
     onChange(value) {
+      if (!value) {
+        return dispatch(resetSearch());
+      }
       dispatch(search.request({ query: value }));
     },
   };

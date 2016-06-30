@@ -1,10 +1,11 @@
 import types from '../constants/actionTypes';
 
-export default function search(state = {
-  results: [],
+const INITIAL_STATE = {
+  results: undefined,
   isFetching: false,
-  lastUpdated: undefined,
-}, action) {
+};
+
+export default function search(state = INITIAL_STATE, action) {
   switch (action.type) {
     case types.SEARCH_REQUEST:
       return {
@@ -15,8 +16,9 @@ export default function search(state = {
       return {
         results: action.payload.result,
         isFetching: false,
-        lastUpdated: action.payload.receivedAt,
       };
+    case types.SEARCH_RESET:
+      return INITIAL_STATE;
     default:
       return state;
   }
