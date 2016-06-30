@@ -8,7 +8,6 @@ class SearchBox extends Component {
 
     this.state = {
       value: '',
-      isVisible: false,
     };
 
     this.handleInputChange = this.handleInputChange.bind(this);
@@ -19,7 +18,6 @@ class SearchBox extends Component {
     const { value } = e.target;
 
     this.setState({
-      isVisible: true,
       value,
     });
 
@@ -28,7 +26,7 @@ class SearchBox extends Component {
 
   handleItemClick() {
     this.setState({
-      isVisible: false,
+      value: '',
     });
   }
 
@@ -48,8 +46,8 @@ class SearchBox extends Component {
   }
 
   render() {
-    const { onSubmit, results, lastUpdated, isFetching } = this.props;
-    const { isVisible, value } = this.state;
+    const { onSubmit, results, isFetching } = this.props;
+    const { value } = this.state;
     return (
       <div className="b-search-box">
         <form
@@ -68,50 +66,46 @@ class SearchBox extends Component {
             <Icon name="magnifier" />
           </span>
         </form>
-        {!results.length && value && !isFetching ? (
+        {value && results ? (
           <div className="b-search-box__results">
-            <span className="b-search-box__not-found">
-              Entries not found.
-            </span>
-          </div>
-        ) : results.length && isVisible ? (
-          <div className="b-search-box__results">
-            {results.map((result, i) => (
-              <div
-                className="b-search-box__group"
-                key={i}
-              >
-                <span className="b-search-box__group-title">
-                  {result.type}
-                </span>
-                <div className="b-search-box__group-items">
-                  {result.items.map((item, i) => (
-                    <div
-                      className="b-search-box__item"
-                      key={i}
-                    >
-                      <Link
-                        className="b-search-box__group-link"
-                        onClick={this.handleItemClick}
-                        to={item.link}
+            {results.length ? (
+              results.map((result, i) => (
+                <div
+                  className="b-search-box__group"
+                  key={i}
+                >
+                  <span className="b-search-box__group-title">
+                    {result.type}
+                  </span>
+                  <div className="b-search-box__group-items">
+                    {result.items.map((item, i) => (
+                      <div
+                        className="b-search-box__item"
+                        key={i}
                       >
-                        {this.highlight(item.title)}
-                      </Link>
-                    </div>
-                  ))}
+                        <Link
+                          className="b-search-box__group-link"
+                          onClick={this.handleItemClick}
+                          to={item.link}
+                        >
+                          {this.highlight(item.title)}
+                        </Link>
+                      </div>
+                    ))}
+                  </div>
                 </div>
-              </div>
-            ))}
+              ))
+            ) : (
+              <span className="b-search-box__not-found">
+                Entries not found.
+              </span>
+            )}
           </div>
         ) : null}
       </div>
     );
   }
 }
-
-SearchBox.defaultProps = {
-  results: [],
-};
 
 SearchBox.propTypes = {
   onSubmit: PropTypes.func,
