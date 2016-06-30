@@ -2,6 +2,10 @@ import React, { PropTypes } from 'react';
 import { Link } from 'react-router';
 
 function Activity({ items }) {
+  function crop(title) {
+    return title.length > 10 ? title.slice(0, 10) + '...' : title;
+  }
+
   return (
     <div className="b-activity">
       <span className="b-activity__title">Activity</span>
@@ -13,7 +17,7 @@ function Activity({ items }) {
           >
             <div className="b-activity__item-text">
               {item.action} &nbsp;
-              '{item.entry.title}'
+              '{crop(item.entry.title)}'
               &nbsp;
               {item.type}
             </div>
