@@ -67,13 +67,14 @@ BoardPage.propTypes = {
 
 function mapStateToProps(state, ownProps) {
   const { boardId } = ownProps.params;
-  const { isFetching, lastUpdated } = state.pages.board[boardId] || {};
+  const { isFetching, lastUpdated, error } = state.pages.board[boardId] || {};
   const board = state.entities.boards[boardId];
 
   return {
     board,
     isFetching,
     lastUpdated,
+    error,
   };
 }
 

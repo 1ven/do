@@ -28,8 +28,31 @@ function card(state = {
   }
 };
 
+function cards(state = {}, action) {
+  const { payload } = action;
+
+  switch (action.type) {
+    case types.CARD_FETCH_REQUEST:
+      return {
+        ...state,
+        [payload.cardId]: card(state[payload.cardId], action),
+      };
+    case types.CARD_FETCH_SUCCESS:
+    case types.CARD_FETCH_FAILURE:
+      return {
+        ...state,
+        [payload.request.cardId]: card(
+          state[payload.request.cardId],
+          action
+        ),
+      };
+    default:
+      return state;
+  }
+}
+
 function board(state = {
-  card: undefined,
+  cards: {},
   isFetching: false,
   lastUpdated: undefined,
   error: false,
@@ -58,7 +81,7 @@ function board(state = {
     case types.CARD_FETCH_FAILURE:
       return {
         ...state,
-        card: card(state.card, action),
+        cards: cards(state.cards, action),
       };
     default:
       return state;

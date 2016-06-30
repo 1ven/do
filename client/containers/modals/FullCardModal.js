@@ -9,12 +9,17 @@ import { createComment } from '../../actions/commentsActions';
 
 class FullCardModal extends Component {
   componentWillMount() {
-    this.props.loadCard();
+    if (!this.props.lastUpdated) {
+      this.props.loadCard();
+    }
   }
 
   render() {
     const {
       card,
+      isFetching,
+      lastUpdated,
+      error,
       onEditCardFormSubmit,
       onSendCommentSubmit,
       onColorClick,
@@ -26,6 +31,7 @@ class FullCardModal extends Component {
     return card ? (
       <Modal
         title="Card"
+        isWaiting={isFetching || !lastUpdated}
         onCloseClick={this.handleCancelClick}
         onCloseClick={() => browserHistory.push(`/boards/${boardId}`)}
       >
@@ -42,7 +48,11 @@ class FullCardModal extends Component {
 
 function mapStateToProps(state, ownProps) {
   const { cards, comments, users } = state.entities;
-  let card = cards[ownProps.params.cardId];
+  const { boardId, cardId } = ownProps.params;
+  const boardPage = state.pages.board[boardId] || {};
+  const cardsModals = boardPage.cards || {};
+  const { isFetching, lastUpdated, error } = cardsModals[cardId] || {};
+  let card = cards[cardId];
 
   card = card ? {
     ...card,
@@ -57,6 +67,9 @@ function mapStateToProps(state, ownProps) {
 
   return {
     card,
+    isFetching,
+    error,
+    lastUpdated,
   };
 }
 
