@@ -2,6 +2,7 @@ import types from '../constants/actionTypes';
 
 const INITIAL_STATE = {
   results: undefined,
+  query: undefined,
   isFetching: false,
 };
 
@@ -10,10 +11,12 @@ export default function search(state = INITIAL_STATE, action) {
     case types.SEARCH_REQUEST:
       return {
         ...state,
+        query: action.payload.query,
         isFetching: true,
       };
     case types.SEARCH_SUCCESS:
       return {
+        ...state,
         results: action.payload.result,
         isFetching: false,
       };

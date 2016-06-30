@@ -34,16 +34,20 @@ function mapStateToProps(state) {
   return {
     results: results ? prettyResults(results) : results,
     isFetching: state.search.isFetching,
+    query: state.search.query,
   };
 }
 
 function mapDispatchToProps(dispatch) {
   return {
-    onChange(value) {
-      if (!value) {
+    onChange(query) {
+      if (!query) {
         return dispatch(resetSearch());
       }
-      dispatch(search.request({ query: value }));
+      dispatch(search.request({ query }));
+    },
+    onItemClick() {
+      dispatch(resetSearch());
     },
   };
 }
