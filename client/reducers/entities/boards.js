@@ -30,7 +30,7 @@ function board(state = {}, action) {
         ...state,
         cardsLength: state.cardsLength + 1,
       };
-    case types.BOARDS_DEC_CARDS_LENGTH:
+    case types.BOARD_DEC_CARDS_LENGTH:
       return {
         ...state,
         cardsLength: state.cardsLength - 1,
@@ -49,7 +49,7 @@ export default function boards(state = {}, action) {
     case types.BOARD_INC_LISTS_LENGTH:
     case types.BOARD_DEC_LISTS_LENGTH:
     case types.BOARD_INC_CARDS_LENGTH:
-    case types.BOARDS_DEC_CARDS_LENGTH:
+    case types.BOARD_DEC_CARDS_LENGTH:
       return {
         ...state,
         [payload.boardId]: board(state[payload.boardId], action),
