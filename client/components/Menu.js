@@ -1,11 +1,11 @@
-import React from 'react';
+import React, { PropTypes } from 'react';
 import ActivityContainer from '../containers/ActivityContainer';
 import Icon from './Icon';
 import Toggle from './Toggle';
 import Scrollbar from './Scrollbar';
 import { IndexLink, Link } from 'react-router';
 
-function Menu() {
+function Menu({ onSignOutClick }) {
   const link = (
     <div className="b-menu__link">
       <Icon name="menu" />
@@ -28,6 +28,7 @@ function Menu() {
           <a
             className="b-menu__item-link"
             data-title="Sign out"
+            onClick={onSignOutClick}
           >
             Sign out
           </a>
@@ -52,5 +53,9 @@ function Menu() {
     </div>
   );
 }
+
+Menu.propTypes = {
+  onSignOutClick: PropTypes.func.isRequired,
+};
 
 export default Menu;

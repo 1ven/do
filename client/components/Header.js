@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router';
-import Menu from './Menu';
+import MenuContainer from '../containers/MenuContainer';
 import UserBoxContainer from '../containers/UserBoxContainer';
 import SearchBoxContainer from '../containers/SearchBoxContainer';
 
@@ -11,7 +11,7 @@ function Header() {
         <div className="b-header__wrap">
           <div className="b-header__left">
             <div className="b-header__item">
-              <Menu />
+              <MenuContainer />
             </div>
             <div className="b-header__item">
               <SearchBoxContainer />
