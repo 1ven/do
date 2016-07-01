@@ -25,16 +25,6 @@ function Menu() {
           </IndexLink>
         </div>
         <div className="b-menu__item">
-          <Link
-            to="/trash/1"
-            className="b-menu__item-link"
-            activeClassName="b-menu__item-link_active"
-            data-title="Trash"
-          >
-            Trash
-          </Link>
-        </div>
-        <div className="b-menu__item">
           <a
             className="b-menu__item-link"
             data-title="Sign out"
