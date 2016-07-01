@@ -8,7 +8,6 @@ router.get('/', BoardController.findAllByUser);
 router.put('/:id', BoardController.update);
 router.delete('/:id', BoardController.drop);
 router.post('/:id/lists', ListController.create);
-router.post('/:id/toggleStarred', BoardController.toggleStarred);
 router.post('/move', BoardController.move);
 
 module.exports = router;

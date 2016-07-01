@@ -86,16 +86,6 @@ exports.drop = (req, res, next) => {
     }, next);
 };
 
-exports.toggleStarred = (req, res, next) => {
-  const userId = req.user.id;
-  const boardId = req.params.id;
-
-  return Board.toggleStarred(boardId)
-    .then(result => {
-      res.status(200).json({ result });
-    }, next);
-};
-
 exports.move = (req, res, next) => {
   const userId = req.user.id;
   const sourceId = req.body.sourceId;

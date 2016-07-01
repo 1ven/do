@@ -149,18 +149,6 @@ describe('Board', () => {
     });
   });
 
-  describe('toggleStarred', () => {
-    it('should toggle starred flag', () => {
-      return Board.toggleStarred(boardId)
-        .then(board => {
-          assert.deepEqual(board, {
-            id: boardId,
-            starred: true,
-          });
-        });
-    });
-  });
-
   describe('move', () => {
     beforeEach(() => recreateTables().then(() => db.none(
       `INSERT INTO users(id, username, email, hash, salt)

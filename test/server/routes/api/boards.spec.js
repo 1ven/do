@@ -240,24 +240,6 @@ describe('boards routes', () => {
     }).catch(done);
   });
 
-  it('POST /api/boards/:id/toggleStarred should toggle `starred` value', (done) => {
-    setup().then(request => {
-      request
-        .post(`/api/boards/${boardId}/toggleStarred`)
-        .expect(200)
-        .end((err, res) => {
-          if (err) { return done(err); }
-
-          assert.deepEqual(res.body.result, {
-            id: boardId,
-            starred: true,
-          });
-
-          done();
-        });
-    });
-  });
-
   it('POST /api/boards/move should respond with 200 and return sorted ids', (done) => {
     setup().then(request => {
       request

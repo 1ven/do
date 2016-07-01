@@ -111,14 +111,6 @@ const Board = {
       .then(result => result.map(entry => entry.id));
   },
 
-  toggleStarred(boardId) {
-    return db.one(
-      `UPDATE boards SET starred = NOT starred
-      WHERE id = $1 RETURNING id, starred`,
-      [boardId]
-    );
-  },
-
   move(sourceId, targetId) {
     const query = 'SELECT board_index FROM users_boards WHERE board_id = $1';
     return Promise.all([
