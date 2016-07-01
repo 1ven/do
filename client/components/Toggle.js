@@ -6,6 +6,7 @@ class Toggle extends Component {
     super(props);
 
     this.handleLinkClick = this.handleLinkClick.bind(this);
+    this.handleDocumentClick = this.handleDocumentClick.bind(this);
 
     this.state = {
       isActive: props.isActive,
@@ -13,32 +14,25 @@ class Toggle extends Component {
   }
 
   componentDidMount() {
-    document.body.addEventListener('click', (e) => {
-      if (
-        !this.props.closeWhenClickedOutside ||
-        !this.state.isActive ||
-        this.isLinkNode(e.target)
-      ) return;
-
-      if (e.target !== this.contentNode) {
-        this.setState({
-          isActive: false,
-        });
-      }
-    });
+    document.addEventListener('click', this.handleDocumentClick);
   }
 
-  isLinkNode(target) {
-    let parents = getParents(target);
+  componentWillUnmount() {
+    document.removeEventListener('click', this.handleDocumentClick);
+  }
 
+  handleDocumentClick(e) {
     if (
-      parents.indexOf(this.linkNode) !== -1 ||
-      target === this.linkNode && target
-    ) {
-      return true;
-    }
+      !this.props.closeWhenClickedOutside ||
+      !this.state.isActive ||
+      this.isLinkNode(e.target)
+    ) return;
 
-    return false;
+    if (e.target !== this.contentNode) {
+      this.setState({
+        isActive: false,
+      });
+    }
   }
 
   handleLinkClick(e) {
@@ -52,6 +46,19 @@ class Toggle extends Component {
     });
 
     if (onLinkClick) { onLinkClick(!isActive); }
+  }
+
+  isLinkNode(target) {
+    let parents = getParents(target);
+
+    if (
+      parents.indexOf(this.linkNode) !== -1 ||
+      target === this.linkNode && target
+    ) {
+      return true;
+    }
+
+    return false;
   }
 
   render() {
