@@ -57,15 +57,6 @@ export default function main(state = {
         lastUpdated: payload.receivedAt,
         ids: payload.result,
       };
-    case types.TRASH_RESTORE_SUCCESS:
-      if (!payload.result.board) {
-        return state;
-      };
-
-      return {
-        ...state,
-        ids: [...state.ids, payload.result.board],
-      };
     default:
       return state;
   }
