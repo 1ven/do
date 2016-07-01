@@ -17,6 +17,5 @@ export default function entities(state = {}, action) {
     users: state.users || {},
     comments: state.comments || {},
     activity: state.activity || {},
-    trash: state.trash || {},
   };
 }

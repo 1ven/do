@@ -70,7 +70,6 @@ export default {
   removeBoard(id) {
     return callApi(`/api/boards/${id}`, {
       board: schemas.BOARD,
-      trashItem: schemas.TRASH_ITEM,
       activity: schemas.ACTIVITY,
     }, {
       method: 'DELETE',
@@ -110,7 +109,6 @@ export default {
     return callApi(`/api/lists/${id}`, {
         list: schemas.LIST,
         activity: schemas.ACTIVITY,
-        trashItem: schemas.TRASH_ITEM,
     }, {
       method: 'DELETE',
     })
@@ -139,7 +137,6 @@ export default {
     return callApi(`/api/cards/${id}`, {
       card: schemas.CARD,
       activity: schemas.ACTIVITY,
-      trashItem: schemas.TRASH,
     }, {
       method: 'DELETE',
     });
@@ -199,25 +196,6 @@ export default {
   fetchUser() {
     return callApi('/api/user', schemas.USER, {
       method: 'GET',
-    });
-  },
-  fetchTrash(pageIndex) {
-    return callApi(`/api/trash/${pageIndex}`, {
-      trash: schemas.TRASH_ITEM_ARRAY,
-    }, {
-      method: 'GET',
-    });
-  },
-  restoreEntry(entryId, table) {
-    return callApi(`/api/trash/restore/${entryId}`, {
-      board: schemas.BOARD,
-      list: schemas.LIST,
-      card: schemas.CARD,
-    }, {
-      method: 'POST',
-      body: {
-        table,
-      },
     });
   },
   search(query) {

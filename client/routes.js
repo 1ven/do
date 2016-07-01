@@ -6,7 +6,6 @@ import UpdateMessage from './components/UpdateMessage';
 import AppContainer from './containers/AppContainer';
 import IndexPage from './containers/pages/IndexPage';
 import BoardPage from './containers/pages/BoardPage';
-import TrashPage from './containers/pages/TrashPage';
 import SignInPage from './containers/pages/SignInPage';
 import SignUpPage from './containers/pages/SignUpPage';
 import FullCardModal from './containers/modals/FullCardModal';
@@ -46,11 +45,6 @@ export default (
           path="cards/:cardId"
           component={FullCardModal}
         />
-      </Route>
-      <Route
-        path="trash/:pageIndex"
-        component={TrashPage}
-      >
       </Route>
     </Route>
     <Route

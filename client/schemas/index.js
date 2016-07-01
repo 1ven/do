@@ -5,7 +5,6 @@ import cardSchema from './cardSchema';
 import userSchema from './userSchema';
 import commentSchema from './commentSchema';
 import activitySchema from './activitySchema';
-import trashSchema from './trashSchema';
 
 export const BOARD = boardSchema;
 export const BOARD_ARRAY = arrayOf(boardSchema);
@@ -17,5 +16,3 @@ export const USER = userSchema;
 export const COMMENT = commentSchema;
 export const ACTIVITY = activitySchema;
 export const ACTIVITY_ARRAY = arrayOf(activitySchema);
-export const TRASH_ITEM = trashSchema;
-export const TRASH_ITEM_ARRAY = arrayOf(trashSchema);
