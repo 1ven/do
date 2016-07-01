@@ -41,7 +41,6 @@ export default function main(state = {
       };
     case types.BOARD_MOVE_SYNC:
       return {
-        // possible should not assign `state` variable
         ...state,
         ...update(state, {
           ids: {
@@ -57,6 +56,15 @@ export default function main(state = {
         ...state,
         lastUpdated: payload.receivedAt,
         ids: payload.result,
+      };
+    case types.TRASH_RESTORE_SUCCESS:
+      if (!payload.result.board) {
+        return state;
+      };
+
+      return {
+        ...state,
+        ids: [...state.ids, payload.result.board],
       };
     default:
       return state;
