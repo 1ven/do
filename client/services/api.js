@@ -172,7 +172,7 @@ export default {
     });
   },
   moveCard(sourceList, targetList) {
-    return callApi(`/api/cards/move`, schemas.LIST_ARRAY, {
+    return callApi(`/api/cards/move`, null, {
       method: 'POST',
       body: {
         sourceList,
