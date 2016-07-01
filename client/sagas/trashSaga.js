@@ -17,7 +17,12 @@ function* restoreEntryTask(action) {
   const { entryId, table } = action.payload;
   try {
     const payload = yield call(api.restoreEntry, entryId, table);
-    yield put(restoreEntry.success(payload));
+    yield put(restoreEntry.success({
+      ...payload,
+      request: {
+        table,
+      },
+    }));
   } catch(err) {
     yield put(restoreEntry.failure(err.message));
   }

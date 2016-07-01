@@ -1,5 +1,7 @@
 import types from '../../constants/actionTypes';
 
+const inflect = require('i')();
+
 export default function trash(state = {
   ids: [],
   pagesLength: 0,
@@ -36,6 +38,14 @@ export default function trash(state = {
       return {
         ...state,
         ids: [payload.result.trashItem, ...state.ids],
+      };
+    case types.TRASH_RESTORE_SUCCESS:
+      return {
+        ...state,
+        ids: state.ids.filter(id => {
+          const type = inflect.singularize(payload.request.table);
+          return id !== payload.result[type];
+        }),
       };
     default:
       return state;
