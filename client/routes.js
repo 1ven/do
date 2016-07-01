@@ -23,10 +23,14 @@ function ensureSignedOut(nextState, replace) {
   }
 }
 
-function ensureBrowserIsUpdated() {}
+function ensureBrowserIsUpdated() {
+  console.log(Modernizr.flexboxtweener);
+}
 
 export default (
-  <Route path="/">
+  <Route
+    path="/"
+  >
     <Route
       onEnter={ensureSignedIn}
       component={AppContainer}
