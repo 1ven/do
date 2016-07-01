@@ -1,7 +1,6 @@
 const _ = require('lodash');
 const sanitize = require('../utils/sanitize');
 const List = require('../models/List');
-const Trash = require('../models/Trash');
 const Activity = require('../models/Activity');
 
 exports.create = (req, res, next) => {
@@ -56,10 +55,6 @@ exports.drop = (req, res, next) => {
     .then(list => {
       return Activity.create(userId, listId, 'lists', 'Removed')
         .then(activity => _.assign({}, { list }, { activity }));
-    })
-    .then(result => {
-      return Trash.findByEntryId(listId)
-        .then(trash_item => _.assign({}, result, { trash_item }));
     })
     .then(result => {
       res.status(200).json({

@@ -111,18 +111,11 @@ describe('lists routes', () => {
           const { result, notification } = res.body;
 
           assert.property(result.activity, 'created_at');
-          assert.property(result.trash_item, 'deleted');
           delete result.activity.created_at;
-          delete result.trash_item.deleted;
 
           assert.deepEqual(result, {
             list: {
               id: listId,
-            },
-            trash_item: {
-              entry_id: listId,
-              entry_table: 'lists',
-              content: 'test list',
             },
             activity: {
               id: 1,

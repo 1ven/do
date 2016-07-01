@@ -1,7 +1,6 @@
 const _ = require('lodash');
 const sanitize = require('../utils/sanitize');
 const Board = require('../models/Board');
-const Trash = require('../models/Trash');
 const Activity = require('../models/Activity');
 
 exports.create = (req, res, next) => {
@@ -75,10 +74,6 @@ exports.drop = (req, res, next) => {
     .then(board => {
       return Activity.create(userId, boardId, 'boards', 'Removed')
         .then(activity => _.assign({}, { board }, { activity }));
-    })
-    .then(result => {
-      return Trash.findByEntryId(boardId)
-        .then(trash_item => _.assign({}, result, { trash_item }));
     })
     .then(result => {
       res.status(200).json({

@@ -88,6 +88,7 @@ const Board = {
         SELECT count(card_id)::integer FROM lists_cards AS lc
         INNER JOIN boards_lists AS bl ON (bl.board_id = b.id) AND (bl.list_id = lc.list_id)
         INNER JOIN cards AS c ON (c.id = lc.card_id AND deleted IS NULL)
+        WHERE c.deleted IS NULL
       ) AS cards_length
       FROM boards AS b
       INNER JOIN users_boards AS ub ON (user_id = $1 AND ub.board_id = b.id)
