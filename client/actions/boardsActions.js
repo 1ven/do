@@ -94,7 +94,7 @@ export function incCardsLength(boardId) {
   };
 }
 
-export function decCardsLength(boardId, count) {
+export function decCardsLength(boardId, count = 1) {
   return {
     type: types.BOARD_DEC_CARDS_LENGTH,
     payload: {

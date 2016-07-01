@@ -33,7 +33,7 @@ function board(state = {}, action) {
     case types.BOARD_DEC_CARDS_LENGTH:
       return {
         ...state,
-        cardsLength: state.cardsLength - 1,
+        cardsLength: state.cardsLength - payload.count,
       };
     default:
       return state;

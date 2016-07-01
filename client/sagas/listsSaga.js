@@ -1,9 +1,9 @@
 import api from '../services/api';
 import types from '../constants/actionTypes';
 import { takeEvery } from 'redux-saga';
-import { call, put } from 'redux-saga/effects'
+import { call, put, select } from 'redux-saga/effects'
 import { createList, removeList, updateList } from '../actions/listsActions';
-import { addListId, removeListId, incListsLength, decListsLength } from '../actions/boardsActions';
+import { addListId, removeListId, incListsLength, decListsLength, decCardsLength } from '../actions/boardsActions';
 import { hideModal } from '../actions/modalActions';
 
 function* createListTask(action) {
@@ -22,10 +22,14 @@ function* createListTask(action) {
 function* removeListTask(action) {
   try {
     const { boardId, listId } = action.payload;
+
     const payload = yield call(api.removeList, listId);
+    const cardsLength = yield select(state => state.entities.lists[listId].cards.length);
+
     yield put(removeList.success(payload));
     yield put(removeListId(boardId, listId));
     yield put(decListsLength(boardId));
+    yield put(decCardsLength(boardId, cardsLength));
   } catch(err) {
     yield put(removeList.failure(err.message));
   }
