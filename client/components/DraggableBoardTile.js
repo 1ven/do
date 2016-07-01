@@ -9,7 +9,6 @@ const boardTileSource = {
   beginDrag(props) {
     return {
       id: props.boardTileProps.data.id,
-      index: props.index,
     };
   },
 };
@@ -48,7 +47,6 @@ function DraggableBoardTile({
 }
 
 DraggableBoardTile.propTypes = {
-  index: PropTypes.number.isRequired,
   onMoveTile: PropTypes.func.isRequired,
   onDropTile: PropTypes.func.isRequired,
   boardTileProps: PropTypes.object.isRequired,

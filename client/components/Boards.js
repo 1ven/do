@@ -18,7 +18,6 @@ function Boards({
           key={board.id}
         >
           <DraggableBoardTile
-            index={i}
             onMoveTile={onMoveTile}
             onDropTile={onDropTile}
             boardTileProps={{
