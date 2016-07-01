@@ -4,8 +4,6 @@ import listSchema from './listSchema';
 const boardSchema = new Schema('boards', {
   defaults: {
     lists: [],
-    listsLength: 0,
-    cardsLength: 0,
     starred: false,
   },
 });
