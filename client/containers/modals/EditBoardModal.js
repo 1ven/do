@@ -9,6 +9,7 @@ function EditBoardModal({ dispatch, boardId }) {
   const BoardForm = _BoardForm(state => ({
     initialValues: {
       title: state.entities.boards[boardId].title,
+      description: state.entities.boards[boardId].description,
     },
   }));
 

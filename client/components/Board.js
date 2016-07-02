@@ -26,7 +26,7 @@ function Board({
                 {data.title}
               </span>
               <span className="b-board__description">
-                Some text with board description
+                {data.description || 'No description'}
               </span>
             </div>
             <a
@@ -53,6 +53,7 @@ Board.propTypes = {
   data: PropTypes.shape({
     id: PropTypes.string.isRequired,
     title: PropTypes.string.isRequired,
+    description: PropTypes.string,
     lists: PropTypes.arrayOf(
       PropTypes.string
     ),

@@ -56,7 +56,7 @@ export default {
       method: 'GET',
     });
   },
-  createBoard(title) {
+  createBoard(title, description) {
     return callApi('/api/boards', {
       board: schemas.BOARD,
       activity: schemas.ACTIVITY,
@@ -64,6 +64,7 @@ export default {
       method: 'POST',
       body: {
         title,
+        description,
       },
     });
   },

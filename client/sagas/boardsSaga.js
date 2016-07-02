@@ -31,8 +31,9 @@ function* fetchBoardTask(action) {
 }
 
 function* createBoardTask(action) {
+  const { title, description } = action.payload;
   try {
-    const payload = yield call(api.createBoard, action.payload.title);
+    const payload = yield call(api.createBoard, title, description);
     yield put(createBoard.success(payload));
     yield put(hideModal());
     action.payload.resolve();

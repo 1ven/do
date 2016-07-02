@@ -7,6 +7,7 @@ import InputBox from '../../components/InputBox';
 function BoardForm({
   fields: {
     title,
+    description,
   },
   submitting,
   handleSubmit,
@@ -23,6 +24,14 @@ function BoardForm({
             focus: true,
           }}
           error={handleReduxFormError(title)}
+        />,
+        <InputBox
+          title="Description"
+          inputProps={{
+            ...description,
+            placeholder: 'Enter board description',
+          }}
+          error={handleReduxFormError(description)}
         />
       ]}
       onSubmit={handleSubmit}
@@ -47,7 +56,7 @@ function validate(values) {
 export default function(mapStateToProps) {
   return reduxForm({
     form: 'board',
-    fields: ['title'],
+    fields: ['title', 'description'],
     validate,
   }, mapStateToProps)(BoardForm);
 }
