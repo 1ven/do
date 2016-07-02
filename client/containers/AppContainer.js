@@ -1,4 +1,5 @@
 import React, { Component, PropTypes } from 'react';
+import types from '../constants/actionTypes';
 import { connect } from 'react-redux';
 import { fetchUser } from '../actions/userActions';
 import { fetchActivity } from '../actions/activityActions';
@@ -7,8 +8,8 @@ import App from '../components/App';
 
 class AppContainer extends Component {
   componentWillMount() {
-    this.props.dispatch(fetchUser.request());
-    this.props.dispatch(fetchActivity.request());
+    this.props.fetchUser();
+    this.props.fetchActivity();
   }
 
   componentDidUpdate() {
@@ -18,9 +19,11 @@ class AppContainer extends Component {
   }
 
   render() {
-    const { children, loaded } = this.props;
+    const { children, loaded, handleScroll } = this.props;
     return loaded ? (
-      <App>
+      <App
+        onScroll={handleScroll}
+      >
         {children}
       </App>
     ) : <div />;
@@ -30,7 +33,6 @@ class AppContainer extends Component {
 AppContainer.propTypes = {
   children: PropTypes.node.isRequired,
   loaded: PropTypes.bool.isRequired,
-  dispatch: PropTypes.func.isRequired,
 };
 
 function mapStateToProps(state) {
@@ -39,4 +41,27 @@ function mapStateToProps(state) {
   };
 }
 
-export default connect(mapStateToProps)(AppContainer);
+function mapDispatchToProps(dispatch) {
+  return {
+    fetchUser() {
+      dispatch(fetchUser.request());
+    },
+
+    fetchActivity() {
+      dispatch(fetchActivity.request());
+    },
+
+    handleScroll(e) {
+      if ((window.innerHeight + e.target.scrollTop) >= e.target.scrollHeight) {
+        dispatch({
+          type: types.SCROLL_BOTTOM,
+        });
+      }
+    }
+  };
+}
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(AppContainer);

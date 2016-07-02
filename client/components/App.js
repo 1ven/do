@@ -5,9 +5,11 @@ import ProgressBarContainer from '../containers/ProgressBarContainer';
 import ModalContainer from '../containers/ModalContainer';
 import Scrollbar from './Scrollbar';
 
-function App({ children }) {
+function App({ children, onScroll }) {
   return (
-    <Scrollbar>
+    <Scrollbar
+      onScroll={onScroll}
+    >
       <div className="b-app">
         <ProgressBarContainer />
         <Header />

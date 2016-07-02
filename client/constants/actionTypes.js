@@ -126,5 +126,7 @@ export default createConstants(
   'SEARCH_SUCCESS',
   'SEARCH_ERROR',
 
-  'SEARCH_RESET'
+  'SEARCH_RESET',
+
+  'SCROLL_BOTTOM'
 );
