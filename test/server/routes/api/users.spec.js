@@ -19,6 +19,7 @@ describe('users routes', () => {
             assert.property(user, 'avatar');
             assert.deepEqual(_.omit(user, ['id', 'avatar']), {
               username: 'test',
+              email: 'test@mail.com',
             });
 
             done();

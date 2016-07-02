@@ -204,6 +204,7 @@ describe('User', () => {
             assert.deepEqual(_.omit(user, ['avatar']), {
               id: userId,
               username: 'test',
+              email: 'test@test.com',
             });
           });
       });
