@@ -1,9 +1,15 @@
 .b-boards {
-  display: flex;
-  flex-wrap: wrap;
-  margin: -10px;
-  position: relative;
-  transition: opacity .3s;
+  &__items {
+    display: flex;
+    flex-wrap: wrap;
+    margin: -10px;
+    position: relative;
+  }
+  &__spinner {
+    display: flex;
+    justify-content: center;
+    margin-top: 30px;
+  }
   &__item {
     width: 25%;
     padding: 10px;

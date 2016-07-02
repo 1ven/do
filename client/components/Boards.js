@@ -1,6 +1,7 @@
 import React, { PropTypes } from 'react';
 import { addModifiers } from '../utils';
 import DraggableBoardTile from './DraggableBoardTile';
+import BoardsSpinner from './BoardsSpinner';
 
 function Boards({
   items = [],
@@ -12,23 +13,30 @@ function Boards({
 }) {
   return (
     <div className="b-boards">
-      {items.map((board, i) =>
-        <div
-          className="b-boards__item"
-          key={board.id}
-        >
-          <DraggableBoardTile
-            onMoveTile={onMoveTile}
-            onDropTile={onDropTile}
-            boardTileProps={{
-              data: board,
-              onRemoveClick,
-              onEditClick,
-              onToggleStarredClick,
-            }}
-          />
-        </div>
-      )}
+      <div className="b-boards__items">
+        {items.map((board, i) =>
+          <div
+            className="b-boards__item"
+            key={board.id}
+          >
+            <DraggableBoardTile
+              onMoveTile={onMoveTile}
+              onDropTile={onDropTile}
+              boardTileProps={{
+                data: board,
+                onRemoveClick,
+                onEditClick,
+                onToggleStarredClick,
+              }}
+            />
+          </div>
+        )}
+      </div>
+      {
+      /* <div className="b-boards__spinner"> */
+      /*   <BoardsSpinner /> */
+      /* </div> */
+      }
     </div>
   );
 }
