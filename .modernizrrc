@@ -1,0 +1,8 @@
+{
+  "minify": true,
+  "feature-detects": [
+    "css/flexbox",
+    "css/flexboxtweener",
+    "css/flexwrap"
+  ]
+}

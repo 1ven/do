@@ -32,6 +32,10 @@ module.exports = {
         test: /\.scss$/,
         loader: 'style-loader!css-loader!sass-loader!import-glob-loader',
       },
+      {
+        test: /\.modernizrrc$/,
+        loader: "modernizr",
+      },
     ],
   },
   plugins: [
@@ -41,6 +45,9 @@ module.exports = {
   resolve: {
     extensions: ['', '.react.js', '.js', '.jsx'],
     modulesDirectories: ['client', 'node_modules'],
+    alias: {
+      modernizr$: path.resolve(__dirname, '.modernizrrc'),
+    },
   },
   resolveLoader: {
     modulesDirectories: ['node_modules'],

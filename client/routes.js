@@ -1,5 +1,6 @@
 import React from 'react';
 import cookie from 'js-cookie';
+import Modernizr from 'modernizr';
 import { Route, IndexRoute } from 'react-router';
 import Sign from './components/Sign';
 import UpdateMessage from './components/UpdateMessage';
@@ -9,6 +10,8 @@ import BoardPage from './containers/pages/BoardPage';
 import SignInPage from './containers/pages/SignInPage';
 import SignUpPage from './containers/pages/SignUpPage';
 import FullCardModal from './containers/modals/FullCardModal';
+
+const isFlexboxSupported = Modernizr.flexbox && Modernizr.flexwrap;
 
 function ensureSignedIn(nextState, replace) {
   if (!cookie.get('authenticated')) {
@@ -22,8 +25,16 @@ function ensureSignedOut(nextState, replace) {
   }
 }
 
-function ensureBrowserIsUpdated() {
-  console.log(Modernizr.flexboxtweener);
+function ensureBrowserIsUpdated(nextState, replace) {
+  if (!isFlexboxSupported) {
+    replace('/update');
+  }
+}
+
+function handleUpdatePageEnter(nextState, replace) {
+  if (isFlexboxSupported) {
+    replace('/');
+  }
 }
 
 export default (
@@ -31,37 +42,42 @@ export default (
     path="/"
   >
     <Route
-      onEnter={ensureSignedIn}
-      component={AppContainer}
+      onEnter={ensureBrowserIsUpdated}
     >
-      <IndexRoute
-        component={IndexPage}
-      />
       <Route
-        path="boards/:boardId"
-        component={BoardPage}
+        onEnter={ensureSignedIn}
+        component={AppContainer}
+      >
+        <IndexRoute
+          component={IndexPage}
+        />
+        <Route
+          path="boards/:boardId"
+          component={BoardPage}
+        >
+          <Route
+            path="cards/:cardId"
+            component={FullCardModal}
+          />
+        </Route>
+      </Route>
+      <Route
+        onEnter={ensureSignedOut}
+        component={Sign}
       >
         <Route
-          path="cards/:cardId"
-          component={FullCardModal}
+          path="sign-in"
+          component={SignInPage}
+        />
+        <Route
+          path="sign-up"
+          component={SignUpPage}
         />
       </Route>
     </Route>
     <Route
-      onEnter={ensureSignedOut}
-      component={Sign}
-    >
-      <Route
-        path="sign-in"
-        component={SignInPage}
-      />
-      <Route
-        path="sign-up"
-        component={SignUpPage}
-      />
-    </Route>
-    <Route
       path="update"
+      onEnter={handleUpdatePageEnter}
       component={UpdateMessage}
     />
   </Route>
