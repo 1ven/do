@@ -82,7 +82,8 @@ const Board = {
     );
   },
 
-  findAllByUser(userId) {
+  findAllByUser(userId, limit) {
+    limit = limit || 'all';
     return db.query(`
       SELECT b.id, b.title, b.link, b.starred, (
         SELECT count(list_id)::integer FROM boards_lists AS bl
@@ -98,8 +99,9 @@ const Board = {
       INNER JOIN users_boards AS ub ON (user_id = $1 AND ub.board_id = b.id)
       WHERE deleted IS NULL
       GROUP BY b.id, ub.board_index
-      ORDER BY ub.board_index`,
-      [userId]
+      ORDER BY ub.board_index
+      LIMIT $2^`,
+      [userId, limit]
     );
   },
 
