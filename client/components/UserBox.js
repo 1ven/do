@@ -1,5 +1,4 @@
 import React, { PropTypes } from 'react';
-import { getGravatarUrl } from '../utils';
 import MenuList from './MenuList';
 import Toggle from './Toggle';
 import Icon from './Icon';
@@ -7,10 +6,9 @@ import Icon from './Icon';
 function UserBox({
   user: {
     username,
-    email,
     role,
-    avatar,
   },
+  avatar,
   onSignOutClick,
   onIndexClick,
 }) {
@@ -31,7 +29,7 @@ function UserBox({
         <img
           alt="avatar"
           className="b-user-box__avatar"
-          src={getGravatarUrl(email)}
+          src={avatar}
         />
       </div>
     </div>
@@ -64,10 +62,10 @@ function UserBox({
 
 UserBox.propTypes = {
   user: PropTypes.shape({
-    avatar: PropTypes.string.isRequired,
     username: PropTypes.string.isRequired,
     role: PropTypes.string,
   }),
+  avatar: PropTypes.string.isRequired,
   onSignOutClick: PropTypes.func.isRequired,
   onIndexClick: PropTypes.func.isRequired,
 };

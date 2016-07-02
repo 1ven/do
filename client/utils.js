@@ -1,5 +1,3 @@
-import md5 from 'md5';
-
 export function createActions(types) {
   return {
     request(payload) {
@@ -58,9 +56,4 @@ export function hidePreloader() {
   const preloader = document.querySelector('.b-preloader');
   preloader.classList.add('b-preloader_hidden');
   setTimeout(() => preloader.style.display = 'none', 1050);
-}
-
-export function getGravatarUrl(email) {
-  const hash = md5(email.toLowerCase());
-  return `https://www.gravatar.com/avatar/${hash}`;
 }
