@@ -2,7 +2,6 @@ CREATE TABLE IF NOT EXISTS users(
   id text PRIMARY KEY,
   index serial NOT NULL UNIQUE,
   created_at integer DEFAULT extract(epoch from now()),
-  avatar text DEFAULT 'http://placehold.it/38x38',
   username character varying(20) UNIQUE NOT NULL CHECK (
     length(username) > 2 and
     username ~* '^\S*$' and

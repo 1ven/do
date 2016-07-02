@@ -27,8 +27,7 @@ describe('Comment', () => {
             text: commentData.text,
           });
 
-          assert.property(comment.user, 'avatar');
-          assert.deepEqual(_.omit(comment.user, ['avatar']), {
+          assert.deepEqual(comment.user, {
             id: userId,
             username: 'testuser',
           });

@@ -109,16 +109,11 @@ describe('cards routes', () => {
           assert.property(card, 'colors');
           assert.property(card.comments[0], 'created_at');
           assert.property(card.comments[1], 'created_at');
-          assert.property(card.comments[0].user, 'avatar');
-          assert.property(card.comments[1].user, 'avatar');
 
-          const _card = _.assign({}, card, {
-            comments: card.comments.map(comment => _.omit(_.assign({}, comment, {
-              user: _.omit(comment.user, ['avatar']),
-            }), ['created_at']))
-          });
+          delete card.comments[0].created_at;
+          delete card.comments[1].created_at;
 
-          assert.deepEqual(_.omit(_card, ['colors']), {
+          assert.deepEqual(_.omit(card, ['colors']), {
             id: cardId,
             text: 'test card 1',
             link: '/boards/' + boardId + '/cards/' + cardId,
@@ -164,9 +159,8 @@ describe('cards routes', () => {
             text: 'test comment',
           });
 
-          assert.property(comment.user, 'avatar');
           assert.property(comment.user, 'id');
-          assert.deepEqual(_.omit(comment.user, ['avatar', 'id']), {
+          assert.deepEqual(_.omit(comment.user, ['id']), {
             username: 'test',
           });
 

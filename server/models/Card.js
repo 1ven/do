@@ -79,7 +79,7 @@ const Card = {
         SELECT cm.id, cm.created_at, cm.text, row_to_json(u) AS user FROM comments AS cm
         LEFT JOIN users_comments AS uc ON (uc.comment_id = cm.id)
         LEFT JOIN (
-          SELECT id, username, avatar FROM users
+          SELECT id, username FROM users
         ) AS u ON (u.id = uc.user_id)
       ) AS cm ON (cm.id = cc.comment_id)
       WHERE cr.id = $1 AND deleted IS NULL

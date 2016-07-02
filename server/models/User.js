@@ -16,7 +16,7 @@ const User = {
 
   findById(userId) {
     return db.one(
-      `SELECT id, username, email, avatar FROM users WHERE id = $1`,
+      `SELECT id, username, email FROM users WHERE id = $1`,
       [userId]
     );
   },

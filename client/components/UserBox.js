@@ -1,4 +1,5 @@
 import React, { PropTypes } from 'react';
+import { getGravatarUrl } from '../utils';
 import MenuList from './MenuList';
 import Toggle from './Toggle';
 import Icon from './Icon';
@@ -6,6 +7,7 @@ import Icon from './Icon';
 function UserBox({
   user: {
     username,
+    email,
     role,
     avatar,
   },
@@ -29,7 +31,7 @@ function UserBox({
         <img
           alt="avatar"
           className="b-user-box__avatar"
-          src={avatar}
+          src={getGravatarUrl(email)}
         />
       </div>
     </div>

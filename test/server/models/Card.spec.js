@@ -97,21 +97,11 @@ describe('Card', () => {
         .then(card => {
           assert.property(card.comments[0], 'created_at');
           assert.property(card.comments[1], 'created_at');
-          assert.property(card.comments[0].user, 'avatar');
-          assert.property(card.comments[1].user, 'avatar');
 
-          const _card = _.assign({}, card, {
-            comments: card.comments.map(
-              comment => _.omit(
-                  _.assign({}, comment, {
-                    user: _.omit(comment.user, ['avatar']),
-                  }),
-                  ['created_at']
-              )
-            )
-          });
+          delete card.comments[0].created_at;
+          delete card.comments[1].created_at;
 
-          assert.deepEqual(_card, {
+          assert.deepEqual(card, {
             id: card2Id,
             text: 'test card 2',
             link: '/boards/' + boardId + '/cards/' + card2Id,

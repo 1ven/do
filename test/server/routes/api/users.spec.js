@@ -16,8 +16,7 @@ describe('users routes', () => {
             const user = res.body.result;
 
             assert.property(user, 'id');
-            assert.property(user, 'avatar');
-            assert.deepEqual(_.omit(user, ['id', 'avatar']), {
+            assert.deepEqual(_.omit(user, ['id']), {
               username: 'test',
               email: 'test@mail.com',
             });

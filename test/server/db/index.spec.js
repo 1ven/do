@@ -19,7 +19,6 @@ describe('tables', () => {
           assert.equal(columns.created_at, 'integer');
           assert.equal(columns.username, 'character varying');
           assert.equal(columns.email, 'text');
-          assert.equal(columns.avatar, 'text');
           assert.equal(columns.hash, 'text');
           assert.equal(columns.salt, 'text');
         });
