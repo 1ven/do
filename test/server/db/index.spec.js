@@ -124,6 +124,7 @@ describe('tables', () => {
           assert.equal(columns.id, 'text');
           assert.equal(columns.created_at, 'integer');
           assert.equal(columns.title, 'text');
+          assert.equal(columns.description, 'text');
           assert.equal(columns.link, 'text');
           assert.equal(columns.deleted, 'integer');
           assert.equal(columns.starred, 'boolean');

@@ -6,7 +6,7 @@ const db = require('../db');
 
 const Board = {
   update(boardId, data) {
-    const _data = _.pick(data, ['title', 'starred']);
+    const _data = _.pick(data, ['title', 'starred', 'description']);
 
     const props = _.keys(_data).map(k => pgp.as.name(k)).join();
     const values = _.values(_data);
@@ -26,13 +26,17 @@ const Board = {
     );
   },
 
-  create(userId, props) {
+  create(userId, data) {
     const id = shortid.generate();
+    const _data = _.pick(data, ['title', 'description']);
+
+    const props = _.keys(_data).map(k => pgp.as.name(k)).join();
+    const values = _.values(_data);
 
     return db.one(
-      `INSERT INTO boards (id, title)
-      VALUES ($1, $2) RETURNING id, title, link`,
-      [id, props.title]
+      `INSERT INTO boards (id, $2^)
+      VALUES ($1, $3:csv) RETURNING id, link, $2^`,
+      [id, props, values]
     )
       .then(board => {
         return db.none(
@@ -45,7 +49,7 @@ const Board = {
 
   findById(id) {
     return db.one(
-      `SELECT b.id, b.title, b.link,
+      `SELECT b.id, b.title, b.description, b.link,
       COALESCE (json_agg(l) FILTER (WHERE l.id IS NOT NULL), '[]') AS lists
       FROM boards AS b
       LEFT JOIN boards_lists ON (b.id = board_id)

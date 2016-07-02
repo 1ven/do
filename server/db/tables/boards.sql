@@ -2,6 +2,7 @@ CREATE TABLE IF NOT EXISTS boards(
   id text PRIMARY KEY,
   created_at integer DEFAULT extract(epoch from now()),
   title text NOT NULL CHECK (title <> ''),
+  description text,
   link text NOT NULL UNIQUE CHECK (
     link ~* '\/boards\/.*'
   ),

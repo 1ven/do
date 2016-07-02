@@ -23,6 +23,7 @@ describe('boards routes', () => {
 
           assert.deepEqual(board, {
             id: boardId,
+            description: null,
             title: 'test board 1',
             link: '/boards/' + boardId,
             lists: [],

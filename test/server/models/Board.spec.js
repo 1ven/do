@@ -104,6 +104,7 @@ describe('Board', () => {
             id: boardId,
             title: 'test board',
             link: '/boards/' + boardId,
+            description: null,
             lists: [{
               id: listId,
               title: 'test list',
