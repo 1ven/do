@@ -25,10 +25,27 @@ exports.create = (req, res, next) => {
 
 exports.findAllByUser = (req, res, next) => {
   const userId = req.user.id;
+  const page = req.params.page || 1;
 
-  return Board.findAllByUser(userId)
-    .then(boards => {
-      res.status(200).json({ result: boards });
+  const boardsPerPage = 16;
+  const offset = boardsPerPage * (page - 1);
+
+  return Board.findAllByUser(userId, boardsPerPage, offset)
+    .then(boards => Board.getBoardsCount(userId).then(count => ({ boards, count })))
+    .then(result => {
+      const boards = result.boards;
+      const count = result.count;
+
+      if (boardsPerPage * page >= count) {
+        return { boards };
+      }
+      return {
+        nextPage: page + 1,
+        boards,
+      };
+    })
+    .then(result => {
+      res.status(200).json({ result });
     }, next);
 };
 

@@ -37,12 +37,12 @@ describe('boards routes', () => {
   it('GET /api/boards should respond with 200 and return all boards related to user', (done) => {
     setup().then(request => {
       request
-        .get('/api/boards')
+        .get('/api/boards?page=1')
         .expect(200)
         .end((err, res) => {
           if (err) { return done(err); }
 
-          const boards = res.body.result;
+          const { boards } = res.body.result;
           assert.deepEqual(boards, [{
             id: boardId,
             title: 'test board 1',
