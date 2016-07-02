@@ -219,6 +219,13 @@ describe('Board', () => {
         });
     });
   });
+
+  describe('getBoardsLength', () => {
+    it('should return boards length', () => {
+      return Board.getBoardsLength(userId)
+        .then(length => assert.equal(length, 2));
+    });
+  });
 });
 
 function setup() {
