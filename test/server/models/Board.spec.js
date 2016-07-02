@@ -220,9 +220,9 @@ describe('Board', () => {
     });
   });
 
-  describe('getBoardsLength', () => {
+  describe('getBoardsCount', () => {
     it('should return boards length', () => {
-      return Board.getBoardsLength(userId)
+      return Board.getBoardsCount(userId)
         .then(length => assert.equal(length, 2));
     });
   });
