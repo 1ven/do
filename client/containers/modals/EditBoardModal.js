@@ -2,7 +2,7 @@ import React, { PropTypes } from 'react';
 import { connect } from 'react-redux';
 import Modal from '../../components/Modal';
 import _BoardForm from '../forms/BoardForm';
-import { updateBoard } from '../../actions/boardsActions';
+import { updateBoardModalForm } from '../../actions/boardsActions';
 import { hideModal } from '../../actions/modalActions'; 
 
 function EditBoardModal({ dispatch, boardId }) {
@@ -14,12 +14,12 @@ function EditBoardModal({ dispatch, boardId }) {
 
   function handleSubmit(values) {
     return new Promise((resolve, reject) => {
-      dispatch(updateBoard.request({
-        id: boardId,
-        props: values,
+      dispatch(updateBoardModalForm(
+        boardId,
+        values,
         resolve,
-        reject,
-      }));
+        reject
+      ));
     });
   }
 

@@ -56,11 +56,21 @@ function* updateBoardTask(action) {
   try {
     const payload = yield call(api.updateBoard, id, props, params);
     yield put(updateBoard.success(payload));
-    yield put(hideModal());
-    action.payload.resolve();
   } catch(err) {
     yield put(updateBoard.failure(err.message));
-    action.payload.reject();
+  }
+}
+
+function* updateBoardModalFormTask(action) {
+  const { id, props, resolve, reject } = action.payload;
+  try {
+    const payload = yield call(api.updateBoard, id, props);
+    yield put(updateBoard.success(payload));
+    yield put(hideModal());
+    resolve();
+  } catch(err) {
+    yield put(updateBoard.failure(err.message));
+    reject();
   }
 }
 
@@ -94,6 +104,10 @@ function* watchUpdateBoard() {
   yield* takeEvery(types.BOARD_UPDATE_REQUEST, updateBoardTask);
 }
 
+function* watchUpdateBoardModalForm() {
+  yield* takeEvery(types.BOARD_UPDATE_MODAL_FORM, updateBoardModalFormTask);
+}
+
 function* watchMoveBoard() {
   yield* takeEvery(types.BOARD_MOVE_REQUEST, moveBoardTask);
 }
@@ -106,5 +120,6 @@ export default function* boardsSaga() {
     watchRemoveBoard(),
     watchUpdateBoard(),
     watchMoveBoard(),
+    watchUpdateBoardModalForm(),
   ];
 }

@@ -67,6 +67,9 @@ function mapDispatchToProps(dispatch) {
           props: {
             starred: !starred,
           },
+          params: {
+            notify: false,
+          },
         })
       );
     },

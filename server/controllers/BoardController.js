@@ -46,23 +46,26 @@ exports.update = (req, res, next) => {
   const boardId = req.params.id;
   const props = sanitize(req.body);
   const activityAction = req.query.activityAction;
-  const validate = req.query.validate;
+  const notify = req.query.notify;
 
-  const promise = validate ? Board.validateAndUpdate(boardId, props) : Board.update(boardId, props);
-
-  return promise
+  return Board.update(boardId, props)
     .then(board => {
       return Activity.create(userId, boardId, 'boards', activityAction || 'Updated')
         .then(activity => _.assign({}, { board }, { activity }));
     })
     .then(result => {
-      res.status(200).json({
+      if (notify === 'false') {
+        return { result };
+      }
+      return _.assign({}, { result }, {
         notification: {
           message: 'Board was successfully updated',
           type: 'info',
         },
-        result,
       });
+    })
+    .then(body => {
+      res.status(200).json(body);
     }, next);
 };
 

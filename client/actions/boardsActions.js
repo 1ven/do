@@ -37,6 +37,18 @@ export const moveBoard = createActions([
   types.BOARD_MOVE_FAILURE,
 ]);
 
+export function updateBoardModalForm(id, props, resolve, reject) {
+  return {
+    type: types.BOARD_UPDATE_MODAL_FORM,
+    payload: {
+      id,
+      props,
+      resolve,
+      reject
+    },
+  };
+}
+
 export function moveBoardSync(sourceId, targetId) {
   return {
     type: types.BOARD_MOVE_SYNC,
