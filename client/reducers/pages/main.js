@@ -20,7 +20,7 @@ export default function main(state = {
       return {
         ...state,
         isFetching: false,
-        ids: payload.result,
+        ids: payload.result.boards,
         lastUpdated: payload.receivedAt,
       };
     case types.BOARDS_FETCH_FAILURE:
