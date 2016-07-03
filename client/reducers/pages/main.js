@@ -4,6 +4,8 @@ import without from 'lodash/without';
 
 export default function main(state = {
   ids: [],
+  pageIndex: undefined,
+  isLastPage: false,
   isFetching: false,
   lastUpdated: undefined,
   error: undefined,
@@ -19,8 +21,10 @@ export default function main(state = {
     case types.BOARDS_FETCH_SUCCESS:
       return {
         ...state,
+        ids: [...state.ids, ...payload.result.boards],
+        pageIndex: payload.request.pageIndex,
+        isLastPage: !payload.result.nextPage,
         isFetching: false,
-        ids: payload.result.boards,
         lastUpdated: payload.receivedAt,
       };
     case types.BOARDS_FETCH_FAILURE:
