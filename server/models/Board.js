@@ -154,7 +154,7 @@ const Board = {
   getBoardsCount(userId) {
     return db.one(
       `SELECT count(b.id) AS length FROM boards as b
-      INNER JOIN users_boards AS ub ON (ub.user_id = $1 AND ub.board_id = b.id)`,
+      INNER JOIN users_boards AS ub ON (ub.user_id = $1 AND ub.board_id = b.id AND b.deleted IS NULL)`,
       [userId]
     )
       .then(result => result.length);
