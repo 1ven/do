@@ -46,8 +46,8 @@ function callApi(endpoint, schema, request) {
 }
 
 export default {
-  fetchBoards() {
-    return callApi('/api/boards', {
+  fetchBoards(pageIndex) {
+    return callApi(`/api/boards?page=${pageIndex}`, {
       boards: schemas.BOARD_ARRAY,
     }, {
       method: 'GET',
