@@ -25,7 +25,7 @@ exports.create = (req, res, next) => {
 
 exports.findAllByUser = (req, res, next) => {
   const userId = req.user.id;
-  const page = req.params.page || 1;
+  const page = req.query.page || 1;
 
   const boardsPerPage = 16;
   const offset = boardsPerPage * (page - 1);
@@ -39,8 +39,9 @@ exports.findAllByUser = (req, res, next) => {
       if (boardsPerPage * page >= count) {
         return { boards };
       }
+
       return {
-        nextPage: page + 1,
+        nextPage: + page + 1,
         boards,
       };
     })
