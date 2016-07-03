@@ -94,7 +94,9 @@ function mapStateToProps(state) {
 function mapDispatchToProps(dispatch) {
   return {
     fetchBoards() {
-      dispatch(fetchBoards.request());
+      dispatch(fetchBoards.request({
+        pageIndex: 1,
+      }));
     },
 
     onAddBoardBtnClick() {
