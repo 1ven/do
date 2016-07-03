@@ -6,11 +6,17 @@ import { fetchBoards, fetchBoard, createBoard, removeBoard, updateBoard, moveBoa
 import { startProgressBar, stopProgressBar } from '../actions/progressBarActions';
 import { hideModal } from '../actions/modalActions';
 
-function* fetchBoardsTask() {
+function* fetchBoardsTask(action) {
+  const { pageIndex } = action.payload;
   try {
     yield put(startProgressBar());
-    const payload = yield call(api.fetchBoards);
-    yield put(fetchBoards.success(payload));
+    const payload = yield call(api.fetchBoards, pageIndex);
+    yield put(fetchBoards.success({
+      ...payload,
+      request: {
+        pageIndex,
+      },
+    }));
   } catch(err) {
     yield put(fetchBoards.failure(err.message));
   } finally {
@@ -113,11 +119,15 @@ function* watchMoveBoard() {
   yield* takeEvery(types.BOARD_MOVE_REQUEST, moveBoardTask);
 }
 
-function* watchFetchPagination() {
+function* watchScrollBottom() {
   while (yield take(types.SCROLL_BOTTOM)) {
-    const { pathname } = yield select(state => state.routing.locationBeforeTransitions);
-    if (pathname === '/') {
-      console.log(1);
+    const state = yield select(state => state);
+
+    const { pathname } = state.routing.locationBeforeTransitions;
+    const { isFetching, pageIndex, isLastPage } = state.pages.main;
+
+    if (pathname === '/' && !isFetching && !isLastPage) {
+      yield put(fetchBoards.request({ pageIndex: pageIndex + 1 }));
     }
   }
 }
@@ -131,6 +141,6 @@ export default function* boardsSaga() {
     watchUpdateBoard(),
     watchMoveBoard(),
     watchUpdateBoardModalForm(),
-    watchFetchPagination(),
+    watchScrollBottom(),
   ];
 }
