@@ -1,7 +1,7 @@
 import api from '../services/api';
 import types from '../constants/actionTypes';
 import { takeEvery } from 'redux-saga';
-import { call, put } from 'redux-saga/effects'
+import { select, take, call, put } from 'redux-saga/effects'
 import { fetchBoards, fetchBoard, createBoard, removeBoard, updateBoard, moveBoard } from '../actions/boardsActions';
 import { startProgressBar, stopProgressBar } from '../actions/progressBarActions';
 import { hideModal } from '../actions/modalActions';
@@ -113,6 +113,15 @@ function* watchMoveBoard() {
   yield* takeEvery(types.BOARD_MOVE_REQUEST, moveBoardTask);
 }
 
+function* watchFetchPagination() {
+  while (yield take(types.SCROLL_BOTTOM)) {
+    const { pathname } = yield select(state => state.routing.locationBeforeTransitions);
+    if (pathname === '/') {
+      console.log(1);
+    }
+  }
+}
+
 export default function* boardsSaga() {
   yield [
     watchFetchBoards(),
@@ -122,5 +131,6 @@ export default function* boardsSaga() {
     watchUpdateBoard(),
     watchMoveBoard(),
     watchUpdateBoardModalForm(),
+    watchFetchPagination(),
   ];
 }
