@@ -9,6 +9,7 @@ import Btn from '../../components/Btn';
 import BoardsGroups from '../../components/BoardsGroups';
 import { fetchBoards } from '../../actions/boardsActions';
 import { showModal } from '../../actions/modalActions';
+import { BOARDS_PER_PAGE } from '../../constants/config';
 
 class IndexPage extends Component {
   componentWillMount() {
@@ -77,8 +78,10 @@ IndexPage.propTypes = {
 
 function mapStateToProps(state) {
   const { boards } = state.entities;
-  const { ids, isFetching, lastUpdated, error } = state.pages.main;
+  const { ids, pageIndex, isFetching, lastUpdated, error } = state.pages.main;
+
   const starredIds = ids.filter(id => boards[id].starred);
+  const boardsIds = ids.filter((id, i) => i < pageIndex * BOARDS_PER_PAGE);
 
   return {
     groups: [
