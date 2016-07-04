@@ -10,6 +10,7 @@ import BoardPage from './containers/pages/BoardPage';
 import SignInPage from './containers/pages/SignInPage';
 import SignUpPage from './containers/pages/SignUpPage';
 import FullCardModal from './containers/modals/FullCardModal';
+import { setPageIndex } from './actions/boardsActions';
 
 const isFlexboxSupported = Modernizr.flexbox && Modernizr.flexwrap;
 
@@ -51,6 +52,7 @@ export default function (store) {
         >
           <IndexRoute
             component={IndexPage}
+            onLeave={() => store.dispatch(setPageIndex(1))}
           />
           <Route
             path="boards/:boardId"

@@ -61,6 +61,11 @@ export default function main(state = {
         lastUpdated: payload.receivedAt,
         ids: payload.result,
       };
+    case types.BOARDS_SET_PAGE_INDEX:
+      return {
+        ...state,
+        pageIndex: payload.pageIndex,
+      };
     default:
       return state;
   }
