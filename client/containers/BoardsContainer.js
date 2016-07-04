@@ -7,6 +7,7 @@ import modalsNames from '../constants/modalsNames';
 import { removeBoard, updateBoard, moveBoard, moveBoardSync } from '../actions/boardsActions';
 import { showModal } from '../actions/modalActions';
 import Boards from '../components/Boards';
+import { BOARDS_PER_PAGE } from '../constants/config';
 
 function BoardsContainer({
   boards,
@@ -41,8 +42,12 @@ BoardsContainer.propTypes = {
 };
 
 function mapStateToProps(state, ownProps) {
+  /* const { pageIndex } = state.pages.main; */
   return {
     boards: ownProps.ids.map(id => state.entities.boards[id]),
+    /* boards: ownProps.ids */
+    /*   .filter((b, i) => i < pageIndex * BOARDS_PER_PAGE) */
+    /*   .map(id => state.entities.boards[id]), */
   };
 }
 

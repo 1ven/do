@@ -5,12 +5,13 @@ import { select, take, call, put } from 'redux-saga/effects'
 import { fetchBoards, fetchBoard, createBoard, removeBoard, updateBoard, moveBoard } from '../actions/boardsActions';
 import { startProgressBar, stopProgressBar } from '../actions/progressBarActions';
 import { hideModal } from '../actions/modalActions';
+import { BOARDS_PER_PAGE } from '../constants/config';
 
 function* fetchBoardsTask(action) {
   const { pageIndex } = action.payload;
   try {
     yield put(startProgressBar());
-    const payload = yield call(api.fetchBoards, pageIndex);
+    const payload = yield call(api.fetchBoards, pageIndex, BOARDS_PER_PAGE);
     yield put(fetchBoards.success({
       ...payload,
       request: {
@@ -129,6 +130,21 @@ function* watchScrollBottom() {
     if (pathname === '/' && !isFetching && !isLastPage) {
       yield put(fetchBoards.request({ pageIndex: pageIndex + 1 }));
     }
+
+/*     if (pathname !== '/') { */
+/*       return; */
+/*     } */
+
+/*     const isCached = pageIndex * BOARDS_PER_PAGE < boards.length; */
+
+/*     if (isCached) { */
+/*       yield put(setBoardsPage(pageIndex + 1)); */
+/*       return; */
+/*     } */
+
+/*     if(!isFetching && !isLastPage) { */
+/*       yield put(fetchBoards.request({ pageIndex: pageIndex + 1 })); */
+/*     } */
   }
 }
 
