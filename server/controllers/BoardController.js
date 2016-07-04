@@ -26,17 +26,17 @@ exports.create = (req, res, next) => {
 exports.findAllByUser = (req, res, next) => {
   const userId = req.user.id;
   const page = req.query.page || 1;
+  const itemsPerPage = req.query.itemsPerPage;
 
-  const boardsPerPage = 16;
-  const offset = boardsPerPage * (page - 1);
+  const offset = itemsPerPage * (page - 1);
 
-  return Board.findAllByUser(userId, boardsPerPage, offset)
+  return Board.findAllByUser(userId, itemsPerPage, offset)
     .then(boards => Board.getBoardsCount(userId).then(count => ({ boards, count })))
     .then(result => {
       const boards = result.boards;
       const count = result.count;
 
-      if (boardsPerPage * page >= count) {
+      if (itemsPerPage * page >= count) {
         return { boards };
       }
 
