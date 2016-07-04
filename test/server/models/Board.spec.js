@@ -223,7 +223,7 @@ describe('Board', () => {
   describe('getBoardsCount', () => {
     it('should return boards length', () => {
       return Board.getBoardsCount(userId)
-        .then(length => assert.equal(length, 2));
+        .then(length => assert.equal(length, 1));
     });
   });
 });

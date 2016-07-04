@@ -37,7 +37,7 @@ describe('boards routes', () => {
   it('GET /api/boards should respond with 200 and return all boards related to user', (done) => {
     setup().then(request => {
       request
-        .get('/api/boards?page=1')
+        .get('/api/boards?page=1&itemsPerPage=16')
         .expect(200)
         .end((err, res) => {
           if (err) { return done(err); }
