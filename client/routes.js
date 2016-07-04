@@ -37,48 +37,50 @@ function handleUpdatePageEnter(nextState, replace) {
   }
 }
 
-export default (
-  <Route
-    path="/"
-  >
+export default function (store) {
+  return (
     <Route
-      onEnter={ensureBrowserIsUpdated}
+      path="/"
     >
       <Route
-        onEnter={ensureSignedIn}
-        component={AppContainer}
+        onEnter={ensureBrowserIsUpdated}
       >
-        <IndexRoute
-          component={IndexPage}
-        />
         <Route
-          path="boards/:boardId"
-          component={BoardPage}
+          onEnter={ensureSignedIn}
+          component={AppContainer}
+        >
+          <IndexRoute
+            component={IndexPage}
+          />
+          <Route
+            path="boards/:boardId"
+            component={BoardPage}
+          >
+            <Route
+              path="cards/:cardId"
+              component={FullCardModal}
+            />
+          </Route>
+        </Route>
+        <Route
+          onEnter={ensureSignedOut}
+          component={Sign}
         >
           <Route
-            path="cards/:cardId"
-            component={FullCardModal}
+            path="sign-in"
+            component={SignInPage}
+          />
+          <Route
+            path="sign-up"
+            component={SignUpPage}
           />
         </Route>
       </Route>
       <Route
-        onEnter={ensureSignedOut}
-        component={Sign}
-      >
-        <Route
-          path="sign-in"
-          component={SignInPage}
-        />
-        <Route
-          path="sign-up"
-          component={SignUpPage}
-        />
-      </Route>
+        path="update"
+        onEnter={handleUpdatePageEnter}
+        component={UpdateMessage}
+      />
     </Route>
-    <Route
-      path="update"
-      onEnter={handleUpdatePageEnter}
-      component={UpdateMessage}
-    />
-  </Route>
-);
+  );
+};

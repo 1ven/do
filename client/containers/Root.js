@@ -14,10 +14,10 @@ function Root({
     <Provider store={store}>
       {
         env === 'production' ? (
-          <Router routes={routes} history={history} />
+          <Router routes={routes(store)} history={history} />
         ) : (
           <div>
-            <Router routes={routes} history={history} />
+            <Router routes={routes(store)} history={history} />
             <DevTools />
           </div>
         )
