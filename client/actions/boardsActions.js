@@ -115,3 +115,12 @@ export function decCardsLength(boardId, count = 1) {
     },
   };
 }
+
+export function setPageIndex(pageIndex) {
+  return {
+    type: types.BOARDS_SET_PAGE_INDEX,
+    payload: {
+      pageIndex,
+    },
+  };
+}
