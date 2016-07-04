@@ -2,7 +2,7 @@ import api from '../services/api';
 import types from '../constants/actionTypes';
 import { takeEvery } from 'redux-saga';
 import { select, take, call, put } from 'redux-saga/effects'
-import { fetchBoards, fetchBoard, createBoard, removeBoard, updateBoard, moveBoard } from '../actions/boardsActions';
+import { fetchBoards, fetchBoard, createBoard, removeBoard, updateBoard, moveBoard, setPageIndex } from '../actions/boardsActions';
 import { startProgressBar, stopProgressBar } from '../actions/progressBarActions';
 import { hideModal } from '../actions/modalActions';
 import { BOARDS_PER_PAGE } from '../constants/config';
@@ -121,31 +121,27 @@ function* watchMoveBoard() {
 }
 
 function* watchScrollBottom() {
-  while (yield take(types.SCROLL_BOTTOM)) {
+  yield takeEvery(types.SCROLL_BOTTOM, function* () {
     const state = yield select(state => state);
 
     const { pathname } = state.routing.locationBeforeTransitions;
-    const { isFetching, pageIndex, isLastPage } = state.pages.main;
+    const { ids, isFetching, pageIndex, isLastPage } = state.pages.main;
 
-    if (pathname === '/' && !isFetching && !isLastPage) {
-      yield put(fetchBoards.request({ pageIndex: pageIndex + 1 }));
+    const isCached = pageIndex * BOARDS_PER_PAGE < ids.length;
+
+    if (pathname !== '/') {
+      return;
     }
 
-/*     if (pathname !== '/') { */
-/*       return; */
-/*     } */
+    if (isCached) {
+      yield put(setPageIndex(pageIndex + 1));
+      return;
+    }
 
-/*     const isCached = pageIndex * BOARDS_PER_PAGE < boards.length; */
-
-/*     if (isCached) { */
-/*       yield put(setBoardsPage(pageIndex + 1)); */
-/*       return; */
-/*     } */
-
-/*     if(!isFetching && !isLastPage) { */
-/*       yield put(fetchBoards.request({ pageIndex: pageIndex + 1 })); */
-/*     } */
-  }
+    if(!isFetching && !isLastPage) {
+      yield put(fetchBoards.request({ pageIndex: pageIndex + 1 }));
+    }
+  });
 }
 
 export default function* boardsSaga() {
