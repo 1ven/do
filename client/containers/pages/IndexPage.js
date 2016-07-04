@@ -86,7 +86,7 @@ function mapStateToProps(state) {
   return {
     groups: [
       getGroupObject('Starred boards', starredIds),
-      getGroupObject('My boards', ids),
+      getGroupObject('My boards', boardsIds),
     ],
     isFetching,
     lastUpdated,
