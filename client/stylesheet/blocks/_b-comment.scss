@@ -4,16 +4,20 @@
   &__content {
     width: 100%;
   }
-  &__avatar {
-    width: 38px;
-    height: auto;
-    border-radius: 50%;
-    border: 1px solid $dark-gray;
-    margin-right: 12px;
-  }
   &__text {
-    margin: 0;
-    font-size: 14px;
+    position: relative;
+    p {
+      margin: 0;
+      font-size: 12px;
+    }
+  }
+  &__remove {
+    width: 14px;
+    position: absolute;
+    top: 0;
+    right: 0;
+    transition: opacity .2s;
+    opacity: 0;
   }
   &__top {
     display: flex;
@@ -25,5 +29,12 @@
   }
   &__date {
     margin-left: auto;
+  }
+  &:hover {
+    .b-comment {
+      &__remove {
+        opacity: 1;
+      }
+    }
   }
 }
