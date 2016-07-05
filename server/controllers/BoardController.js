@@ -27,10 +27,11 @@ exports.findAllByUser = (req, res, next) => {
   const userId = req.user.id;
   const page = req.query.page || 1;
   const itemsPerPage = req.query.itemsPerPage;
+  const starred = req.query.starred;
 
   const offset = itemsPerPage ? itemsPerPage * (page - 1) : 0;
 
-  return Board.findAllByUser(userId, itemsPerPage, offset)
+  return Board.findAllByUser(userId, itemsPerPage, offset, !! starred)
     .then(boards => Board.getBoardsCount(userId).then(count => ({ boards, count })))
     .then(result => {
       const boards = result.boards;
