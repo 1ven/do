@@ -78,3 +78,13 @@ export function addCommentId(cardId, commentId) {
     },
   };
 };
+
+export function removeCommentId(cardId, commentId) {
+  return {
+    type: types.CARD_REMOVE_COMMENT_ID,
+    payload: {
+      cardId,
+      commentId,
+    },
+  };
+};

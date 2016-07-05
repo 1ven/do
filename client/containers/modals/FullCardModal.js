@@ -6,7 +6,7 @@ import { connect } from 'react-redux';
 import FullCard from '../../components/FullCard';
 import Modal from '../../components/Modal';
 import { updateCard, fetchCard, addColor, removeColor } from '../../actions/cardsActions';
-import { createComment } from '../../actions/commentsActions';
+import { createComment, removeComment } from '../../actions/commentsActions';
 import { showModal } from '../../actions/modalActions';
 
 class FullCardModal extends Component {
@@ -102,10 +102,13 @@ function mapDispatchToProps(dispatch, ownProps) {
       }
     },
 
-    onRemoveCommentClick(id) {
+    onRemoveCommentClick(cardId, commentId) {
       dispatch(
         showModal(modalsNames.CONFIRM, {
           title: 'Remove comment?',
+          onConfirm() {
+            dispatch(removeComment.request({ cardId, commentId }));
+          },
         })
       );
     },

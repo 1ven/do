@@ -76,6 +76,7 @@ class FullCard extends Component {
         <div className="b-full-card__comments">
           <Comments
             comments={card.comments}
+            cardId={card.id}
             onSendCommentSubmit={onSendCommentSubmit}
             onRemoveClick={onRemoveCommentClick}
           />

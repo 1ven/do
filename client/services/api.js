@@ -191,6 +191,11 @@ export default {
       },
     });
   },
+  removeComment(commentId) {
+    return callApi(`/api/comments/${commentId}`, null, {
+      method: 'DELETE',
+    });
+  },
   fetchActivity() {
     return callApi('/api/activity', schemas.ACTIVITY_ARRAY, {
       method: 'GET',
