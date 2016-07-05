@@ -1,8 +1,13 @@
 import React, { PropTypes } from 'react';
 import moment from 'moment';
 import SendCommentForm from './SendCommentForm';
+import Icon from './Icon';
 
-function Comments({ comments, onSendCommentSubmit }) {
+function Comments({
+  comments,
+  onSendCommentSubmit,
+  onRemoveClick,
+}) {
   return (
     <div className="b-comments">
       <div className="b-comments__items">
@@ -12,23 +17,21 @@ function Comments({ comments, onSendCommentSubmit }) {
             key={i}
           >
             <div className="b-comment">
-              <img
-                alt="Avatar"
-                className="b-comment__avatar"
-                src={comment.user.avatar}
-              />
               <div className="b-comment__content">
                 <div className="b-comment__top">
                   <span className="b-comment__username">
                     {comment.user.username}
                   </span>
                   <time className="b-comment__date">
-                    {moment.unix(comment.createdAt).format('H:m - DD MMM Y')}
+                    {moment.unix(comment.createdAt).format('HH:mm - DD MMM Y')}
                   </time>
                 </div>
-                <p className="b-comment__text">
-                  {comment.text}
-                </p>
+                <div className="b-comment__text">
+                  <p>{comment.text}</p>
+                  <a className="b-comment__remove">
+                    <Icon name="cross" />
+                  </a>
+                </div>
               </div>
             </div>
           </div>
@@ -51,12 +54,12 @@ Comments.propTypes = {
   comments: PropTypes.arrayOf(PropTypes.shape({
     user: PropTypes.shape({
       username: PropTypes.string.isRequired,
-      avatar: PropTypes.string.isRequired,
     }),
     createdAt: PropTypes.number.isRequired,
     text: PropTypes.string.isRequired,
   })),
   onSendCommentSubmit: PropTypes.func.isRequired,
+  onRemoveClick: PropTypes.func.isRequired,
 };
 
 export default Comments;
