@@ -74,7 +74,7 @@ const Board = {
         INNER JOIN boards_lists AS bl ON (bl.list_id = l.id)
         WHERE deleted IS NULL
         GROUP BY l.id, bl.list_index
-        ORDER BY bl.list_index
+        ORDER BY bl.list_index DESC
       ) AS l ON (l.id = list_id)
       WHERE b.id = $1 AND deleted IS NULL
       GROUP BY b.id`,
