@@ -8,7 +8,7 @@ function board(state = {}, action) {
     case types.BOARD_ADD_LIST_ID:
       return {
         ...state,
-        lists: [...state.lists, payload.listId],
+        lists: [payload.listId, ...state.lists],
       };
     case types.BOARD_REMOVE_LIST_ID:
       return {
