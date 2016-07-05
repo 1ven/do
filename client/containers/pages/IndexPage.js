@@ -43,7 +43,7 @@ class IndexPage extends Component {
 
     return (
       <div>
-        {error ? (
+        {error && !lastUpdated ? (
           <TextInfo>Error loading boards.</TextInfo>
         ) : !lastUpdated ? (
           <Loader />

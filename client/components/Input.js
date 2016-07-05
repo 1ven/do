@@ -1,4 +1,5 @@
 import React, { PropTypes, Component } from 'react';
+import Textarea from 'react-textarea-autosize';
 
 class Input extends Component {
   constructor(props) {
@@ -37,7 +38,7 @@ class Input extends Component {
     const { value } = this.state;
 
     return (
-      <input
+      <Textarea
         {...this.props}
         className="b-input"
         type="text"
