@@ -256,6 +256,7 @@ describe('tables', () => {
           assert.equal(columns.id, 'text');
           assert.equal(columns.index, 'integer');
           assert.equal(columns.created_at, 'integer');
+          assert.equal(columns.deleted, 'integer');
           assert.equal(columns.text, 'text');
         });
     });
