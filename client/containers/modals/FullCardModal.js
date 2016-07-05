@@ -1,11 +1,13 @@
 import React, { PropTypes, Component } from 'react';
 import { browserHistory } from 'react-router';
+import modalsNames from '../../constants/modalsNames';
 import map from 'lodash/map';
 import { connect } from 'react-redux';
 import FullCard from '../../components/FullCard';
 import Modal from '../../components/Modal';
 import { updateCard, fetchCard, addColor, removeColor } from '../../actions/cardsActions';
 import { createComment } from '../../actions/commentsActions';
+import { showModal } from '../../actions/modalActions';
 
 class FullCardModal extends Component {
   componentWillMount() {
@@ -22,6 +24,7 @@ class FullCardModal extends Component {
       error,
       onEditCardFormSubmit,
       onSendCommentSubmit,
+      onRemoveCommentClick,
       onColorClick,
       params: {
         boardId,
@@ -38,6 +41,7 @@ class FullCardModal extends Component {
           card={card}
           onEditCardFormSubmit={onEditCardFormSubmit}
           onSendCommentSubmit={onSendCommentSubmit}
+          onRemoveCommentClick={onRemoveCommentClick}
           onColorClick={onColorClick}
         />
       </Modal>
@@ -96,6 +100,14 @@ function mapDispatchToProps(dispatch, ownProps) {
       } else {
         dispatch(removeColor.request({ cardId, colorId }));
       }
+    },
+
+    onRemoveCommentClick(id) {
+      dispatch(
+        showModal(modalsNames.CONFIRM, {
+          title: 'Remove comment?',
+        })
+      );
     },
 
     loadCard() {

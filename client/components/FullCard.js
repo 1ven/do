@@ -37,6 +37,7 @@ class FullCard extends Component {
     const {
       card,
       onSendCommentSubmit,
+      onRemoveCommentClick,
       onColorClick,
     } = this.props;
 
@@ -76,6 +77,7 @@ class FullCard extends Component {
           <Comments
             comments={card.comments}
             onSendCommentSubmit={onSendCommentSubmit}
+            onRemoveClick={onRemoveCommentClick}
           />
         </div>
       </div>
@@ -91,6 +93,7 @@ FullCard.propTypes = {
   }),
   onEditCardFormSubmit: PropTypes.func.isRequired,
   onSendCommentSubmit: PropTypes.func.isRequired,
+  onRemoveCommentClick: PropTypes.func.isRequired,
   onColorClick: PropTypes.func.isRequired,
 };
 

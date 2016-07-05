@@ -28,7 +28,10 @@ function Comments({
                 </div>
                 <div className="b-comment__text">
                   <p>{comment.text}</p>
-                  <a className="b-comment__remove">
+                  <a
+                    className="b-comment__remove"
+                    onClick={onRemoveClick}
+                  >
                     <Icon name="cross" />
                   </a>
                 </div>
