@@ -25,6 +25,28 @@ function* fetchBoardsTask(action) {
   }
 }
 
+function* fetchBoardsOnScroll() {
+  const state = yield select(state => state);
+
+  const { pathname } = state.routing.locationBeforeTransitions;
+  const { ids, isFetching, pageIndex, isLastPage } = state.pages.main;
+
+  const isCached = pageIndex * BOARDS_PER_PAGE < ids.length;
+
+  if (pathname !== '/') {
+    return;
+  }
+
+  if (isCached) {
+    yield put(setPageIndex(pageIndex + 1));
+    return;
+  }
+
+  if(!isFetching && !isLastPage) {
+    yield put(fetchBoards.request({ pageIndex: pageIndex + 1 }));
+  }
+}
+
 function* fetchBoardTask(action) {
   try {
     yield put(startProgressBar());
@@ -121,27 +143,7 @@ function* watchMoveBoard() {
 }
 
 function* watchScrollBottom() {
-  yield takeEvery(types.SCROLL_BOTTOM, function* () {
-    const state = yield select(state => state);
-
-    const { pathname } = state.routing.locationBeforeTransitions;
-    const { ids, isFetching, pageIndex, isLastPage } = state.pages.main;
-
-    const isCached = pageIndex * BOARDS_PER_PAGE < ids.length;
-
-    if (pathname !== '/') {
-      return;
-    }
-
-    if (isCached) {
-      yield put(setPageIndex(pageIndex + 1));
-      return;
-    }
-
-    if(!isFetching && !isLastPage) {
-      yield put(fetchBoards.request({ pageIndex: pageIndex + 1 }));
-    }
-  });
+  yield takeEvery(types.SCROLL_BOTTOM, fetchBoardsOnScroll);
 }
 
 export default function* boardsSaga() {
