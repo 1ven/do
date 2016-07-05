@@ -7,8 +7,10 @@
     margin-bottom: 45px;
   }
   &__info {
-    display: flex;
-    flex-direction: column;
+    width: 100%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    padding-right: 40px;
   }
   &__edit {
     margin-left: auto;
@@ -18,6 +20,7 @@
     }
   }
   &__title, &__description {
+    display: block;
     color: $white;
     font-weight: 300;
   }
