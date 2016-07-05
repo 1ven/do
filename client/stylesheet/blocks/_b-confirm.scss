@@ -1,0 +1,8 @@
+.b-confirm {
+  display: flex;
+  padding: 15px 20px;
+  justify-content: flex-end;
+  &__item {
+    margin-left: 13px;
+  }
+}

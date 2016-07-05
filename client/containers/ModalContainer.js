@@ -6,6 +6,7 @@ import CreateListModal from './modals/CreateListModal';
 import CreateCardModal from './modals/CreateCardModal';
 import EditBoardModal from './modals/EditBoardModal';
 import EditListModal from './modals/EditListModal';
+import ConfirmModal from './modals/ConfirmModal';
 
 function ModalContainer({ name, data }) {
   switch (name) {
@@ -19,6 +20,8 @@ function ModalContainer({ name, data }) {
       return <EditBoardModal {...data} />
     case modalsNames.EDIT_LIST:
       return <EditListModal {...data} />
+    case modalsNames.CONFIRM:
+      return <ConfirmModal {...data} />
     default:
       return <div />;
   }

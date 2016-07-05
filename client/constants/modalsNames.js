@@ -6,5 +6,6 @@ export default createConstants(
   'CREATE_CARD',
   'EDIT_BOARD',
   'EDIT_LIST',
-  'EDIT_CARD'
+  'EDIT_CARD',
+  'CONFIRM'
 );
