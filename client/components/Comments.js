@@ -2,6 +2,7 @@ import React, { PropTypes } from 'react';
 import moment from 'moment';
 import SendCommentForm from './SendCommentForm';
 import Icon from './Icon';
+import { Scrollbars } from 'react-custom-scrollbars';
 
 function Comments({
   comments,
@@ -11,36 +12,43 @@ function Comments({
 }) {
   return (
     <div className="b-comments">
-      <div className="b-comments__items">
-        {comments.map((c, i) => (
-          <div
-            className="b-comments__item"
-            key={i}
-          >
-            <div className="b-comment">
-              <div className="b-comment__content">
-                <div className="b-comment__top">
-                  <span className="b-comment__username">
-                    {c.user.username}
-                  </span>
-                  <time className="b-comment__date">
-                    {moment.unix(c.createdAt).format('HH:mm - DD MMM Y')}
-                  </time>
-                </div>
-                <div className="b-comment__text">
-                  <p>{c.text}</p>
-                  <a
-                    className="b-comment__remove"
-                    onClick={() => onRemoveClick(cardId, c.id)}
-                  >
-                    <Icon name="cross" />
-                  </a>
+      <Scrollbars
+        autoHide
+        autoHideTimeout={1000}
+        autoHeight
+        autoHeightMax={230}
+      >
+        <div className="b-comments__items">
+          {comments.map((c, i) => (
+            <div
+              className="b-comments__item"
+              key={i}
+            >
+              <div className="b-comment">
+                <div className="b-comment__content">
+                  <div className="b-comment__top">
+                    <span className="b-comment__username">
+                      {c.user.username}
+                    </span>
+                    <time className="b-comment__date">
+                      {moment.unix(c.createdAt).format('HH:mm - DD MMM Y')}
+                    </time>
+                  </div>
+                  <div className="b-comment__text">
+                    <p>{c.text}</p>
+                    <a
+                      className="b-comment__remove"
+                      onClick={() => onRemoveClick(cardId, c.id)}
+                    >
+                      <Icon name="cross" />
+                    </a>
+                  </div>
                 </div>
               </div>
             </div>
-          </div>
-        ))}
-      </div>
+          ))}
+        </div>
+      </Scrollbars>
       <div className="b-comments__form">
         <SendCommentForm
           onSubmit={onSendCommentSubmit}
