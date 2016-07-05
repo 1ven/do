@@ -67,6 +67,30 @@ describe('Comment', () => {
         });
     });
   });
+
+  describe('drop', () => {
+    it('should assign to deleted prop current timestamp', () => {
+      return Comment.drop(commentId)
+        .then(() => {
+          return db.one(
+            `SELECT deleted FROM comments WHERE id = $1`,
+            [commentId]
+          );
+        })
+        .then(({ deleted }) => {
+          assert.isNumber(deleted);
+        });
+    });
+
+    it('should resolve dropped comment id', () => {
+      return Comment.drop(commentId)
+        .then(result => {
+          assert.deepEqual(result, {
+            id: commentId,
+          });
+        });
+    });
+  });
 });
 
 function setup() {
@@ -74,12 +98,9 @@ function setup() {
     `INSERT INTO users (id, username, email, hash, salt)
     VALUES ($1, 'testuser', 'testuser@test.com', 'hash', 'salt');
     INSERT INTO cards (id, text) VALUES ($2, 'test card');
-    INSERT INTO comments (id, text) VALUES ($3, 'test comment 1');
-    INSERT INTO comments (id, text) VALUES ($4, 'test comment 2');
-    INSERT INTO cards_comments VALUES ($2, $3);
-    INSERT INTO cards_comments VALUES ($2, $4);
-    INSERT INTO users_comments VALUES ($1, $3);
-    INSERT INTO users_comments VALUES ($1, $4);`,
+    INSERT INTO comments (id, text) VALUES ($3, 'test comment 1'), ($4, 'test comment 2');
+    INSERT INTO cards_comments VALUES ($2, $3), ($2, $4);
+    INSERT INTO users_comments VALUES ($1, $3), ($1, $4);`,
     [userId, cardId, commentId, comment2Id]
   );
 }

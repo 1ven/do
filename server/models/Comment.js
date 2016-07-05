@@ -17,6 +17,14 @@ const Comment = {
       [userId, cardId, commentId, commentData.text]
     );
   },
+
+  drop(id) {
+    const now = Math.round(Date.now() / 1000);
+    return db.one(
+      `UPDATE comments SET deleted = $2 WHERE id = $1 RETURNING id`,
+      [id, now]
+    );
+  },
 };
 
 module.exports = Comment;
