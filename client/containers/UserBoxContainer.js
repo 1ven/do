@@ -8,7 +8,7 @@ import { signOut } from '../actions/signActions';
 function mapStateToProps(state) {
   const user = state.entities.users[state.user.id];
   const hash = md5(user.email.toLowerCase());
-  const avatar = `https://www.gravatar.com/avatar/${hash}`;
+  const avatar = `https://www.gravatar.com/avatar/${hash}?d=mm`;
 
   return {
     user,
