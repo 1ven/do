@@ -57,7 +57,14 @@ function mapDispatchToProps(dispatch) {
     },
 
     onBoardTileRemoveClick(id) {
-      dispatch(removeBoard.request({ id }));
+      dispatch(
+        showModal(modalsNames.CONFIRM, {
+          title: 'Remove board?',
+          onConfirm() {
+            dispatch(removeBoard.request({ id }));
+          },
+        })
+      );
     },
 
     onBoardTileToggleStarredClick(id, starred) {

@@ -76,6 +76,7 @@ function* removeBoardTask(action) {
   try {
     const payload = yield call(api.removeBoard, action.payload.id);
     yield put(removeBoard.success(payload));
+    yield put(hideModal());
   } catch(err) {
     yield put(removeBoard.failure(err.message)); 
   }

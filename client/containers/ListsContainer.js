@@ -27,10 +27,17 @@ function mapDispatchToProps(dispatch, ownProps) {
     },
 
     onListRemoveClick(listId) {
-      dispatch(removeList.request({
-        boardId: ownProps.boardId,
-        listId,
-      }));
+      dispatch(
+        showModal(modalsNames.CONFIRM, {
+          title: 'Remove list?',
+          onConfirm() {
+            dispatch(removeList.request({
+              boardId: ownProps.boardId,
+              listId,
+            }));
+          },
+        })
+      );
     },
 
     onListCardMove(source, target) {

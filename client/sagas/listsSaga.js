@@ -30,6 +30,7 @@ function* removeListTask(action) {
     yield put(removeListId(boardId, listId));
     yield put(decListsLength(boardId));
     yield put(decCardsLength(boardId, cardsLength));
+    yield put(hideModal());
   } catch(err) {
     yield put(removeList.failure(err.message));
   }
