@@ -81,6 +81,7 @@ const Card = {
         LEFT JOIN (
           SELECT id, username FROM users
         ) AS u ON (u.id = uc.user_id)
+        WHERE deleted IS NULL
       ) AS cm ON (cm.id = cc.comment_id)
       WHERE cr.id = $1 AND deleted IS NULL
       GROUP BY cr.id, bl.board_id`,
