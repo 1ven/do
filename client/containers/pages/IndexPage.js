@@ -7,6 +7,7 @@ import TextInfo from '../../components/TextInfo';
 import BottomBox from '../../components/BottomBox';
 import Btn from '../../components/Btn';
 import BoardsGroups from '../../components/BoardsGroups';
+import BoardsSpinner from '../../components/BoardsSpinner';
 import { fetchBoards } from '../../actions/boardsActions';
 import { showModal } from '../../actions/modalActions';
 import { BOARDS_PER_PAGE } from '../../constants/config';
@@ -40,22 +41,21 @@ class IndexPage extends Component {
       onAddBoardBtnClick,
     } = this.props;
 
-    const isEmpty = groups.length === 0;
-
     return (
       <div>
         {error ? (
           <TextInfo>Error loading boards.</TextInfo>
-        ) : isFetching || !lastUpdated ? (
+        ) : !lastUpdated ? (
           <Loader />
-        ) : isEmpty ? (
-          <TextInfo>No result.</TextInfo>
         ) : (
           <BoardsGroups
             groups={groups}
             onGroupTitleClick={this.handleGroupTitleClick}
           />
         )}
+        {isFetching && lastUpdated ? (
+          <BoardsSpinner />
+        ) : <div />}
         <BottomBox
           button={
             <Btn

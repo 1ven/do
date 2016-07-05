@@ -1,7 +1,6 @@
 import React, { PropTypes } from 'react';
 import { addModifiers } from '../utils';
 import DraggableBoardTile from './DraggableBoardTile';
-import BoardsSpinner from './BoardsSpinner';
 
 function Boards({
   items = [],
@@ -32,11 +31,6 @@ function Boards({
           </div>
         )}
       </div>
-      {
-      /* <div className="b-boards__spinner"> */
-      /*   <BoardsSpinner /> */
-      /* </div> */
-      }
     </div>
   );
 }
