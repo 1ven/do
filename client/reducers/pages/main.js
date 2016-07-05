@@ -36,7 +36,10 @@ export default function main(state = {
     case types.BOARD_CREATE_SUCCESS:
       return {
         ...state,
-        ids: [...state.ids, payload.result.board],
+        ids: [
+          payload.result.board,
+          ...(state.isLastPage ? state.ids : state.ids.slice(0, -1)),
+        ],
       };
     case types.BOARD_REMOVE_SUCCESS:
       return {
