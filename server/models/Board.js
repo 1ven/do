@@ -100,7 +100,7 @@ const Board = {
       INNER JOIN users_boards AS ub ON (user_id = $1 AND ub.board_id = b.id)
       WHERE deleted IS NULL
       GROUP BY b.id, ub.board_index
-      ORDER BY ub.board_index
+      ORDER BY ub.board_index DESC
       LIMIT $2^
       OFFSET $3^`,
       [userId, limit, offset]
