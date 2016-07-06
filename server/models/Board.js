@@ -85,7 +85,7 @@ const Board = {
   findAllByUser(userId, limit, offset, starred) {
     limit = limit || 'all';
     offset = offset || 0;
-    starred = starred || false;
+    starred = starred || 'starred';
     return db.query(`
       SELECT b.id, b.title, b.link, b.starred, (
         SELECT count(list_id)::integer FROM boards_lists AS bl
@@ -99,7 +99,7 @@ const Board = {
       ) AS cards_length
       FROM boards AS b
       INNER JOIN users_boards AS ub ON (user_id = $1 AND ub.board_id = b.id)
-      WHERE deleted IS NULL AND starred = $4
+      WHERE deleted IS NULL AND starred = $4^
       GROUP BY b.id, ub.board_index
       ORDER BY ub.board_index DESC
       LIMIT $2^
