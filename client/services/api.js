@@ -53,6 +53,13 @@ export default {
       method: 'GET',
     });
   },
+  fetchStarredBoards() {
+    return callApi(`/api/boards?starred=true`, {
+      boards: schemas.BOARD_ARRAY,
+    }, {
+      method: 'GET',
+    });
+  },
   fetchBoard(id) {
     return callApi(`/api/boards/${id}`, schemas.BOARD, {
       method: 'GET',

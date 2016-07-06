@@ -2,10 +2,19 @@ import api from '../services/api';
 import types from '../constants/actionTypes';
 import { takeEvery } from 'redux-saga';
 import { select, take, call, put } from 'redux-saga/effects'
-import { fetchBoards, fetchBoard, createBoard, removeBoard, updateBoard, moveBoard, setPageIndex } from '../actions/boardsActions';
+import { BOARDS_PER_PAGE } from '../constants/config';
 import { startProgressBar, stopProgressBar } from '../actions/progressBarActions';
 import { hideModal } from '../actions/modalActions';
-import { BOARDS_PER_PAGE } from '../constants/config';
+import {
+  fetchBoards,
+  fetchStarredBoards,
+  fetchBoard,
+  createBoard,
+  removeBoard,
+  updateBoard,
+  moveBoard,
+  setPageIndex,
+} from '../actions/boardsActions';
 
 function* fetchBoardsTask(action) {
   const { pageIndex } = action.payload;
@@ -25,11 +34,20 @@ function* fetchBoardsTask(action) {
   }
 }
 
+function* fetchStarredBoardsTask(action) {
+  try {
+    const payload = yield call(api.fetchStarredBoards);
+    yield put(fetchStarredBoards.success(payload));
+  } catch(err) {
+    yield put(fetchStarredBoards.failure(err.message));
+  }
+}
+
 function* fetchBoardsOnScroll() {
   const state = yield select(state => state);
 
   const { pathname } = state.routing.locationBeforeTransitions;
-  const { ids, isFetching, pageIndex, isLastPage } = state.pages.main;
+  const { ids, isFetching, pageIndex, isLastPage } = state.pages.main.all;
 
   const isCached = pageIndex * BOARDS_PER_PAGE < ids.length;
 
@@ -119,6 +137,10 @@ function* watchFetchBoards() {
   yield* takeEvery(types.BOARDS_FETCH_REQUEST, fetchBoardsTask);
 }
 
+function* watchFetchStarredBoards() {
+  yield* takeEvery(types.BOARDS_FETCH_STARRED_REQUEST, fetchStarredBoardsTask);
+}
+
 function* watchFetchBoard() {
   yield* takeEvery(types.BOARD_FETCH_REQUEST, fetchBoardTask);
 }
@@ -150,6 +172,7 @@ function* watchScrollBottom() {
 export default function* boardsSaga() {
   yield [
     watchFetchBoards(),
+    watchFetchStarredBoards(),
     watchFetchBoard(),
     watchCreateBoard(),
     watchRemoveBoard(),

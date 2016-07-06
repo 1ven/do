@@ -8,19 +8,20 @@ import BottomBox from '../../components/BottomBox';
 import Btn from '../../components/Btn';
 import BoardsGroups from '../../components/BoardsGroups';
 import BoardsSpinner from '../../components/BoardsSpinner';
-import { fetchBoards } from '../../actions/boardsActions';
+import { fetchBoards, fetchStarredBoards } from '../../actions/boardsActions';
 import { showModal } from '../../actions/modalActions';
 import { BOARDS_PER_PAGE } from '../../constants/config';
 
 class IndexPage extends Component {
   componentWillMount() {
-    if (!this.props.lastUpdated) {
+    if (!this.props.all.lastUpdated) {
       this.props.fetchBoards();
     }
+    this.props.fetchStarredBoards();
   }
 
   shouldComponentUpdate(nextProps) {
-    return !(!this.props.isFetching && !this.props.lastUpdated && nextProps.isFetching);
+    return !(!this.props.all.isFetching && !this.props.all.lastUpdated && nextProps.all.isFetching);
   }
 
   handleGroupTitleClick(groupTitle, isActive) {
@@ -35,17 +36,15 @@ class IndexPage extends Component {
   render() {
     const {
       groups,
-      isFetching,
-      lastUpdated,
-      error,
+      all,
       onAddBoardBtnClick,
     } = this.props;
 
     return (
       <div>
-        {error && !lastUpdated ? (
+        {all.error && !all.lastUpdated ? (
           <TextInfo>Error loading boards.</TextInfo>
-        ) : !lastUpdated ? (
+        ) : !all.lastUpdated ? (
           <Loader />
         ) : (
           <BoardsGroups
@@ -53,7 +52,7 @@ class IndexPage extends Component {
             onGroupTitleClick={this.handleGroupTitleClick}
           />
         )}
-        {isFetching && lastUpdated ? (
+        {all.isFetching && all.lastUpdated ? (
           <BoardsSpinner />
         ) : <div />}
         <BottomBox
@@ -71,14 +70,16 @@ class IndexPage extends Component {
 
 IndexPage.propTypes = {
   groups: PropTypes.array.isRequired,
-  isFetching: PropTypes.bool.isRequired,
-  lastUpdated: PropTypes.number,
-  error: PropTypes.bool,
+  all: PropTypes.shape({
+    isFetching: PropTypes.bool.isRequired,
+    lastUpdated: PropTypes.number,
+    error: PropTypes.bool,
+  }),
 };
 
 function mapStateToProps(state) {
   const { boards } = state.entities;
-  const { ids, pageIndex, isFetching, lastUpdated, error } = state.pages.main;
+  const { ids, pageIndex, isFetching, lastUpdated, error } = state.pages.main.all;
 
   const starredIds = ids.filter(id => boards[id].starred);
   const boardsIds = ids.filter((id, i) => i < pageIndex * BOARDS_PER_PAGE);
@@ -88,9 +89,11 @@ function mapStateToProps(state) {
       getGroupObject('Starred boards', starredIds),
       getGroupObject('My boards', boardsIds),
     ],
-    isFetching,
-    lastUpdated,
-    error,
+    all: {
+      isFetching,
+      lastUpdated,
+      error,
+    }
   };
 }
 
@@ -100,6 +103,10 @@ function mapDispatchToProps(dispatch) {
       dispatch(fetchBoards.request({
         pageIndex: 1,
       }));
+    },
+
+    fetchStarredBoards() {
+      dispatch(fetchStarredBoards.request());
     },
 
     onAddBoardBtnClick() {

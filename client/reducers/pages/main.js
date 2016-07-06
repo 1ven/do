@@ -1,8 +1,9 @@
+import { combineReducers } from 'redux';
 import update from 'react/lib/update';
 import types from '../../constants/actionTypes';
 import without from 'lodash/without';
 
-export default function main(state = {
+function allBoards(state = {
   ids: [],
   pageIndex: undefined,
   isLastPage: false,
@@ -26,6 +27,7 @@ export default function main(state = {
         isLastPage: !payload.result.nextPage,
         isFetching: false,
         lastUpdated: payload.receivedAt,
+        error: undefined,
       };
     case types.BOARDS_FETCH_FAILURE:
       return {
@@ -73,3 +75,41 @@ export default function main(state = {
       return state;
   }
 }
+
+function starredBoards(state = {
+  ids: [],
+  isFetching: false,
+  lastUpdated: undefined,
+  error: undefined,
+}, action) {
+  const { payload } = action;
+
+  switch (action.type) {
+    case types.BOARDS_FETCH_STARRED_REQUEST:
+      return {
+        ...state,
+        isFetching: true,
+      };
+    case types.BOARDS_FETCH_STARRED_SUCCESS:
+      return {
+        ...state,
+        ids: [...state.ids, ...payload.result.boards],
+        isFetching: false,
+        lastUpdated: payload.receivedAt,
+        error: undefined,
+      };
+    case types.BOARDS_FETCH_STARRED_FAILURE:
+      return {
+        ...state,
+        isFetching: false,
+        error: true,
+      };
+    default:
+      return state;
+  }
+}
+
+export default combineReducers({
+  all: allBoards,
+  starred: starredBoards,
+});
