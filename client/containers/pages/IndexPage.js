@@ -92,7 +92,7 @@ function mapStateToProps(state) {
   return {
     groups: [
       getGroupObject('Starred boards', starredIds),
-      getGroupObject('My boards', boardsIds),
+      getGroupObject('My boards', boardsIds, all.count),
     ],
     all,
     starred,
@@ -119,11 +119,12 @@ function mapDispatchToProps(dispatch) {
   };
 }
 
-function getGroupObject(title, ids) {
+function getGroupObject(title, ids, count) {
   return {
     hidden: cookie.get(`${title}_accordion_hidden`),
     title,
     ids,
+    count,
   };
 }
 

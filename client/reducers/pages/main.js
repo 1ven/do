@@ -6,6 +6,7 @@ import without from 'lodash/without';
 function allBoards(state = {
   ids: [],
   pageIndex: undefined,
+  count: 0,
   isLastPage: false,
   isFetching: false,
   lastUpdated: undefined,
@@ -24,6 +25,7 @@ function allBoards(state = {
         ...state,
         ids: [...state.ids, ...payload.result.boards],
         pageIndex: payload.request.pageIndex,
+        count: + payload.result.count,
         isLastPage: !payload.result.nextPage,
         isFetching: false,
         lastUpdated: payload.receivedAt,
@@ -38,6 +40,7 @@ function allBoards(state = {
     case types.BOARD_CREATE_SUCCESS:
       return {
         ...state,
+        count: state.count + 1,
         ids: [
           payload.result.board,
           ...(state.isLastPage ? state.ids : state.ids.slice(0, -1)),
@@ -46,6 +49,7 @@ function allBoards(state = {
     case types.BOARD_REMOVE_SUCCESS:
       return {
         ...state,
+        count: state.count - 1,
         ids: without(state.ids, payload.result.board),
       };
     case types.BOARD_MOVE_SYNC:

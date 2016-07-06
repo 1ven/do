@@ -23,7 +23,7 @@ function BoardsGroups({
                     {group.title}
                     &nbsp;
                     <span className="b-boards-groups__count">
-                      ({group.ids.length})
+                      ({group.count || group.ids.length})
                     </span>
                   </span>
                   <span className="b-boards-groups__line" />
@@ -49,8 +49,9 @@ function BoardsGroups({
 BoardsGroups.propTypes = {
   groups: PropTypes.arrayOf(
     PropTypes.shape({
-      title: PropTypes.text,
-      ids: PropTypes.array,
+      title: PropTypes.string.isRequired,
+      ids: PropTypes.array.isRequired,
+      count: PropTypes.number,
     })
   ).isRequired,
   onGroupTitleClick: PropTypes.func.isRequired,
