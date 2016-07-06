@@ -10,19 +10,26 @@ import Boards from '../components/Boards';
 
 function BoardsContainer({
   boards,
+  error,
+  shouldDisplaySpinner,
   onBoardTileRemoveClick,
   onBoardTileEditClick,
   onBoardTileToggleStarredClick,
   onMoveTile,
   onDropTile,
 }) {
-  return !boards.length ? (
-    <div className="b-boards-not-found">
-      Boards not found
+  return error ? (
+    <div className="b-boards-message">
+      Error loading boards.
+    </div>
+  ) : !boards.length ? (
+    <div className="b-boards-message">
+      Boards not found.
     </div>
   ) : (
     <Boards
       items={boards}
+      shouldDisplaySpinner={shouldDisplaySpinner}
       onRemoveClick={onBoardTileRemoveClick}
       onEditClick={onBoardTileEditClick}
       onToggleStarredClick={onBoardTileToggleStarredClick}
@@ -35,14 +42,21 @@ function BoardsContainer({
 BoardsContainer.propTypes = {
   ids: PropTypes.arrayOf(PropTypes.string).isRequired,
   boards: PropTypes.array.isRequired,
+  type: PropTypes.string.isRequired,
+  shouldDisplaySpinner: PropTypes.bool.isRequired,
+  error: PropTypes.bool,
   onBoardTileRemoveClick: PropTypes.func.isRequired,
   onBoardTileEditClick: PropTypes.func.isRequired,
   onBoardTileToggleStarredClick: PropTypes.func.isRequired,
 };
 
-function mapStateToProps(state, ownProps) {
+function mapStateToProps(state, { ids, type }) {
+  const { isFetching, lastUpdated, error } = state.pages.main[type];
+
   return {
-    boards: ownProps.ids.map(id => state.entities.boards[id]),
+    boards: ids.map(id => state.entities.boards[id]),
+    shouldDisplaySpinner: type === 'all' && isFetching && !!lastUpdated,
+    error,
   };
 }
 

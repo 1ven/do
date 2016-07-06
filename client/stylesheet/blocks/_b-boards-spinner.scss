@@ -1,15 +1,8 @@
 .b-boards-spinner {
   display: flex;
-  justify-content: center;
-  padding-top: 25px;
-  padding-bottom: 128px;
-  margin-top: -128px;
-  &__wrap {
-    display: flex;
-    height: 35px;
-    text-align: center;
-    font-size: 10px;
-  }
+  height: 35px;
+  text-align: center;
+  font-size: 10px;
   &__rect {
     background-color: #fff;
     height: 100%;

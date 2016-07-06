@@ -1,9 +1,11 @@
 import React, { PropTypes } from 'react';
 import { addModifiers } from '../utils';
 import DraggableBoardTile from './DraggableBoardTile';
+import BoardsSpinner from './BoardsSpinner';
 
 function Boards({
   items = [],
+  shouldDisplaySpinner,
   onRemoveClick,
   onEditClick,
   onToggleStarredClick,
@@ -31,12 +33,18 @@ function Boards({
           </div>
         )}
       </div>
+      {shouldDisplaySpinner ? (
+        <div className="b-boards__spinner">
+          <BoardsSpinner />
+        </div>
+      ) : <div />}
     </div>
   );
 }
 
 Boards.propTypes = {
   items: PropTypes.array.isRequired,
+  shouldDisplaySpinner: PropTypes.bool,
   onRemoveClick: PropTypes.func.isRequired,
   onEditClick: PropTypes.func.isRequired,
   onToggleStarredClick: PropTypes.func.isRequired,

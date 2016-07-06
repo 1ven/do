@@ -11,7 +11,7 @@ function BoardsGroups({
   return (
     <div className="b-boards-groups">
       <div className="b-container">
-        {groups.map((group, i) => (
+        {groups.map(({ title, type, ids, count, hidden }, i) => (
           <div
             className="b-boards-groups__group"
             key={i}
@@ -20,10 +20,10 @@ function BoardsGroups({
               link={
                 <div className="b-boards-groups__top">
                   <span className="b-boards-groups__group-title">
-                    {group.title}
+                    {title}
                     &nbsp;
                     <span className="b-boards-groups__count">
-                      ({group.count || group.ids.length})
+                      ({count || ids.length})
                     </span>
                   </span>
                   <span className="b-boards-groups__line" />
@@ -33,10 +33,13 @@ function BoardsGroups({
                 </div>
               }
               content={
-                <BoardsContainer ids={group.ids} />
+                <BoardsContainer
+                  ids={ids}
+                  type={type}
+                />
               }
-              onLinkClick={isActive => onGroupTitleClick(group.title, isActive)}
-              isActive={!group.hidden}
+              onLinkClick={isActive => onGroupTitleClick(type, isActive)}
+              isActive={!hidden}
               closeWhenClickedOutside={false}
             />
           </div>
@@ -50,7 +53,9 @@ BoardsGroups.propTypes = {
   groups: PropTypes.arrayOf(
     PropTypes.shape({
       title: PropTypes.string.isRequired,
+      type: PropTypes.string.isRequired,
       ids: PropTypes.array.isRequired,
+      hidden: PropTypes.bool.isRequired,
       count: PropTypes.number,
     })
   ).isRequired,

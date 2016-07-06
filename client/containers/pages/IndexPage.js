@@ -3,7 +3,6 @@ import cookie from 'js-cookie';
 import { connect } from 'react-redux';
 import modalsNames from '../../constants/modalsNames';
 import Loader from '../../components/Loader';
-import TextInfo from '../../components/TextInfo';
 import BottomBox from '../../components/BottomBox';
 import Btn from '../../components/Btn';
 import BoardsGroups from '../../components/BoardsGroups';
@@ -14,16 +13,12 @@ import { BOARDS_PER_PAGE } from '../../constants/config';
 
 class IndexPage extends Component {
   componentWillMount() {
-    if (!this.props.all.lastUpdated) {
+    if (this.props.shouldFetchBoards) {
       this.props.fetchBoards();
     }
-    if (!this.props.starred.lastUpdated) {
+    if (this.props.shouldFetchStarred) {
       this.props.fetchStarredBoards();
     }
-  }
-
-  shouldComponentUpdate(nextProps) {
-    return !(!this.props.all.isFetching && !this.props.all.lastUpdated && nextProps.all.isFetching);
   }
 
   handleGroupTitleClick(groupTitle, isActive) {
@@ -36,17 +31,11 @@ class IndexPage extends Component {
   }
 
   render() {
-    const { groups, all, starred, onAddBoardBtnClick } = this.props;
-
-    const isError = (all.error && !all.lastUpdated) || (starred.error && !starred.lastUpdated);
-    const isLoading = !all.lastUpdated || !starred.lastUpdated;
-    const isFetchingNextPage = all.isFetching && all.lastUpdated;
+    const { groups, isLoading, onAddBoardBtnClick } = this.props;
 
     return (
       <div>
-        {isError ? (
-          <TextInfo>Error loading boards.</TextInfo>
-        ) : isLoading ? (
+        {isLoading ? (
           <Loader />
         ) : (
           <BoardsGroups
@@ -54,9 +43,6 @@ class IndexPage extends Component {
             onGroupTitleClick={this.handleGroupTitleClick}
           />
         )}
-        {isFetchingNextPage ? (
-          <BoardsSpinner />
-        ) : <div />}
         <BottomBox
           button={
             <Btn
@@ -72,32 +58,31 @@ class IndexPage extends Component {
 
 IndexPage.propTypes = {
   groups: PropTypes.array.isRequired,
-  all: PropTypes.shape({
-    isFetching: PropTypes.bool.isRequired,
-    lastUpdated: PropTypes.number,
-    error: PropTypes.bool,
-  }),
-  starred: PropTypes.shape({
-    isFetching: PropTypes.bool.isRequired,
-    lastUpdated: PropTypes.number,
-    error: PropTypes.bool,
-  }),
+  isLoading: PropTypes.bool.isRequired,
+  shouldFetchBoards: PropTypes.bool.isRequired,
+  shouldFetchStarred: PropTypes.bool.isRequired,
 };
 
 function mapStateToProps(state) {
   const { boards } = state.entities;
   const { all, starred } = state.pages.main;
 
-  const starredIds = starred.ids;
-  const boardsIds = all.ids.filter((id, i) => i < all.pageIndex * BOARDS_PER_PAGE);
-
   return {
-    groups: [
-      getGroupObject('Starred boards', starredIds),
-      getGroupObject('My boards', boardsIds, all.count),
-    ],
-    all,
-    starred,
+    groups: [{
+      hidden: !!cookie.get('starred_accordion_hidden'),
+      title: 'Starred boards',
+      type: 'starred',
+      ids: starred.ids,
+    }, {
+      hidden: !!cookie.get('all_accordion_hidden'),
+      title: 'My boards',
+      type: 'all',
+      ids: all.ids.filter((id, i) => i < all.pageIndex * BOARDS_PER_PAGE),
+      count: all.count,
+    }],
+    shouldFetchBoards: !all.lastUpdated,
+    shouldFetchStarred: !starred.lastUpdated,
+    isLoading: !all.lastUpdated || !starred.lastUpdated,
   };
 }
 
@@ -118,15 +103,6 @@ function mapDispatchToProps(dispatch) {
         showModal(modalsNames.CREATE_BOARD)
       );
     },
-  };
-}
-
-function getGroupObject(title, ids, count) {
-  return {
-    hidden: cookie.get(`${title}_accordion_hidden`),
-    title,
-    ids,
-    count,
   };
 }
 
