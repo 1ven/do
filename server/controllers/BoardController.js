@@ -38,12 +38,13 @@ exports.findAllByUser = (req, res, next) => {
       const count = result.count;
 
       if (!itemsPerPage || itemsPerPage * page >= count) {
-        return { boards };
+        return { boards, count };
       }
 
       return {
         nextPage: + page + 1,
         boards,
+        count,
       };
     })
     .then(result => {

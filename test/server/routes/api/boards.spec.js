@@ -42,7 +42,9 @@ describe('boards routes', () => {
         .end((err, res) => {
           if (err) { return done(err); }
 
-          const { boards } = res.body.result;
+          const { boards, count } = res.body.result;
+
+          assert.equal(count, 2);
           assert.deepEqual(boards, [{
             id: board3Id,
             title: 'test board 3',
@@ -164,7 +166,7 @@ describe('boards routes', () => {
   it('PUT /api/boards/:id should respond with 200 and return updated entry', (done) => {
     setup().then(request => {
       request
-        .put(`/api/boards/${boardId}?activityAction=Renamed`)
+        .put(`/api/boards/${boardId}`)
         .send({
           title: 'new title',
         })
@@ -184,7 +186,7 @@ describe('boards routes', () => {
             },
             activity: {
               id: 1,
-              action: 'Renamed',
+              action: 'Updated',
               type: 'board',
               entry: {
                 title: 'new title',
