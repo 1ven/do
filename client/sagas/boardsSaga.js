@@ -136,6 +136,7 @@ function* toggleStarredTask(action) {
   try {
     const payload = yield call(api.updateBoard, id, { starred }, {
       notify: false,
+      activity: false,
     });
     yield put(toggleStarred.success(payload));
   } catch(err) {

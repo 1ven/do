@@ -104,6 +104,16 @@ function starredBoards(state = {
         isFetching: false,
         error: true,
       };
+    case types.BOARD_TOGGLE_STARRED_SUCCESS: {
+      const boardId = payload.result.board;
+      const ids = payload.entities.boards[boardId].starred ?
+        [...state.ids, boardId] : state.ids.filter(id => id !== boardId);
+
+      return {
+        ...state,
+        ids,
+      };
+    }
     default:
       return state;
   }
