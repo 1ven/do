@@ -17,7 +17,9 @@ class IndexPage extends Component {
     if (!this.props.all.lastUpdated) {
       this.props.fetchBoards();
     }
-    this.props.fetchStarredBoards();
+    if (!this.props.starred.lastUpdated) {
+      this.props.fetchStarredBoards();
+    }
   }
 
   shouldComponentUpdate(nextProps) {
