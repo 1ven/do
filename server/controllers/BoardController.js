@@ -64,12 +64,15 @@ exports.update = (req, res, next) => {
   const userId = req.user.id;
   const boardId = req.params.id;
   const props = sanitize(req.body);
-  const activityAction = req.query.activityAction;
   const notify = req.query.notify;
+  const activity = req.query.activity;
 
   return Board.update(boardId, props)
     .then(board => {
-      return Activity.create(userId, boardId, 'boards', activityAction || 'Updated')
+      if (activity === 'false') {
+        return { board };
+      }
+      return Activity.create(userId, boardId, 'boards', 'Updated')
         .then(activity => _.assign({}, { board }, { activity }));
     })
     .then(result => {
