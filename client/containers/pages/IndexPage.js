@@ -34,17 +34,17 @@ class IndexPage extends Component {
   }
 
   render() {
-    const {
-      groups,
-      all,
-      onAddBoardBtnClick,
-    } = this.props;
+    const { groups, all, starred, onAddBoardBtnClick } = this.props;
+
+    const isError = (all.error && !all.lastUpdated) || (starred.error && !starred.lastUpdated);
+    const isLoading = !all.lastUpdated || !starred.lastUpdated;
+    const isFetchingNextPage = all.isFetching && all.lastUpdated;
 
     return (
       <div>
-        {all.error && !all.lastUpdated ? (
+        {isError ? (
           <TextInfo>Error loading boards.</TextInfo>
-        ) : !all.lastUpdated ? (
+        ) : isLoading ? (
           <Loader />
         ) : (
           <BoardsGroups
@@ -52,7 +52,7 @@ class IndexPage extends Component {
             onGroupTitleClick={this.handleGroupTitleClick}
           />
         )}
-        {all.isFetching && all.lastUpdated ? (
+        {isFetchingNextPage ? (
           <BoardsSpinner />
         ) : <div />}
         <BottomBox
@@ -75,25 +75,27 @@ IndexPage.propTypes = {
     lastUpdated: PropTypes.number,
     error: PropTypes.bool,
   }),
+  starred: PropTypes.shape({
+    isFetching: PropTypes.bool.isRequired,
+    lastUpdated: PropTypes.number,
+    error: PropTypes.bool,
+  }),
 };
 
 function mapStateToProps(state) {
   const { boards } = state.entities;
-  const { ids, pageIndex, isFetching, lastUpdated, error } = state.pages.main.all;
+  const { all, starred } = state.pages.main;
 
-  const starredIds = ids.filter(id => boards[id].starred);
-  const boardsIds = ids.filter((id, i) => i < pageIndex * BOARDS_PER_PAGE);
+  const starredIds = starred.ids;
+  const boardsIds = all.ids.filter((id, i) => i < all.pageIndex * BOARDS_PER_PAGE);
 
   return {
     groups: [
       getGroupObject('Starred boards', starredIds),
       getGroupObject('My boards', boardsIds),
     ],
-    all: {
-      isFetching,
-      lastUpdated,
-      error,
-    }
+    all,
+    starred,
   };
 }
 
