@@ -11,7 +11,7 @@ function BoardsGroups({
   return (
     <div className="b-boards-groups">
       <div className="b-container">
-        {groups.map(({ title, type, ids, count, hidden }, i) => (
+        {groups.map(({ title, type, ids, count, hidden, spinner }, i) => (
           <div
             className="b-boards-groups__group"
             key={i}
@@ -36,6 +36,7 @@ function BoardsGroups({
                 <BoardsContainer
                   ids={ids}
                   type={type}
+                  spinner={spinner}
                 />
               }
               onLinkClick={isActive => onGroupTitleClick(type, isActive)}
@@ -57,6 +58,7 @@ BoardsGroups.propTypes = {
       ids: PropTypes.array.isRequired,
       hidden: PropTypes.bool.isRequired,
       count: PropTypes.number,
+      spinner: PropTypes.bool,
     })
   ).isRequired,
   onGroupTitleClick: PropTypes.func.isRequired,

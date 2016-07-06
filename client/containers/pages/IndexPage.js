@@ -79,6 +79,7 @@ function mapStateToProps(state) {
       type: 'all',
       ids: all.ids.filter((id, i) => i < all.pageIndex * BOARDS_PER_PAGE),
       count: all.count,
+      spinner: all.isFetching && !!all.lastUpdated,
     }],
     shouldFetchBoards: !all.lastUpdated,
     shouldFetchStarred: !starred.lastUpdated,

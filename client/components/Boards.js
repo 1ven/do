@@ -5,7 +5,7 @@ import BoardsSpinner from './BoardsSpinner';
 
 function Boards({
   items = [],
-  shouldDisplaySpinner,
+  spinner,
   onRemoveClick,
   onEditClick,
   onToggleStarredClick,
@@ -33,7 +33,7 @@ function Boards({
           </div>
         )}
       </div>
-      {shouldDisplaySpinner ? (
+      {spinner ? (
         <div className="b-boards__spinner">
           <BoardsSpinner />
         </div>
@@ -44,7 +44,7 @@ function Boards({
 
 Boards.propTypes = {
   items: PropTypes.array.isRequired,
-  shouldDisplaySpinner: PropTypes.bool,
+  spinner: PropTypes.bool,
   onRemoveClick: PropTypes.func.isRequired,
   onEditClick: PropTypes.func.isRequired,
   onToggleStarredClick: PropTypes.func.isRequired,

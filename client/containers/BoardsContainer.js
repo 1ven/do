@@ -11,7 +11,7 @@ import Boards from '../components/Boards';
 function BoardsContainer({
   boards,
   error,
-  shouldDisplaySpinner,
+  spinner,
   onBoardTileRemoveClick,
   onBoardTileEditClick,
   onBoardTileToggleStarredClick,
@@ -29,7 +29,7 @@ function BoardsContainer({
   ) : (
     <Boards
       items={boards}
-      shouldDisplaySpinner={shouldDisplaySpinner}
+      spinner={spinner}
       onRemoveClick={onBoardTileRemoveClick}
       onEditClick={onBoardTileEditClick}
       onToggleStarredClick={onBoardTileToggleStarredClick}
@@ -43,7 +43,7 @@ BoardsContainer.propTypes = {
   ids: PropTypes.arrayOf(PropTypes.string).isRequired,
   boards: PropTypes.array.isRequired,
   type: PropTypes.string.isRequired,
-  shouldDisplaySpinner: PropTypes.bool.isRequired,
+  spinner: PropTypes.bool,
   error: PropTypes.bool,
   onBoardTileRemoveClick: PropTypes.func.isRequired,
   onBoardTileEditClick: PropTypes.func.isRequired,
@@ -51,12 +51,9 @@ BoardsContainer.propTypes = {
 };
 
 function mapStateToProps(state, { ids, type }) {
-  const { isFetching, lastUpdated, error } = state.pages.main[type];
-
   return {
     boards: ids.map(id => state.entities.boards[id]),
-    shouldDisplaySpinner: type === 'all' && isFetching && !!lastUpdated,
-    error,
+    error: state.pages.main[type].error,
   };
 }
 
