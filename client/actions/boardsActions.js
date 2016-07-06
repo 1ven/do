@@ -37,6 +37,12 @@ export const updateBoard = createActions([
   types.BOARD_UPDATE_FAILURE,
 ]);
 
+export const toggleStarred = createActions([
+  types.BOARD_TOGGLE_STARRED_REQUEST,
+  types.BOARD_TOGGLE_STARRED_SUCCESS,
+  types.BOARD_TOGGLE_STARRED_FAILURE,
+]);
+
 export const moveBoard = createActions([
   types.BOARD_MOVE_REQUEST,
   types.BOARD_MOVE_SUCCESS,

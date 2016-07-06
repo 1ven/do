@@ -4,7 +4,7 @@ import HTML5Backend from 'react-dnd-html5-backend';
 import { connect } from 'react-redux';
 import { compose } from 'redux';
 import modalsNames from '../constants/modalsNames';
-import { removeBoard, updateBoard, moveBoard, moveBoardSync } from '../actions/boardsActions';
+import { removeBoard, updateBoard, moveBoard, moveBoardSync, toggleStarred } from '../actions/boardsActions';
 import { showModal } from '../actions/modalActions';
 import Boards from '../components/Boards';
 
@@ -69,14 +69,9 @@ function mapDispatchToProps(dispatch) {
 
     onBoardTileToggleStarredClick(id, starred) {
       dispatch(
-        updateBoard.request({
+        toggleStarred.request({
+          starred: !starred,
           id,
-          props: {
-            starred: !starred,
-          },
-          params: {
-            notify: false,
-          },
         })
       );
     },

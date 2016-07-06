@@ -14,12 +14,12 @@ import {
   updateBoard,
   moveBoard,
   setPageIndex,
+  toggleStarred,
 } from '../actions/boardsActions';
 
 function* fetchBoardsTask(action) {
   const { pageIndex } = action.payload;
   try {
-    yield put(startProgressBar());
     const payload = yield call(api.fetchBoards, pageIndex, BOARDS_PER_PAGE);
     yield put(fetchBoards.success({
       ...payload,
@@ -29,8 +29,6 @@ function* fetchBoardsTask(action) {
     }));
   } catch(err) {
     yield put(fetchBoards.failure(err.message));
-  } finally {
-    yield put(stopProgressBar());
   }
 }
 
@@ -133,6 +131,18 @@ function* moveBoardTask(action) {
   }
 }
 
+function* toggleStarredTask(action) {
+  const { id, starred } = action.payload;
+  try {
+    const payload = yield call(api.updateBoard, id, { starred }, {
+      notify: false,
+    });
+    yield put(toggleStarred.success(payload));
+  } catch(err) {
+    yield put(toggleStarred.failure(err.message));
+  }
+}
+
 function* watchFetchBoards() {
   yield* takeEvery(types.BOARDS_FETCH_REQUEST, fetchBoardsTask);
 }
@@ -166,7 +176,29 @@ function* watchMoveBoard() {
 }
 
 function* watchScrollBottom() {
-  yield takeEvery(types.SCROLL_BOTTOM, fetchBoardsOnScroll);
+  yield* takeEvery(types.SCROLL_BOTTOM, fetchBoardsOnScroll);
+}
+
+function* watchToggleStarred() {
+  yield* takeEvery(types.BOARD_TOGGLE_STARRED_REQUEST, toggleStarredTask);
+}
+
+function* watchFetchAllAndStarred() {
+  while (true) {
+    yield take(types.BOARDS_FETCH_REQUEST);
+    yield take(types.BOARDS_FETCH_STARRED_REQUEST);
+    yield put(startProgressBar());
+    // If starred boards will be returned earlier, progressbar would never stopped.
+    yield take([
+      types.BOARDS_FETCH_SUCCESS,
+      types.BOARDS_FETCH_FAILURE,
+    ]);
+    yield take([
+      types.BOARDS_FETCH_STARRED_SUCCESS,
+      types.BOARDS_FETCH_STARRED_FAILURE,
+    ]);
+    yield put(stopProgressBar());
+  }
 }
 
 export default function* boardsSaga() {
@@ -180,5 +212,7 @@ export default function* boardsSaga() {
     watchMoveBoard(),
     watchUpdateBoardModalForm(),
     watchScrollBottom(),
+    watchToggleStarred(),
+    watchFetchAllAndStarred(),
   ];
 }
