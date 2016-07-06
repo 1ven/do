@@ -1,7 +1,7 @@
 import api from '../services/api';
 import types from '../constants/actionTypes';
 import { takeEvery } from 'redux-saga';
-import { select, take, call, put } from 'redux-saga/effects'
+import { select, take, takem, call, put } from 'redux-saga/effects'
 import { BOARDS_PER_PAGE } from '../constants/config';
 import { startProgressBar, stopProgressBar } from '../actions/progressBarActions';
 import { hideModal } from '../actions/modalActions';
@@ -186,18 +186,24 @@ function* watchToggleStarred() {
 
 function* watchFetchAllAndStarred() {
   while (true) {
-    yield take(types.BOARDS_FETCH_REQUEST);
-    yield take(types.BOARDS_FETCH_STARRED_REQUEST);
+    for (let i = 0; i < 2; i++) {
+      yield take([
+        types.BOARDS_FETCH_REQUEST,
+        types.BOARDS_FETCH_STARRED_REQUEST,
+      ]);
+    }
+
     yield put(startProgressBar());
-    // If starred boards will be returned earlier, progressbar would never stopped.
-    yield take([
-      types.BOARDS_FETCH_SUCCESS,
-      types.BOARDS_FETCH_FAILURE,
-    ]);
-    yield take([
-      types.BOARDS_FETCH_STARRED_SUCCESS,
-      types.BOARDS_FETCH_STARRED_FAILURE,
-    ]);
+
+    for (let i = 0; i < 2; i++) {
+      yield take([
+        types.BOARDS_FETCH_SUCCESS,
+        types.BOARDS_FETCH_FAILURE,
+        types.BOARDS_FETCH_STARRED_SUCCESS,
+        types.BOARDS_FETCH_STARRED_FAILURE,
+      ]);
+    }
+
     yield put(stopProgressBar());
   }
 }
