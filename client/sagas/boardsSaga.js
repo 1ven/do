@@ -91,6 +91,8 @@ function* createBoardTask(action) {
 function* removeBoardTask(action) {
   try {
     const payload = yield call(api.removeBoard, action.payload.id);
+    // If we are not on the last page, use Promise.all to evaluate remove board and fetch nextPage first entry requests.
+    // dispatch BOARDS_ADD action to add fetched board id to all boards ids list and to boards entities.
     yield put(removeBoard.success(payload));
     yield put(hideModal());
   } catch(err) {
