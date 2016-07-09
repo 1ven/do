@@ -70,6 +70,11 @@ function allBoards(state = {
         lastUpdated: payload.receivedAt,
         ids: payload.result,
       };
+    case types.BOARD_ADD:
+      return {
+        ...state,
+        ids: [...state.ids, payload.result.boards[0]],
+      };
     case types.BOARDS_SET_PAGE_INDEX:
       return {
         ...state,
