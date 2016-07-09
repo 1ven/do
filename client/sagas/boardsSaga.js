@@ -15,6 +15,7 @@ import {
   moveBoard,
   setPageIndex,
   toggleStarred,
+  addBoard,
 } from '../actions/boardsActions';
 
 function* fetchBoardsTask(action) {
@@ -91,20 +92,15 @@ function* createBoardTask(action) {
 function* removeBoardTask(action) {
   try {
     const { isLastPage, ids } = yield select(state => state.pages.main.all);
-    // If we are not on the last page, use Promise.all to evaluate remove board and fetch nextPage first entry requests.
-    // dispatch BOARDS_ADD action to add fetched board id to all boards ids list and to boards entities.
 
     const payload = yield call(api.removeBoard, action.payload.id);
 
     if (!isLastPage) {
       // Figure out why ids.length is 15 not 16.
-      const result = yield call(api.fetchBoards, ids.length + 1, 1);
+      const payload = yield call(api.fetchBoards, ids.length + 1, 1);
 
-      // Replace with action creator.
-      yield put({
-        type: 'BOARDS_ADD',
-        payload: result,
-      });
+      // Sometimes displayed result is lags behind 1 item.
+      yield put(addBoard(payload));
     }
 
     yield put(removeBoard.success(payload));
