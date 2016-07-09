@@ -11,6 +11,8 @@ export default createConstants(
 
   'BOARDS_SET_PAGE_INDEX',
 
+  'BOARD_ADD',
+
   'BOARD_FETCH_REQUEST',
   'BOARD_FETCH_SUCCESS',
   'BOARD_FETCH_FAILURE',
