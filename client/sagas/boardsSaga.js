@@ -97,9 +97,8 @@ function* removeBoardTask(action) {
 
     if (!isLastPage) {
       // Figure out why ids.length is 15 not 16.
-      const payload = yield call(api.fetchBoards, ids.length + 1, 1);
+      const payload = yield call(api.fetchBoards, ids.length, 1);
 
-      // Sometimes displayed result is lags behind 1 item.
       yield put(addBoard(payload));
     }
 
