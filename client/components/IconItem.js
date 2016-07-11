@@ -10,7 +10,7 @@ function IconItem({
     <div className="b-icon-item">
       <div
         className="b-icon-item__icon"
-        style={{ width: iconWidth }}
+        style={{ width: `${iconWidth}px` }}
       >
         <Icon name={iconName} />
       </div>
