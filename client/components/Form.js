@@ -11,7 +11,7 @@ class Form extends Component {
   handleSubmit(e) {
     e.preventDefault();
 
-    const formData = serialize(this.form, {
+    const formData = serialize(e.target, {
       hash: true,
     });
 
@@ -24,7 +24,6 @@ class Form extends Component {
       <form
         className={className}
         onSubmit={this.handleSubmit}
-        ref={form => { this.form = form; }}
       >
         {children}
       </form>
