@@ -1,4 +1,6 @@
+import merge from 'lodash/merge';
 import types from '../../constants/actionTypes';
+import { entity } from './index';
 
 function card(state = {}, action) {
   const { payload } = action;
@@ -30,6 +32,6 @@ export default function cards(state = {}, action) {
         [payload.cardId]: card(state[payload.cardId], action),
       };
     default:
-      return state;
+      return entity('cards')(state, action);
   }
 }

@@ -1,6 +1,8 @@
 import without from 'lodash/without';
+import merge from 'lodash/merge';
 import update from 'react/lib/update';
 import types from '../../constants/actionTypes';
+import { entity } from './index';
 
 function list(state = {}, action) {
   const { payload } = action;
@@ -57,6 +59,6 @@ export default function lists(state = {}, action) {
       return stateAfterTarget;
     }
     default:
-      return state;
+      return entity('lists')(state, action);
   }
 }

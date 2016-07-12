@@ -1,5 +1,7 @@
-import types from '../../constants/actionTypes';
+import merge from 'lodash/merge';
 import without from 'lodash/without';
+import types from '../../constants/actionTypes';
+import { entity } from './index';
 
 function board(state = {}, action) {
   const payload = action.payload;
@@ -55,6 +57,6 @@ export default function boards(state = {}, action) {
         [payload.boardId]: board(state[payload.boardId], action),
       };
     default:
-      return state;
+      return entity('boards')(state, action);
   }
 }
