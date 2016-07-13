@@ -1,5 +1,7 @@
-import { createSelector } from 'reselect';
+import { createSelector, createSelectorCreator, defaultMemoize } from 'reselect';
 import cookie from 'js-cookie';
+import identity from 'lodash/identity';
+import isEqual from 'lodash/isEqual';
 import { BOARDS_PER_PAGE } from '../constants/config';
 
 const getStarredIds = (state) => state.pages.main.starred.ids;
@@ -9,6 +11,11 @@ const getAllPageIndex = (state) => state.pages.main.all.pageIndex;
 const getAllCount = (state) => state.pages.main.all.count;
 const getAllSpinner = (state) => state.pages.main.all.isFetching && !!state.pages.main.all.lastUpdated;
 const getAllError = (state) => state.pages.main.all.error;
+
+const createDeepEqualSelector = createSelectorCreator(
+  defaultMemoize,
+  isEqual
+);
 
 const getStarredGroup = createSelector(
   [ getStarredIds, getStarredError ],
@@ -41,6 +48,11 @@ const getAllGroup = createSelector(
 export const getBoard = (state, { id }) => {
   return state.entities.boards[id];
 };
+
+export const makeGetBoard = () => createDeepEqualSelector(
+  [ getBoard ],
+  identity
+);
 
 export const getGroups = createSelector(
   [ getStarredGroup, getAllGroup ],
