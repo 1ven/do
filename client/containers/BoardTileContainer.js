@@ -2,10 +2,15 @@ import { connect } from 'react-redux';
 import { removeBoard, updateBoard, moveBoard, moveBoardSync, toggleStarred } from '../actions/boardsActions';
 import { showModal } from '../actions/modalActions';
 import { getBoard } from '../selectors/boardsSelectors';
+import modalsNames from '../constants/modalsNames';
 import DraggableBoardTile from '../components/DraggableBoardTile';
 
-function mapStateToProps(state, { id }) {
-  return getBoard(state, { id });
+// While renaming board, it creates new board entity objects. Because entities reducer when updates entity, make merging thereby creating new entities object.
+function mapStateToProps() {
+  return (state, { id }) => {
+    // Use memoized function.
+    return getBoard(state, { id });
+  };
 }
 
 function mapDispatchToProps(dispatch) {
