@@ -1,38 +1,36 @@
 import React, { PropTypes } from 'react';
 import { addModifiers } from '../utils';
-import DraggableBoardTile from './DraggableBoardTile';
+import BoardTileContainer from '../containers/BoardTileContainer';
 import BoardsSpinner from './BoardsSpinner';
 
 function Boards({
-  items = [],
+  ids = [],
   spinner,
-  onRemoveClick,
-  onEditClick,
-  onToggleStarredClick,
-  onMoveTile,
-  onDropTile,
+  error,
 }) {
+  console.log('<Boards />');
   return (
     <div className="b-boards">
-      <div className="b-boards__items">
-        {items.map((board, i) =>
-          <div
-            className="b-boards__item"
-            key={board.id}
-          >
-            <DraggableBoardTile
-              onMoveTile={onMoveTile}
-              onDropTile={onDropTile}
-              boardTileProps={{
-                data: board,
-                onRemoveClick,
-                onEditClick,
-                onToggleStarredClick,
-              }}
-            />
-          </div>
-        )}
-      </div>
+      {error ? (
+        <div className="b-boards__message">
+          Error loading boards.
+        </div>
+      ) : !ids.length ? (
+        <div className="b-boards__message">
+          Boards not found.
+        </div>
+      ) : (
+        <div className="b-boards__items">
+          {ids.map((id, i) =>
+            <div
+              className="b-boards__item"
+              key={id}
+            >
+              <BoardTileContainer id={id} />
+            </div>
+          )}
+        </div>
+      )}
       {spinner ? (
         <div className="b-boards__spinner">
           <BoardsSpinner />
@@ -43,13 +41,9 @@ function Boards({
 }
 
 Boards.propTypes = {
-  items: PropTypes.array.isRequired,
+  ids: PropTypes.array.isRequired,
   spinner: PropTypes.bool,
-  onRemoveClick: PropTypes.func.isRequired,
-  onEditClick: PropTypes.func.isRequired,
-  onToggleStarredClick: PropTypes.func.isRequired,
-  onMoveTile: PropTypes.func.isRequired,
-  onDropTile: PropTypes.func.isRequired,
+  error: PropTypes.bool,
 };
 
 export default Boards;

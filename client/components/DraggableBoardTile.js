@@ -1,4 +1,5 @@
 import React, { Component, PropTypes } from 'react';
+import omit from 'lodash/omit';
 import { findDOMNode } from 'react-dom';
 import { DragSource, DropTarget } from 'react-dnd';
 import { compose } from 'redux';
@@ -30,16 +31,19 @@ const boardTileTarget = {
   },
 };
 
-function DraggableBoardTile({
-  isDragging,
-  connectDragSource,
-  connectDropTarget,
-  boardTileProps,
-}) {
+function DraggableBoardTile(props) {
+  const { isDragging, connectDragSource, connectDropTarget } = props;
+
+  const tileProps = omit(props, [
+    'connectDragSource',
+    'connectDropTarget',
+    'isDragging',
+  ]);
+
   return compose(connectDragSource, connectDropTarget)(
     <div>
       <BoardTile
-        {...boardTileProps}
+        {...tileProps}
         isEmpty={isDragging}
       />
     </div>
@@ -47,9 +51,17 @@ function DraggableBoardTile({
 }
 
 DraggableBoardTile.propTypes = {
+  id: PropTypes.string.isRequired,
+  title: PropTypes.string.isRequired,
+  link: PropTypes.string.isRequired,
+  starred: PropTypes.bool.isRequired,
+  listsLength: PropTypes.number.isRequired,
+  cardsLength: PropTypes.number.isRequired,
+  onRemoveClick: PropTypes.func.isRequired,
+  onEditClick: PropTypes.func.isRequired,
+  onToggleStarredClick: PropTypes.func.isRequired,
   onMoveTile: PropTypes.func.isRequired,
   onDropTile: PropTypes.func.isRequired,
-  boardTileProps: PropTypes.object.isRequired,
   isDragging: PropTypes.bool.isRequired,
   connectDragSource: PropTypes.func.isRequired,
   connectDropTarget: PropTypes.func.isRequired,

@@ -14,6 +14,10 @@
     width: 25%;
     padding: 10px;
   }
+  &__message {
+    color: $white;
+    font-size: 14px;
+  }
   &_transparent {
     opacity: .7;
     &:after {

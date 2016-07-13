@@ -1,6 +1,9 @@
 import React, { PropTypes, Component } from 'react';
 import cookie from 'js-cookie';
 import { connect } from 'react-redux';
+import { compose } from 'redux';
+import { DragDropContext } from 'react-dnd';
+import HTML5Backend from 'react-dnd-html5-backend';
 import modalsNames from '../../constants/modalsNames';
 import Loader from '../../components/Loader';
 import BottomBox from '../../components/BottomBox';
@@ -101,7 +104,10 @@ function mapDispatchToProps(dispatch) {
   };
 }
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
+export default compose(
+  DragDropContext(HTML5Backend),
+  connect(
+    mapStateToProps,
+    mapDispatchToProps
+  )
 )(IndexPage);

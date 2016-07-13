@@ -7,23 +7,22 @@ import MenuList from './MenuList';
 import ToggleMenu from './ToggleMenu';
 
 function BoardTile({
-  data,
+  id,
+  link,
+  title,
+  starred,
+  listsLength,
+  cardsLength,
   isEmpty,
   onRemoveClick,
   onEditClick,
   onToggleStarredClick,
 }) {
-  const {
-    id,
-    link,
-    title,
-    starred,
-    listsLength,
-    cardsLength,
-  } = data;
   const rootClassName = addModifiers('b-board-tile',
     isEmpty ? ['empty'] : []
   );
+
+  console.log('BoardTile');
 
   return (
     <div className={rootClassName}>
@@ -95,14 +94,12 @@ function BoardTile({
 }
 
 BoardTile.propTypes = {
-  data: PropTypes.shape({
-    id: PropTypes.string.isRequired,
-    title: PropTypes.string.isRequired,
-    link: PropTypes.string.isRequired,
-    starred: PropTypes.bool.isRequired,
-    listsLength: PropTypes.number.isRequired,
-    cardsLength: PropTypes.number.isRequired,
-  }),
+  id: PropTypes.string.isRequired,
+  title: PropTypes.string.isRequired,
+  link: PropTypes.string.isRequired,
+  starred: PropTypes.bool.isRequired,
+  listsLength: PropTypes.number.isRequired,
+  cardsLength: PropTypes.number.isRequired,
   isEmpty: PropTypes.bool.isRequired,
   onRemoveClick: PropTypes.func.isRequired,
   onEditClick: PropTypes.func.isRequired,

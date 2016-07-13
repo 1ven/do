@@ -2,7 +2,7 @@ import React, { PropTypes } from 'react';
 import Icon from './Icon';
 import Toggle from './Toggle';
 import Animation from './Animation';
-import BoardsContainer from '../containers/BoardsContainer';
+import Boards from './Boards';
 
 function BoardsGroups({
   groups,
@@ -11,7 +11,7 @@ function BoardsGroups({
   return (
     <div className="b-boards-groups">
       <div className="b-container">
-        {groups.map(({ title, type, ids, count, hidden, spinner }, i) => (
+        {groups.map(({ title, type, ids, count, hidden, spinner, error }, i) => (
           <div
             className="b-boards-groups__group"
             key={i}
@@ -33,10 +33,10 @@ function BoardsGroups({
                 </div>
               }
               content={
-                <BoardsContainer
+                <Boards
                   ids={ids}
-                  type={type}
                   spinner={spinner}
+                  error={error}
                 />
               }
               onLinkClick={isActive => onGroupTitleClick(type, isActive)}
@@ -59,6 +59,7 @@ BoardsGroups.propTypes = {
       hidden: PropTypes.bool.isRequired,
       count: PropTypes.number,
       spinner: PropTypes.bool,
+      error: PropTypes.bool,
     })
   ).isRequired,
   onGroupTitleClick: PropTypes.func.isRequired,
