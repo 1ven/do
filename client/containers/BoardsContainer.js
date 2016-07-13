@@ -6,6 +6,7 @@ import { compose } from 'redux';
 import modalsNames from '../constants/modalsNames';
 import { removeBoard, updateBoard, moveBoard, moveBoardSync, toggleStarred } from '../actions/boardsActions';
 import { showModal } from '../actions/modalActions';
+import { makeGetVisibleBoards } from '../selectors/boardsSelectors';
 import Boards from '../components/Boards';
 
 function BoardsContainer({
@@ -50,10 +51,14 @@ BoardsContainer.propTypes = {
   onBoardTileToggleStarredClick: PropTypes.func.isRequired,
 };
 
-function mapStateToProps(state, { ids, type }) {
-  return {
-    boards: ids.map(id => state.entities.boards[id]),
-    error: state.pages.main[type].error,
+const getVisibleBoards = makeGetVisibleBoards();
+
+function makeMapStateToProps(state, ownProps) {
+  return (state, { ids, type }) => {
+    return {
+      boards: getVisibleBoards(state, { ids, type }),
+      error: state.pages.main[type].error,
+    };
   };
 }
 
@@ -104,7 +109,7 @@ function mapDispatchToProps(dispatch) {
 export default compose(
   DragDropContext(HTML5Backend),
   connect(
-    mapStateToProps,
+    makeMapStateToProps,
     mapDispatchToProps
   )
 )(BoardsContainer);

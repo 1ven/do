@@ -9,7 +9,7 @@ import BoardsGroups from '../../components/BoardsGroups';
 import BoardsSpinner from '../../components/BoardsSpinner';
 import { fetchBoards, fetchStarredBoards } from '../../actions/boardsActions';
 import { showModal } from '../../actions/modalActions';
-import { BOARDS_PER_PAGE } from '../../constants/config';
+import { getGroups } from '../../selectors/boardsSelectors';
 
 class IndexPage extends Component {
   componentWillMount() {
@@ -31,10 +31,11 @@ class IndexPage extends Component {
   }
 
   render() {
-    const { groups, isLoading, onAddBoardBtnClick } = this.props;
+    const { groups, isLoading, onAddBoardBtnClick, onButtonClick } = this.props;
 
     return (
       <div>
+        <button onClick={onButtonClick}>Click</button>
         {isLoading ? (
           <Loader />
         ) : (
@@ -64,23 +65,10 @@ IndexPage.propTypes = {
 };
 
 function mapStateToProps(state) {
-  const { boards } = state.entities;
   const { all, starred } = state.pages.main;
 
   return {
-    groups: [{
-      hidden: !!cookie.get('starred_accordion_hidden'),
-      title: 'Starred boards',
-      type: 'starred',
-      ids: starred.ids,
-    }, {
-      hidden: !!cookie.get('all_accordion_hidden'),
-      title: 'My boards',
-      type: 'all',
-      ids: all.ids.filter((id, i) => i < all.pageIndex * BOARDS_PER_PAGE),
-      count: all.count,
-      spinner: all.isFetching && !!all.lastUpdated,
-    }],
+    groups: getGroups(state),
     shouldFetchBoards: !all.lastUpdated,
     shouldFetchStarred: !starred.lastUpdated,
     isLoading: !all.lastUpdated || !starred.lastUpdated,
@@ -103,6 +91,12 @@ function mapDispatchToProps(dispatch) {
       dispatch(
         showModal(modalsNames.CREATE_BOARD)
       );
+    },
+
+    onButtonClick() {
+      dispatch({
+        type: 'NOT_HANDLED',
+      });
     },
   };
 }
