@@ -1,30 +1,22 @@
 import React, { PropTypes } from 'react';
-import DraggableCard from './DraggableCard';
+import CardContainer from '../containers/CardContainer';
 import Btn from './Btn';
 
 function Cards({
-  cards,
+  ids,
   listId,
-  onCardRemoveClick,
   onAddCardBtnClick,
-  onCardMove,
-  onCardEndDrag,
 }) {
   return (
     <div className="b-cards">
-      {cards.map((card, i) =>
+      {ids.map((id, i) =>
         <div
-          key={card.id}
+          key={id}
           className="b-cards__item"
         >
-          <DraggableCard
-            onMove={onCardMove}
-            onEndDrag={onCardEndDrag}
+          <CardContainer
             listId={listId}
-            cardProps={{
-              ...card,
-              onRemoveClick: onCardRemoveClick,
-            }}
+            cardId={id}
           />
         </div>
       )}
@@ -40,20 +32,13 @@ function Cards({
 }
 
 Cards.defaultProps = {
-  cards: [],
+  ids: [],
 };
 
 Cards.propTypes = {
-  cards: PropTypes.arrayOf(PropTypes.shape({
-    id: PropTypes.string,
-    text: PropTypes.string,
-  })),
-  boardId: PropTypes.string.isRequired,
+  ids: PropTypes.array,
   listId: PropTypes.string.isRequired,
   onAddCardBtnClick: PropTypes.func.isRequired,
-  onCardRemoveClick: PropTypes.func.isRequired,
-  onCardMove: PropTypes.func.isRequired,
-  onCardEndDrag: PropTypes.func.isRequired,
 };
 
 export default Cards;

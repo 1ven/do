@@ -1,6 +1,7 @@
 import React, { Component, PropTypes } from 'react';
 import { DragSource, DropTarget } from 'react-dnd';
 import { compose } from 'redux';
+import omit from 'lodash/omit';
 import draggableTypes from '../constants/draggableTypes';
 import Card from './Card';
 
@@ -10,12 +11,12 @@ const cardSource = {
   beginDrag(props) {
     initialListId = props.listId;
     return {
-      id: props.cardProps.id,
+      id: props.id,
       listId: props.listId,
     };
   },
   isDragging(props, monitor) {
-    return props.cardProps.id === monitor.getItem().id;
+    return props.id === monitor.getItem().id;
   },
   endDrag(props, monitor) {
     const targetListId = monitor.getItem().listId;
@@ -28,7 +29,7 @@ const cardTarget = {
     const sourceListId = monitor.getItem().listId;
     const sourceCardId = monitor.getItem().id;
     const targetListId = props.listId;
-    const targetCardId = props.cardProps.id;
+    const targetCardId = props.id;
 
     if (sourceCardId === targetCardId) return;
 
@@ -44,12 +45,13 @@ const cardTarget = {
   },
 };
 
-function DraggableCard({
-  isDragging,
-  connectDragSource,
-  connectDropTarget,
-  cardProps,
-}) {
+function DraggableCard(props) {
+  const { isDragging, connectDragSource, connectDropTarget } = props;
+  const cardProps = omit(props, [
+    'connectDragSource',
+    'connectDropTarget',
+    'isDragging',
+  ]);
   return compose(connectDragSource, connectDropTarget)(
     <div>
       <Card
@@ -64,7 +66,6 @@ DraggableCard.propTypes = {
   listId: PropTypes.string.isRequired,
   onMove: PropTypes.func.isRequired,
   onEndDrag: PropTypes.func.isRequired,
-  cardProps: PropTypes.object.isRequired,
   isDragging: PropTypes.bool.isRequired,
   connectDragSource: PropTypes.func.isRequired,
   connectDropTarget: PropTypes.func.isRequired,

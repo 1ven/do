@@ -40,6 +40,7 @@ DraggableList.propTypes = {
   cards: PropTypes.array,
   boardId: PropTypes.string.isRequired,
   onRemoveClick: PropTypes.func.isRequired,
+  onAddCardBtnClick: PropTypes.func.isRequired,
   onEditClick: PropTypes.func.isRequired,
   connectDropTarget: PropTypes.func.isRequired,
   onCardMove: PropTypes.func.isRequired,

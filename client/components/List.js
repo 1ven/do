@@ -1,8 +1,8 @@
 import React, { PropTypes, Component } from 'react';
 import { addModifiers } from '../utils';
-import CardsContainer from '../containers/CardsContainer';
 import MenuList from './MenuList';
 import ToggleMenu from './ToggleMenu';
+import Cards from './Cards';
 
 function List({
   id,
@@ -11,6 +11,7 @@ function List({
   boardId,
   onRemoveClick,
   onEditClick,
+  onAddCardBtnClick,
 }) {
   return (
     <div className="b-list">
@@ -31,10 +32,10 @@ function List({
         </div>
       </div>
       <div className="b-list__body">
-        <CardsContainer
+        <Cards
+          ids={cards}
           listId={id}
-          boardId={boardId}
-          cardsIds={cards}
+          onAddCardBtnClick={onAddCardBtnClick}
         />
       </div>
     </div>
@@ -48,6 +49,7 @@ List.propTypes = {
   boardId: PropTypes.string.isRequired,
   onRemoveClick: PropTypes.func.isRequired,
   onEditClick: PropTypes.func.isRequired,
+  onAddCardBtnClick: PropTypes.func.isRequired,
 };
 
 export default List;

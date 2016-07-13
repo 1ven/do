@@ -31,6 +31,15 @@ function mapDispatchToProps(dispatch, ownProps) {
       );
     },
 
+    onAddCardBtnClick() {
+      dispatch(
+        showModal(modalsNames.CREATE_CARD, {
+          boardId: ownProps.boardId,
+          listId: ownProps.listId,
+        })
+      );
+    },
+
     onCardMove(source, target) {
       dispatch(removeCardId(source.listId, source.cardId));
       dispatch(addCardId(target.listId, source.cardId));
