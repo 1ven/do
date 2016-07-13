@@ -1,4 +1,5 @@
 import React, { Component, PropTypes } from 'react';
+import omit from 'lodash/omit';
 import { DropTarget } from 'react-dnd';
 import draggableTypes from '../constants/draggableTypes';
 import List from './List';
@@ -7,9 +8,9 @@ const listTarget = {
   hover(props, monitor, component) {
     const sourceCardId = monitor.getItem().id;
     const sourceListId = monitor.getItem().listId;
-    const targetListId = props.listProps.data.id;
+    const targetListId = props.id;
 
-    if (props.listProps.data.cards.length) return;
+    if (props.cards.length) return;
 
     props.onCardMove({
       listId: sourceListId,
@@ -22,11 +23,9 @@ const listTarget = {
   },
 };
 
-function DraggableList({
-  connectDropTarget,
-  listProps,
-}) {
-  return connectDropTarget(
+function DraggableList(props) {
+  const listProps = omit(props, ['connectDropTarget']);
+  return props.connectDropTarget(
     <div>
       <List
         {...listProps}
@@ -36,7 +35,12 @@ function DraggableList({
 }
 
 DraggableList.propTypes = {
-  listProps: PropTypes.object.isRequired,
+  id: PropTypes.string.isRequired,
+  title: PropTypes.string.isRequired,
+  cards: PropTypes.array,
+  boardId: PropTypes.string.isRequired,
+  onRemoveClick: PropTypes.func.isRequired,
+  onEditClick: PropTypes.func.isRequired,
   connectDropTarget: PropTypes.func.isRequired,
   onCardMove: PropTypes.func.isRequired,
 };

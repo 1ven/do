@@ -20,30 +20,6 @@ function mapStateToProps(state, ownProps) {
 
 function mapDispatchToProps(dispatch, ownProps) {
   return {
-    onListEditClick(listId) {
-      dispatch(
-        showModal(modalsNames.EDIT_LIST, { listId })
-      );
-    },
-
-    onListRemoveClick(listId) {
-      dispatch(
-        showModal(modalsNames.CONFIRM, {
-          title: 'Remove list?',
-          onConfirm() {
-            dispatch(removeList.request({
-              boardId: ownProps.boardId,
-              listId,
-            }));
-          },
-        })
-      );
-    },
-
-    onListCardMove(source, target) {
-      dispatch(removeCardId(source.listId, source.cardId));
-      dispatch(addCardId(target.listId, source.cardId));
-    },
   };
 }
 

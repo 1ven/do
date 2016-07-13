@@ -1,30 +1,22 @@
 import React, { PropTypes } from 'react';
 import DraggableList from './DraggableList';
-import List from './List';
+import ListContainer from '../containers/ListContainer';
 import Masonry from 'react-masonry-component';
 
 function Lists({
-  lists = [],
+  ids = [],
   boardId,
-  onListRemoveClick,
-  onListEditClick,
-  onListCardMove,
 }) {
   return (
     <Masonry className="b-lists">
-      {lists.map((list, i) => (
+      {ids.map((id, i) => (
         <div
-          key={list.id}
+          key={id}
           className="b-lists__item"
         >
-          <DraggableList
-            onCardMove={onListCardMove}
-            listProps={{
-              data: list,
-              boardId: boardId,
-              onRemoveClick: onListRemoveClick,
-              onEditClick: onListEditClick,
-            }}
+          <ListContainer
+            boardId={boardId}
+            listId={id}
           />
         </div>
       ))}
@@ -33,11 +25,8 @@ function Lists({
 }
 
 Lists.propTypes = {
-  lists: PropTypes.array,
+  ids: PropTypes.array,
   boardId: PropTypes.string.isRequired,
-  onListRemoveClick: PropTypes.func.isRequired,
-  onListEditClick: PropTypes.func.isRequired,
-  onListCardMove: PropTypes.func.isRequired,
 };
 
 export default Lists;

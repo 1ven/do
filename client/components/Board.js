@@ -1,5 +1,5 @@
 import React, { PropTypes } from 'react';
-import ListsContainer from '../containers/ListsContainer';
+import Lists from './Lists';
 import BottomBox from './BottomBox';
 import Btn from './Btn';
 import Icon from './Icon';
@@ -9,13 +9,6 @@ function Board({
   onAddListBtnClick,
   onEditBoardClick,
 }) {
-  const addListBtn = (
-    <Btn
-      text="Add new list"
-      onClick={onAddListBtnClick}
-    />
-  );
-
   return (
     <div>
       <div className="b-board">
@@ -37,14 +30,19 @@ function Board({
             </a>
           </div>
           <div className="b-board__lists">
-            <ListsContainer
+            <Lists
+              ids={data.lists}
               boardId={data.id}
-              lists={data.lists}
             />
           </div>
         </div>
       </div>
-      <BottomBox button={addListBtn} />
+      <BottomBox button={
+        <Btn
+          text="Add new list"
+          onClick={onAddListBtnClick}
+        />
+      }/>
     </div>
   );
 }
