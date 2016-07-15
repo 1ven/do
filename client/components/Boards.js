@@ -8,7 +8,6 @@ function Boards({
   spinner,
   error,
 }) {
-  console.log('<Boards />');
   return (
     <div className="b-boards">
       {error ? (

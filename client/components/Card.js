@@ -9,7 +9,6 @@ function Card({
   colors,
   isEmpty,
 }) {
-  console.log('Card');
   const rootClassName = addModifiers('b-card',
     isEmpty ? ['empty'] : []
   );

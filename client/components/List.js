@@ -13,7 +13,6 @@ function List({
   onEditClick,
   onAddCardBtnClick,
 }) {
-  console.log('<List />');
   return (
     <div className="b-list">
       <div className="b-list__top">

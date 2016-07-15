@@ -12,7 +12,6 @@ function Board({
   onAddListBtnClick,
   onEditBoardClick,
 }) {
-  console.log('<Board />');
   return (
     <div>
       <div className="b-board">

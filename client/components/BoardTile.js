@@ -22,8 +22,6 @@ function BoardTile({
     isEmpty ? ['empty'] : []
   );
 
-  console.log('BoardTile');
-
   return (
     <div className={rootClassName}>
       <div className="b-board-tile__top">
