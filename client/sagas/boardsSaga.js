@@ -12,7 +12,6 @@ import {
   createBoard,
   removeBoard,
   updateBoard,
-  moveBoard,
   setPageIndex,
   toggleStarred,
   addBoard,
@@ -132,16 +131,6 @@ function* updateBoardModalFormTask(action) {
   }
 }
 
-function* moveBoardTask(action) {
-  const { sourceId, targetId } = action.payload;
-  try {
-    const payload = yield call(api.moveBoard, sourceId, targetId);
-    yield put(moveBoard.success(payload));
-  } catch(err) {
-    yield put(moveBoard.failure(err.message));
-  }
-}
-
 function* toggleStarredTask(action) {
   const { id, starred } = action.payload;
   try {
@@ -181,10 +170,6 @@ function* watchUpdateBoard() {
 
 function* watchUpdateBoardModalForm() {
   yield* takeEvery(types.BOARD_UPDATE_MODAL_FORM, updateBoardModalFormTask);
-}
-
-function* watchMoveBoard() {
-  yield* takeEvery(types.BOARD_MOVE_REQUEST, moveBoardTask);
 }
 
 function* watchScrollBottom() {
@@ -227,7 +212,6 @@ export default function* boardsSaga() {
     watchCreateBoard(),
     watchRemoveBoard(),
     watchUpdateBoard(),
-    watchMoveBoard(),
     watchUpdateBoardModalForm(),
     watchScrollBottom(),
     watchToggleStarred(),

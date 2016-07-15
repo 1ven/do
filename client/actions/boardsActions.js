@@ -43,12 +43,6 @@ export const toggleStarred = createActions([
   types.BOARD_TOGGLE_STARRED_FAILURE,
 ]);
 
-export const moveBoard = createActions([
-  types.BOARD_MOVE_REQUEST,
-  types.BOARD_MOVE_SUCCESS,
-  types.BOARD_MOVE_FAILURE,
-]);
-
 export function addBoard(payload) {
   return {
     type: types.BOARD_ADD,
@@ -64,16 +58,6 @@ export function updateBoardModalForm(id, props, resolve, reject) {
       props,
       resolve,
       reject
-    },
-  };
-}
-
-export function moveBoardSync(sourceId, targetId) {
-  return {
-    type: types.BOARD_MOVE_SYNC,
-    payload: {
-      sourceId,
-      targetId,
     },
   };
 }

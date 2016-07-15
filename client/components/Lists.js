@@ -1,5 +1,4 @@
 import React, { PropTypes } from 'react';
-import DraggableList from './DraggableList';
 import ListContainer from '../containers/ListContainer';
 import Masonry from 'react-masonry-component';
 

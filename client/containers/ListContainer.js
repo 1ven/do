@@ -1,6 +1,6 @@
 import { connect } from 'react-redux';
 import modalsNames from '../constants/modalsNames';
-import DraggableList from '../components/DraggableList';
+import List from '../components/List';
 import { removeList, addCardId, removeCardId } from '../actions/listsActions';
 import { showModal } from '../actions/modalActions';
 import { moveCard } from '../actions/cardsActions';
@@ -39,12 +39,7 @@ function mapDispatchToProps(dispatch, ownProps) {
         })
       );
     },
-
-    onCardMove(source, target) {
-      dispatch(removeCardId(source.listId, source.cardId));
-      dispatch(addCardId(target.listId, source.cardId));
-    },
   };
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(DraggableList);
+export default connect(mapStateToProps, mapDispatchToProps)(List);

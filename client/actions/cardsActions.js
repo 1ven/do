@@ -37,22 +37,6 @@ export const removeColor = createActions([
   types.CARD_REMOVE_COLOR_FAILURE,
 ]);
 
-export const moveCard = createActions([
-  types.CARD_MOVE_REQUEST,
-  types.CARD_MOVE_SUCCESS,
-  types.CARD_MOVE_FAILURE,
-]);
-
-export function moveCardSync(source, target) {
-  return {
-    type: types.CARD_MOVE_SYNC,
-    payload: {
-      source,
-      target,
-    },
-  };
-}
-
 export function beginDrag(listId, cardId) {
   return {
     type: types.CARD_BEGIN_DRAG,

@@ -13,17 +13,12 @@ function BoardTile({
   starred,
   listsLength,
   cardsLength,
-  isEmpty,
   onRemoveClick,
   onEditClick,
   onToggleStarredClick,
 }) {
-  const rootClassName = addModifiers('b-board-tile',
-    isEmpty ? ['empty'] : []
-  );
-
   return (
-    <div className={rootClassName}>
+    <div className="b-board-tile">
       <div className="b-board-tile__top">
         <div className="b-board-tile__left">
           <span className="b-board-tile__title">{title}</span>
@@ -98,7 +93,6 @@ BoardTile.propTypes = {
   starred: PropTypes.bool.isRequired,
   listsLength: PropTypes.number.isRequired,
   cardsLength: PropTypes.number.isRequired,
-  isEmpty: PropTypes.bool.isRequired,
   onRemoveClick: PropTypes.func.isRequired,
   onEditClick: PropTypes.func.isRequired,
   onToggleStarredClick: PropTypes.func.isRequired,

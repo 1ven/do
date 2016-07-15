@@ -95,15 +95,6 @@ export default {
       body: props,
     });
   },
-  moveBoard(sourceId, targetId) {
-    return callApi(`/api/boards/move`, null, {
-      method: 'POST',
-      body: {
-        sourceId,
-        targetId,
-      },
-    });
-  },
   createList(boardId, title) {
     return callApi(`/api/boards/${boardId}/lists`, {
       list: schemas.LIST,
@@ -179,15 +170,6 @@ export default {
   fetchCard(id) {
     return callApi(`/api/cards/${id}`, schemas.CARD, {
       method: 'GET',
-    });
-  },
-  moveCard(sourceList, targetList) {
-    return callApi(`/api/cards/move`, null, {
-      method: 'POST',
-      body: {
-        sourceList,
-        targetList,
-      },
     });
   },
   createComment(cardId, text) {
