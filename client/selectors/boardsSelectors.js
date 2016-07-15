@@ -11,6 +11,7 @@ const getAllPageIndex = (state) => state.pages.main.all.pageIndex;
 const getAllCount = (state) => state.pages.main.all.count;
 const getAllSpinner = (state) => state.pages.main.all.isFetching && !!state.pages.main.all.lastUpdated;
 const getAllError = (state) => state.pages.main.all.error;
+const getBoardEntity = (state, { id }) => state.entities.boards[id];
 
 const createDeepEqualSelector = createSelectorCreator(
   defaultMemoize,
@@ -45,12 +46,8 @@ const getAllGroup = createSelector(
   }
 );
 
-export const getBoard = (state, { id }) => {
-  return state.entities.boards[id];
-};
-
 export const makeGetBoard = () => createDeepEqualSelector(
-  [ getBoard ],
+  [ getBoardEntity ],
   identity
 );
 
