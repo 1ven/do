@@ -6,7 +6,7 @@ import modalsNames from '../constants/modalsNames';
 import DraggableBoardTile from '../components/DraggableBoardTile';
 
 
-function mapStateToProps() {
+function makeMapStateToProps() {
   const getBoard = makeGetBoard();
   return (state, { id }) => {
     return getBoard(state, { id });
@@ -57,4 +57,4 @@ function mapDispatchToProps(dispatch) {
   };
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(DraggableBoardTile);
+export default connect(makeMapStateToProps, mapDispatchToProps)(DraggableBoardTile);
