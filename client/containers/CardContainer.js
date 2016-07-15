@@ -4,13 +4,12 @@ import modalsNames from '../constants/modalsNames';
 import DraggableCard from '../components/DraggableCard';
 import { removeCard, moveCard, moveCardSync, beginDrag, endDrag } from '../actions/cardsActions';
 import { showModal } from '../actions/modalActions';
+import { makeGetCard } from '../selectors/cardsSelectors';
 
-function mapStateToProps(state, { cardId }) {
-  const card = state.entities.cards[cardId];
-  const colors = card.colors.filter(c => c.active).map(c => c.color);
-  return {
-    ...card,
-    colors,
+function makeMapStateToProps() {
+  const getCard = makeGetCard();
+  return (state, { cardId }) => {
+    return getCard(state, { id: cardId });
   };
 }
 
@@ -33,4 +32,4 @@ function mapDispatchToProps(dispatch, ownProps) {
     },
   };
 }
-export default connect(mapStateToProps, mapDispatchToProps)(DraggableCard);
+export default connect(makeMapStateToProps, mapDispatchToProps)(DraggableCard);
