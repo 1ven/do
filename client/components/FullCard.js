@@ -46,7 +46,7 @@ class FullCard extends Component {
         <div className="b-full-card__text">
           {isEditing ? (
             <EditCardForm
-              data={card}
+              text={card.text}
               onSubmit={this.handleEditCardFormSubmit}
               onCancel={() => this.hideEditForm()}
             />

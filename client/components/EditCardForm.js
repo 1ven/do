@@ -3,7 +3,7 @@ import Btn from './Btn';
 import Input from './Input';
 import Form from './Form';
 
-function EditCardForm({ data, onCancel, onSubmit }) {
+function EditCardForm({ text, onCancel, onSubmit }) {
   return (
     <Form
       className="b-edit-card-form"
@@ -11,7 +11,7 @@ function EditCardForm({ data, onCancel, onSubmit }) {
     >
       <div className="b-edit-card-form__area">
         <Input
-          value={data.text}
+          value={text}
           name="text"
           focus
         />
@@ -40,10 +40,7 @@ function EditCardForm({ data, onCancel, onSubmit }) {
 }
 
 EditCardForm.propTypes = {
-  data: PropTypes.shape({
-    id: PropTypes.string.isRequired,
-    text: PropTypes.string.isRequired,
-  }),
+  text: PropTypes.string.isRequired,
   onSubmit: PropTypes.func.isRequired,
   onCancel: PropTypes.func,
 };
