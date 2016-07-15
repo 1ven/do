@@ -41,6 +41,7 @@ function* removeCardTask(action) {
     yield put(removeCard.success(payload));
     yield put(decCardsLength(boardId, 1));
     yield put(removeCardId(listId, cardId));
+    yield put(hideModal());
   } catch(err) {
     yield put(removeCard.failure(err.message));
   }

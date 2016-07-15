@@ -1,21 +1,31 @@
 import React, { PropTypes } from 'react';
+import { browserHistory } from 'react-router';
 import { Link } from 'react-router';
-import { addModifiers } from '../utils';
+import Icon from './Icon';
 
 function Card({
   id,
   text,
   link,
   colors,
-  isEmpty,
+  onRemoveClick,
 }) {
-  const rootClassName = addModifiers('b-card',
-    isEmpty ? ['empty'] : []
-  );
+  function handleRemoveClick(e) {
+    e.stopPropagation();
+
+    onRemoveClick(id);
+  }
+
+  function handleClick(e) {
+    e.preventDefault();
+
+    browserHistory.push(link);
+  }
+
   return (
-    <Link
-      className={rootClassName}
-      to={link}
+    <a
+      className="b-card"
+      onClick={handleClick}
     >
       <div className="b-card__text">
         {text}
@@ -33,7 +43,13 @@ function Card({
           ))}
         </div>
       ) : null}
-    </Link>
+      <span
+        className="b-card__remove"
+        onClick={handleRemoveClick}
+      >
+        <Icon name="cross" />
+      </span>
+    </a>
   );
 }
 
@@ -44,6 +60,7 @@ Card.propTypes = {
   colors: PropTypes.arrayOf(
     PropTypes.string
   ).isRequired,
+  onRemoveClick: PropTypes.func.isRequired,
 };
 
 export default Card;

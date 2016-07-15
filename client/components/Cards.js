@@ -4,6 +4,7 @@ import Btn from './Btn';
 
 function Cards({
   ids,
+  boardId,
   listId,
   onAddCardBtnClick,
 }) {
@@ -15,6 +16,7 @@ function Cards({
           className="b-cards__item"
         >
           <CardContainer
+            boardId={boardId}
             listId={listId}
             cardId={id}
           />
@@ -37,6 +39,7 @@ Cards.defaultProps = {
 
 Cards.propTypes = {
   ids: PropTypes.array,
+  boardId: PropTypes.string.isRequired,
   listId: PropTypes.string.isRequired,
   onAddCardBtnClick: PropTypes.func.isRequired,
 };

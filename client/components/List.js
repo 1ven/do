@@ -34,6 +34,7 @@ function List({
       <div className="b-list__body">
         <Cards
           ids={cards}
+          boardId={boardId}
           listId={id}
           onAddCardBtnClick={onAddCardBtnClick}
         />

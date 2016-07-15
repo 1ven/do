@@ -11,6 +11,7 @@
   cursor: pointer;
   transition: all .2s;
   outline: none;
+  position: relative;
   &__colors {
     display: flex;
     margin: 4px -2px 0;
@@ -21,15 +22,19 @@
     border-radius: 2px;
     margin: 0 2px;
   }
-  &:hover {
-    background-color: darken($white, 1)
+  &__remove {
+    width: 12px;
+    position: absolute;
+    top: 7px;
+    right: 4px;
+    transition: opacity .2s;
+    opacity: 0;
   }
-  &_empty {
-    background-color: rgba(58, 8, 8, .15);
-    box-shadow: inset 0px 1px 4px 0px rgba(0, 0, 0, 0.4);
+  &:hover {
+    background-color: darken($white, 1);
     .b-card {
-      &__text, &__colors {
-        opacity: 0;
+      &__remove {
+        opacity: 1;
       }
     }
   }

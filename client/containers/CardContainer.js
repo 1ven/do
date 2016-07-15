@@ -16,7 +16,20 @@ function makeMapStateToProps() {
 function mapDispatchToProps(dispatch, ownProps) {
   return {
     onRemoveClick(cardId) {
-      dispatch(removeCard(cardId));
+      const { boardId, listId } = ownProps;
+
+      dispatch(
+        showModal(modalsNames.CONFIRM, {
+          title: 'Remove card?',
+          onConfirm() {
+            dispatch(removeCard.request({
+              boardId,
+              listId,
+              cardId,
+            }));
+          },
+        })
+      );
     },
   };
 }

@@ -125,8 +125,8 @@ FullCardModal.propTypes = {
   loadCard: PropTypes.func.isRequired,
   card: PropTypes.object,
   params: PropTypes.shape({
-    id: PropTypes.string,
-    boardId: PropTypes.string,
+    cardId: PropTypes.string.isRequired,
+    boardId: PropTypes.string.isRequired,
   }).isRequired,
 };
 
