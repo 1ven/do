@@ -49,7 +49,7 @@ class BoardPage extends Component {
           <TextInfo>Board not found.</TextInfo>
         ) : (
           <Board
-            data={board}
+            {...board}
             onAddListBtnClick={onAddListBtnClick}
             onEditBoardClick={onEditBoardClick}
           />
