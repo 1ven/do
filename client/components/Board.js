@@ -5,10 +5,14 @@ import Btn from './Btn';
 import Icon from './Icon';
 
 function Board({
-  data,
+  id,
+  title,
+  description,
+  lists,
   onAddListBtnClick,
   onEditBoardClick,
 }) {
+  console.log('<Board />');
   return (
     <div>
       <div className="b-board">
@@ -16,10 +20,10 @@ function Board({
           <div className="b-board__top">
             <div className="b-board__info">
               <span className="b-board__title">
-                {data.title}
+                {title}
               </span>
               <span className="b-board__description">
-                {data.description || 'No description'}
+                {description || 'No description'}
               </span>
             </div>
             <a
@@ -31,8 +35,8 @@ function Board({
           </div>
           <div className="b-board__lists">
             <Lists
-              ids={data.lists}
-              boardId={data.id}
+              ids={lists}
+              boardId={id}
             />
           </div>
         </div>
@@ -48,14 +52,12 @@ function Board({
 }
 
 Board.propTypes = {
-  data: PropTypes.shape({
-    id: PropTypes.string.isRequired,
-    title: PropTypes.string.isRequired,
-    description: PropTypes.string,
-    lists: PropTypes.arrayOf(
-      PropTypes.string
-    ),
-  }).isRequired,
+  id: PropTypes.string.isRequired,
+  title: PropTypes.string.isRequired,
+  description: PropTypes.string,
+  lists: PropTypes.arrayOf(
+    PropTypes.string
+  ),
   onAddListBtnClick: PropTypes.func.isRequired,
   onEditBoardClick: PropTypes.func.isRequired,
 };
