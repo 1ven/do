@@ -34,11 +34,10 @@ class IndexPage extends Component {
   }
 
   render() {
-    const { groups, isLoading, onAddBoardBtnClick, onButtonClick } = this.props;
+    const { groups, isLoading, onAddBoardBtnClick } = this.props;
 
     return (
       <div>
-        <button onClick={onButtonClick}>Click</button>
         {isLoading ? (
           <Loader />
         ) : (
@@ -94,12 +93,6 @@ function mapDispatchToProps(dispatch) {
       dispatch(
         showModal(modalsNames.CREATE_BOARD)
       );
-    },
-
-    onButtonClick() {
-      dispatch({
-        type: 'NOT_HANDLED',
-      });
     },
   };
 }
