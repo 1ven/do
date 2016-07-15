@@ -1,4 +1,4 @@
-import { createSelector, createSelectorCreator, defaultMemoize } from 'reselect';
+import { createSelector } from 'reselect';
 
 const getCardEntity = (state, { id }) => state.entities.cards[id];
 
