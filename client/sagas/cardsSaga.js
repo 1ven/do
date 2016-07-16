@@ -1,6 +1,5 @@
 import api from '../services/api';
 import types from '../constants/actionTypes';
-import cookie from 'js-cookie';
 import { takeEvery } from 'redux-saga';
 import { call, put, select } from 'redux-saga/effects'
 import { createCard, removeCard, fetchCard, updateCard, addColor, removeColor, moveCard } from '../actions/cardsActions';
@@ -18,17 +17,6 @@ function* createCardTask(action) {
     yield put(incCardsLength(boardId));
     yield put(addCardId(listId, payload.result.card));
     yield put(hideModal());
-
-    if (!cookie.get('display_card_remove_notification')) {
-      yield put(createNotification(
-        'You can remove card, by dragging it to the bottom of the screen',
-        'tip',
-        10000
-      ));
-      cookie.set('display_card_remove_notification', true, {
-        expires: 1,
-      });
-    }
   } catch(err) {
     yield put(createCard.failure(err.message));
   }
