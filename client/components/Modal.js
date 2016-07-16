@@ -7,17 +7,15 @@ class Modal extends Component {
     super(props);
 
     this.handleEscapeKeyUp = this.handleEscapeKeyUp.bind(this);
-    this.handleDocumentClick = this.handleDocumentClick.bind(this);
+    this.handleModalClick = this.handleModalClick.bind(this);
   }
 
   componentDidMount() {
     document.addEventListener('keyup', this.handleEscapeKeyUp);
-    document.addEventListener('click', this.handleDocumentClick);
   }
 
   componentWillUnmount() {
     document.removeEventListener('keyup', this.handleEscapeKeyUp);
-    document.removeEventListener('click', this.handleDocumentClick);
   }
 
   handleEscapeKeyUp(e) {
@@ -26,12 +24,12 @@ class Modal extends Component {
     }
   }
 
-  handleDocumentClick(e) {
+  handleModalClick(e) {
     this.props.onClose();
   }
 
   handleBoxClick(e) {
-    e.nativeEvent.stopImmediatePropagation();
+    e.stopPropagation();
   }
 
   render() {
@@ -42,7 +40,10 @@ class Modal extends Component {
       onClose,
     } = this.props;
     return (
-      <div className="b-modal">
+      <div
+        className="b-modal"
+        onClick={this.handleModalClick}
+      >
         {isWaiting ? (
           <RoundSpinner
             size="30px"
