@@ -5,6 +5,8 @@ const boardSchema = new Schema('boards', {
   defaults: {
     lists: [],
     starred: false,
+    cardsLength: 0,
+    listsLength: 0,
   },
 });
 
