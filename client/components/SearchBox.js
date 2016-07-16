@@ -3,27 +3,15 @@ import { Link } from 'react-router';
 import Icon from './Icon';
 import Animation from './Animation';
 import RoundSpinner from './RoundSpinner';
+import { Scrollbars } from 'react-custom-scrollbars';
 
 function SearchBox({
   results,
-  query,
+  query = '',
   isWaiting,
   onChange,
   onItemClick,
 }) {
-  function highlight(text) {
-    if (!query.length) { return text; }
-
-    const words = query.replace(/[^A-Za-z0-9\s]/g, '').split(' ').filter(i => i.length);
-
-    const wrappedText = text.replace(
-      new RegExp(`(${words.join('|')})`, 'gi'),
-      '<span class="b-search-box__highlight">$&</span>'
-    );
-
-    return <span dangerouslySetInnerHTML={{ __html: wrappedText }} />;
-  }
-
   return (
     <div className="b-search-box">
       <div className="b-search-box__form">
@@ -57,38 +45,47 @@ function SearchBox({
       <Animation name="a-fade-in">
         {query && results ? (
           <div className="b-search-box__results">
-            {results.length ? (
-              results.map((result, i) => (
-                <div
-                  className="b-search-box__group"
-                  key={i}
-                >
-                  <span className="b-search-box__group-title">
-                    {result.type}
-                  </span>
-                  <div className="b-search-box__group-items">
-                    {result.items.map((item, i) => (
-                      <div
-                        className="b-search-box__item"
-                        key={i}
-                      >
-                        <Link
-                          className="b-search-box__group-link"
-                          onClick={onItemClick}
-                          to={item.link}
-                        >
-                          {highlight(item.title)}
-                        </Link>
+            <Scrollbars
+              autoHide
+              autoHideTimeout={1000}
+              autoHeight
+              autoHeightMax={320}
+            >
+              <div className="b-search-box__wrap">
+                {results.length ? (
+                  results.map((result, i) => (
+                    <div
+                      className="b-search-box__group"
+                      key={i}
+                    >
+                      <span className="b-search-box__group-title">
+                        {result.type}
+                      </span>
+                      <div className="b-search-box__group-items">
+                        {result.items.map(({ title, link }, i) => (
+                          <div
+                            className="b-search-box__item"
+                            key={i}
+                          >
+                            <Link
+                              className="b-search-box__group-link"
+                              onClick={onItemClick}
+                              to={link}
+                            >
+                              {title}
+                            </Link>
+                          </div>
+                        ))}
                       </div>
-                    ))}
-                  </div>
-                </div>
-              ))
-            ) : (
-              <span className="b-search-box__not-found">
-                Entries not found.
-              </span>
-            )}
+                    </div>
+                  ))
+                ) : (
+                  <span className="b-search-box__not-found">
+                    Entries not found.
+                  </span>
+                )}
+              </div>
+            </Scrollbars>
           </div>
         ) : null}
       </Animation>

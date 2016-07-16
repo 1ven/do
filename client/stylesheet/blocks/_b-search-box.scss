@@ -6,10 +6,16 @@
     left: 0;
     background-color: #fff;
     border-radius: 2px;
-    padding: 9px 13px;
     width: 100%;
     margin-top: 40px;
     box-shadow: $shadow;
+  }
+  &__wrap {
+    padding: 9px 13px;
+  }
+  &__item {
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
   &__group {
     & + .b-search-box__group {
@@ -33,6 +39,7 @@
     text-decoration: none;
     font-size: 14px;
     color: $black;
+    white-space: nowrap;
   }
   &__form {
     position: relative;
