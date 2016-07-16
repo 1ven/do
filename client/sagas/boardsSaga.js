@@ -182,12 +182,8 @@ function* watchToggleStarred() {
 
 function* watchFetchAllAndStarred() {
   while (true) {
-    for (let i = 0; i < 2; i++) {
-      yield take([
-        types.BOARDS_FETCH_REQUEST,
-        types.BOARDS_FETCH_STARRED_REQUEST,
-      ]);
-    }
+    yield take(types.BOARDS_FETCH_REQUEST);
+    yield take(types.BOARDS_FETCH_STARRED_REQUEST);
 
     yield put(startProgressBar());
 
