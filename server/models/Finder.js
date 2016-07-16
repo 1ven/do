@@ -24,7 +24,8 @@ const Finder = {
       `SELECT id, content, type, link FROM (
         SELECT id, content, type, link, to_tsvector(content) AS c FROM search
       ) AS s
-      WHERE s.c @@ to_tsquery($1)`,
+      WHERE s.c @@ to_tsquery($1)
+      LIMIT 20`,
       [tsquery]
     );
   },
