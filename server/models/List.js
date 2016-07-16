@@ -37,7 +37,12 @@ const List = {
   drop(listId) {
     const now = Math.round(Date.now() / 1000);
     return db.one(
-      `UPDATE lists SET deleted = $2
+      `UPDATE cards c SET deleted = $2
+      WHERE c.id IN (
+        SELECT card_id FROM lists_cards
+        WHERE list_id = $1
+      );
+      UPDATE lists SET deleted = $2
       WHERE id = $1 RETURNING id`,
       [listId, now]
     );
