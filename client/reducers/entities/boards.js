@@ -37,6 +37,12 @@ function board(state = {}, action) {
         ...state,
         cardsLength: state.cardsLength - payload.count,
       };
+    case types.BOARD_CREATE_SUCCESS:
+      return {
+        ...payload.entities.boards[payload.result.board],
+        cardsLength: 0,
+        listsLength: 0,
+      };
     default:
       return state;
   }
@@ -55,6 +61,11 @@ export default function boards(state = {}, action) {
       return {
         ...state,
         [payload.boardId]: board(state[payload.boardId], action),
+      };
+    case types.BOARD_CREATE_SUCCESS:
+      return {
+        ...state,
+        [payload.result.board]: board(state[payload.result.board], action),
       };
     default:
       return entity('boards')(state, action);
