@@ -22,7 +22,7 @@ function Header() {
               className="b-logo"
               to="/"
             >
-              Ello
+              Kanban
             </Link>
           </div>
           <div className="b-header__right">
