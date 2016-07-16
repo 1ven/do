@@ -68,8 +68,7 @@ const Board = {
           CROSS JOIN colors AS cl
           INNER JOIN lists_cards AS lc ON (lc.card_id = c.id)
           WHERE deleted IS NULL
-          GROUP BY c.id, lc.card_index
-          ORDER BY lc.card_index
+          GROUP BY c.id
         ) AS c ON (c.id = lc.card_id)
         INNER JOIN boards_lists AS bl ON (bl.list_id = l.id)
         WHERE deleted IS NULL
