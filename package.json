@@ -15,6 +15,7 @@
     "camelcase-keys-deep": "^0.1.0",
     "cookie-parser": "^1.4.1",
     "crypto": "0.0.3",
+    "deep-freeze": "0.0.1",
     "ejs": "^2.4.1",
     "escape-html": "^1.0.3",
     "express": "^4.13.4",
