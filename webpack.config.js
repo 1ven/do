@@ -2,6 +2,7 @@
 
 const webpack = require('webpack');
 const path = require('path');
+const autoprefixer = require('autoprefixer');
 
 module.exports = {
   devtool: 'eval-source-map',
@@ -31,13 +32,16 @@ module.exports = {
       },
       {
         test: /\.scss$/,
-        loader: 'style-loader!css-loader!sass-loader!import-glob-loader',
+        loader: 'style-loader!css-loader!postcss-loader!sass-loader!import-glob-loader',
       },
       {
         test: /\.modernizrrc$/,
-        loader: "modernizr",
+        loader: 'modernizr',
       },
     ],
+  },
+  postcss: function () {
+    return [autoprefixer];
   },
   plugins: [
     new webpack.optimize.OccurenceOrderPlugin(),
