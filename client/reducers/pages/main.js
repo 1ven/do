@@ -52,24 +52,6 @@ function allBoards(state = {
         count: state.count - 1,
         ids: without(state.ids, payload.result.board),
       };
-    case types.BOARD_MOVE_SYNC:
-      return {
-        ...state,
-        ...update(state, {
-          ids: {
-            $splice: [
-              [state.ids.indexOf(payload.sourceId), 1],
-              [state.ids.indexOf(payload.targetId), 0, payload.sourceId],
-            ],
-          },
-        }),
-      };
-    case types.BOARD_MOVE_SUCCESS:
-      return {
-        ...state,
-        lastUpdated: payload.receivedAt,
-        ids: payload.result,
-      };
     case types.BOARD_ADD:
       return {
         ...state,
