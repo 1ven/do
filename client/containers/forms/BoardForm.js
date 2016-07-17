@@ -30,6 +30,7 @@ function BoardForm({
           inputProps={{
             ...description,
             placeholder: 'Enter board description',
+            autosize: true,
           }}
           error={handleReduxFormError(description)}
         />
