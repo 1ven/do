@@ -8,6 +8,7 @@ describe('activity reducer', () => {
     assert.deepEqual(activity(undefined, {}), {
       isFetching: false,
       lastUpdated: undefined,
+      error: false,
     });
   });
 
@@ -15,6 +16,7 @@ describe('activity reducer', () => {
     const prevState = {
       isFetching: false,
       lastUpdated: 1,
+      error: false,
     };
 
     deepFreeze(prevState);
@@ -25,6 +27,7 @@ describe('activity reducer', () => {
     assert.deepEqual(activity(prevState, action), {
       isFetching: true,
       lastUpdated: 1,
+      error: false,
     });
   });
 
@@ -32,6 +35,7 @@ describe('activity reducer', () => {
     const prevState = {
       isFetching: true,
       lastUpdated: 1,
+      error: true,
     };
 
     deepFreeze(prevState);
@@ -45,6 +49,7 @@ describe('activity reducer', () => {
     assert.deepEqual(activity(prevState, action), {
       isFetching: false,
       lastUpdated: 2,
+      error: false,
     });
   });
 
@@ -52,6 +57,7 @@ describe('activity reducer', () => {
     const prevState = {
       isFetching: true,
       lastUpdated: 1,
+      error: false,
     };
 
     deepFreeze(prevState);
@@ -62,6 +68,7 @@ describe('activity reducer', () => {
     assert.deepEqual(activity(prevState, action), {
       isFetching: false,
       lastUpdated: 1,
+      error: true,
     });
   });
 });
