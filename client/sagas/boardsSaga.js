@@ -98,7 +98,7 @@ function* removeBoardTask(action) {
       // Figure out why ids.length is 15 not 16.
       const payload = yield call(api.fetchBoards, ids.length, 1);
 
-      yield put(addBoard(payload));
+      yield put(addBoard(payload.result.boards[0]));
     }
 
     yield put(removeBoard.success(payload));

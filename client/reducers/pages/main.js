@@ -73,7 +73,7 @@ function allBoards(state = {
     case types.BOARD_ADD:
       return {
         ...state,
-        ids: [...state.ids, payload.result.boards[0]],
+        ids: [...state.ids, payload.board],
       };
     case types.BOARDS_SET_PAGE_INDEX:
       return {

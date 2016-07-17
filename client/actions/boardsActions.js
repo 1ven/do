@@ -43,10 +43,12 @@ export const toggleStarred = createActions([
   types.BOARD_TOGGLE_STARRED_FAILURE,
 ]);
 
-export function addBoard(payload) {
+export function addBoard(board) {
   return {
     type: types.BOARD_ADD,
-    payload,
+    payload: {
+      board,
+    },
   };
 }
 
