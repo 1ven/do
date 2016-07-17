@@ -159,7 +159,7 @@ describe('boards actions', () => {
     });
   });
 
-  it('should create BOARD_DEC_CARDS_LENGTH action with `count` prop equals `1` by default', () => {
+  it('should create BOARD_DEC_CARDS_LENGTH action with `count = 1` by default', () => {
     const boardId = 1;
     assert.deepEqual(decCardsLength(boardId), {
       type: types.BOARD_DEC_CARDS_LENGTH,
