@@ -4,7 +4,7 @@ import { createActions } from '../utils';
 export const search = createActions([
   types.SEARCH_REQUEST,
   types.SEARCH_SUCCESS,
-  types.SEARCH_ERROR,
+  types.SEARCH_FAILURE,
 ]);
 
 export function resetSearch() {
