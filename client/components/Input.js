@@ -36,24 +36,26 @@ class Input extends Component {
 
   render() {
     const { value } = this.state;
+    const elementProps = {
+      ...this.props,
+      className: 'b-input',
+      type: 'text',
+      ref: node => this.node = node,
+      onChange: this.handleChange,
+      value,
+    };
 
-    return (
-      <Textarea
-        {...this.props}
-        className="b-input"
-        type="text"
-        ref={node => this.node = node}
-        value={value}
-        onChange={this.handleChange}
-      />
-    );
+    return this.props.autosize ?
+      <Textarea {...elementProps} /> :
+      <input {...elementProps} />;
   }
 }
 
 Input.propTypes = {
-  onChange: PropTypes.func,
+  onChange: PropTypes.func.isRequired,
   value: PropTypes.string,
   focus: PropTypes.bool,
+  autosize: PropTypes.bool,
 };
 
 export default Input;
