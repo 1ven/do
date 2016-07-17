@@ -1,5 +1,6 @@
 import { assert } from 'chai';
 import types from 'client/constants/actionTypes';
+import deepFreeze from 'deep-freeze';
 import activity from 'client/reducers/activity';
 
 describe('activity reducer', () => {
@@ -15,6 +16,9 @@ describe('activity reducer', () => {
       isFetching: false,
       lastUpdated: 1,
     };
+
+    deepFreeze(prevState);
+
     const action = {
       type: types.ACTIVITY_FETCH_REQUEST,
     };
@@ -29,6 +33,9 @@ describe('activity reducer', () => {
       isFetching: true,
       lastUpdated: 1,
     };
+
+    deepFreeze(prevState);
+
     const action = {
       type: types.ACTIVITY_FETCH_SUCCESS,
       payload: {
@@ -46,6 +53,9 @@ describe('activity reducer', () => {
       isFetching: true,
       lastUpdated: 1,
     };
+
+    deepFreeze(prevState);
+
     const action = {
       type: types.ACTIVITY_FETCH_FAILURE,
     };
