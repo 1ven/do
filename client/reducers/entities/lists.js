@@ -33,31 +33,6 @@ export default function lists(state = {}, action) {
         ...state,
         [payload.listId]: list(state[payload.listId], action),
       };
-    case types.CARD_MOVE_SYNC: {
-      const { source, target } = payload;
-
-      const stateAfterSource = update(state, {
-        [source.listId]: {
-          cards: {
-            $splice: [
-              [state[source.listId].cards.indexOf(source.cardId), 1],
-            ],
-          },
-        },
-      });
-
-      const stateAfterTarget = update(stateAfterSource, {
-        [target.listId]: {
-          cards: {
-            $splice: [
-              [state[target.listId].cards.indexOf(target.cardId), 0, source.cardId],
-            ],
-          },
-        },
-      });
-
-      return stateAfterTarget;
-    }
     default:
       return entity('lists')(state, action);
   }
