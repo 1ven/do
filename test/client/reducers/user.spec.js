@@ -39,7 +39,7 @@ describe('user reducer', () => {
       id: undefined,
       lastUpdated: undefined,
       isFetching: true,
-      error: false,
+      error: true,
     };
 
     deepFreeze(prevState);
