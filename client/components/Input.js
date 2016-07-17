@@ -37,7 +37,7 @@ class Input extends Component {
   render() {
     const { value } = this.state;
     const elementProps = {
-      ...this.props,
+      placeholder: this.props.placeholder,
       className: 'b-input',
       type: 'text',
       ref: node => this.node = node,
