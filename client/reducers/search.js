@@ -4,6 +4,7 @@ const INITIAL_STATE = {
   results: undefined,
   query: undefined,
   isFetching: false,
+  error: false,
 };
 
 export default function search(state = INITIAL_STATE, action) {
@@ -19,6 +20,12 @@ export default function search(state = INITIAL_STATE, action) {
         ...state,
         results: action.payload.result,
         isFetching: false,
+        error: false,
+      };
+    case types.SEARCH_FAILURE:
+      return {
+        ...state,
+        error: true,
       };
     case types.SEARCH_RESET:
       return INITIAL_STATE;

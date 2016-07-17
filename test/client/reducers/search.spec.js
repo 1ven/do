@@ -9,6 +9,7 @@ describe('search reducer', () => {
       results: undefined,
       query: undefined,
       isFetching: false,
+      error: false,
     });
   });
 
@@ -17,6 +18,7 @@ describe('search reducer', () => {
       results: undefined,
       query: undefined,
       isFetching: false,
+      error: false,
     };
 
     deepFreeze(prevState);
@@ -31,6 +33,7 @@ describe('search reducer', () => {
       results: undefined,
       query: 'test',
       isFetching: true,
+      error: false,
     });
   });
 
@@ -39,6 +42,7 @@ describe('search reducer', () => {
       results: undefined,
       query: 'test',
       isFetching: true,
+      error: true,
     };
 
     deepFreeze(prevState);
@@ -59,6 +63,28 @@ describe('search reducer', () => {
       results: result,
       query: 'test',
       isFetching: false,
+      error: false,
+    });
+  });
+
+  it('should handle SEARCH_FAILURE action', () => {
+    const prevState = {
+      results: undefined,
+      query: 'test',
+      isFetching: true,
+      error: false,
+    };
+
+    deepFreeze(prevState);
+
+    const action = {
+      type: types.SEARCH_FAILURE,
+    };
+    assert.deepEqual(search(prevState, action), {
+      results: undefined,
+      query: 'test',
+      isFetching: true,
+      error: true,
     });
   });
 
@@ -72,6 +98,7 @@ describe('search reducer', () => {
       }],
       query: 'test',
       isFetching: false,
+      error: false,
     };
 
     deepFreeze(prevState);
@@ -83,6 +110,7 @@ describe('search reducer', () => {
       results: undefined,
       query: undefined,
       isFetching: false,
+      error: false,
     });
   });
 });
