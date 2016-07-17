@@ -4,6 +4,7 @@ export default function user(state = {
   id: undefined,
   lastUpdated: undefined,
   isFetching: false,
+  error: false,
 }, action) {
   switch (action.type) {
     case types.USER_FETCH_REQUEST:
@@ -17,11 +18,13 @@ export default function user(state = {
         id: action.payload.result,
         isFetching: false,
         lastUpdated: action.payload.receivedAt,
+        error: false,
       };
     case types.USER_FETCH_FAILURE:
       return {
         ...state,
         isFetching: false,
+        error: true,
       };
     default:
       return state;
