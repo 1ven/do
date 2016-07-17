@@ -37,22 +37,6 @@ export const removeColor = createActions([
   types.CARD_REMOVE_COLOR_FAILURE,
 ]);
 
-export function beginDrag(listId, cardId) {
-  return {
-    type: types.CARD_BEGIN_DRAG,
-    payload: {
-      listId,
-      cardId,
-    },
-  };
-}
-
-export function endDrag() {
-  return {
-    type: types.CARD_END_DRAG,
-  };
-}
-
 export function addCommentId(cardId, commentId) {
   return {
     type: types.CARD_ADD_COMMENT_ID,
