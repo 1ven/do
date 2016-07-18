@@ -3,7 +3,7 @@ import update from 'react/lib/update';
 import types from '../../constants/actionTypes';
 import without from 'lodash/without';
 
-function allBoards(state = {
+export function allBoards(state = {
   ids: [],
   pageIndex: undefined,
   count: 0,
@@ -67,7 +67,7 @@ function allBoards(state = {
   }
 }
 
-function starredBoards(state = {
+export function starredBoards(state = {
   ids: [],
   isFetching: false,
   lastUpdated: undefined,
