@@ -29,7 +29,7 @@ export function card(state = {
   }
 };
 
-function cards(state = {}, action) {
+export function cards(state = {}, action) {
   const { payload } = action;
 
   switch (action.type) {
@@ -52,7 +52,7 @@ function cards(state = {}, action) {
   }
 }
 
-function board(state = {
+export function board(state = {
   cards: {},
   isFetching: false,
   lastUpdated: undefined,
