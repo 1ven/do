@@ -1,6 +1,6 @@
 import types from '../../constants/actionTypes';
 
-function card(state = {
+export function card(state = {
   isFetching: false,
   lastUpdated: undefined,
   error: false,
@@ -20,6 +20,7 @@ function card(state = {
       };
     case types.CARD_FETCH_FAILURE:
       return {
+        ...state,
         isFetching: false,
         error: true,
       };
