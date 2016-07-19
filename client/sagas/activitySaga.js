@@ -4,7 +4,7 @@ import { takeEvery } from 'redux-saga';
 import { call, put } from 'redux-saga/effects'
 import { fetchActivity } from '../actions/activityActions';
 
-function* fetchActivityTask() {
+export function* fetchActivityTask() {
   try {
     const payload = yield call(api.fetchActivity);
     yield put(fetchActivity.success(payload));
@@ -13,7 +13,7 @@ function* fetchActivityTask() {
   }
 }
 
-function* watchFetchActivity() {
+export function* watchFetchActivity() {
   yield* takeEvery(types.ACTIVITY_FETCH_REQUEST, fetchActivityTask);
 }
 
