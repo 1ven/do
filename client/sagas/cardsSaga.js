@@ -81,27 +81,6 @@ export function* removeColorTask(action) {
   }
 }
 
-export function* moveCardTask(action) {
-  const { sourceListId, targetListId } = action.payload;
-  const lists = yield select(state => state.entities.lists);
-
-  const sourceList = {
-    id: sourceListId,
-    cards: lists[sourceListId].cards,
-  };
-  const targetList = {
-    id: targetListId,
-    cards: lists[targetListId].cards,
-  };
-
-  try {
-    const payload = yield call(api.moveCard, sourceList, targetList);
-    yield put(moveCard.success(payload));
-  } catch(err) {
-    yield put(moveCard.failure(err.message));
-  }
-}
-
 export function* watchCreateCard() {
   yield* takeEvery(types.CARD_CREATE_REQUEST, createCardTask);
 }
@@ -126,10 +105,6 @@ export function* watchRemoveColor() {
   yield* takeEvery(types.CARD_REMOVE_COLOR_REQUEST, removeColorTask);
 }
 
-export function* watchMoveCard() {
-  yield* takeEvery(types.CARD_MOVE_REQUEST, moveCardTask);
-}
-
 export default function* cardsSaga() {
   yield [
     watchCreateCard(),
@@ -138,6 +113,5 @@ export default function* cardsSaga() {
     watchUpdateCard(),
     watchAddColor(),
     watchRemoveColor(),
-    watchMoveCard(),
   ];
 }
