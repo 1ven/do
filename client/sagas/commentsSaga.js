@@ -6,7 +6,7 @@ import { createComment, removeComment } from '../actions/commentsActions';
 import { addCommentId, removeCommentId } from '../actions/cardsActions';
 import { hideModal } from '../actions/modalActions';
 
-function* createCommentTask(action) {
+export function* createCommentTask(action) {
   const { cardId, text } = action.payload;
   try {
     const payload = yield call(api.createComment, cardId, text);
@@ -17,7 +17,7 @@ function* createCommentTask(action) {
   }
 }
 
-function* removeCommentTask(action) {
+export function* removeCommentTask(action) {
   const { cardId, commentId } = action.payload;
   try {
     const payload = yield call(api.removeComment, commentId);
@@ -29,11 +29,11 @@ function* removeCommentTask(action) {
   }
 }
 
-function* watchCreateComment() {
+export function* watchCreateComment() {
   yield* takeEvery(types.COMMENT_CREATE_REQUEST, createCommentTask);
 }
 
-function* watchRemoveComment() {
+export function* watchRemoveComment() {
   yield* takeEvery(types.COMMENT_REMOVE_REQUEST, removeCommentTask);
 }
 
