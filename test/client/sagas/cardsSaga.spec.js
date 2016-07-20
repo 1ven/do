@@ -1,5 +1,3 @@
-import sinon from 'sinon';
-import identity from 'lodash/identity';
 import { assert } from 'chai';
 import { takeEvery } from 'redux-saga';
 import { take, call, put, select } from 'redux-saga/effects';
