@@ -809,88 +809,70 @@ describe('boardsSaga', () => {
     });
   });
 
-  describe('watchFetchBoards', () => {
+  describe('watch tasks', () => {
     it('should watch every BOARDS_FETCH_REQUEST action', () => {
       assert.deepEqual(
         watchFetchBoards().next().value,
         takeEvery(types.BOARDS_FETCH_REQUEST, fetchBoardsTask).next().value
       );
     });
-  });
 
-  describe('watchFetchStarredBoards', () => {
     it('should watch every BOARDS_FETCH_STARRED_REQUEST action', () => {
       assert.deepEqual(
         watchFetchStarredBoards().next().value,
         takeEvery(types.BOARDS_FETCH_STARRED_REQUEST, fetchStarredBoardsTask).next().value
       );
     });
-  });
 
-  describe('watchFetchBoard', () => {
     it('should watch every BOARDS_FETCH_REQUEST action', () => {
       assert.deepEqual(
         watchFetchBoard().next().value,
         takeEvery(types.BOARD_FETCH_REQUEST, fetchBoardTask).next().value
       );
     });
-  });
 
-  describe('watchCreateBoard', () => {
     it('should watch every BOARD_CREATE_REQUEST action', () => {
       assert.deepEqual(
         watchCreateBoard().next().value,
         takeEvery(types.BOARD_CREATE_REQUEST, createBoardTask).next().value
       );
     });
-  });
 
-  describe('watchRemoveBoard', () => {
     it('should watch every BOARD_REMOVE_REQUEST action', () => {
       assert.deepEqual(
         watchRemoveBoard().next().value,
         takeEvery(types.BOARD_REMOVE_REQUEST, removeBoardTask).next().value
       );
     });
-  });
 
-  describe('watchUpdateBoard', () => {
     it('should watch every BOARD_UPDATE_REQUEST action', () => {
       assert.deepEqual(
         watchUpdateBoard().next().value,
         takeEvery(types.BOARD_UPDATE_REQUEST, updateBoardTask).next().value
       );
     });
-  });
 
-  describe('watchUpdateBoardModalForm', () => {
     it('should watch every BOARD_UPDATE_MODAL_FORM action', () => {
       assert.deepEqual(
         watchUpdateBoardModalForm().next().value,
         takeEvery(types.BOARD_UPDATE_MODAL_FORM, updateBoardModalFormTask).next().value
       );
     });
-  });
 
-  describe('watchScrollBottom', () => {
     it('should watch every SCROLL_BOTTOM action', () => {
       assert.deepEqual(
         watchScrollBottom().next().value,
         takeEvery(types.SCROLL_BOTTOM, fetchBoardsOnScroll).next().value
       );
     });
-  });
 
-  describe('watchToggleStarred', () => {
     it('should watch every BOARD_TOGGLE_STARRED_REQUEST action', () => {
       assert.deepEqual(
         watchToggleStarred().next().value,
         takeEvery(types.BOARD_TOGGLE_STARRED_REQUEST, toggleStarredTask).next().value
       );
     });
-  });
 
-  describe('watchFetchAllAndStarred', () => {
     it('should start progress bar on boards request and stop it on boards success response', () => {
       const gen = watchFetchAllAndStarred();
 
