@@ -14,6 +14,7 @@ const getAllSpinner = (state) => state.pages.main.all.isFetching && !!state.page
 const getAllError = (state) => state.pages.main.all.error;
 const getBoardEntity = (state, { id }) => state.entities.boards[id];
 const getAllVisibility = () => !!cookie.get('all_accordion_hidden');
+export const getAllPage = (state) => state.pages.main.all;
 
 const createDeepEqualSelector = createSelectorCreator(
   defaultMemoize,
