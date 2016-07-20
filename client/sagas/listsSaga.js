@@ -6,7 +6,7 @@ import { createList, removeList, updateList } from '../actions/listsActions';
 import { addListId, removeListId, incListsLength, decListsLength, decCardsLength } from '../actions/boardsActions';
 import { hideModal } from '../actions/modalActions';
 
-function* createListTask(action) {
+export function* createListTask(action) {
   const { boardId, title } = action.payload;
   try {
     const payload = yield call(api.createList, boardId, title);
@@ -19,7 +19,7 @@ function* createListTask(action) {
   }
 }
 
-function* removeListTask(action) {
+export function* removeListTask(action) {
   try {
     const { boardId, listId } = action.payload;
 
@@ -36,7 +36,7 @@ function* removeListTask(action) {
   }
 }
 
-function* updateListTask(action) {
+export function* updateListTask(action) {
   try {
     const { id, props } = action.payload;
     const payload = yield call(api.updateList, id, props);
@@ -47,15 +47,15 @@ function* updateListTask(action) {
   }
 }
 
-function* watchCreateList() {
+export function* watchCreateList() {
   yield* takeEvery(types.LIST_CREATE_REQUEST, createListTask);
 }
 
-function* watchRemoveList() {
+export function* watchRemoveList() {
   yield* takeEvery(types.LIST_REMOVE_REQUEST, removeListTask);
 }
 
-function* watchUpdateList() {
+export function* watchUpdateList() {
   yield* takeEvery(types.LIST_UPDATE_REQUEST, updateListTask);
 }
 
