@@ -8,7 +8,7 @@ import { addCardId, removeCardId } from '../actions/listsActions';
 import { hideModal } from '../actions/modalActions';
 import { createNotification } from '../actions/notificationsActions';
 
-function* createCardTask(action) {
+export function* createCardTask(action) {
   const { boardId, listId, text } = action.payload;
   try {
     const payload = yield call(api.createCard, listId, text);
@@ -22,7 +22,7 @@ function* createCardTask(action) {
   }
 }
 
-function* removeCardTask(action) {
+export function* removeCardTask(action) {
   const { boardId, listId, cardId } = action.payload;
   try {
     const payload = yield call(api.removeCard, cardId);
@@ -35,7 +35,7 @@ function* removeCardTask(action) {
   }
 }
 
-function* fetchCardTask(action) {
+export function* fetchCardTask(action) {
   const request = action.payload;
   try {
     const payload = yield call(api.fetchCard, request.cardId);
@@ -51,7 +51,7 @@ function* fetchCardTask(action) {
   }
 }
 
-function* updateCardTask(action) {
+export function* updateCardTask(action) {
   const { id, props } = action.payload;
   try {
     const payload = yield call(api.updateCard, id, props);
@@ -61,7 +61,7 @@ function* updateCardTask(action) {
   }
 }
 
-function* addColorTask(action) {
+export function* addColorTask(action) {
   const { cardId, colorId } = action.payload;
   try {
     const payload = yield call(api.addColorToCard, cardId, colorId);
@@ -71,7 +71,7 @@ function* addColorTask(action) {
   }
 }
 
-function* removeColorTask(action) {
+export function* removeColorTask(action) {
   const { cardId, colorId } = action.payload;
   try {
     const payload = yield call(api.removeColorFromCard, cardId, colorId);
@@ -81,7 +81,7 @@ function* removeColorTask(action) {
   }
 }
 
-function* moveCardTask(action) {
+export function* moveCardTask(action) {
   const { sourceListId, targetListId } = action.payload;
   const lists = yield select(state => state.entities.lists);
 
@@ -102,31 +102,31 @@ function* moveCardTask(action) {
   }
 }
 
-function* watchCreateCard() {
+export function* watchCreateCard() {
   yield* takeEvery(types.CARD_CREATE_REQUEST, createCardTask);
 }
 
-function* watchRemoveCard() {
+export function* watchRemoveCard() {
   yield* takeEvery(types.CARD_REMOVE_REQUEST, removeCardTask);
 }
 
-function* watchFetchCard() {
+export function* watchFetchCard() {
   yield* takeEvery(types.CARD_FETCH_REQUEST, fetchCardTask);
 }
 
-function* watchUpdateCard() {
+export function* watchUpdateCard() {
   yield* takeEvery(types.CARD_UPDATE_REQUEST, updateCardTask);
 }
 
-function* watchAddColor() {
+export function* watchAddColor() {
   yield* takeEvery(types.CARD_ADD_COLOR_REQUEST, addColorTask);
 }
 
-function* watchRemoveColor() {
+export function* watchRemoveColor() {
   yield* takeEvery(types.CARD_REMOVE_COLOR_REQUEST, removeColorTask);
 }
 
-function* watchMoveCard() {
+export function* watchMoveCard() {
   yield* takeEvery(types.CARD_MOVE_REQUEST, moveCardTask);
 }
 
