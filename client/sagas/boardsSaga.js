@@ -1,8 +1,10 @@
+import identity from 'lodash/identity';
 import api from '../services/api';
 import types from '../constants/actionTypes';
 import { takeEvery } from 'redux-saga';
 import { select, take, takem, call, put } from 'redux-saga/effects'
 import { BOARDS_PER_PAGE } from '../constants/config';
+import { getAllPage } from '../selectors/boardsSelectors';
 import { startProgressBar, stopProgressBar } from '../actions/progressBarActions';
 import { hideModal } from '../actions/modalActions';
 import {
@@ -17,7 +19,7 @@ import {
   addBoard,
 } from '../actions/boardsActions';
 
-function* fetchBoardsTask(action) {
+export function* fetchBoardsTask(action) {
   const { pageIndex } = action.payload;
   try {
     const payload = yield call(api.fetchBoards, pageIndex, BOARDS_PER_PAGE);
@@ -32,7 +34,7 @@ function* fetchBoardsTask(action) {
   }
 }
 
-function* fetchStarredBoardsTask(action) {
+export function* fetchStarredBoardsTask(action) {
   try {
     const payload = yield call(api.fetchStarredBoards);
     yield put(fetchStarredBoards.success(payload));
@@ -41,8 +43,8 @@ function* fetchStarredBoardsTask(action) {
   }
 }
 
-function* fetchBoardsOnScroll() {
-  const state = yield select(state => state);
+export function* fetchBoardsOnScroll() {
+  const state = yield select(identity);
 
   const { pathname } = state.routing.locationBeforeTransitions;
   const { ids, isFetching, pageIndex, isLastPage } = state.pages.main.all;
@@ -58,12 +60,12 @@ function* fetchBoardsOnScroll() {
     return;
   }
 
-  if(!isFetching && !isLastPage) {
+  if (!isFetching && !isLastPage) {
     yield put(fetchBoards.request({ pageIndex: pageIndex + 1 }));
   }
 }
 
-function* fetchBoardTask(action) {
+export function* fetchBoardTask(action) {
   try {
     yield put(startProgressBar());
     const payload = yield call(api.fetchBoard, action.payload.id);
@@ -75,7 +77,7 @@ function* fetchBoardTask(action) {
   }
 }
 
-function* createBoardTask(action) {
+export function* createBoardTask(action) {
   const { title, description } = action.payload;
   try {
     const payload = yield call(api.createBoard, title, description);
@@ -88,9 +90,9 @@ function* createBoardTask(action) {
   }
 }
 
-function* removeBoardTask(action) {
+export function* removeBoardTask(action) {
   try {
-    const { isLastPage, ids } = yield select(state => state.pages.main.all);
+    const { isLastPage, ids } = yield select(getAllPage);
 
     const payload = yield call(api.removeBoard, action.payload.id);
 
@@ -108,7 +110,7 @@ function* removeBoardTask(action) {
   }
 }
 
-function* updateBoardTask(action) {
+export function* updateBoardTask(action) {
   const { id, props, params } = action.payload;
   try {
     const payload = yield call(api.updateBoard, id, props, params);
@@ -118,7 +120,7 @@ function* updateBoardTask(action) {
   }
 }
 
-function* updateBoardModalFormTask(action) {
+export function* updateBoardModalFormTask(action) {
   const { id, props, resolve, reject } = action.payload;
   try {
     const payload = yield call(api.updateBoard, id, props);
@@ -131,7 +133,7 @@ function* updateBoardModalFormTask(action) {
   }
 }
 
-function* toggleStarredTask(action) {
+export function* toggleStarredTask(action) {
   const { id, starred } = action.payload;
   try {
     const payload = yield call(api.updateBoard, id, { starred }, {
@@ -144,43 +146,43 @@ function* toggleStarredTask(action) {
   }
 }
 
-function* watchFetchBoards() {
+export function* watchFetchBoards() {
   yield* takeEvery(types.BOARDS_FETCH_REQUEST, fetchBoardsTask);
 }
 
-function* watchFetchStarredBoards() {
+export function* watchFetchStarredBoards() {
   yield* takeEvery(types.BOARDS_FETCH_STARRED_REQUEST, fetchStarredBoardsTask);
 }
 
-function* watchFetchBoard() {
+export function* watchFetchBoard() {
   yield* takeEvery(types.BOARD_FETCH_REQUEST, fetchBoardTask);
 }
 
-function* watchCreateBoard() {
+export function* watchCreateBoard() {
   yield* takeEvery(types.BOARD_CREATE_REQUEST, createBoardTask);
 }
 
-function* watchRemoveBoard() {
+export function* watchRemoveBoard() {
   yield* takeEvery(types.BOARD_REMOVE_REQUEST, removeBoardTask);
 }
 
-function* watchUpdateBoard() {
+export function* watchUpdateBoard() {
   yield* takeEvery(types.BOARD_UPDATE_REQUEST, updateBoardTask);
 }
 
-function* watchUpdateBoardModalForm() {
+export function* watchUpdateBoardModalForm() {
   yield* takeEvery(types.BOARD_UPDATE_MODAL_FORM, updateBoardModalFormTask);
 }
 
-function* watchScrollBottom() {
+export function* watchScrollBottom() {
   yield* takeEvery(types.SCROLL_BOTTOM, fetchBoardsOnScroll);
 }
 
-function* watchToggleStarred() {
+export function* watchToggleStarred() {
   yield* takeEvery(types.BOARD_TOGGLE_STARRED_REQUEST, toggleStarredTask);
 }
 
-function* watchFetchAllAndStarred() {
+export function* watchFetchAllAndStarred() {
   while (true) {
     yield take(types.BOARDS_FETCH_REQUEST);
     yield take(types.BOARDS_FETCH_STARRED_REQUEST);
