@@ -48,12 +48,10 @@ describe('activitySaga', () => {
     });
   });
 
-  describe('watchFetchActivity', () => {
+  describe('watch tasks', () => {
     it('should watch every ACTIVITY_FETCH_REQUEST action', () => {
-      const gen = watchFetchActivity();
-
       assert.deepEqual(
-        gen.next().value,
+        watchFetchActivity().next().value,
         takeEvery(types.ACTIVITY_FETCH_REQUEST, fetchActivityTask).next().value
       );
     });
