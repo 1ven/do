@@ -3,7 +3,7 @@ import { delay } from 'redux-saga';
 import types from '../constants/actionTypes';
 import { setProgressBarValue } from '../actions/progressBarActions';
 
-function* startProgressBarTask() {
+export function* startProgressBarTask() {
   try {
     let left = 100;
 
@@ -19,7 +19,7 @@ function* startProgressBarTask() {
   }
 }
 
-function* watch() {
+export function* watch() {
   while (yield take(types.PROGRESSBAR_START)) {
     const task = yield fork(startProgressBarTask);
     yield take(types.PROGRESSBAR_STOP);
