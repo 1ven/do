@@ -6,7 +6,7 @@ import { createNotification, createNotificationWithId, removeNotification } from
 import shortId from 'shortid';
 
 export function* removeWithDelay(id, timeout) {
-  yield delay(timeout);
+  yield call(delay, timeout);
   yield put(removeNotification(id));
 }
 
