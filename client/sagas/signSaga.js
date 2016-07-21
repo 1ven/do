@@ -5,7 +5,7 @@ import { takeEvery } from 'redux-saga';
 import { call, put } from 'redux-saga/effects'
 import { signIn, signUp, signOut } from '../actions/signActions';
 
-function* signInTask(action) {
+export function* signInTask(action) {
   const { values, resolve, reject } = action.payload;
   try {
     yield call(api.signIn, values);
@@ -18,7 +18,7 @@ function* signInTask(action) {
   }
 }
 
-function* signUpTask(action) {
+export function* signUpTask(action) {
   const { values, resolve, reject } = action.payload;
   try {
     yield call(api.signUp, values);
@@ -31,7 +31,7 @@ function* signUpTask(action) {
   }
 }
 
-function* signOutTask() {
+export function* signOutTask() {
   try {
     yield call(api.signOut);
     yield put(signOut.success());
@@ -41,22 +41,22 @@ function* signOutTask() {
   }
 }
 
-function prettyErrors(result) {
+export function prettyErrors(result) {
   return result ? result.reduce((acc, e) => ({
     ...acc,
     [e.name]: e.message,
   }), {}) : null;
 }
 
-function* watchSignIn() {
+export function* watchSignIn() {
   yield* takeEvery(types.SIGN_IN_REQUEST, signInTask);
 }
 
-function* watchSignUp() {
+export function* watchSignUp() {
   yield* takeEvery(types.SIGN_UP_REQUEST, signUpTask);
 }
 
-function* watchSignOut() {
+export function* watchSignOut() {
   yield* takeEvery(types.SIGN_OUT_REQUEST, signOutTask);
 }
 
