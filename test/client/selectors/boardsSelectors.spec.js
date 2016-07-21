@@ -117,4 +117,30 @@ describe('boardsSelectors', () => {
       error: false,
     });
   });
+
+  it('should create `getBoard` selector which returns board entity', () => {
+    const getBoard = makeGetBoard();
+    assert.deepEqual(getBoard(state, { id: '1' }), {
+      id: '1',
+      title: 'test',
+    });
+  });
+
+  it('should return groups array', () => {
+    assert.deepEqual(getGroups(state), [{
+      title: 'Starred boards',
+      type: 'starred',
+      ids: ['1'],
+      hidden: false,
+      error: false,
+    }, {
+      title: 'My boards',
+      type: 'all',
+      ids: ['1', '2'],
+      count: 3,
+      spinner: false,
+      hidden: false,
+      error: false,
+    }]);
+  });
 });
