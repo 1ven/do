@@ -5,12 +5,12 @@ import { call, put, take, fork, cancel, select } from 'redux-saga/effects'
 import { createNotification, createNotificationWithId, removeNotification } from '../actions/notificationsActions';
 import shortId from 'shortid';
 
-function* removeWithDelay(id, timeout) {
+export function* removeWithDelay(id, timeout) {
   yield delay(timeout);
   yield put(removeNotification(id));
 }
 
-function* createNotificationTask(action) {
+export function* createNotificationTask(action) {
   const { text, type, timeout } = action.payload;
   const id = shortId.generate();
   yield put(createNotificationWithId(id, text, type));
@@ -24,7 +24,7 @@ function* createNotificationTask(action) {
   }
 }
 
-function* createFromAction(action) {
+export function* createFromAction(action) {
   if (action && action.payload && action.payload.notification) {
     const { message, type } = action.payload.notification;
     yield put(createNotification(
@@ -34,11 +34,11 @@ function* createFromAction(action) {
   }
 }
 
-function* watchCreate() {
+export function* watchCreate() {
   yield* takeEvery(types.NOTIFICATIONS_CREATE, createNotificationTask);
 }
 
-function* watchNotifications() {
+export function* watchNotifications() {
   yield takeEvery('*', createFromAction);
 }
 
