@@ -41,7 +41,7 @@ export function* signOutTask() {
   }
 }
 
-export function prettyErrors(result) {
+function prettyErrors(result) {
   return result ? result.reduce((acc, e) => ({
     ...acc,
     [e.name]: e.message,
