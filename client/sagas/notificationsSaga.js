@@ -39,7 +39,7 @@ export function* watchCreate() {
 }
 
 export function* watchNotifications() {
-  yield takeEvery('*', createFromAction);
+  yield* takeEvery('*', createFromAction);
 }
 
 export default function* notificationsSaga() {
