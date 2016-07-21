@@ -4,16 +4,16 @@ import identity from 'lodash/identity';
 import isEqual from 'lodash/isEqual';
 import { BOARDS_PER_PAGE } from '../constants/config';
 
-const getStarredIds = (state) => state.pages.main.starred.ids;
-const getStarredError = (state) => state.pages.main.starred.error;
-const getStarredVisibility = () => !!cookie.get('starred_accordion_hidden');
-const getAllIds = (state) => state.pages.main.all.ids;
-const getAllPageIndex = (state) => state.pages.main.all.pageIndex;
-const getAllCount = (state) => state.pages.main.all.count;
-const getAllSpinner = (state) => state.pages.main.all.isFetching && !!state.pages.main.all.lastUpdated;
-const getAllError = (state) => state.pages.main.all.error;
-const getBoardEntity = (state, { id }) => state.entities.boards[id];
-const getAllVisibility = () => !!cookie.get('all_accordion_hidden');
+export const getStarredIds = (state) => state.pages.main.starred.ids;
+export const getStarredError = (state) => state.pages.main.starred.error;
+export const getStarredVisibility = () => !!cookie.get('starred_accordion_hidden');
+export const getAllIds = (state) => state.pages.main.all.ids;
+export const getAllPageIndex = (state) => state.pages.main.all.pageIndex;
+export const getAllCount = (state) => state.pages.main.all.count;
+export const getAllSpinner = (state) => state.pages.main.all.isFetching && !!state.pages.main.all.lastUpdated;
+export const getAllError = (state) => state.pages.main.all.error;
+export const getBoardEntity = (state, { id }) => state.entities.boards[id];
+export const getAllVisibility = () => !!cookie.get('all_accordion_hidden');
 export const getAllPage = (state) => state.pages.main.all;
 
 const createDeepEqualSelector = createSelectorCreator(
@@ -21,7 +21,7 @@ const createDeepEqualSelector = createSelectorCreator(
   isEqual
 );
 
-const getStarredGroup = createSelector(
+export const getStarredGroup = createSelector(
   [ getStarredIds, getStarredError, getStarredVisibility ],
   (ids, error, hidden) => {
     return {
@@ -34,7 +34,7 @@ const getStarredGroup = createSelector(
   }
 );
 
-const getAllGroup = createSelector(
+export const getAllGroup = createSelector(
   [ getAllIds, getAllPageIndex, getAllCount, getAllSpinner, getAllError, getAllVisibility ],
   (ids, pageIndex, count, spinner, error, hidden) => {
     return {
