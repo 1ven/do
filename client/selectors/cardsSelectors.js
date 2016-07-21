@@ -1,7 +1,7 @@
 import { createSelector } from 'reselect';
 
 export const getCardsLength = (state, { listId }) => state.entities.lists[listId].cards.length;
-const getCardEntity = (state, { id }) => state.entities.cards[id];
+export const getCardEntity = (state, { id }) => state.entities.cards[id];
 
 const makeGetCardColors = () => createSelector(
   [ getCardEntity ],
