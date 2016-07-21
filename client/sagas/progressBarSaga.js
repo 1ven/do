@@ -10,7 +10,7 @@ export function* startProgressBarTask() {
     while (true) {
       left = left - left * 0.1;
       yield put(setProgressBarValue(100 - left));
-      yield delay(1000);
+      yield call(delay, 1000);
     }
   } finally {
     if (yield cancelled()) {
