@@ -3,7 +3,8 @@ import types from '../constants/actionTypes';
 import { takeEvery } from 'redux-saga';
 import { call, put } from 'redux-saga/effects'
 import { search } from '../actions/searchActions';
-function* searchTask(action) {
+
+export function* searchTask(action) {
   try {
     const payload = yield call(api.search, action.payload.query);
     yield put(search.success(payload));
@@ -12,7 +13,7 @@ function* searchTask(action) {
   }
 }
 
-function* watchSearch() {
+export function* watchSearch() {
   yield* takeEvery(types.SEARCH_REQUEST, searchTask);
 }
 
