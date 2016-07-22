@@ -16,10 +16,7 @@ function Activity({ items }) {
             key={i}
           >
             <div className="b-activity__item-text">
-              {item.action} &nbsp;
-              '{crop(item.entry.title)}'
-              &nbsp;
-              {item.type}
+              {item.action}&nbsp;'{crop(item.entry.title)}'&nbsp;{item.type}
             </div>
             <span className="b-activity__date">{item.date}</span>
           </div>
