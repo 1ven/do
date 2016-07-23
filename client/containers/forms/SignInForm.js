@@ -15,13 +15,16 @@ function SignIn({ fields, submitting, handleSubmit }) {
       onSubmit={handleSubmit}
     >
       {rows.map((row, i) => {
-        const value = fields[row.props.name];
+        const field = fields[row.props.name];
         return (
           <SignRow
             key={i}
-            error={value.error && value.touched ? value.error : null}
+            error={field.error && field.touched ? field.error : null}
           >
-            {React.cloneElement(row, { ...value })}
+            {React.cloneElement(row, {
+              value: field.value,
+              onChange: field.onChange,
+            })}
           </SignRow>
         );
       })}
