@@ -1,8 +1,12 @@
 import { assert } from 'chai';
 import { recreateTables } from '../helpers';
+import shortid from 'shortid';
 import db from 'server/db';
 import sql from 'server/utils/sql';
 import Finder from 'server/models/Finder';
+
+const userId = shortid.generate();
+const user2Id = shortid.generate();
 
 describe('Finder', () => {
   beforeEach(() => (
@@ -11,7 +15,7 @@ describe('Finder', () => {
 
   describe('find', () => {
     it('should return result matching `nature` query', () => {
-      return Finder.find('nature')
+      return Finder.find('nature', userId)
         .then(result => {
           assert.isTrue(exists(result, [{
             id: '1',
@@ -28,7 +32,7 @@ describe('Finder', () => {
     });
 
     it('should return result matching `wo` query', () => {
-      return Finder.find('wo')
+      return Finder.find('wo', userId)
         .then(result => {
           assert.isTrue(exists(result, [{
             id: '2',
@@ -40,7 +44,7 @@ describe('Finder', () => {
     });
 
     it('should return result matching `ab lif` query', () => {
-      return Finder.find('ab lif')
+      return Finder.find('ab lif', userId)
         .then(result => {
           assert.isTrue(exists(result, [{
             id: '1',
@@ -48,6 +52,13 @@ describe('Finder', () => {
             type: 'Cards',
             link: '/boards/1/cards/1',
           }]));
+        });
+    });
+
+    it('should return [] if user has no entries', () => {
+      return Finder.find('ab lif', user2Id)
+        .then(result => {
+          assert.lengthOf(result, 0);
         });
     });
   });
@@ -72,13 +83,18 @@ function exists(result, expected) {
 
 function setup() {
   return db.none(
-    `INSERT INTO boards(id, title)
+    `INSERT INTO users(id, username, email, hash, salt)
+    VALUES ($1, 'test', 'test@test.com', 'hash', 'salt'),
+      ($2, 'test2', 'test2@test.com', 'hash', 'salt');
+    INSERT INTO boards(id, title)
     VALUES ('1', 'Nature'), ('2', 'Life');
+    INSERT INTO users_boards (user_id, board_id) VALUES ($1, '1'), ($1, '2');
     INSERT INTO lists(id, title)
     VALUES ('1', 'Wild nature'), ('2', 'About life'), ('3', 'Wonderful life');
     INSERT INTO boards_lists VALUES ('1', '1'), ('2', '2'), ('2', '3');
     INSERT INTO cards(id, text)
     VALUES ('1', 'This text about wild life and nature'), ('2', 'What a wonderful life');
-    INSERT INTO lists_cards VALUES ('1', '1'), ('2', '2')`
+    INSERT INTO lists_cards VALUES ('1', '1'), ('2', '2')`,
+    [userId, user2Id]
   );
 }
