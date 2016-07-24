@@ -1,5 +1,5 @@
 import React, { PropTypes } from 'react';
-import moment from 'moment';
+import dateformat from 'dateformat';
 import SendCommentForm from './SendCommentForm';
 import Icon from './Icon';
 import { Scrollbars } from 'react-custom-scrollbars';
@@ -31,7 +31,7 @@ function Comments({
                       {c.user.username}
                     </span>
                     <time className="b-comment__date">
-                      {moment.unix(c.createdAt).format('HH:mm - DD MMM Y')}
+                      {dateformat(new Date(+c.createdAt * 1000), 'HH:MM, dd/mm/yy')}
                     </time>
                   </div>
                   <div className="b-comment__text">
