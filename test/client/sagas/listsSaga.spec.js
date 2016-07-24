@@ -140,7 +140,7 @@ describe('listsSaga', () => {
 
       assert.deepEqual(
         gen.next(response).value,
-        select(getCardsLength)
+        select(getCardsLength, { listId })
       );
 
       assert.deepEqual(
@@ -180,6 +180,13 @@ describe('listsSaga', () => {
             boardId,
             count: cardsLength,
           },
+        })
+      );
+
+      assert.deepEqual(
+        gen.next().value,
+        put({
+          type: types.MODAL_HIDE,
         })
       );
 

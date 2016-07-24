@@ -25,12 +25,13 @@ export function* removeListTask(action) {
     const { boardId, listId } = action.payload;
 
     const payload = yield call(api.removeList, listId);
-    const cardsLength = yield select(getCardsLength);
+    const cardsLength = yield select(getCardsLength, { listId });
 
     yield put(removeList.success(payload));
     yield put(removeListId(boardId, listId));
     yield put(decListsLength(boardId));
     yield put(decCardsLength(boardId, cardsLength));
+    yield put(hideModal());
   } catch(err) {
     yield put(removeList.failure(err.message));
   }
