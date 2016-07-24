@@ -5,7 +5,6 @@ import { makeGetBoard } from '../selectors/boardsSelectors';
 import modalsNames from '../constants/modalsNames';
 import BoardTile from '../components/BoardTile';
 
-
 function makeMapStateToProps() {
   const getBoard = makeGetBoard();
   return (state, { id }) => {
