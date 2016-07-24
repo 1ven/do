@@ -9,14 +9,17 @@ export default function configureStore(initialState) {
   const sagaMiddleware = createSagaMiddleware();
   const logger = createLogger();
 
+  const middlewares = [
+    sagaMiddleware,
+    process.env.NODE_ENV === 'development' && logger,
+  ].filter(Boolean);
+
+
   const store = createStore(
     rootReducer,
     initialState,
     compose(
-      applyMiddleware(
-        sagaMiddleware,
-        logger
-      ),
+      applyMiddleware(...middlewares),
       DevTools.instrument()
     )
   );
