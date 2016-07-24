@@ -255,7 +255,10 @@ describe('allBoards reducer', () => {
     const action = {
       type: types.BOARD_ADD,
       payload: {
-        board: '3',
+        board: {
+          id: '3',
+          title: 'test',
+        },
       },
     };
     assert.deepEqual(allBoards(prevState, action), {

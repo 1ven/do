@@ -502,7 +502,7 @@ describe('boardsSaga', () => {
         put({
           type: types.BOARD_ADD,
           payload: {
-            board: fetchBoardsResponse.result.boards[0],
+            board: fetchBoardsResponse.entities.boards[fetchBoardsResponse.result.boards[0]],
           },
         })
       );

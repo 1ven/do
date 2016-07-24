@@ -55,7 +55,7 @@ export function allBoards(state = {
     case types.BOARD_ADD:
       return {
         ...state,
-        ids: [...state.ids, payload.board],
+        ids: [...state.ids, payload.board.id],
       };
     case types.BOARDS_SET_PAGE_INDEX:
       return {
