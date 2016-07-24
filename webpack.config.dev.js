@@ -1,13 +1,11 @@
 'use strict';
 
-const ENV = process.env.NODE_ENV;
-
 const webpack = require('webpack');
 const path = require('path');
 const autoprefixer = require('autoprefixer');
 
 module.exports = {
-  devtool: ENV === 'production' ? 'source-map' : 'eval-source-map',
+  devtool: 'eval-source-map',
   entry: [
     'webpack-hot-middleware/client?reload=true',
     path.join(__dirname, 'client/index.js'),
@@ -50,20 +48,13 @@ module.exports = {
     new webpack.HotModuleReplacementPlugin(),
     new webpack.DefinePlugin({
       'process.env': {
-        'NODE_ENV': JSON.stringify(ENV),
+        'NODE_ENV': JSON.stringify('development'),
       },
     }),
   ],
   resolve: {
-    extensions: ['', '.react.js', '.js', '.jsx'],
-    modulesDirectories: ['client', 'node_modules'],
     alias: {
       modernizr$: path.resolve(__dirname, '.modernizrrc'),
     },
-  },
-  resolveLoader: {
-    modulesDirectories: ['node_modules'],
-    moduleTemplates: ['*-loader', '*'],
-    extensions: ['', '.js'],
   },
 };

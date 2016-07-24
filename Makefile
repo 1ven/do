@@ -15,7 +15,7 @@ client-dev:
 	NODE_ENV=development node $(server-file)
 
 build-client:
-	NODE_ENV=production webpack -p
+	NODE_ENV=production webpack -p --config webpack.config.prod.js
 
 tests-client:
 	$(test-variables) mocha ./test/client $(test-options)
