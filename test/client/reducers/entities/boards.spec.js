@@ -223,4 +223,35 @@ describe('boards entities reducer', () => {
       },
     });
   });
+
+  it('should handle BOARD_ADD action', () => {
+    const prevState = {
+      '1': {
+        id: '1',
+        title: 'test 1',
+      },
+    };
+
+    deepFreeze(prevState);
+
+    const action = {
+      type: 'BOARD_ADD',
+      payload: {
+        board: {
+          id: '2',
+          title: 'test 2',
+        },
+      },
+    };
+    assert.deepEqual(boards(prevState, action), {
+      '1': {
+        id: '1',
+        title: 'test 1',
+      },
+      '2': {
+        id: '2',
+        title: 'test 2',
+      },
+    });
+  });
 });

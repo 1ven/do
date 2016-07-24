@@ -67,6 +67,11 @@ export default function boards(state = {}, action) {
         ...state,
         [payload.result.board]: board(state[payload.result.board], action),
       };
+    case types.BOARD_ADD:
+      return {
+        ...state,
+        [payload.board.id]: payload.board,
+      };
     default:
       return entity('boards')(state, action);
   }
