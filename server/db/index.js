@@ -6,7 +6,7 @@ const pgp = require('pg-promise')({
 });
 const sql = require('../utils/sql');
 
-const db = pgp(process.env.DB);
+const db = pgp(process.env.DATABASE_URL);
 
 db.tx(function() {
   return this.none(sql('activity.sql'))
