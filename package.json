@@ -4,7 +4,7 @@
   "description": "Notes manager",
   "main": "index.js",
   "scripts": {
-    "test": "NODE_PATH=. NODE_ENV=test mocha --compilers js:babel-register --recursive -R min"
+    "postinstall": "make bundle"
   },
   "author": "",
   "license": "ISC",
