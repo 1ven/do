@@ -2,13 +2,13 @@ install:
 	npm install
 
 development:
-	NODE_ENV=development PORT=3000 nodemon ./server/bin/www
+	$(shell cat .env.develop) nodemon ./server/bin/www
 
 production:
-	NODE_ENV=production PORT=8080 node ./server/bin/www
+	$(shell cat .env.production) node ./server/bin/www
 
 bundle:
-	NODE_ENV=production webpack -p --config webpack.config.prod.js
+	$(shell cat .env.test) webpack -p --config webpack.config.prod.js
 
 deploy:
 	git checkout master && git merge develop && git push -u origin master
@@ -20,4 +20,4 @@ tests-server:
 	make tests P='./test/server'
 
 tests:
-	NODE_PATH=. NODE_ENV=test PORT=1337 mocha $(if $(P), '$(P)', './test') --compilers js:babel-register --require babel-polyfill --recursive -R min -g $(if $(GREP),'$(GREP)','')
+	NODE_PATH=. $(shell cat .env.test) mocha $(if $(P), '$(P)', './test') --compilers js:babel-register --require babel-polyfill --recursive -R min -g $(if $(GREP),'$(GREP)','')
