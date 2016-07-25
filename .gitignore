@@ -3,3 +3,5 @@ server/npm-debug.log
 server/static/js/bundle.*
 npm-debug.log
 .DS_Store
+.env.test
+.env.develop
