@@ -48,8 +48,7 @@
     "redux-thunk": "^2.0.1",
     "reselect": "^2.5.3",
     "shortid": "^2.2.6",
-    "svg-inline-react": "^1.0.2",
-    "webpack": "^1.13.1"
+    "svg-inline-react": "^1.0.2"
   },
   "devDependencies": {
     "autoprefixer": "^6.3.7",
