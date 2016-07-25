@@ -1,4 +1,4 @@
-test-variables = NODE_PATH=. NODE_ENV=test
+test-variables = NODE_PATH=. NODE_ENV=test PORT=1337
 test-options = --compilers js:babel-register --require babel-polyfill --recursive -R min -g $(if $(GREP),'$(GREP)','')
 server-file = ./server/bin/www
 
@@ -6,13 +6,10 @@ install:
 	npm install
 
 development:
-	NODE_ENV=development nodemon $(server-file)
+	NODE_ENV=development PORT=3000 nodemon $(server-file)
 
 production:
-	NODE_ENV=production node $(server-file)
-
-client-dev:
-	NODE_ENV=development node $(server-file)
+	NODE_ENV=production PORT=8080 node $(server-file)
 
 build-client:
 	NODE_ENV=production webpack -p --config webpack.config.prod.js
