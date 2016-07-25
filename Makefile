@@ -10,7 +10,7 @@ development:
 production:
 	NODE_ENV=production PORT=8080 node ./server/bin/www
 
-build-client:
+bundle:
 	NODE_ENV=production webpack -p --config webpack.config.prod.js
 
 tests-client:
