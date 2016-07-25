@@ -1,6 +1,3 @@
-test-variables = NODE_PATH=. NODE_ENV=test PORT=1337
-test-options = --compilers js:babel-register --require babel-polyfill --recursive -R min -g $(if $(GREP),'$(GREP)','')
-
 install:
 	npm install
 
@@ -14,10 +11,10 @@ bundle:
 	NODE_ENV=production webpack -p --config webpack.config.prod.js
 
 tests-client:
-	$(test-variables) mocha ./test/client $(test-options)
+	make tests P='./test/client'
 
 tests-server:
-	$(test-variables) mocha ./test/server $(test-options)
+	make tests P='./test/server'
 
 tests:
-	$(test-variables) mocha $(test-options)
+	NODE_PATH=. NODE_ENV=test PORT=1337 mocha $(if $(P), '$(P)', './test') --compilers js:babel-register --require babel-polyfill --recursive -R min -g $(if $(GREP),'$(GREP)','')
