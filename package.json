@@ -4,7 +4,7 @@
   "description": "Notes manager",
   "main": "index.js",
   "scripts": {
-    "postinstall": "make bundle"
+    "postinstall": "NODE_ENV=production webpack -p --config webpack.config.prod.js"
   },
   "author": "",
   "license": "ISC",
@@ -83,7 +83,7 @@
     "style-loader": "^0.13.1",
     "supertest": "^1.2.0",
     "svg-inline-loader": "^0.4.1",
-    "webpack": "^1.12.14",
+    "webpack": "^1.13.1",
     "webpack-dev-middleware": "^1.6.1",
     "webpack-hot-middleware": "^2.10.0"
   }
