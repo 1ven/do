@@ -2,8 +2,9 @@ const jwt = require('jsonwebtoken');
 const _ = require('lodash');
 const validator = require('../utils/validator');
 const sanitize = require('../utils/sanitize');
-const config = require('../config');
 const User = require('../models/User');
+
+const jwtSecret = process.env.JWT_SECRET;
 
 function validateLocalAuth(formData, user) {
   return validator.validate({
@@ -22,7 +23,7 @@ function validateLocalAuth(formData, user) {
 }
 
 function authenticate(user, req, res) {
-  const token = jwt.sign(user, config.jwtSecret);
+  const token = jwt.sign(user, jwtSecret);
   const options = req.body.remember ? {
     maxAge: 30 * 24 * 60 * 60 * 1000,
   } : {};
@@ -67,7 +68,7 @@ exports.signOut = (req, res) => {
 };
 
 exports.ensureSignedIn = (req, res, next) => {
-  jwt.verify(req.cookies.access_token, config.jwtSecret, (err, user) => {
+  jwt.verify(req.cookies.access_token, jwtSecret, (err, user) => {
     if (err) {
       return res.json({});
     }

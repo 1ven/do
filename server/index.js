@@ -5,7 +5,6 @@ const path = require('path');
 const express = require('express');
 const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
-const config = require('./config');
 const routes = require('./routes');
 const errorHandler = require('./middlewares/').errorHandler;
 

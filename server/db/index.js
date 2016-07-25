@@ -4,10 +4,9 @@ const bluebird = require('bluebird');
 const pgp = require('pg-promise')({
   promiseLib: bluebird,
 });
-const config = require('../config');
 const sql = require('../utils/sql');
 
-const db = pgp(config.db);
+const db = pgp(process.env.DB);
 
 db.tx(function() {
   return this.none(sql('activity.sql'))
