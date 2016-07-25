@@ -11,7 +11,7 @@ bundle:
 	$(shell cat .env.test) webpack -p --config webpack.config.prod.js
 
 deploy:
-	git checkout master && git merge develop && git push -u origin master
+	git checkout master && git merge develop && git push -u origin master && git checkout develop
 
 tests-client:
 	make tests P='./test/client'
