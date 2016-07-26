@@ -4,13 +4,15 @@ ___
 ## Stack:
 | Package | Description |
 | --- | --- |
-| `react` | Awesome js library for building ui
+| `react` | Awesome JavaScript library for building ui
 | `redux` | Predictable state container for JavaScript apps
 | `react-router` | Routing library for React
 | `redux-saga` | An alternative side effect model for Redux apps
 | `normalizr` | Normalizes nested JSON according to a schema
 | `reselect` | Selector library for Redux
 | `redux-devtools` | DevTools for Redux library
+| `babel` | Compiler for writing next generation JavaScript
+| `webpack` | Module bundler
 ## Features:
 - Data caching. Everything data in application is cached, try to open board page, then go back and open it again - data will be loaded from cache instead of server.
 - Search by boards and cards.
