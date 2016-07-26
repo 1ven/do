@@ -1,7 +1,7 @@
 ## Kanban notes management application built with React and Redux.
 Try the demo at [kanban.1ven.me](http://kanban.1ven.me). Username - `test`, Password - `123456`.
 ___
-### Stack:
+## Stack:
 | Package | Description |
 | --- | --- |
 | `react` | Awesome js library for building ui
@@ -11,11 +11,11 @@ ___
 | `normalizr` | Normalizes nested JSON according to a schema
 | `reselect` | Selector library for Redux
 | `redux-devtools` | DevTools for Redux library
-### Features:
+## Features:
 - Data caching. Everything data in application is cached, try to open board page, then go back and open it again - data will be loaded from cache instead of server.
 - Search by boards and cards.
 
-### Installation:
+## Installation:
 First, you need install all dependencies using this command:
 ```
 npm install
@@ -42,7 +42,7 @@ npm run development
 ```
 npm run production
 ```
-### Npm commands:
+## Npm commands:
 | Command | Description |
 | --- | --- |
 | `npm install` | Install project dependencies and build client js file |
