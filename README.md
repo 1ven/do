@@ -1,6 +1,7 @@
 ## Kanban notes management application built with React and Redux.
-Try the demo at [kanban.1ven.me](http://kanban.1ven.me). Username - `test`, Password - `123456`.
-___
+Try the demo at [kanban.1ven.me](http://kanban.1ven.me). Username - `test`, Password - `123456`.  
+
+![preview](https://cloud.githubusercontent.com/assets/12725024/17170795/5a92aef0-53f6-11e6-84a2-7af742e60774.png)
 ## Stack:
 | Package | Description |
 | --- | --- |
