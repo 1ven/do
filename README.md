@@ -14,8 +14,6 @@ Try the demo at [do.1ven.me](http://do.1ven.me). Username - `test`, Password - `
 | `redux-devtools` | DevTools for Redux library
 | `babel` | Compiler for writing next generation JavaScript
 | `webpack` | Module bundler
-## Features:
-- Data caching. Everything data in application is cached, try to open board page, then go back and open it again - data will be loaded from cache instead of server.
 
 ## Installation:
 1. This application requires `postgresql` database. To install it, go to this [link](https://www.postgresql.org/download/).  
