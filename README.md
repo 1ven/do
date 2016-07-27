@@ -1,7 +1,7 @@
 ## Notes management application built with React and Redux.
 Try the demo at [do.1ven.me](http://do.1ven.me). Username - `test`, Password - `123456`.  
 
-![preview](https://cloud.githubusercontent.com/assets/12725024/17170795/5a92aef0-53f6-11e6-84a2-7af742e60774.png)
+![preview](https://cloud.githubusercontent.com/assets/12725024/17175320/92021f88-540f-11e6-902c-06e38b8f28ac.png)
 ## Stack:
 | Package | Description |
 | --- | --- |
