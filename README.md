@@ -21,8 +21,9 @@ Try the demo at [kanban.1ven.me](http://kanban.1ven.me). Username - `test`, Pass
 First, you need install all dependencies using this command:
 ```
 npm install
-```
+```  
 This application requires `postgresql` database. To install it, go to this [link](https://www.postgresql.org/download/).  
+
 Next, you should create config `.env.develop` and `.env.production` files:
 ```
 DATABASE_URL='Place here postgres connection string like `postgres://user:password@localhost:5432/database_name`'
@@ -31,6 +32,7 @@ NODE_ENV='Should be `development` or `production` according to environment'
 PORT=3000
 ```
 If you want to run tests, also you need to define `.env.test` file.  
+
 Before running application, you should run `postgresql` database. In most cases it should be:
 ```
 postgres -D /usr/local/var/postgres
