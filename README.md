@@ -16,7 +16,6 @@ Try the demo at [kanban.1ven.me](http://kanban.1ven.me). Username - `test`, Pass
 | `webpack` | Module bundler
 ## Features:
 - Data caching. Everything data in application is cached, try to open board page, then go back and open it again - data will be loaded from cache instead of server.
-- Search by boards and cards.
 
 ## Installation:
 First, you need install all dependencies using this command:
