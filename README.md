@@ -37,11 +37,12 @@ Before running application, you should run `postgresql` database. In most cases 
 postgres -D /usr/local/var/postgres
 ```
 After it, you can run application.  
-**In development mode:**
+
+#### In development mode:
 ```
 npm run development
 ```
-**In production mode:**
+#### In production mode:
 ```
 npm run production
 ```
