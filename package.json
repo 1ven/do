@@ -4,9 +4,11 @@
   "description": "Notes manager",
   "main": "index.js",
   "scripts": {
-    "postinstall": "NODE_ENV=production webpack -p --config webpack.config.prod.js",
+    "postinstall": "npm run bundle",
     "development": "eval $(cat .env.develop) nodemon ./server/bin/www",
-    "production": "eval $(cat .env.production) node ./server/bin/www"
+    "production": "eval $(cat .env.production) node ./server/bin/www",
+    "bundle": "NODE_ENV=production webpack -p --config webpack.config.prod.js",
+    "deploy": "git checkout master && git merge develop && git push -u origin master && git checkout develop"
   },
   "author": "",
   "license": "ISC",
