@@ -4,7 +4,9 @@
   "description": "Notes manager",
   "main": "index.js",
   "scripts": {
-    "postinstall": "NODE_ENV=production webpack -p --config webpack.config.prod.js"
+    "postinstall": "NODE_ENV=production webpack -p --config webpack.config.prod.js",
+    "development": "eval $(cat .env.develop) nodemon ./server/bin/www",
+    "production": "eval $(cat .env.production) node ./server/bin/www"
   },
   "author": "",
   "license": "ISC",
@@ -81,6 +83,7 @@
     "eslint-plugin-jsx-a11y": "^1.3.0",
     "eslint-plugin-react": "^5.1.1",
     "mocha": "^2.4.5",
+    "nodemon": "^1.10.0",
     "react-addons-test-utils": "^15.2.1",
     "sinon": "^1.17.3",
     "supertest": "^1.2.0",
