@@ -38,6 +38,7 @@ class Input extends Component {
     const { value } = this.state;
     const elementProps = {
       placeholder: this.props.placeholder,
+      name: this.props.name,
       className: 'b-input',
       type: 'text',
       ref: node => this.node = node,
@@ -52,7 +53,7 @@ class Input extends Component {
 }
 
 Input.propTypes = {
-  onChange: PropTypes.func.isRequired,
+  onChange: PropTypes.func,
   value: PropTypes.string,
   focus: PropTypes.bool,
   autosize: PropTypes.bool,
