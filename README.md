@@ -1,5 +1,5 @@
 ## Notes management application built with React and Redux.
-Try the demo at [kanban.1ven.me](http://kanban.1ven.me). Username - `test`, Password - `123456`.  
+Try the demo at [do.1ven.me](http://do.1ven.me). Username - `test`, Password - `123456`.  
 
 ![preview](https://cloud.githubusercontent.com/assets/12725024/17170795/5a92aef0-53f6-11e6-84a2-7af742e60774.png)
 ## Stack:
@@ -38,7 +38,7 @@ Try the demo at [kanban.1ven.me](http://kanban.1ven.me). Username - `test`, Pass
   postgres -D /usr/local/var/postgres
   ```
 5. Next, you can run application:  
-  
+
   #### In development mode:
   ```
   npm run development
@@ -46,7 +46,7 @@ Try the demo at [kanban.1ven.me](http://kanban.1ven.me). Username - `test`, Pass
   #### In production mode:
   ```
   npm run production
-  ``` 
+  ```
 
 ## Npm commands:
 | Command | Description |
