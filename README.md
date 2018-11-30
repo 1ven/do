@@ -5,15 +5,15 @@ Try the demo at [do.1ven.me](http://do.1ven.me). Username - `test`, Password - `
 ## Stack:
 | Package | Description |
 | --- | --- |
-| `react` | Awesome JavaScript library for building ui
-| `redux` | Predictable state container for JavaScript apps
-| `react-router` | Routing library for React
-| `redux-saga` | An alternative side effect model for Redux apps
-| `normalizr` | Normalizes nested JSON according to a schema
-| `reselect` | Selector library for Redux
-| `redux-devtools` | DevTools for Redux library
-| `babel` | Compiler for writing next generation JavaScript
-| `webpack` | Module bundler
+| [react](https://github.com/facebook/react) | Awesome JavaScript library for building ui
+| [redux](https://github.com/reduxjs/redux) | Predictable state container for JavaScript apps
+| [react-router](https://github.com/ReactTraining/react-router) | Routing library for React
+| [redux-saga](https://github.com/redux-saga/redux-saga) | An alternative side effect model for Redux apps
+| [normalizr](https://github.com/paularmstrong/normalizr) | Normalizes nested JSON according to a schema
+| [reselect](https://github.com/reduxjs/reselect) | Selector library for Redux
+| [redux-devtools](https://github.com/reduxjs/redux-devtools) | DevTools for Redux library
+| [babel](https://github.com/babel/babel) | Compiler for writing next generation JavaScript
+| [webpack](https://github.com/webpack/webpack) | Module bundler
 
 ## Installation:
 1. This application requires `postgresql` database. To install it, go to this [link](https://www.postgresql.org/download/).  
